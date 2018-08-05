@@ -1,0 +1,23 @@
+{
+  "name": "github-crawler",
+  "version": "1.0.0",
+  "description": "alert to ghosts",
+  "main": "ghostChecker.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rpt-ginko/github-crawler.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rpt-ginko/github-crawler/issues"
+  },
+  "homepage": "https://github.com/rpt-ginko/github-crawler#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "moment": "^2.22.2"
+  }
+}
