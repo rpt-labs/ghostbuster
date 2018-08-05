@@ -1,21 +1,29 @@
-const { thesisTeams } = require('./helpers/teams');
+const { thesisTeams } = require('./teams');
 const Team = require('./helpers/team');
 
+let ghostMessages = [];
+let potentialGhostMessages = [];
+let reportMessages = [];
+
+//exclude commits that are merging pull requests
 const sortCommitsByStudent = (commits, students) => {
   let commitsByStudent = {};
   for (let commit of commits) {
 
-    let studentEmail = commit.commit.author.email;
+    let studentGithub = commit.author.login;
+    let message = commit.commit.message;
 
-    if (commitsByStudent[studentEmail]) {
-      let commitIds = commitsByStudent[studentEmail];
-      if (!commitIds.includes(commit.sha)) {
-        commitsByStudent[studentEmail].push(commit.sha)
+    if (commitsByStudent[studentGithub]) {
+      let commitIds = commitsByStudent[studentGithub];
+
+      if (!commitIds.includes(commit.sha) && !message.includes("Merge pull request") ) {
+        commitsByStudent[studentGithub].push(commit.sha)
       }
     } else {
-      commitsByStudent[studentEmail] = [commit.sha];
+      commitsByStudent[studentGithub] = [commit.sha];
     }
   }
+
   return commitsByStudent;
 }
 
@@ -27,6 +35,7 @@ const countTotalCommits = (sortedCommits) => {
   return total;
 }
 
+//calculate number of commits and percentage of commits by team member
 const analyzeCommits = (sortedCommits) => {
   let total = countTotalCommits(sortedCommits);
 
@@ -40,30 +49,48 @@ const analyzeCommits = (sortedCommits) => {
   return studentData;
 };
 
+//check for students who have made no commits
 const checkForGhosts = (studentCommitData, students) => {
+  let allHandles = students.map(student => student.github);
+  let commitHandles = Object.keys(studentCommitData);
 
-  let allEmails = students.map(student => student.email);
-  let commitEmails = Object.keys(studentCommitData);
-
-  let fairPercent = 100 / commitEmails.length;
-
-  if (allEmails.length !== commitEmails.length) {
-    let missing = allEmails.filter(email => commitEmails.includes(email) === false);
-    console.log('\x1b[31m', '👻', missing, "has not made any commits in the last week");
-    console.log('\x1b[37m');
+  if (allHandles.length !== commitHandles.length) {
+    let missingHandle = allHandles.filter(handle => commitHandles.includes(handle) === false);
+    let missingStudents = students.filter(student => missingHandle.includes(student.github));
+    missingStudents.forEach(student => {
+      let ghostMessage = `${student.firstName} has not made any commits in the last week`;
+      ghostMessages.push(ghostMessage);
+      let reportMessage = `${student.firstName} has made 0 commits, 0 percent of all commits`;
+      reportMessages.push(reportMessage);
+    });
   }
+}
 
-  for (const student in studentCommitData) {
+//check for students who have made less commits than their peers
+const checkForPotentialGhosts = (studentCommitData, students) => {
+  let commitHandles = Object.keys(studentCommitData);
+  let fairPercent = 100 / commitHandles.length;
 
-    if (studentCommitData[student].percentage < fairPercent) {
-      console.log('\x1b[33m',student, "has made less commits than their teammates");
+  for (const handle in studentCommitData) {
+    if (studentCommitData[handle].percentage < fairPercent) {
+      let potentialGhost = students.filter(student => student.github === handle);
+      let potentialGhostMessage = `⚠️ ${potentialGhost[0].firstName} has made less commits than their teammates`;
+      potentialGhostMessages.push(potentialGhostMessage);
     }
+    let currentStudent = students.filter(student => student.github === handle);
+    let currentStudentData = studentCommitData[handle];
+    reportMessages.push(`${currentStudent[0].firstName} has made ${currentStudentData.numCommits} commits, ${currentStudentData.percentage} percent of all commits.`);
   }
+}
 
-  for (const student in studentCommitData) {
-    console.log('\x1b[36m%s\x1b[0m', student, studentCommitData[student]);
-  }
-
+const printReports = () => {
+  ghostMessages.forEach(message => console.log('\x1b[31m', '👻', message));
+  ghostMessages = [];
+  //print potential ghosts
+  potentialGhostMessages.forEach(message => console.log('\x1b[33m', message));
+  //print week's status report
+  reportMessages.forEach(message => console.log('\x1b[36m%s\x1b[0m', message));
+  //put back to white
   console.log('\x1b[37m');
 }
 
@@ -76,11 +103,13 @@ const ghostBustByTeam = async (teamName) => {
   let analyzed = analyzeCommits(sorted);
 
   checkForGhosts(analyzed, team.students);
+  checkForPotentialGhosts(analyzed, team.students);
+  printReports();
 }
 
-ghostBustByTeam('ASTA');
+//ghostBustByTeam('ASTA');
 //ghostBustByTeam('crows');
-//ghostBustByTeam('giraffes');
+ghostBustByTeam('giraffes');
 
 
 
