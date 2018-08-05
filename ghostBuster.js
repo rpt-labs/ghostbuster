@@ -60,7 +60,7 @@ const checkForGhosts = (studentCommitData, students) => {
     missingStudents.forEach(student => {
       let ghostMessage = `${student.firstName} has not made any commits in the last week`;
       ghostMessages.push(ghostMessage);
-      let reportMessage = `${student.firstName} has made 0 commits, 0 percent of all commits`;
+      let reportMessage = `${student.firstName} has made 0 commits in the last week, 0 percent of all commits`;
       reportMessages.push(reportMessage);
     });
   }
@@ -79,11 +79,12 @@ const checkForPotentialGhosts = (studentCommitData, students) => {
     }
     let currentStudent = students.filter(student => student.github === handle);
     let currentStudentData = studentCommitData[handle];
-    reportMessages.push(`${currentStudent[0].firstName} has made ${currentStudentData.numCommits} commits, ${currentStudentData.percentage} percent of all commits.`);
+    reportMessages.push(`${currentStudent[0].firstName} has made ${currentStudentData.numCommits} commits in the last week, ${currentStudentData.percentage} percent of all commits.`);
   }
 }
 
-const printReports = () => {
+const printReports = (teamName) => {
+  console.log('******************', teamName, '***********************');
   ghostMessages.forEach(message => console.log('\x1b[31m', '👻', message));
   ghostMessages = [];
   //print potential ghosts
@@ -104,12 +105,12 @@ const ghostBustByTeam = async (teamName) => {
 
   checkForGhosts(analyzed, team.students);
   checkForPotentialGhosts(analyzed, team.students);
-  printReports();
+  printReports(teamName);
 }
 
 //ghostBustByTeam('ASTA');
 //ghostBustByTeam('crows');
-ghostBustByTeam('giraffes');
+//ghostBustByTeam('giraffes');
 
 
 
