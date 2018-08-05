@@ -1,3 +1,6 @@
+//right now, to add or edit thesis team information, you'll use a file named teams.js in the root of the project
+//TODO: (maybe? not sure if it's worth the effort) integrate with Google Sheets to automate the team information
+
 const { thesisTeams } = require('./teams');
 const Team = require('./helpers/team');
 
