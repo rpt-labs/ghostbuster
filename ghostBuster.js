@@ -5,7 +5,8 @@ let ghostMessages = [];
 let potentialGhostMessages = [];
 let reportMessages = [];
 
-//exclude commits that are merging pull requests
+//excluding commits that are merging pull requests, sort commits by author (student)
+//TODO: write another function that analyzes the quality of each commit
 const sortCommitsByStudent = (commits, students) => {
   let commitsByStudent = {};
   for (let commit of commits) {
@@ -49,7 +50,7 @@ const analyzeCommits = (sortedCommits) => {
   return studentData;
 };
 
-//check for students who have made no commits
+//check for students who have made no commits in the last week
 const checkForGhosts = (studentCommitData, students) => {
   let allHandles = students.map(student => student.github);
   let commitHandles = Object.keys(studentCommitData);
@@ -71,7 +72,7 @@ const checkForPotentialGhosts = (studentCommitData, students) => {
   let commitHandles = Object.keys(studentCommitData);
   let fairPercent = 100 / commitHandles.length;
 
-  for (const handle in studentCommitData) {
+  for (let handle in studentCommitData) {
     if (studentCommitData[handle].percentage < fairPercent) {
       let potentialGhost = students.filter(student => student.github === handle);
       let potentialGhostMessage = `⚠️ ${potentialGhost[0].firstName} has made less commits than their teammates`;
