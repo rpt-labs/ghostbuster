@@ -89,8 +89,10 @@ const printReports = (teamName) => {
   ghostMessages = [];
   //print potential ghosts
   potentialGhostMessages.forEach(message => console.log('\x1b[33m', message));
+  potentialGhostMessages = [];
   //print week's status report
   reportMessages.forEach(message => console.log('\x1b[36m%s\x1b[0m', message));
+  reportMessages = [];
   //put back to white
   console.log('\x1b[37m');
 }
@@ -108,9 +110,13 @@ const ghostBustByTeam = async (teamName) => {
   printReports(teamName);
 }
 
-//ghostBustByTeam('ASTA');
-//ghostBustByTeam('crows');
-//ghostBustByTeam('giraffes');
+const ghostBustAllTeams = async() => {
+  for (let team in thesisTeams) {
+    await ghostBustByTeam(team);
+  }
+}
+
+ghostBustAllTeams();
 
 
 
