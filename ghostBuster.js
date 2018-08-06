@@ -6,49 +6,38 @@ const Team = require('./helpers/team');
 
 let ghostMessages = [];
 let potentialGhostMessages = [];
-let reportMessages = [];
+let reportMessagesCommits = [];
+let reportMessagesChanges = [];
 
-//excluding commits that are merging pull requests, sort commits by author (student)
-//TODO: write another function that analyzes the quality of each commit
-const sortCommitsByStudent = (commits, students) => {
-  let commitsByStudent = {};
-  for (let commit of commits) {
-
-    let studentGithub = commit.author.login;
-    let message = commit.commit.message;
-
-    if (commitsByStudent[studentGithub]) {
-      let commitIds = commitsByStudent[studentGithub];
-
-      if (!commitIds.includes(commit.sha) && !message.includes("Merge pull request") ) {
-        commitsByStudent[studentGithub].push(commit.sha)
-      }
-    } else {
-      commitsByStudent[studentGithub] = [commit.sha];
-    }
+const countTotalCommitsAndChanges = (sortedCommits) => {
+  let totalCommits = 0;
+  let totalChanges = 0;
+  for (let student in sortedCommits) {
+    totalCommits += sortedCommits[student].length;
+    totalChanges += sortedCommits[student].map(commit => commit.changes).reduce((a, b) => a + b);
   }
-
-  return commitsByStudent;
+  return { totalCommits, totalChanges };
 }
 
-const countTotalCommits = (sortedCommits) => {
+const countStudnetChanges = (studentCommits) => {
   let total = 0;
-  for (let student in sortedCommits) {
-    total += sortedCommits[student].length;
+  for (let commit of studentCommits){
+    total += commit.changes;
   }
   return total;
 }
 
-//calculate number of commits and percentage of commits by team member
+//calculate number of commits/code changes and percentage of commits/code changes by team member
 const analyzeCommits = (sortedCommits) => {
-  let total = countTotalCommits(sortedCommits);
-
+  let { totalChanges, totalCommits } = countTotalCommitsAndChanges(sortedCommits);
   let studentData = {};
   for (let student in sortedCommits) {
     let numCommits = sortedCommits[student].length;
-    let percentage = (numCommits / total)*100;
+    let numChanges = countStudnetChanges(sortedCommits[student]);
+    let commitPercentage = (numCommits / totalCommits)*100;
+    let changesPercentage = (numChanges / totalChanges)*100;
 
-    studentData[student] = { numCommits, percentage };
+    studentData[student] = { numCommits, numChanges, commitPercentage, changesPercentage };
   }
   return studentData;
 };
@@ -64,26 +53,34 @@ const checkForGhosts = (studentCommitData, students) => {
     missingStudents.forEach(student => {
       let ghostMessage = `${student.firstName} has not made any commits in the last week`;
       ghostMessages.push(ghostMessage);
-      let reportMessage = `${student.firstName} has made 0 commits in the last week, 0 percent of all commits`;
-      reportMessages.push(reportMessage);
+      let reportMessage1 = `${student.firstName} has made 0 commits in the last week, 0 percent of all commits`;
+      reportMessagesCommits.push(reportMessage1);
+      let reportMessage2 = `${student.firstName} has made 0 code changes in the last week, 0 percent of all code changes`;
+      reportMessagesChanges.push(reportMessage2);
     });
   }
 }
 
-//check for students who have made less commits than their peers
+//check for students who have made less commits/code changes than their peers
 const checkForPotentialGhosts = (studentCommitData, students) => {
   let commitHandles = Object.keys(studentCommitData);
   let fairPercent = 100 / commitHandles.length;
 
   for (let handle in studentCommitData) {
-    if (studentCommitData[handle].percentage < fairPercent) {
-      let potentialGhost = students.filter(student => student.github === handle);
+    let potentialGhost = students.filter(student => student.github === handle);
+
+    if (studentCommitData[handle].commitPercentage < fairPercent*.8) {
       let potentialGhostMessage = `⚠️ ${potentialGhost[0].firstName} has made less commits than their teammates`;
       potentialGhostMessages.push(potentialGhostMessage);
     }
+    if (studentCommitData[handle].changesPercentage < fairPercent*.8) {
+      let potentialGhostMessage2 = `⚠️ ${potentialGhost[0].firstName} has made less code changes than their teammates`;
+      potentialGhostMessages.push(potentialGhostMessage2);
+    }
     let currentStudent = students.filter(student => student.github === handle);
     let currentStudentData = studentCommitData[handle];
-    reportMessages.push(`${currentStudent[0].firstName} has made ${currentStudentData.numCommits} commits in the last week, ${currentStudentData.percentage} percent of all commits.`);
+    reportMessagesCommits.push(`${currentStudent[0].firstName} has made ${currentStudentData.numCommits} commits in the last week, ${currentStudentData.commitPercentage} percent of all commits.`);
+    reportMessagesChanges.push(`${currentStudent[0].firstName} has made ${currentStudentData.numChanges} code changes in the last week, ${currentStudentData.changesPercentage} percent of all code changes.`)
   }
 }
 
@@ -94,9 +91,13 @@ const printReports = (teamName) => {
   //print potential ghosts
   potentialGhostMessages.forEach(message => console.log('\x1b[33m', message));
   potentialGhostMessages = [];
-  //print week's status report
-  reportMessages.forEach(message => console.log('\x1b[36m%s\x1b[0m', message));
-  reportMessages = [];
+  //print week's status report for commits
+  reportMessagesCommits.forEach(message => console.log('\x1b[36m%s\x1b[0m', message));
+  reportMessagesCommits = [];
+  //print week's status report for code changes
+  reportMessagesChanges.forEach(message => console.log('\x1b[32m', message));
+  reportMessagesChanges = [];
+
   //put back to white
   console.log('\x1b[37m');
 }
@@ -106,7 +107,7 @@ const ghostBustByTeam = async (teamName) => {
   let students = thesisTeams[teamName].students;
   let team = new Team(teamName, orgName, students);
   const allCommits = await team.getAllCommits();
-  let sorted = sortCommitsByStudent(allCommits, team.students);
+  let sorted = await team.sortCommitsByStudent(allCommits, team.students);
   let analyzed = analyzeCommits(sorted);
 
   checkForGhosts(analyzed, team.students);

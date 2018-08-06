@@ -9,16 +9,16 @@ module.exports = class Team {
     this.students = students;
   }
 
-  get emails() {
-    return this.students.map(student => student.email);
-  }
-
   get firstNames() {
     return this.students.map(student => student.firstName);
   }
 
   get githubHandles() {
     return this.students.map(student => student.github);
+  }
+
+  getRepoNames(repos) {
+    return repos.map(repo => repo.name);
   }
 
   async getRepos() {
@@ -32,36 +32,79 @@ module.exports = class Team {
       });
       return response.data;
     } catch(error) {
-      console.log(error);
+      console.log("In getRepos", error);
     }
-  }
-
-  getRepoNames(repos) {
-    return repos.map(repo => repo.name);
   }
 
   async getCommitsByRepo(repoName) {
     const weekAgo = moment().subtract(7, 'days');
-    let response = await axios({
-      method: 'get',
-      url: `https://api.github.com/repos/${this.orgName}/${repoName}/commits?since=${weekAgo}`,
-      headers: {
-        'Authorization': `token ${GITHUB_TOKEN}`
-      }
-    });
-
-    return response.data
+    try {
+      let response = await axios({
+        method: 'get',
+        url: `https://api.github.com/repos/${this.orgName}/${repoName}/commits?since=${weekAgo}`,
+        headers: {
+          'Authorization': `token ${GITHUB_TOKEN}`
+        }
+      });
+      return response.data;
+    } catch(error) {
+      console.log("In getCommitsByRepo", error);
+    }
   }
 
   async getAllCommits() {
-    let repos = await this.getRepos();
-    let repoNames = this.getRepoNames(repos);
-    let allCommits = [];
+    try {
+      let repos = await this.getRepos();
+      let repoNames = this.getRepoNames(repos);
+      let allCommits = [];
 
-    for (let repo of repoNames) {
-      let commits = await this.getCommitsByRepo(repo);
-      allCommits = allCommits.concat(commits);
+      for (let repo of repoNames) {
+        let commits = await this.getCommitsByRepo(repo);
+        allCommits = allCommits.concat(commits);
+      }
+      return allCommits;
+    } catch(error) {
+      console.log("In getAllCommits", error);
     }
-    return allCommits;
+  }
+  async analyzeCommit(commit) {
+    try {
+      let response = await axios({
+        method: 'get',
+        url: commit.url,
+        headers: {
+          'Authorization': `token ${GITHUB_TOKEN}`
+        }
+      });
+      return response.data;
+    } catch(error) {
+      console.log("In analyzeCommit", error);
+    }
+  }
+
+  async sortCommitsByStudent(commits, students) {
+    try {
+      let commitsByStudent = {};
+      for (let commit of commits) {
+        let studentGithub = commit.author.login;
+        let message = commit.commit.message;
+
+        if (!message.includes("Merge pull request")) {
+          let commitData = await this.analyzeCommit(commit);
+          let changeTotal = commitData.stats.total;
+          if (commitsByStudent[studentGithub]) {
+            let commitIds = commitsByStudent[studentGithub].map(x => x.sha);
+            if (!commitIds.includes(commit.sha)) {
+              commitsByStudent[studentGithub].push({sha: commit.sha, changes: changeTotal});
+            }
+          } else {
+            commitsByStudent[studentGithub] = [{sha: commit.sha, changes: changeTotal}];
+          }
+        }
+      }
+      return commitsByStudent;
+    } catch(error) {
+      console.log("in sortCommitsByStudent", error);
+    }
   }
 }
