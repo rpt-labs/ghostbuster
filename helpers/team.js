@@ -82,7 +82,7 @@ module.exports = class Team {
     }
   }
 
-  async sortCommitsByStudent(commits, students) {
+  async sortCommitsByStudent(commits) {
     try {
       let commitsByStudent = {};
       for (let commit of commits) {

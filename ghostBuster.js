@@ -1,7 +1,7 @@
 //right now, to add or edit team information, you'll use a file named teams.js in the root of the project
 //TODO: (maybe? not sure if it's worth the effort) integrate with Google Sheets to automate the team information
 
-const { thesisTeams, greenfieldTeams } = require('./teams');
+const { thesisTeams, greenfieldTeams, legacyTeams } = require('./teams');
 const Team = require('./helpers/team');
 
 let ghostMessages = [];
@@ -120,11 +120,23 @@ const ghostBustByTeam = async (teamType, teamName) => {
 }
 
 const ghostBustAllTeams = async() => {
-  // for (let team in thesisTeams) {
-  //   await ghostBustByTeam(thesisTeams, team);
-  // }
+  console.log('*******************************');
+  console.log('***** THESIS TEAMS ************');
+  console.log('*******************************\n');
+  for (let team in thesisTeams) {
+    await ghostBustByTeam(thesisTeams, team);
+  }
+  console.log('*******************************');
+  console.log('***** GREENFIELD TEAMS ********');
+  console.log('*******************************\n');
   for (let group in greenfieldTeams) {
     await ghostBustByTeam(greenfieldTeams, group);
+  }
+  console.log('*******************************');
+  console.log('***** LEGACY TEAMS ************');
+  console.log('*******************************\n');
+  for (let gaggle in legacyTeams) {
+    await ghostBustByTeam(legacyTeams, gaggle);
   }
 }
 
