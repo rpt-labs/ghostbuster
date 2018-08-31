@@ -36,8 +36,8 @@ module.exports = class Team {
     }
   }
 
-  async getCommitsByRepo(repoName) {
-    const weekAgo = moment().subtract(7, 'days');
+  async getCommitsByRepo(repoName, days) {
+    const weekAgo = moment().subtract(days, 'days');
     try {
       let response = await axios({
         method: 'get',
@@ -52,14 +52,14 @@ module.exports = class Team {
     }
   }
 
-  async getAllCommits() {
+  async getAllCommits(days) {
     try {
       let repos = await this.getRepos();
       let repoNames = this.getRepoNames(repos);
       let allCommits = [];
 
       for (let repo of repoNames) {
-        let commits = await this.getCommitsByRepo(repo);
+        let commits = await this.getCommitsByRepo(repo, days);
         allCommits = allCommits.concat(commits);
       }
       return allCommits;
@@ -86,6 +86,10 @@ module.exports = class Team {
     try {
       let commitsByStudent = {};
       for (let commit of commits) {
+        if (!commit.author) {
+          continue;
+        }
+
         let studentGithub = commit.author.login;
         let message = commit.commit.message;
 
