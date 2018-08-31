@@ -15,6 +15,21 @@ const getContributorsByTeam = async (teamType, teamName) => {
   return analyzed;
 }
 
+const sortContributionsByStudent = (contributionData, team) => {
+  let contributions = {};
+  for (const contribution of contributionData) {
+    if (contribution !== '') {
+
+      if (contributions[contribution.login]) {
+        contributions[contribution.login].numContributions += contribution.contributions;
+      } else {
+        contributions[contribution.login] = {numContributions: contribution.contributions};
+      }
+    }
+  }
+  return contributions;
+}
+
 const analyzeContributions = (sortedContributions) => {
   let totalContributions = Object.entries(sortedContributions).reduce((a, b) => {
     return a + b[1].numContributions
@@ -50,21 +65,6 @@ const getContributorsAllTeams = async() => {
     let results3 = await getContributorsByTeam(legacyTeams, gaggle);
     console.log(results3);
   }
-}
-
-const sortContributionsByStudent = (contributionData, team) => {
-  let contributions = {};
-  for (const contribution of contributionData) {
-    if (contribution !== '') {
-
-      if (contributions[contribution.login]) {
-        contributions[contribution.login].numContributions += contribution.contributions;
-      } else {
-        contributions[contribution.login] = {numContributions: contribution.contributions};
-      }
-    }
-  }
-  return contributions;
 }
 
 getContributorsAllTeams();
