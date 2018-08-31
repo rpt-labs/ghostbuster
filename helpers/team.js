@@ -21,6 +21,32 @@ module.exports = class Team {
     return repos.map(repo => repo.name);
   }
 
+  async getContributorsByRepo(repo) {
+
+    try {
+      let response = await axios({
+        method: 'get',
+        url: `https://api.github.com/repos/${this.orgName}/${repo}/contributors`,
+        headers: {
+          'Authorization': `token ${GITHUB_TOKEN}`
+        }
+      });
+      return response.data;
+
+    } catch(error) {
+      console.log("In getContributors", error);
+    }
+  }
+
+  async getAllContributors(repoList) {
+    let contributions = [];
+    for (let repo of repoList) {
+      let currentContributors = await this.getContributorsByRepo(repo);
+      contributions = contributions.concat(currentContributors);
+    }
+    return contributions;
+  }
+
   async getRepos() {
     try {
       let response = await axios({
@@ -37,18 +63,19 @@ module.exports = class Team {
   }
 
   async getCommitsByRepo(repoName, days) {
-    const weekAgo = moment().subtract(days, 'days');
+    const daysAgo = moment().subtract(days, 'days');
+
     try {
       let response = await axios({
         method: 'get',
-        url: `https://api.github.com/repos/${this.orgName}/${repoName}/commits?since=${weekAgo}`,
+        url: `https://api.github.com/repos/${this.orgName}/${repoName}/commits?since=${daysAgo}`,
         headers: {
           'Authorization': `token ${GITHUB_TOKEN}`
         }
       });
       return response.data;
     } catch(error) {
-      console.log("In getCommitsByRepo", error);
+      console.log(`In getCommitsByRepo, error retrieving ${repoName}`, error);
     }
   }
 
@@ -60,7 +87,9 @@ module.exports = class Team {
 
       for (let repo of repoNames) {
         let commits = await this.getCommitsByRepo(repo, days);
-        allCommits = allCommits.concat(commits);
+        if (commits) {
+          allCommits = allCommits.concat(commits);
+        }
       }
       return allCommits;
     } catch(error) {
