@@ -24,11 +24,7 @@ const countTotalCommitsAndChanges = (sortedCommits) => {
 }
 
 const countStudentChanges = (studentCommits) => {
-  let total = 0;
-  for (let commit of studentCommits){
-    total += commit.changes;
-  }
-  return total;
+  return studentCommits.reduce((a, b) => { return a += b.changes; }, 0);
 }
 
 //calculate number of commits/code changes and percentage of commits/code changes by team member
