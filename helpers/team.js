@@ -22,7 +22,6 @@ module.exports = class Team {
   }
 
   async getContributorsByRepo(repo) {
-
     try {
       let response = await axios({
         method: 'get',

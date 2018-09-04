@@ -34,8 +34,8 @@ const analyzeCommits = (sortedCommits) => {
   for (let student in sortedCommits) {
     let numCommits = sortedCommits[student].length;
     let numChanges = countStudentChanges(sortedCommits[student]);
-    let commitPercentage = (numCommits / totalCommits)*100;
-    let changesPercentage = (numChanges / totalChanges)*100;
+    let commitPercentage = Math.floor((numCommits / totalCommits)*100);
+    let changesPercentage = Math.floor((numChanges / totalChanges)*100);
 
     studentData[student] = { numCommits, numChanges, commitPercentage, changesPercentage };
   }
@@ -53,9 +53,9 @@ const checkForGhosts = (studentCommitData, students) => {
     missingStudents.forEach(student => {
       let ghostMessage = `${student.firstName} has not made any commits in the last ${daysAgo} days`;
       ghostMessages.push(ghostMessage);
-      let reportMessage1 = `${student.firstName} has made 0 commits in the last ${daysAgo} days, 0 percent of all commits`;
+      let reportMessage1 = `${student.firstName} has made 0 commits in the last ${daysAgo} days, 0% of all commits`;
       reportMessagesCommits.push(reportMessage1);
-      let reportMessage2 = `${student.firstName} has made 0 code changes in the last ${daysAgo} days, 0 percent of all code changes`;
+      let reportMessage2 = `${student.firstName} has made 0 code changes in the last ${daysAgo} days, 0% of all code changes`;
       reportMessagesChanges.push(reportMessage2);
     });
   }
@@ -67,20 +67,20 @@ const checkForPotentialGhosts = (studentCommitData, students) => {
   let fairPercent = 100 / commitHandles.length;
 
   for (let handle in studentCommitData) {
-    let potentialGhost = students.filter(student => student.github === handle);
+    let currentStudent = students.filter(student => student.github === handle);
+    let currentStudentData = studentCommitData[handle];
 
     if (studentCommitData[handle].commitPercentage < fairPercent*.8) {
-      let potentialGhostMessage = `⚠️ ${potentialGhost[0].firstName} has made less commits than their teammates`;
+      let potentialGhostMessage = `⚠️ ${currentStudent[0].firstName} has made less commits than their teammates`;
       potentialGhostMessages.push(potentialGhostMessage);
     }
     if (studentCommitData[handle].changesPercentage < fairPercent*.8) {
-      let potentialGhostMessage2 = `⚠️ ${potentialGhost[0].firstName} has made less code changes than their teammates`;
+      let potentialGhostMessage2 = `⚠️ ${currentStudent[0].firstName} has made less code changes than their teammates`;
       potentialGhostMessages.push(potentialGhostMessage2);
     }
-    let currentStudent = students.filter(student => student.github === handle);
-    let currentStudentData = studentCommitData[handle];
-    reportMessagesCommits.push(`${currentStudent[0].firstName} has made ${currentStudentData.numCommits} commits in the last ${daysAgo} days, ${currentStudentData.commitPercentage} percent of all commits.`);
-    reportMessagesChanges.push(`${currentStudent[0].firstName} has made ${currentStudentData.numChanges} code changes in the last ${daysAgo} days, ${currentStudentData.changesPercentage} percent of all code changes.`)
+
+    reportMessagesCommits.push(`${currentStudent[0].firstName} has made ${currentStudentData.numCommits} commits in the last ${daysAgo} days, ${currentStudentData.commitPercentage}% of all commits.`);
+    reportMessagesChanges.push(`${currentStudent[0].firstName} has made ${currentStudentData.numChanges} code changes in the last ${daysAgo} days, ${currentStudentData.changesPercentage}% of all code changes.`)
   }
 }
 
