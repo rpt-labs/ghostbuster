@@ -11,7 +11,7 @@ let reportMessagesChanges = [];
 /*
   7 daysAgo will fetch the last week's worth of changes.  change to 14 for two weeks, 30 for a month, etc.
 */
-const daysAgo = 7;
+const daysAgo = 37;
 
 const countTotalCommitsAndChanges = (sortedCommits) => {
   let totalCommits = 0;
@@ -70,17 +70,23 @@ const checkForPotentialGhosts = (studentCommitData, students) => {
     let currentStudent = students.filter(student => student.github === handle);
     let currentStudentData = studentCommitData[handle];
 
-    if (studentCommitData[handle].commitPercentage < fairPercent*.8) {
-      let potentialGhostMessage = `⚠️ ${currentStudent[0].firstName} has made less commits than their teammates`;
-      potentialGhostMessages.push(potentialGhostMessage);
-    }
-    if (studentCommitData[handle].changesPercentage < fairPercent*.8) {
-      let potentialGhostMessage2 = `⚠️ ${currentStudent[0].firstName} has made less code changes than their teammates`;
-      potentialGhostMessages.push(potentialGhostMessage2);
+    if (currentStudent.length) {
+      if (studentCommitData[handle].commitPercentage < fairPercent*.8) {
+        let potentialGhostMessage = `⚠️ ${currentStudent[0].firstName} has made less commits than their teammates`;
+        potentialGhostMessages.push(potentialGhostMessage);
+      }
+      if (studentCommitData[handle].changesPercentage < fairPercent*.8) {
+        let potentialGhostMessage2 = `⚠️ ${currentStudent[0].firstName} has made less code changes than their teammates`;
+        potentialGhostMessages.push(potentialGhostMessage2);
+      }
+
+      reportMessagesCommits.push(`${currentStudent[0].firstName} has made ${currentStudentData.numCommits} commits in the last ${daysAgo} days, ${currentStudentData.commitPercentage}% of all commits.`);
+      reportMessagesChanges.push(`${currentStudent[0].firstName} has made ${currentStudentData.numChanges} code changes in the last ${daysAgo} days, ${currentStudentData.changesPercentage}% of all code changes.`)
+    } else {
+      console.log(handle);
     }
 
-    reportMessagesCommits.push(`${currentStudent[0].firstName} has made ${currentStudentData.numCommits} commits in the last ${daysAgo} days, ${currentStudentData.commitPercentage}% of all commits.`);
-    reportMessagesChanges.push(`${currentStudent[0].firstName} has made ${currentStudentData.numChanges} code changes in the last ${daysAgo} days, ${currentStudentData.changesPercentage}% of all code changes.`)
+
   }
 }
 
