@@ -1,6 +1,6 @@
 const axios = require('axios');
 const moment = require('moment');
-const { GITHUB_TOKEN } = require('../config/config');
+const { AUTH_GITHUB_TOKEN } = require('../config/config');
 
 module.exports = class Team {
   constructor(teamName, orgName, students) {
@@ -27,7 +27,7 @@ module.exports = class Team {
         method: 'get',
         url: `https://api.github.com/repos/${this.orgName}/${repo}/contributors`,
         headers: {
-          'Authorization': `token ${GITHUB_TOKEN}`
+          'Authorization': `token ${AUTH_GITHUB_TOKEN}`
         }
       });
       return response.data;
@@ -52,7 +52,7 @@ module.exports = class Team {
         method: 'get',
         url: `https://api.github.com/orgs/${this.orgName}/repos`,
         headers: {
-          'Authorization': `token ${GITHUB_TOKEN}`
+          'Authorization': `token ${AUTH_GITHUB_TOKEN}`
         }
       });
       return response.data;
@@ -69,7 +69,7 @@ module.exports = class Team {
         method: 'get',
         url: `https://api.github.com/repos/${this.orgName}/${repoName}/commits?since=${daysAgo}`,
         headers: {
-          'Authorization': `token ${GITHUB_TOKEN}`
+          'Authorization': `token ${AUTH_GITHUB_TOKEN}`
         }
       });
       return response.data;
@@ -101,7 +101,7 @@ module.exports = class Team {
         method: 'get',
         url: commit.url,
         headers: {
-          'Authorization': `token ${GITHUB_TOKEN}`
+          'Authorization': `token ${AUTH_GITHUB_TOKEN}`
         }
       });
       return response.data;
