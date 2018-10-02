@@ -1,4 +1,4 @@
-const { thesisTeams, greenfieldTeams, legacyTeams } = require('./teams');
+const { thesisTeams, greenfieldTeams, legacyTeams } = require('./config/teams');
 const Team = require('./helpers/team');
 
 const getContributorsByTeam = async (teamType, teamName) => {

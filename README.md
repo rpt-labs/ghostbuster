@@ -1,17 +1,17 @@
 # ghostbuster
 
-This tool helps identify students who might be ghosting, struggling or otherwise flying under the radar during the group phase of the program. This tool is intended to alert support staff to investigate more deeply and is not intended as a judgment or diagnostic.
+This tool helps identify students who might be ghosting, struggling or otherwise flying under the radar during the sprint phase of the program as well as the group phase of the program. This tool is intended to alert support staff to investigate more deeply and is not intended as a judgment or diagnostic.
 
 # Prerequisites
-You'll need to set up three things:
+You'll need to set up four things:
 
-* A config folder at the root of the project with a config.js file inside. In this config file, paste your token for the github API in the following format:
+* A config folder at the root of the project with a config.js file inside. In this config file, paste the auth token for the github API in the following format:
 ```
 module.exports = {
-  GITHUB_TOKEN:  'your_token_here'
+  AUTH_GITHUB_TOKEN:  'your_token_here'
 }
 ```
-* A teams.js file at the root of the project
+* A teams.js file in the config folder
 three variables, exported as module.exports: thesisTeams, greenfieldTeams, legacyTeams
 Each of these variables takes the following format:
 ```
@@ -27,7 +27,7 @@ thesisTeams: {
   }
 }
 ```
-* A cohorts.js file at the root of the project.
+* A cohorts.js file in the config folder.  Note that while the entire variable is upper case (RPT11) to match the attendance tool, the name property needs to be lower case in order to properly match the names of the repos on github.
 ```
 const RPT11 = {
   name: 'rpt11',
@@ -40,9 +40,23 @@ const RPT11 = {
 }
 module.exports = { RPT11 }
 ```
+* A sprints.js file in the config folder.  This file holds all the milestone commit messages for each sprint
+```
+const allSprints = {
+  "sprint-name-here (leave off cohort prefix)": [
+    {message:"milestone commit message (lower case)"},
+    {message:"complete part 1"},
+    {message:"complete through defaults"},
+    {message:"complete bare minimum requirements"}
+  ],
+}
+module.exports = { allSprints }
+```
 Each time a cohort enters a new part of the project phase, you can update their info in the appropriate place in teams.js and the ghostbuster will automatically check them all
 
 Each time a new cohort begins the RPT program, you can add their info to cohorts.js.  Each time a cohort graduates, their info can be optionally removed from this file.  Be sure to import the new cohorts into checkSprints.js.
+
+When sprints change, or are added or removed, simply adjust the commit milesone messages in sprints.js.
 # Installing
 run npm install
 
