@@ -34,7 +34,7 @@ module.exports = class Student {
 
   commitMessages(commitData) {
     if (commitData) {
-      return commitData.map(commit => commit.commit.message);
+      return commitData.map(commit => commit.commit.message.replace(/['"]+/g, ''));
     }
   }
 
