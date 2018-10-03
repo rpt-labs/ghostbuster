@@ -28,7 +28,7 @@ const checkCohort = async(cohort, sprints=[]) => {
   return report;
 }
 
-const printReports = (report) => {
+const printReports = (report, includeMessages) => {
   for (let sprint in report) {
     let noForks = [];
     let passedBMR = [];
@@ -40,6 +40,9 @@ const printReports = (report) => {
         passedBMR.push(student.name);
       } else {
         inProgress.push(`${student.name} is ${student.percentComplete}% complete with ${sprint}`);
+        if (includeMessages) {
+          inProgress.push(student.commitMessages);
+        }
       }
     }
 
@@ -50,15 +53,20 @@ const printReports = (report) => {
     console.log('\x1b[37m','\n******************************\n');
     inProgress.forEach(message => {
       //get just the number
-      let beforeNumber = message.split('%')[0].split(' ');
-      let afterNumber = message.split('%')[1];
-      let number = parseInt(beforeNumber.pop());
+      if (Array.isArray(message)) {
+        message.forEach(commit => console.log('\x1b[37m', commit));
+      } else {
+        let beforeNumber = message.split('%')[0].split(' ');
+        let afterNumber = message.split('%')[1];
+        let number = parseInt(beforeNumber.pop());
 
-      //color code the percent complete green, yellow, or red
-      let numberColor = number < 50 ? '\x1b[31m'
-        : number < 75 ? '\x1b[33m'
-        : '\x1b[32m'
-      console.log('\x1b[36m%s\x1b[0m', beforeNumber.join(' '), numberColor, number + '%', '\x1b[36m', afterNumber )
+        //color code the percent complete green, yellow, or red
+        let numberColor = number < 50 ? '\x1b[31m'
+          : number < 75 ? '\x1b[33m'
+          : '\x1b[32m'
+        console.log('\x1b[36m%s\x1b[0m', beforeNumber.join(' '), numberColor, number + '%', '\x1b[36m', afterNumber )
+      }
+
     });
     console.log('\x1b[37m','\n******************************\n');
     passedBMR.forEach(name => console.log('\x1b[32m', '💯 ', name + ' has completed bare minimum requirements'));
@@ -67,13 +75,14 @@ const printReports = (report) => {
   }
 }
 
-const printForCohort = async(cohort, sprints) => {
+const printForCohort = async(cohort, sprints, includeMessages) => {
   let report = await checkCohort(cohort, sprints);
-  printReports(report);
+  printReports(report, includeMessages);
 }
 
-printForCohort(RPT11, ['underbar-review', 'recursion-review']);
-printForCohort(RPT10, ['recast.ly']);
+//when you call printForCohort, pass true as the last argument if you want a detailed list of each student's commits.  Pass false if you just want the colorful report
+printForCohort(RPT11, ['underbar-review', 'recursion-review'], true);
+printForCohort(RPT10, ['recast.ly'], false);
 
 
 
