@@ -1,7 +1,7 @@
 //right now, to add or edit team information, you'll use a file named teams.js in the root of the project
 //TODO: (maybe? not sure if it's worth the effort) integrate with Google Sheets to automate the team information
 
-const { thesisTeams, greenfieldTeams, legacyTeams } = require('./teams');
+const { thesisTeams, greenfieldTeams, legacyTeams } = require('./config/teams');
 const Team = require('./helpers/team');
 
 let ghostMessages = [];
@@ -10,6 +10,7 @@ let reportMessagesCommits = [];
 let reportMessagesChanges = [];
 /*
   7 daysAgo will fetch the last week's worth of changes.  change to 14 for two weeks, 30 for a month, etc.
+  future iteration, put a start date and end date, if github api allows
 */
 const daysAgo = 37;
 
@@ -85,8 +86,6 @@ const checkForPotentialGhosts = (studentCommitData, students) => {
     } else {
       console.log(handle);
     }
-
-
   }
 }
 

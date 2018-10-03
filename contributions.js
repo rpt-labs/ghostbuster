@@ -1,4 +1,4 @@
-const { thesisTeams, greenfieldTeams, legacyTeams } = require('./teams');
+const { thesisTeams, greenfieldTeams, legacyTeams } = require('./config/teams');
 const Team = require('./helpers/team');
 
 const getContributorsByTeam = async (teamType, teamName) => {
@@ -7,9 +7,6 @@ const getContributorsByTeam = async (teamType, teamName) => {
   let team = new Team(teamName, orgName, students);
   const repos = await team.getRepos();
   const repoList = await team.getRepoNames(repos);
-  const photo = await team.getOrgPhoto();
-  console.log(photo);
-
   const allContributions = await team.getAllContributors(repoList);
   const sorted = sortContributionsByStudent(allContributions);
   const analyzed = analyzeContributions(sorted);
@@ -68,7 +65,5 @@ const getContributorsAllTeams = async() => {
     console.log(results3);
   }
 }
-
-
 
 getContributorsAllTeams();
