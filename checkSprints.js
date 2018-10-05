@@ -3,7 +3,17 @@ const Student = require('./helpers/student');
 const { allSprints } = require('./config/sprints');
 
 const checkStudentFork = async(student, repoName) => {
+  //master branch
   let commits = await student.checkFork(repoName);
+  //check for any other branches, if found, add commits to those from master
+  let branches = await student.getBranches(repoName);
+  if (branches && branches.length > 1) {
+    let notMaster = branches.slice(1);
+    notMaster.forEach(async(branch) => {
+      let branchCommits = await student.checkBranch(repoName, branch.name);
+      commits = commits.concat(branchCommits);
+    });
+  }
   let commitMessages = student.commitMessages(commits);
   let BMR = student.passBMR(commitMessages);
   let percentComplete = student.percentComplete(allSprints[repoName], commitMessages);
@@ -80,9 +90,9 @@ const printForCohort = async(cohort, sprints, includeMessages) => {
   printReports(report, includeMessages);
 }
 
-//when you call printForCohort, pass true as the last argument if you want a detailed list of each student's commits.  Pass false if you just want the colorful report
-printForCohort(RPT11, ['underbar-review', 'recursion-review'], true);
-printForCohort(RPT10, ['recast.ly'], false);
+/*when you call printForCohort, pass true as the last argument if you want a detailed list of each student's commits.  Pass false if you just want the colorful report
+  printForCohort(COHORT_OBJ, ['sprint-title', 'sprint2-title], false)
+*/
 
 
 
