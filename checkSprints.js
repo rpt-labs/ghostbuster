@@ -1,4 +1,4 @@
-const { RPT10, RPT11 } = require('./config/cohorts.js');
+const cohorts = require('./config/cohorts.js');
 const Student = require('./helpers/student');
 const { allSprints } = require('./config/sprints');
 
