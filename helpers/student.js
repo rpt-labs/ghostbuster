@@ -32,6 +32,36 @@ module.exports = class Student {
     }
   }
 
+  async getBranches(repoName) {
+    try {
+      let response = await axios({
+        method: 'get',
+        url: `https://api.github.com/repos/${this.github}/${this.cohort}-${repoName}/branches`,
+        headers: {
+          'Authorization': `token ${AUTH_GITHUB_TOKEN}`
+        }
+      });
+      return response.data;
+    } catch(error)  {
+      //console.log(`Error checking branches for ${this.firstName}'s ${repoName}`);
+    }
+  }
+
+  async checkBranch(repoName, branchName) {
+    try {
+      let response = await axios({
+        method: 'get',
+        url: `https://api.github.com/repos/${this.github}/${this.cohort}-${repoName}/commits?sha=${branchName}`,
+        headers: {
+          'Authorization': `token ${AUTH_GITHUB_TOKEN}`
+        }
+      });
+      return response.data;
+    } catch(error) {
+      console.log(error);
+    }
+  }
+
   commitMessages(commitData) {
     if (commitData) {
       return commitData.map(commit => commit.commit.message.replace(/['"]+/g, ''));
