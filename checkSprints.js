@@ -1,4 +1,4 @@
-const { RPT10, RPT11 } = require('./config/cohorts.js');
+const cohorts = require('./config/cohorts.js');
 const Student = require('./helpers/student');
 const { allSprints } = require('./config/sprints');
 
@@ -81,8 +81,6 @@ const printForCohort = async(cohort, sprints, includeMessages) => {
 }
 
 //when you call printForCohort, pass true as the last argument if you want a detailed list of each student's commits.  Pass false if you just want the colorful report
-printForCohort(RPT11, ['underbar-review', 'recursion-review'], true);
-printForCohort(RPT10, ['recast.ly'], false);
 
 
 
