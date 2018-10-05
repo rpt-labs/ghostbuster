@@ -1,4 +1,7 @@
-config/
+config/cohorts.js
+config/config.js
+config/sprints.js
+config/teams.js
 # Dependency directories
 node_modules/
 
