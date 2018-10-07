@@ -9,15 +9,18 @@ const checkStudentFork = async(student, repoName) => {
   let branches = await student.getBranches(repoName);
   if (branches && branches.length > 1) {
     let notMaster = branches.slice(1);
-    notMaster.forEach(async(branch) => {
-      let branchCommits = await student.checkBranch(repoName, branch.name);
+    for (var i = 0; i < notMaster.length; i++) {
+      let branchName = notMaster[i].name;
+      let branchCommits = await student.checkBranch(repoName, branchName);
       commits = commits.concat(branchCommits);
-    });
+    }
   }
+
   let commitMessages = student.commitMessages(commits);
   let BMR = student.passBMR(commitMessages);
   let percentComplete = student.percentComplete(allSprints[repoName], commitMessages);
   let summary = {name: student.fullName, BMR, percentComplete, commitMessages };
+
   return summary;
 }
 
@@ -94,6 +97,7 @@ const printForCohort = async(cohort, sprints, includeMessages) => {
 /*when you call printForCohort, pass true as the last argument if you want a detailed list of each student's commits.  Pass false if you just want the colorful report
   printForCohort(COHORT_OBJ, ['sprint-title', 'sprint2-title], false)
 */
+
 
 
 
