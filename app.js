@@ -6,14 +6,18 @@ const port = process.env.PORT || 1234;
 
 //controllers
 const sprintsController = require('./controllers/sprintsController');
+const contributionsController = require('./controllers/contributionsController');
 const teamsController = require('./controllers/teamsController');
-console.log(sprintsController);
+
 
 //check sprints for pairing phase
 app.get('/ghostbuster/sprints/:sprintNames', cors(), asyncMiddleware(sprintsController));
 
-//check teams for project phase
-app.get('/ghostbuster/teams/:cohorts', cors(), asyncMiddleware(teamsController));
+//check lifetime contributions for projects
+app.get('/ghostbuster/teams/contributions', cors(), asyncMiddleware(contributionsController));
+
+//check last week's team status for thesis phase
+app.get('/ghostbuster/teams/projects', cors(), asyncMiddleware(teamsController));
 
 app.listen(process.env.PORT || 1234, () => {
   console.log(`listening on port ${port}`);
