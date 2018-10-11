@@ -58,7 +58,11 @@ const getContributorsAllTeams = async() => {
     let results3 = await getContributorsByTeam(legacyTeams, gaggle);
     legacyReport[gaggle] = results3;
   }
-  return { thesisReport, greenfieldReport, legacyReport }
+  return {
+    thesis: thesisReport,
+    greenfield: greenfieldReport,
+    legacy: legacyReport
+  };
 }
 
 module.exports = async function getLifetimeContributionData(req, res, next) {

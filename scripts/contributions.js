@@ -1,5 +1,5 @@
-const { thesisTeams, greenfieldTeams, legacyTeams } = require('./config/teams');
-const Team = require('./helpers/team');
+const { thesisTeams, greenfieldTeams, legacyTeams } = require('../config/teams');
+const Team = require('../helpers/team');
 
 const getContributorsByTeam = async (teamType, teamName) => {
   let orgName = teamType[teamName].github;
