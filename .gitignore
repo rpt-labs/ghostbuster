@@ -10,6 +10,9 @@ server/config/config.js
 server/config/sprints.js
 server/config/teams.js
 
+##environment variables
+.env
+
 # Dependency directories
 node_modules/
 
