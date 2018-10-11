@@ -1,4 +1,5 @@
 import React from 'react';
+import Nav from './Nav';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -21,13 +22,20 @@ export default class App extends React.Component {
           name: 'RPT11',
         },
       ],
+      selectedCohort: 'RPT07',
     };
+    this.handleSelectCohort = this.handleSelectCohort.bind(this);
+  }
+
+  handleSelectCohort(e) {
+    this.setState({ selectedCohort: e.target.innerHTML });
   }
 
   render() {
-    const { cohorts } = this.state;
+    const { cohorts, selectedCohort } = this.state;
     return (
       <div className="ui container">
+        <Nav selected={selectedCohort} cohorts={cohorts} selectCohort={this.handleSelectCohort} />
         {cohorts.map(cohort => <h1 key={cohort.name}>{cohort.name}</h1>)}
       </div>);
   }
