@@ -22,13 +22,13 @@ When sprints change, or are added or removed, simply adjust the commit milesone 
 # Installing
 run npm install
 
-Running the ghostbuster for projects- to see data by team for the previous week
+Running the ghostbuster for projects- to see printed report in your console by team for the previous week
 run this command from the root of the project ```node ghostbuster```
 
-Running the checker - to see lifetime contributions by student
+Running the checker - to see lifetime contributions by student as a printed report in your console
 run this command from the root of the project ```node contributions```
 
-Running the sprint checker - to see student progress on sprints. For each cohort you want to check, at the bottom of checkSprints.js call printForCohort with that cohort name, and an array with a list of all sprints you'd like to check.  If you pass in true as a third argument, it will print a detailed list of each student's commit messages.
+Running the sprint checker - to see student progress on sprints, printed in cohort. For each cohort you want to check, at the bottom of checkSprints.js call printForCohort with that cohort name, and an array with a list of all sprints you'd like to check.  If you pass in true as a third argument, it will print a detailed list of each student's commit messages.
 ``` printForCohort(COHORT, ['name-of-sprint-here', 'name-of-second-sprint-here], true);```
 run this command from the root of the project ```node checkSprints```
 

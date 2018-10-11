@@ -1,5 +1,8 @@
 const { thesisTeams } = require('../config/teams');
 const Team = require('../helpers/team');
+/*
+  daysAgo gets passed to Github, to check the last however many days worth of commits for all repos the specified Github org.  Want to check the last day?  Change to 1.  The last two weeks? Change to 14.
+*/
 const daysAgo = 7;
 
 const countTotalCommitsAndChanges = (sortedCommits) => {
@@ -7,7 +10,7 @@ const countTotalCommitsAndChanges = (sortedCommits) => {
   let totalChanges = 0;
   for (let student in sortedCommits) {
     totalCommits += sortedCommits[student].length;
-    totalChanges += sortedCommits[student].map(commit => commit.changes).reduce((a, b) => a + b);
+    totalChanges += sortedCommits[student].map((commit) => commit.changes).reduce((a, b) => a + b);
   }
   return { totalCommits, totalChanges };
 }
@@ -19,12 +22,12 @@ const countStudentChanges = (studentCommits) => {
 //calculate number of commits/code changes and percentage of commits/code changes by team member
 const analyzeCommits = (sortedCommits, students) => {
   let { totalChanges, totalCommits } = countTotalCommitsAndChanges(sortedCommits);
-  let allHandles = students.map(student => student.github);
+  let allHandles = students.map((student) => student.github);
   let commitHandles = Object.keys(sortedCommits);
   let studentData = {};
 
   for (let student in sortedCommits) {
-    let currentStudent = students.filter(x => x.github === student)[0];
+    let currentStudent = students.filter((x) => x.github === student)[0];
     let numCommits = sortedCommits[student].length;
     let numChanges = countStudentChanges(sortedCommits[student]);
     let commitPercentage = Math.floor((numCommits / totalCommits)*100);
@@ -34,9 +37,9 @@ const analyzeCommits = (sortedCommits, students) => {
   }
   //check for students who made no commits in the last week
   if (allHandles.length !== commitHandles.length) {
-    let missingHandle = allHandles.filter(handle => commitHandles.includes(handle) === false);
-    let missingStudents = students.filter(student => missingHandle.includes(student.github));
-    missingStudents.forEach(student => {
+    let missingHandle = allHandles.filter((handle) => commitHandles.includes(handle) === false);
+    let missingStudents = students.filter((student) => missingHandle.includes(student.github));
+    missingStudents.forEach((student) => {
       studentData[student.firstName] = { numCommits: 0, numChanges: 0, commitPercentage: 0, changesPercentage: 0};
     });
   }
@@ -70,9 +73,3 @@ module.exports = async function getTeamGithubData(req, res, next) {
   let report = await ghostBustAllTeams();
   res.send(report);
 }
-
-
-
-
-
-

@@ -19,7 +19,7 @@ const countTotalCommitsAndChanges = (sortedCommits) => {
   let totalChanges = 0;
   for (let student in sortedCommits) {
     totalCommits += sortedCommits[student].length;
-    totalChanges += sortedCommits[student].map(commit => commit.changes).reduce((a, b) => a + b);
+    totalChanges += sortedCommits[student].map((commit) => commit.changes).reduce((a, b) => a + b);
   }
   return { totalCommits, totalChanges };
 }
@@ -45,13 +45,13 @@ const analyzeCommits = (sortedCommits) => {
 
 //check for students who have made no commits in the specified time
 const checkForGhosts = (studentCommitData, students) => {
-  let allHandles = students.map(student => student.github);
+  let allHandles = students.map((student) => student.github);
   let commitHandles = Object.keys(studentCommitData);
 
   if (allHandles.length !== commitHandles.length) {
-    let missingHandle = allHandles.filter(handle => commitHandles.includes(handle) === false);
-    let missingStudents = students.filter(student => missingHandle.includes(student.github));
-    missingStudents.forEach(student => {
+    let missingHandle = allHandles.filter((handle) => commitHandles.includes(handle) === false);
+    let missingStudents = students.filter((student) => missingHandle.includes(student.github));
+    missingStudents.forEach((student) => {
       let ghostMessage = `${student.firstName} has not made any commits in the last ${daysAgo} days`;
       ghostMessages.push(ghostMessage);
       let reportMessage1 = `${student.firstName} has made 0 commits in the last ${daysAgo} days, 0% of all commits`;
@@ -68,7 +68,7 @@ const checkForPotentialGhosts = (studentCommitData, students) => {
   let fairPercent = 100 / commitHandles.length;
 
   for (let handle in studentCommitData) {
-    let currentStudent = students.filter(student => student.github === handle);
+    let currentStudent = students.filter((student) => student.github === handle);
     let currentStudentData = studentCommitData[handle];
 
     if (currentStudent.length) {
@@ -91,16 +91,16 @@ const checkForPotentialGhosts = (studentCommitData, students) => {
 
 const printReports = (teamName) => {
   console.log('******************', teamName, '***********************');
-  ghostMessages.forEach(message => console.log('\x1b[31m', '👻', message));
+  ghostMessages.forEach((message) => console.log('\x1b[31m', '👻', message));
   ghostMessages = [];
   //print potential ghosts
-  potentialGhostMessages.forEach(message => console.log('\x1b[33m', message));
+  potentialGhostMessages.forEach((message) => console.log('\x1b[33m', message));
   potentialGhostMessages = [];
   //print week's status report for commits
-  reportMessagesCommits.forEach(message => console.log('\x1b[36m%s\x1b[0m', message));
+  reportMessagesCommits.forEach((message) => console.log('\x1b[36m%s\x1b[0m', message));
   reportMessagesCommits = [];
   //print week's status report for code changes
-  reportMessagesChanges.forEach(message => console.log('\x1b[32m', message));
+  reportMessagesChanges.forEach((message) => console.log('\x1b[32m', message));
   reportMessagesChanges = [];
 
   //put back to white

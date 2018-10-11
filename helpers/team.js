@@ -10,15 +10,15 @@ module.exports = class Team {
   }
 
   get firstNames() {
-    return this.students.map(student => student.firstName);
+    return this.students.map((student) => student.firstName);
   }
 
   get githubHandles() {
-    return this.students.map(student => student.github);
+    return this.students.map((student) => student.github);
   }
 
   getRepoNames(repos) {
-    return repos.map(repo => repo.name);
+    return repos.map((repo) => repo.name);
   }
 
   async getContributorsByRepo(repo) {
@@ -125,7 +125,7 @@ module.exports = class Team {
           let commitData = await this.analyzeCommit(commit);
           let changeTotal = commitData.stats.total;
           if (commitsByStudent[studentGithub]) {
-            let commitIds = commitsByStudent[studentGithub].map(x => x.sha);
+            let commitIds = commitsByStudent[studentGithub].map((x) => x.sha);
             if (!commitIds.includes(commit.sha)) {
               commitsByStudent[studentGithub].push({sha: commit.sha, changes: changeTotal});
             }

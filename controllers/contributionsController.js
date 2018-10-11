@@ -12,13 +12,13 @@ const getContributorsByTeam = async (teamType, teamName) => {
   const analyzed = analyzeContributions(sorted);
 
   return analyzed;
-}
+};
 
 const sortContributionsByStudent = (team, contributionData) => {
   let contributions = {};
   for (const contribution of contributionData) {
     if (contribution !== '') {
-      let student = team.students.filter(x => x.github === contribution.login)[0];
+      let student = team.students.filter((x) => x.github === contribution.login)[0];
       if (contributions[student.firstName]) {
         contributions[student.firstName].numContributions += contribution.contributions;
       } else {

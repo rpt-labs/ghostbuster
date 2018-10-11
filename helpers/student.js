@@ -64,13 +64,13 @@ module.exports = class Student {
 
   commitMessages(commitData) {
     if (commitData) {
-      return commitData.map(commit => commit.commit.message.replace(/['"-]+/g, ''));
+      return commitData.map((commit) => commit.commit.message.replace(/['"-]+/g, ''));
     }
   }
 
   passBMR(commitData) {
     if (commitData) {
-      let lowerCases = commitData.map(message => message.toLowerCase());
+      let lowerCases = commitData.map((message) => message.toLowerCase());
       return lowerCases.includes("complete bare minimum requirements");
     }
   }
@@ -78,14 +78,15 @@ module.exports = class Student {
   //this version allows students to work out of order but does not account for human error of missing one of the milestone commits
 
   percentComplete(possibleCommits, commitData) {
-    let possibleMessages = possibleCommits.map(x => x.message);
+    let possibleMessages = possibleCommits.map((x) => x.message);
     //filter by matching the predetermined commit messages, then make unique in case students make more than one of the same milestone commit messages
-    let matching = commitData.filter(x => possibleMessages.includes(x.toLowerCase())).reduce((a, b) => {
-      if (!a.includes(b)) {
-        a.push(b);
-      }
-      return a;
-    }, []);
+    let matching = commitData.filter((x) => possibleMessages.includes(x.toLowerCase()))
+      .reduce((a, b) => {
+        if (!a.includes(b)) {
+          a.push(b);
+        }
+        return a;
+      }, []);
     let percent = Math.floor((matching.length / possibleMessages.length)*100);
     return percent;
   }
