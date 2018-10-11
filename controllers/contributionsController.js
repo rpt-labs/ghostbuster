@@ -1,5 +1,5 @@
-const { thesisTeams, greenfieldTeams, legacyTeams } = require('./config/teams');
-const Team = require('./helpers/team');
+const { thesisTeams, greenfieldTeams, legacyTeams } = require('../config/teams');
+const Team = require('../helpers/team');
 
 const getContributorsByTeam = async (teamType, teamName) => {
   let orgName = teamType[teamName].github;
@@ -8,21 +8,21 @@ const getContributorsByTeam = async (teamType, teamName) => {
   const repos = await team.getRepos();
   const repoList = await team.getRepoNames(repos);
   const allContributions = await team.getAllContributors(repoList);
-  const sorted = sortContributionsByStudent(allContributions);
+  const sorted = sortContributionsByStudent(team, allContributions);
   const analyzed = analyzeContributions(sorted);
 
   return analyzed;
 }
 
-const sortContributionsByStudent = (contributionData) => {
+const sortContributionsByStudent = (team, contributionData) => {
   let contributions = {};
   for (const contribution of contributionData) {
     if (contribution !== '') {
-
-      if (contributions[contribution.login]) {
-        contributions[contribution.login].numContributions += contribution.contributions;
+      let student = team.students.filter(x => x.github === contribution.login)[0];
+      if (contributions[student.firstName]) {
+        contributions[student.firstName].numContributions += contribution.contributions;
       } else {
-        contributions[contribution.login] = {numContributions: contribution.contributions};
+        contributions[student.firstName] = {github:contribution.login, numContributions: contribution.contributions};
       }
     }
   }
@@ -43,27 +43,29 @@ const analyzeContributions = (sortedContributions) => {
 }
 
 const getContributorsAllTeams = async() => {
-  console.log('*******************************');
-  console.log('***** THESIS TEAMS ************');
-  console.log('*******************************\n');
+  let thesisReport = {};
   for (let team in thesisTeams) {
     let results1 = await getContributorsByTeam(thesisTeams, team);
-    console.log(results1);
+    thesisReport[team] = results1;
   }
-  console.log('*******************************');
-  console.log('***** GREENFIELD TEAMS ********');
-  console.log('*******************************\n');
+  let greenfieldReport = {};
   for (let group in greenfieldTeams) {
     let results2 = await getContributorsByTeam(greenfieldTeams, group);
-    console.log(results2);
+    greenFieldReport[group] = results2;
   }
-  console.log('*******************************');
-  console.log('***** LEGACY TEAMS ************');
-  console.log('*******************************\n');
+  let legacyReport = {};
   for (let gaggle in legacyTeams) {
     let results3 = await getContributorsByTeam(legacyTeams, gaggle);
-    console.log(results3);
+    legacyReport[gaggle] = results3;
   }
+  return {
+    thesis: thesisReport,
+    greenfield: greenfieldReport,
+    legacy: legacyReport
+  };
 }
 
-getContributorsAllTeams();
+module.exports = async function getLifetimeContributionData(req, res, next) {
+  let report = await getContributorsAllTeams();
+  res.send(report);
+}

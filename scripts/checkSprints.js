@@ -1,6 +1,6 @@
-const cohorts = require('./config/cohorts.js');
-const Student = require('./helpers/student');
-const { allSprints } = require('./config/sprints');
+const cohorts = require('../config/cohorts.js');
+const Student = require('../helpers/student.js');
+const { allSprints } = require('../config/sprints.js');
 
 const checkStudentFork = async(student, repoName) => {
   //master branch
