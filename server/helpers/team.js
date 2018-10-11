@@ -2,9 +2,9 @@ const axios = require('axios');
 const moment = require('moment');
 const AUTH_GITHUB_TOKEN = process.env.AUTH_GITHUB_TOKEN;
 //so node won't throw an error and crash when a student doesn't have a fork
-// process.on('uncaughtException', function (err) {
-//   console.log('Caught exception: ', err);
-// });
+process.on('uncaughtException', function (err) {
+  console.log('Caught exception: ', err);
+});
 
 module.exports = class Team {
   constructor(teamName, orgName, students) {
@@ -85,20 +85,25 @@ module.exports = class Team {
   async getAllCommits(days) {
     try {
       let repos = await this.getRepos();
-      let repoNames = this.getRepoNames(repos);
-      let allCommits = [];
+      if (repos) {
+        let repoNames = this.getRepoNames(repos);
+        let allCommits = [];
 
-      for (let repo of repoNames) {
-        let commits = await this.getCommitsByRepo(repo, days);
-        if (commits) {
-          allCommits = allCommits.concat(commits);
+        for (let repo of repoNames) {
+          let commits = await this.getCommitsByRepo(repo, days);
+          if (commits) {
+            allCommits = allCommits.concat(commits);
+          }
         }
+        return allCommits;
+      } else {
+        return [];
       }
-      return allCommits;
     } catch(error) {
       console.log("In getAllCommits", error);
     }
   }
+
   async analyzeCommit(commit) {
     try {
       let response = await axios({
