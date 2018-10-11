@@ -4,17 +4,31 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      initial: [],
+      cohorts: [
+        {
+          name: 'RPT07',
+        },
+        {
+          name: 'RPT08',
+        },
+        {
+          name: 'RPT09',
+        },
+        {
+          name: 'RPT10',
+        },
+        {
+          name: 'RPT11',
+        },
+      ],
     };
   }
 
   render() {
-    const { initial } = this.state;
-
+    const { cohorts } = this.state;
     return (
-      <h1>
-        App level component
-        <div>{initial}</div>
-      </h1>);
+      <div className="ui container">
+        {cohorts.map(cohort => <h1 key={cohort.name}>{cohort.name}</h1>)}
+      </div>);
   }
 }

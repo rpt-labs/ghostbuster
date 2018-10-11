@@ -11,7 +11,7 @@ const contributionsController = require('./controllers/contributionsController')
 const teamsController = require('./controllers/teamsController');
 
 //static files
-app.use('/', express.static(path.join(__dirname, 'public')));
+app.use('/', express.static(path.join(__dirname, '../public')));
 
 //check sprints for pairing phase
 app.get('/ghostbuster/sprints/:sprintNames', cors(), asyncMiddleware(sprintsController));
