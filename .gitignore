@@ -1,8 +1,15 @@
-config/cohorts.js
-config/config.js
-config/sprints.js
-config/teams.js
-# Dependency directories
+## config
+server/config/cohorts.js
+server/config/config.js
+server/config/sprints.js
+server/config/teams.js
+## Dependency directories
 node_modules/
+
+## Mac OS
+.DS_store
+
+##webpack default output folder
+public/
 
 
