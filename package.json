@@ -5,7 +5,8 @@
   "main": "ghostChecker.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node server/app"
+    "dev": "node server/app",
+    "build": "webpack --watch -d"
   },
   "repository": {
     "type": "git",
