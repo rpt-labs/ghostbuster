@@ -142,7 +142,3 @@ const ghostBustAllTeams = async() => {
 }
 
 ghostBustAllTeams();
-
-
-
-

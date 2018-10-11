@@ -139,4 +139,4 @@ module.exports = class Team {
       console.log("in sortCommitsByStudent", error);
     }
   }
-}
+};

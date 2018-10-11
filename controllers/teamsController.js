@@ -72,4 +72,5 @@ const ghostBustAllTeams = async() => {
 module.exports = async function getTeamGithubData(req, res, next) {
   let report = await ghostBustAllTeams();
   res.send(report);
-}
+};
+

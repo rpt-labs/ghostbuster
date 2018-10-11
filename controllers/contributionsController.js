@@ -68,4 +68,4 @@ const getContributorsAllTeams = async() => {
 module.exports = async function getLifetimeContributionData(req, res, next) {
   let report = await getContributorsAllTeams();
   res.send(report);
-}
+};

@@ -97,19 +97,3 @@ const printForCohort = async(cohort, sprints, includeMessages) => {
 /*when you call printForCohort, pass true as the last argument if you want a detailed list of each student's commits.  Pass false if you just want the colorful report
   printForCohort(COHORT_OBJ, ['sprint-title', 'sprint2-title], false)
 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
