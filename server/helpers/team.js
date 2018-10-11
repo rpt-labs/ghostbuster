@@ -1,6 +1,10 @@
 const axios = require('axios');
 const moment = require('moment');
 const AUTH_GITHUB_TOKEN = process.env.AUTH_GITHUB_TOKEN;
+//so node won't throw an error and crash when a student doesn't have a fork
+// process.on('uncaughtException', function (err) {
+//   console.log('Caught exception: ', err);
+// });
 
 module.exports = class Team {
   constructor(teamName, orgName, students) {
