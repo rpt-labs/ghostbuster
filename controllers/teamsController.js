@@ -1,4 +1,4 @@
-const { thesisTeams, greenfieldTeams, legacyTeams } = require('../config/teams');
+const { thesisTeams } = require('../config/teams');
 const Team = require('../helpers/team');
 const daysAgo = 7;
 
@@ -61,20 +61,8 @@ const ghostBustAllTeams = async() => {
     let report = await ghostBustByTeam(thesisTeams, team);
     thesisReport[team] = report;
   }
-  let greenFieldReport = {};
-  for (let group in greenfieldTeams) {
-    let report2 = await ghostBustByTeam(greenfieldTeams, group);
-    greenFieldReport[group] = report2;
-  }
-  let legacyReport = {};
-  for (let gaggle in legacyTeams) {
-    let report3 = await ghostBustByTeam(legacyTeams, gaggle);
-    legacyReportp[gaggle] = report3;
-  }
   return {
-    thesis: thesisReport,
-    greenfield: greenFieldReport,
-    legacy: legacyReport
+    results: thesisReport
   };
 }
 
