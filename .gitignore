@@ -22,4 +22,7 @@ node_modules/
 # Webpack
 /public
 
+# Fake Data
+fakeData.js
+
 

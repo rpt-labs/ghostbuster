@@ -16,7 +16,7 @@ const Nav = (props) => {
   });
 
   return (
-    <div className="ui tabular menu">
+    <div className="ui top attached tabular menu">
       {tabs}
     </div>
   );
