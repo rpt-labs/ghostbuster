@@ -1,47 +1,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Progress from './Progress';
+import CommitList from './CommitList';
 
-const StudentCard = (props) => {
-  const { student, repoName } = props;
-  const buttonStyle = student.percentComplete >= 85 ? 'green circular ui tiny button'
-    : student.percentComplete >= 50 ? 'yellow circular ui tiny button'
-      : 'red circular ui tiny button';
-  const githubUrl = `http://www.github.com${student.github}/${student.cohort}-${repoName}`;
-  const imageUrl = student.BMR ? 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Pink_checkbox-checked.svg/2000px-Pink_checkbox-checked.svg.png'
-    : student.percentComplete === 0 ? 'https://png.pngtree.com/element_origin_min_pic/16/12/25/a993726976f4619909704e1177d63658.jpg'
-      : 'https://cdn1.iconfinder.com/data/icons/business-colored-icons-vol-2/128/085-512.png';
+class StudentCard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showCommits: false,
+    };
+    this.handleShowCommitsChange = this.handleShowCommitsChange.bind(this);
+  }
 
-  const messageList = student.commitMessages.map(message => <p>{message}</p>);
+  handleShowCommitsChange() {
+    const { showCommits } = this.state;
+    this.setState({ showCommits: !showCommits });
+  }
 
-  return (
-    <div className="ui segment fluid">
-      <div className="ui two column stackable center aligned grid">
-        <div className="ui vertical divider">
-          <i style={{fontSize: 62}} className="github icon" />
-        </div>
-        <div className="middle aligned row">
-          <div className="column">
-            <div className="card-image">
-              <img alt="progress" src={imageUrl} />
+  render() {
+    const { student, repoName } = this.props;
+    const { showCommits } = this.state;
+    const githubUrl = `http://www.github.com/${student.github}/${student.cohort}-${repoName}`;
+
+    return (
+      <div className="eight wide column">
+        <div className="ui two column center aligned stackable grid">
+          <div className="student-card row">
+            <div className="six wide column">
+              <Progress student={student} />
             </div>
-            <div className="ui header">
-              {student.name}
-            </div>
-            <div className={buttonStyle}>
-              {`${student.percentComplete}%`}
-            </div>
-          </div>
-
-          <div className="column">
-            <div className="image">
-              {messageList}
+            <div className="ten wide column">
+              <CommitList handleCommitChange={this.handleShowCommitsChange} show={showCommits} url={githubUrl} commits={student.commitMessages} />
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 StudentCard.propTypes = {
   student: PropTypes.instanceOf(Object).isRequired,

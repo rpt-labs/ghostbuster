@@ -21,7 +21,7 @@ class Cohort extends React.Component {
           selected: false,
         },
         {
-          name: 'n-queens',
+          name: 'beesbeesbees',
           selected: false,
         },
         {
@@ -29,7 +29,19 @@ class Cohort extends React.Component {
           selected: false,
         },
         {
+          name: 'n-queens',
+          selected: false,
+        },
+        {
           name: 'chatterbox-client',
+          selected: false,
+        },
+        {
+          name: '6ees6ees6ees',
+          selected: false,
+        },
+        {
+          name: 'react-components',
           selected: false,
         },
         {
@@ -44,39 +56,71 @@ class Cohort extends React.Component {
           name: 'chatterbox-server',
           selected: false,
         },
+        {
+          name: 'cruddy-todo',
+          selected: false,
+        },
+        {
+          name: 'sqool',
+          selected: false,
+        },
+        {
+          name: 'databases',
+          selected: false,
+        },
+        {
+          name: 'shortly-express',
+          selected: false,
+        },
+        {
+          name: 'fullstack-review',
+          selected: false,
+        },
       ],
     };
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     this.storeCheckedRepos = this.storeCheckedRepos.bind(this);
+    this.uncheckAll = this.uncheckAll.bind(this);
   }
 
   handleCheckboxChange(repo) {
     const { repos } = this.state;
-    const newRepoList = [].concat(repos);
-    const selected = newRepoList.filter(x => x.name === repo)[0];
-    selected.selected = !selected.selected;
+    const repoCopy = [].concat(repos);
 
-    this.setState({ repos: newRepoList });
+    for (let i = 0; i < repoCopy.length; i++) {
+      if (repoCopy[i].name === repo) {
+        repoCopy[i].selected = !repoCopy[i].selected;
+      }
+    }
+    this.setState({ repos: repoCopy });
   }
 
-  storeCheckedRepos() {
+  uncheckAll() {
+    const { repos } = this.state;
+    const copy = repos.slice();
+
+    copy.forEach((repo) => {
+      const repo2 = repo;
+      repo2.selected = false;
+      return repo2;
+    });
+    this.setState({ repos: copy });
+  }
+
+  storeCheckedRepos(e) {
+    e.preventDefault();
     const { repos } = this.state;
     const { repoSelect } = this.props;
-    const repoCopy = repos.slice();
     const newArgs = [];
 
-    repoCopy.map((repo) => {
-      const newCopy = Object.assign(repo);
+    repos.forEach((repo) => {
       if (repo.selected) {
         newArgs.push(repo.name);
-        repo.selected = false;
       }
-      return newCopy;
     });
 
-    this.setState({ repos: repoCopy }, () => {
-      repoSelect(newArgs);
-    });
+    repoSelect(newArgs);
+    this.uncheckAll();
   }
 
   render() {
@@ -86,12 +130,14 @@ class Cohort extends React.Component {
       ? 'ui bottom attached loading tab segment'
       : 'ui bottom attached active tab segment';
     const repoNames = Object.keys(commits);
-    const repoList = repoNames.map(repo => <Repo name={repo} students={commits[repo]} />);
+    const repoList = repoNames.map(repo => <Repo key={repo.name} name={repo} students={commits[repo]} />);
     return (
       <div>
         <CheckboxList repos={repos} handleCheckboxChange={this.handleCheckboxChange} storeCheckedRepos={this.storeCheckedRepos} />
         <div className={style}>
-          {repoList}
+          <div className="repo-list">
+            {repoList}
+          </div>
         </div>
       </div>
     );

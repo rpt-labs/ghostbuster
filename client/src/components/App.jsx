@@ -2,7 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import Nav from './Nav';
 import Cohort from './Cohort';
-import fakeData from '../../../fakeData';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -10,22 +9,13 @@ export default class App extends React.Component {
     this.state = {
       cohorts: [
         {
-          name: 'RPT07',
-        },
-        {
-          name: 'RPT08',
-        },
-        {
-          name: 'RPT09',
-        },
-        {
           name: 'RPT10',
         },
         {
           name: 'RPT11',
         },
       ],
-      selectedCohort: 'RPT07',
+      selectedCohort: 'RPT10',
       loading: false,
       currentCommitData: {},
     };

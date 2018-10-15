@@ -4,26 +4,21 @@ import StudentCard from './StudentCard';
 
 const Repo = (props) => {
   const { name, students } = props;
-  const studentList = students.map(student => (<StudentCard repoName={name} student={student} />));
+  const studentList = students.map(student => (<StudentCard key={student.name} repoName={name} student={student} />));
 
   return (
-    <div>
-      <h1>{name}</h1>
-      <div className="ui fluid">
+    <div className="repo-item">
+      <h1 className="repo-title">{name}</h1>
+      <div className="ui two column stackable divided grid">
         {studentList}
       </div>
     </div>
   );
 };
 
-Repo.defaultProps = {
-  name: 'Hello',
-  students: [{ name: 'cheese' }, { name: 'tart' }],
-};
-
 Repo.propTypes = {
-  name: PropTypes.string,
-  students: PropTypes.instanceOf(Object),
+  name: PropTypes.string.isRequired,
+  students: PropTypes.instanceOf(Object).isRequired,
 };
 
 export default Repo;
