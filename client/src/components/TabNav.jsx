@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Nav = (props) => {
+const TabNav = (props) => {
   const { cohorts, selected, selectCohort } = props;
   const tabs = cohorts.map((cohort) => {
     const style = selected === cohort.name
@@ -22,10 +22,10 @@ const Nav = (props) => {
   );
 };
 
-Nav.propTypes = {
+TabNav.propTypes = {
   cohorts: PropTypes.instanceOf(Object).isRequired,
   selected: PropTypes.string.isRequired,
   selectCohort: PropTypes.func.isRequired,
 };
 
-export default Nav;
+export default TabNav;

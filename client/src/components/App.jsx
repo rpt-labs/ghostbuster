@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import Nav from './Nav';
+import TabNav from './TabNav';
+import TopNav from './TopNav';
 import Cohort from './Cohort';
 import TeamList from './TeamList';
 
@@ -32,6 +33,7 @@ export default class App extends React.Component {
       currentProjectData: {},
     };
     this.handleSelectCohort = this.handleSelectCohort.bind(this);
+    this.handleSelectDisplay = this.handleSelectDisplay.bind(this);
     this.handleRepoSelect = this.handleRepoSelect.bind(this);
     this.checkSprints = this.checkSprints.bind(this);
     this.checkProjects = this.checkProjects.bind(this);
@@ -88,13 +90,13 @@ export default class App extends React.Component {
     if (display === 'projects') {
       cohorts = (
         <div className="ui container">
-          <Nav selected={selectedCohort} cohorts={teamCohorts} selectCohort={this.handleSelectCohort} />
+          <TabNav selected={selectedCohort} cohorts={teamCohorts} selectCohort={this.handleSelectCohort} />
           <TeamList checkProjects={this.checkProjects} loading={loading} showSegment={showSegment} projects={currentProjectData} />
         </div>);
     } else {
       cohorts = (
         <div className="ui container">
-          <Nav selected={selectedCohort} cohorts={sprintCohorts} selectCohort={this.handleSelectCohort} />
+          <TabNav selected={selectedCohort} cohorts={sprintCohorts} selectCohort={this.handleSelectCohort} />
           <Cohort repoSelect={this.handleRepoSelect} loading={loading} showSegment={showSegment} commits={currentCommitData} />
         </div>
       );
@@ -102,8 +104,7 @@ export default class App extends React.Component {
 
     return (
       <div>
-        <h1 onClick={() => this.handleSelectDisplay('sprints')}>Check Sprints</h1>
-        <h1 onClick={() => this.handleSelectDisplay('projects')}>Check Projects</h1>
+        <TopNav handleSelectDisplay={this.handleSelectDisplay} />
         {cohorts}
       </div>
     );

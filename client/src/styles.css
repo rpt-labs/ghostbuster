@@ -2,6 +2,17 @@
   margin-top: 50px;
 }
 
+.top-nav {
+  color: white;
+  background-color: #2185d0;
+  padding: 30px;
+}
+
+.top-nav-item {
+  padding: 0px 20px;
+  font-size: 18px;
+}
+
 .ui.grid.checkboxes {
   margin-top: 25px;
 }
