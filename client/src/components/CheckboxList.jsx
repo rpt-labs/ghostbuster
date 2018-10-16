@@ -18,7 +18,7 @@ const CheckboxList = (props) => {
         {repoList}
         <br />
       </div>
-      <GhostbusterButton storeCheckedRepos={storeCheckedRepos} />
+      <GhostbusterButton clickHandler={storeCheckedRepos} />
     </div>
   );
 };

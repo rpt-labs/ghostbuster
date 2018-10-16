@@ -10,11 +10,11 @@ const countTotalCommitsAndChanges = (sortedCommits) => {
     totalChanges += sortedCommits[student].map(commit => commit.changes).reduce((a, b) => a + b);
   }
   return { totalCommits, totalChanges };
-}
+};
 
 const countStudentChanges = (studentCommits) => {
   return studentCommits.reduce((a, b) => { return a += b.changes; }, 0);
-}
+};
 
 //calculate number of commits/code changes and percentage of commits/code changes by team member
 const analyzeCommits = (sortedCommits, students) => {
@@ -53,26 +53,23 @@ const ghostBustByTeam = async (teamType, teamName) => {
   let analyzed = analyzeCommits(sorted, students);
 
   return analyzed;
-}
+};
 
-const ghostBustAllTeams = async() => {
+const ghostBustAllTeams = async(cohort) => {
   let thesisReport = {};
   for (let team in thesisTeams) {
-    let report = await ghostBustByTeam(thesisTeams, team);
-    thesisReport[team] = report;
+    if (thesisTeams[team]['cohort'] === cohort ) {
+      let report = await ghostBustByTeam(thesisTeams, team);
+      thesisReport[team] = report;
+    }
   }
   return {
     results: thesisReport
   };
-}
+};
 
 module.exports = async function getTeamGithubData(req, res, next) {
-  let report = await ghostBustAllTeams();
+  let { cohort } = req.params;
+  let report = await ghostBustAllTeams(cohort);
   res.send(report);
 }
-
-
-
-
-
-

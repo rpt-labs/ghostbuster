@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const GhostbusterButton = (props) => {
-  const { storeCheckedRepos } = props;
+  const { clickHandler } = props;
 
   return (
     <div className="ui center aligned segment">
@@ -15,7 +15,7 @@ const GhostbusterButton = (props) => {
           className="ui button primary"
           id="getSprints"
           role="presentation"
-          onClick={e => storeCheckedRepos(e)}
+          onClick={e => clickHandler(e)}
         >
         GHOSTBUSTER
         </div>
@@ -25,7 +25,7 @@ const GhostbusterButton = (props) => {
 };
 
 GhostbusterButton.propTypes = {
-  storeCheckedRepos: PropTypes.func.isRequired,
+  clickHandler: PropTypes.func.isRequired,
 };
 
 export default GhostbusterButton;

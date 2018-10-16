@@ -1,7 +1,7 @@
 const axios = require('axios');
 const moment = require('moment');
 const AUTH_GITHUB_TOKEN = process.env.AUTH_GITHUB_TOKEN;
-//so node won't throw an error and crash when a student doesn't have a fork
+//so node won't throw an error and crash when a team doesn't yet have any repos
 process.on('uncaughtException', function (err) {
   console.log('Caught exception: ', err);
 });
@@ -130,14 +130,11 @@ module.exports = class Team {
         let studentGithub = commit.author.login;
         let message = commit.commit.message;
 
-        if (!message.includes("Merge pull request")) {
+        if (!message.includes("Merge")) {
           let commitData = await this.analyzeCommit(commit);
           let changeTotal = commitData.stats.total;
           if (commitsByStudent[studentGithub]) {
-            let commitIds = commitsByStudent[studentGithub].map(x => x.sha);
-            if (!commitIds.includes(commit.sha)) {
-              commitsByStudent[studentGithub].push({sha: commit.sha, changes: changeTotal});
-            }
+            commitsByStudent[studentGithub].push({sha: commit.sha, changes: changeTotal});
           } else {
             commitsByStudent[studentGithub] = [{sha: commit.sha, changes: changeTotal}];
           }

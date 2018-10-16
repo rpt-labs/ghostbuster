@@ -12,14 +12,15 @@ const teamsController = require('./controllers/teamsController');
 
 //static files
 app.use('/', express.static(path.join(__dirname, '../public')));
+app.use(cors());
 
 //check sprints for pairing phase
-app.get('/ghostbuster/sprints/:sprintNames', cors(), asyncMiddleware(sprintsController));
+app.get('/ghostbuster/sprints/:sprintNames', asyncMiddleware(sprintsController));
 
 //check lifetime contributions for projects
-app.get('/ghostbuster/teams/contributions', cors(), asyncMiddleware(contributionsController));
+app.get('/ghostbuster/teams/contributions', asyncMiddleware(contributionsController));
 
 //check last week's team status for thesis phase
-app.get('/ghostbuster/teams/projects', cors(), asyncMiddleware(teamsController));
+app.get('/ghostbuster/teams/projects/:cohort', asyncMiddleware(teamsController));
 
 app.listen(port, () => console.log(`listening on port ${port}`));
