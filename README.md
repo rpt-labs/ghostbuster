@@ -5,19 +5,18 @@ This tool helps identify students who might be ghosting, struggling or otherwise
 # Prerequisites
 You'll need to set up four things:
 
-* A config folder at the root of the project with four config files inside:
+* Three config files in server/config, modeled after the example.config files:
   * ```cohorts.js```
-  * ```config.js```
   * ```sprints.js```
   * ```teams.js```
 
-Follow the format outlined in the example.config files.
+* Add GITHUB_AUTH_TOKEN to your .env file
 
-Each time a cohort enters a new part of the project phase, you can update their info in the appropriate place in ```config/teams.js``` and the ghostbuster will automatically check them all
+Each time a cohort enters a new part of the project phase, you can update their info in the appropriate place in ```server/config/teams.js``` and the ghostbuster will automatically check them all
 
-Each time a new cohort begins the RPT program, you can add their info to ```config/cohorts.js```.  Each time a cohort graduates, their info can be optionally removed from this file.  Be sure to import the new cohorts into checkSprints.js.
+Each time a new cohort begins the RPT program, you can add their info to ```server/config/cohorts.js```.  Each time a cohort graduates, their info can be optionally removed from this file.  Be sure to import the new cohorts into checkSprints.js.
 
-When sprints change, or are added or removed, simply adjust the commit milesone messages in ```config.sprints.js``` to match the changes in Learn.
+When sprints change, or are added or removed, simply adjust the commit milesone messages in ```server/config.sprints.js``` to match the changes in Learn.
 
 # Installing
 run npm install

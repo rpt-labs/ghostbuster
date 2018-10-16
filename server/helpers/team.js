@@ -1,6 +1,6 @@
 const axios = require('axios');
 const moment = require('moment');
-const { AUTH_GITHUB_TOKEN } = require('../config/config');
+const AUTH_GITHUB_TOKEN = process.env.AUTH_GITHUB_TOKEN;
 
 module.exports = class Team {
   constructor(teamName, orgName, students) {
