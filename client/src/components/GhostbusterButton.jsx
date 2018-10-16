@@ -5,7 +5,7 @@ const GhostbusterButton = (props) => {
   const { clickHandler } = props;
 
   return (
-    <div className="ui center aligned segment">
+    <div id="ghostbuster-button" className="ui center aligned segment">
       <h2 className="ui header">
         <img alt="cute_ghost" className="ui image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8J9vA9QPiEykz90ij9IRaR3tMKt_kqA0Xpoe0Ha35owi_bWLa" />
         <div className="content">

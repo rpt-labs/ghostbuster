@@ -27,6 +27,7 @@ export default class App extends React.Component {
       display: 'sprints',
       selectedCohort: 'RPT10',
       loading: false,
+      showSegment: false,
       currentCommitData: {},
       currentProjectData: {},
     };
@@ -54,18 +55,18 @@ export default class App extends React.Component {
   checkSprints() {
     const { repos, selectedCohort } = this.state;
     const repoString = repos.join('+');
-    this.setState({ loading: true }, () => {
+    this.setState({ loading: true, showSegment: true }, () => {
       axios.get(`http://localhost:1234/ghostbuster/sprints/${repoString}?cohort=${selectedCohort}`)
-        .then(response => this.setState({ currentCommitData: response.data, loading: false }))
+        .then(response => this.setState({ currentCommitData: response.data, loading: false, showSegment: true }))
         .catch(error => console.log(error));
     });
   }
 
   checkProjects() {
     const { selectedCohort } = this.state;
-    this.setState({ loading: true }, () => {
+    this.setState({ loading: true, showSegment: true }, () => {
       axios.get(`http://localhost:1234/ghostbuster/teams/projects/${selectedCohort}`)
-        .then(response => this.setState({ currentProjectData: response.data.results, loading: false }))
+        .then(response => this.setState({ currentProjectData: response.data.results, loading: false, showSegment: true }))
         .catch(error => console.log(error));
     });
   }
@@ -76,6 +77,7 @@ export default class App extends React.Component {
       teamCohorts,
       selectedCohort,
       loading,
+      showSegment,
       currentCommitData,
       currentProjectData,
       display,
@@ -87,13 +89,13 @@ export default class App extends React.Component {
       cohorts = (
         <div className="ui container">
           <Nav selected={selectedCohort} cohorts={teamCohorts} selectCohort={this.handleSelectCohort} />
-          <TeamList checkProjects={this.checkProjects} loading={loading} projects={currentProjectData} />
+          <TeamList checkProjects={this.checkProjects} loading={loading} showSegment={showSegment} projects={currentProjectData} />
         </div>);
     } else {
       cohorts = (
         <div className="ui container">
           <Nav selected={selectedCohort} cohorts={sprintCohorts} selectCohort={this.handleSelectCohort} />
-          <Cohort repoSelect={this.handleRepoSelect} loading={loading} commits={currentCommitData} />
+          <Cohort repoSelect={this.handleRepoSelect} loading={loading} showSegment={showSegment} commits={currentCommitData} />
         </div>
       );
     }

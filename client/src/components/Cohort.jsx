@@ -124,21 +124,25 @@ class Cohort extends React.Component {
   }
 
   render() {
-    const { loading, commits } = this.props;
+    const { loading, commits, showSegment } = this.props;
     const { repos } = this.state;
     const style = loading
       ? 'ui bottom attached loading tab segment'
       : 'ui bottom attached active tab segment';
+
     const repoNames = Object.keys(commits);
     const repoList = repoNames.map(repo => <Repo key={repo.name} name={repo} students={commits[repo]} />);
+    const segment = showSegment ? (
+      <div className={style}>
+        <div className="repo-list">
+          {repoList}
+        </div>
+      </div>) : (<div />);
+
     return (
       <div>
         <CheckboxList repos={repos} handleCheckboxChange={this.handleCheckboxChange} storeCheckedRepos={this.storeCheckedRepos} />
-        <div className={style}>
-          <div className="repo-list">
-            {repoList}
-          </div>
-        </div>
+        {segment}
       </div>
     );
   }
@@ -147,6 +151,7 @@ class Cohort extends React.Component {
 Cohort.propTypes = {
   commits: PropTypes.instanceOf(Object).isRequired,
   loading: PropTypes.bool.isRequired,
+  showSegment: PropTypes.bool.isRequired,
   repoSelect: PropTypes.func.isRequired,
 };
 
