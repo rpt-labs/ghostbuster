@@ -2,6 +2,10 @@
   margin-top: 50px;
 }
 
+.ui.list.report-detail {
+  margin: 3em;
+}
+
 .top-nav {
   color: white;
   background-color: #403F4C;
@@ -70,7 +74,7 @@
 }
 
 .report-detail {
-  border: 1px solid lightgrey;
+  padding: 20px;
 }
 
 .team-card {

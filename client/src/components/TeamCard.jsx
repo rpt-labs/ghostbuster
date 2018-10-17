@@ -6,9 +6,13 @@ import TeamPieChart from './TeamPieChart';
 const TeamCard = (props) => {
   const { data } = props;
   return (
-    <div className="team-card">
-      <TeamPieChart type="commits" students={data}/>
-      <TeamPieChart type="changes" students={data}/>
+    <div className="ui center aligned grid team-card">
+      <div className="eight wide column">
+        <TeamPieChart type="commits" students={data} />
+      </div>
+      <div className="eight wide column">
+        <TeamPieChart type="changes" students={data} />
+      </div>
     </div>
   );
 };

@@ -11,14 +11,10 @@ const Team = (props) => {
   return (
     <div>
       <h1 className="team-title">{team}</h1>
-      <div className="ui center aligned grid">
-        <div className="eight wide column">
-          <div className="ui two column stackable grid report-detail">
-            {reportList}
-          </div>
-        </div>
-        <div className="eight wide column">
-          <TeamCard data={students} />
+      <TeamCard data={students} />
+      <div className="ui list report-detail">
+        <div className="ui two column stackable grid">
+          {reportList}
         </div>
       </div>
     </div>

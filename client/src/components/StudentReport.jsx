@@ -3,23 +3,17 @@ import PropTypes from 'prop-types';
 
 const StudentReport = (props) => {
   const { student, report } = props;
-  const reportList = (
-    <div>
-      <p>
-        Commits:
-        {' ' + report.numCommits}
-      </p>
-      <p>
-        Changes:
-        {' ' + report.numChanges}
-      </p>
-    </div>
-  );
-
+  const style = parseInt(report.numCommits, 10) === 0 ? { color: '#F44D63' } : {};
   return (
     <div className="column">
-      <h4>{student}</h4>
-      {reportList}
+      <div className="item">
+        <div className="content">
+          <a className="header">{student}</a>
+          <div style={style} className="description">
+            Last week: {report.numCommits} commits, {report.numChanges} code changes.
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
