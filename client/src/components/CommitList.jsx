@@ -24,7 +24,7 @@ const CommitList = (props) => {
     <div id="commit-list">
       <div className="ui relaxed divided list">
         {commitList}
-        <i role="presentation" onClick={handleCommitChange} className="huge github icon" />
+        <i id="github-button" role="presentation" onClick={handleCommitChange} className="huge github icon" />
       </div>
     </div>
   );

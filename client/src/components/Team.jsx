@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import StudentReport from './StudentReport';
+import TeamCard from './TeamCard';
 
 const Team = (props) => {
   const { students, team } = props;
@@ -9,8 +10,17 @@ const Team = (props) => {
 
   return (
     <div>
-      <h1>{team}</h1>
-      {reportList}
+      <h1 className="team-title">{team}</h1>
+      <div className="ui center aligned grid">
+        <div className="eight wide column">
+          <div className="ui two column stackable grid report-detail">
+            {reportList}
+          </div>
+        </div>
+        <div className="eight wide column">
+          <TeamCard data={students} />
+        </div>
+      </div>
     </div>
   );
 };

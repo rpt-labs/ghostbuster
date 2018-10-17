@@ -7,18 +7,18 @@ const StudentReport = (props) => {
     <div>
       <p>
         Commits:
-        {report.numCommits}
+        {' ' + report.numCommits}
       </p>
       <p>
         Changes:
-        {report.numChanges}
+        {' ' + report.numChanges}
       </p>
     </div>
   );
 
   return (
-    <div>
-      <h1>{student}</h1>
+    <div className="column">
+      <h4>{student}</h4>
       {reportList}
     </div>
   );

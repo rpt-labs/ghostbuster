@@ -4,7 +4,7 @@
 
 .top-nav {
   color: white;
-  background-color: #2185d0;
+  background-color: #403F4C;
   padding: 30px;
 }
 
@@ -24,6 +24,15 @@
 #ghostbuster-button {
   margin-top: 30px;
   margin-bottom: 30px;
+  border: 1px solid #F44D63;
+}
+
+.ghostbuster-button-text {
+  color: #403F4C;
+}
+
+#github-button {
+  color: #403F4C;
 }
 
 .repo-title {
@@ -37,6 +46,7 @@
 .repo-item {
   padding-top: 20px;
 }
+
 
 .card-image img {
   height: 56px;
@@ -53,17 +63,34 @@
   padding-bottom: 10px;
 }
 
+.team-title {
+  color: #2185d0;
+  text-align: center;
+  padding: 40px;
+}
+
+.report-detail {
+  border: 1px solid lightgrey;
+}
+
+.team-card {
+  border: 1px solid lightgrey;
+}
+
 #app .ui.complete-button {
-  background-color: #34C954;
+  background-color: #85D19C;
   color: white;
+  /* color: #403F4C; */
 }
 
 #app .ui.progress-button {
-  background-color: #FFD800;
-  color: white;
+  background-color: #FFE65B;
+  color: #403F4C;
+  /* color: white; */
 }
 
 #app .ui.danger-button {
-  background-color: #F22641;
+  background-color: #F44D63;
+  /* color: #403F4C; */
   color: white;
 }

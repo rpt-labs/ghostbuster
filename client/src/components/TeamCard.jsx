@@ -5,7 +5,9 @@ import PropTypes from 'prop-types';
 const TeamCard = (props) => {
   const { data } = props;
   return (
-    <h1>Team Card Here with meta-data</h1>
+    <div className="team-card">
+      <h1>Team Card Here with meta-data</h1>
+    </div>
   );
 };
 

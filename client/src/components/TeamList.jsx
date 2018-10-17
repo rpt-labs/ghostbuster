@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import GhostbusterButton from './GhostbusterButton';
 import Team from './Team';
-import TeamCard from './TeamCard';
 
 const TeamList = (props) => {
   const {
@@ -18,8 +17,9 @@ const TeamList = (props) => {
   const teamList = teams.map(team => <Team key={team} team={team} students={projects[team]} />);
   const segment = showSegment ? (
     <div className={style}>
-      <TeamCard data={projects} />
-      {teamList}
+      <div>
+        {teamList}
+      </div>
     </div>) : (<div />);
 
   return (

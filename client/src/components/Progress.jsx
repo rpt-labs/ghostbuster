@@ -17,7 +17,7 @@ const Progress = (props) => {
 
   // dynamically render progress icon
   if (student.BMR) {
-    icon = (<i style={{ color: '#34C954' }} className="huge check circle outline icon" />);
+    icon = (<i style={{ color: '#85D19C' }} className="huge check circle outline icon" />);
   } else if (student.percentComplete === 0) {
     icon = <img className="ui middle aligned circular image" alt="progress" src="https://png.pngtree.com/element_origin_min_pic/16/12/25/a993726976f4619909704e1177d63658.jpg" />;
   } else {
