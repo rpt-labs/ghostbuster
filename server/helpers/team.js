@@ -133,10 +133,12 @@ module.exports = class Team {
         if (!message.includes("Merge")) {
           let commitData = await this.analyzeCommit(commit);
           let changeTotal = commitData.stats.total;
-          if (commitsByStudent[studentGithub]) {
-            commitsByStudent[studentGithub].push({sha: commit.sha, changes: changeTotal});
-          } else {
-            commitsByStudent[studentGithub] = [{sha: commit.sha, changes: changeTotal}];
+          if (changeTotal < 5000) {
+            if (commitsByStudent[studentGithub]) {
+              commitsByStudent[studentGithub].push({sha: commit.sha, changes: changeTotal});
+            } else {
+              commitsByStudent[studentGithub] = [{sha: commit.sha, changes: changeTotal}];
+            }
           }
         }
       }
