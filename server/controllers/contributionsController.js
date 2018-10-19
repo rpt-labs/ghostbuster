@@ -42,6 +42,17 @@ const analyzeContributions = (sortedContributions) => {
   return sortedContributions;
 }
 
+const getContributionsByCohort = async(teamType, cohort) => {
+  const teams = Object.keys(teamType);
+  const cohortTeams = teams.filter(team => teamType[team]['cohort'] === cohort);
+  let report = {};
+  for (let team of cohortTeams) {
+    let contributions = await getContributorsByTeam(teamType, team);
+    report[team] = contributions;
+  }
+  return report;
+};
+
 const getContributorsAllTeams = async() => {
   let thesisReport = {};
   for (let team in thesisTeams) {
@@ -66,6 +77,12 @@ const getContributorsAllTeams = async() => {
 }
 
 module.exports = async function getLifetimeContributionData(req, res, next) {
-  let report = await getContributorsAllTeams();
+  const { cohort, teamType } = req.params;
+
+  let matchingTeam = teamType === 'thesis'
+    ? thesisTeams
+      : teamType === 'greenfield' ? greenfieldTeams
+        : legacyTeams;
+  let report = await getContributionsByCohort(matchingTeam, cohort);
   res.send(report);
-}
+};

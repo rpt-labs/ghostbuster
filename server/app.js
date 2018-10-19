@@ -18,7 +18,7 @@ app.use(cors());
 app.get('/ghostbuster/sprints/:sprintNames', asyncMiddleware(sprintsController));
 
 //check lifetime contributions for projects
-app.get('/ghostbuster/teams/contributions', asyncMiddleware(contributionsController));
+app.get('/ghostbuster/teams/contributions/:cohort/:teamType', asyncMiddleware(contributionsController));
 
 //check last week's team status for thesis phase
 app.get('/ghostbuster/teams/projects/:cohort', asyncMiddleware(teamsController));
