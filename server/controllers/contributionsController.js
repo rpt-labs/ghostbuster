@@ -6,11 +6,13 @@ const getContributorsByTeam = async (teamType, teamName) => {
   let students = teamType[teamName].students;
   let team = new Team(teamName, orgName, students);
   const repos = await team.getRepos();
-  const repoList = await team.getRepoNames(repos);
-  const allContributions = await team.getAllContributors(repoList);
-  const sorted = sortContributionsByStudent(team, allContributions);
-  const analyzed = analyzeContributions(sorted);
-
+  let analyzed = {};
+  if (repos) {
+    const repoList = await team.getRepoNames(repos);
+    const allContributions = await team.getAllContributors(repoList);
+    const sorted = sortContributionsByStudent(team, allContributions);
+    analyzed = analyzeContributions(sorted);
+  }
   return analyzed;
 }
 
