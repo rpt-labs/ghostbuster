@@ -1,5 +1,6 @@
 const axios = require('axios');
 const AUTH_GITHUB_TOKEN = process.env.AUTH_GITHUB_TOKEN;
+
 //so node won't throw an error and crash when a student doesn't have a fork
 process.on('uncaughtException', function (err) {
   console.log('Caught exception: ', err);
@@ -64,7 +65,13 @@ module.exports = class Student {
 
   commitMessages(commitData) {
     if (commitData) {
-      return commitData.map(commit => commit.commit.message.replace(/['"-]+/g, ''));
+      return commitData.map(commit => {
+        if (!commit.commit.message.includes("Merge")){
+          return commit.commit.message.replace(/['"-]+/g, '');
+        } else {
+          return "Merge commit";
+        }
+      });
     }
   }
 

@@ -19,4 +19,10 @@ node_modules/
 # Mac OS
 .DS_store
 
+# Webpack
+/public
+
+# Fake Data
+fakeData.js
+
 
