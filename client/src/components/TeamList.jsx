@@ -9,12 +9,15 @@ const TeamList = (props) => {
     loading,
     projects,
     showSegment,
+    selectedCohort,
   } = props;
+
   const style = loading
     ? 'ui bottom attached loading tab segment'
     : 'ui bottom attached active tab segment';
-  const teams = Object.keys(projects);
-  const teamList = teams.map(team => <Team key={team} team={team} students={projects[team]} />);
+
+  const teams = Object.keys(projects[selectedCohort]['lifetimeData']);
+  const teamList = teams.map(team => <Team key={team} team={team} lifetimeContributions={projects[selectedCohort]['lifetimeData'][team]} students={projects[selectedCohort]['weekThesisData'][team]} />);
   const segment = showSegment ? (
     <div className={style}>
       <div>

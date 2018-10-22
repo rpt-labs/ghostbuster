@@ -4,6 +4,7 @@ import TabNav from './TabNav';
 import TopNav from './TopNav';
 import Cohort from './Cohort';
 import TeamList from './TeamList';
+import { fakeData, fakeTeamData, fakeContributionData } from '../../../fakeData';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -25,12 +26,39 @@ export default class App extends React.Component {
           name: 'RPT08',
         },
       ],
+      projectData: {
+        'RPT07': {
+          fetched: false,
+          weekThesisData: {
+            'five-of-seven':{},
+            'dynamicDuo': {},
+          },
+          lifetimeData: {
+            'five-of-seven': {},
+            'dynamicDuo': {},
+          },
+        },
+        'RPT08': {
+          fetched: false,
+          weekThesisData: {
+            'Naboo': {},
+            'Tatooine': {},
+            'Kashyyk': {},
+          },
+          lifetimeData: {
+            'Naboo': {},
+            'Tatooine': {},
+            'Kashyyk': {},
+          },
+        },
+      },
       display: 'sprints',
       selectedCohort: 'RPT10',
       loading: false,
       showSegment: false,
       currentCommitData: {},
       currentProjectData: {},
+      thesisData: {},
     };
     this.handleSelectCohort = this.handleSelectCohort.bind(this);
     this.handleSelectDisplay = this.handleSelectDisplay.bind(this);
@@ -65,10 +93,20 @@ export default class App extends React.Component {
   }
 
   checkProjects() {
-    const { selectedCohort } = this.state;
+    const { selectedCohort, projectData } = {...this.state};
     this.setState({ loading: true, showSegment: true }, () => {
+      axios.get(`http://localhost:1234/ghostbuster/teams/contributions/${selectedCohort}/thesis`)
+      .then(response => {
+        projectData[selectedCohort]['lifetimeData'] = response.data;
+        this.setState({ projectData });
+      })
+      .catch(error => console.log(error));
       axios.get(`http://localhost:1234/ghostbuster/teams/projects/${selectedCohort}`)
-        .then(response => this.setState({ currentProjectData: response.data.results, loading: false, showSegment: true }))
+        .then(response => {
+          projectData[selectedCohort]['weekThesisData'] = response.data.results;
+          projectData[selectedCohort].fetched = true;
+          this.setState({ projectData, currentProjectData: response.data.results, loading: false })
+        })
         .catch(error => console.log(error));
     });
   }
@@ -83,6 +121,7 @@ export default class App extends React.Component {
       currentCommitData,
       currentProjectData,
       display,
+      projectData,
     } = this.state;
 
     let cohorts;
@@ -91,7 +130,7 @@ export default class App extends React.Component {
       cohorts = (
         <div className="ui container">
           <TabNav selected={selectedCohort} cohorts={teamCohorts} selectCohort={this.handleSelectCohort} />
-          <TeamList checkProjects={this.checkProjects} loading={loading} showSegment={showSegment} projects={currentProjectData} />
+          <TeamList selectedCohort={selectedCohort} checkProjects={this.checkProjects} loading={loading} showSegment={showSegment} projects={projectData} />
         </div>);
     } else {
       cohorts = (
