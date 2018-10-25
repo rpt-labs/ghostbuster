@@ -24,7 +24,10 @@ const sortContributionsByStudent = (team, contributionData) => {
       if (contributions[student.firstName]) {
         contributions[student.firstName].numContributions += contribution.contributions;
       } else {
-        contributions[student.firstName] = {github:contribution.login, numContributions: contribution.contributions};
+        contributions[student.firstName] = {
+          github:contribution.login,
+          numContributions: contribution.contributions
+        };
       }
     }
   }

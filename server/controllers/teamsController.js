@@ -7,7 +7,9 @@ const countTotalCommitsAndChanges = (sortedCommits) => {
   let totalChanges = 0;
   for (let student in sortedCommits) {
     totalCommits += sortedCommits[student].length;
-    totalChanges += sortedCommits[student].map(commit => commit.changes).reduce((a, b) => a + b);
+    totalChanges += sortedCommits[student]
+      .map(commit => commit.changes)
+      .reduce((a, b) => a + b);
   }
   return { totalCommits, totalChanges };
 };
@@ -25,19 +27,32 @@ const analyzeCommits = (sortedCommits, students) => {
 
   for (let student in sortedCommits) {
     let currentStudent = students.filter(x => x.github === student)[0];
+    let github = currentStudent.github;
     let numCommits = sortedCommits[student].length;
     let numChanges = countStudentChanges(sortedCommits[student]);
     let commitPercentage = Math.floor((numCommits / totalCommits)*100);
     let changesPercentage = Math.floor((numChanges / totalChanges)*100);
 
-    studentData[currentStudent.firstName] = { numCommits, numChanges, commitPercentage, changesPercentage };
+    studentData[currentStudent.firstName] = {
+      github,
+      numCommits,
+      numChanges,
+      commitPercentage,
+      changesPercentage
+    };
   }
   //check for students who made no commits in the last week
   if (allHandles.length !== commitHandles.length) {
     let missingHandle = allHandles.filter(handle => commitHandles.includes(handle) === false);
     let missingStudents = students.filter(student => missingHandle.includes(student.github));
     missingStudents.forEach(student => {
-      studentData[student.firstName] = { numCommits: 0, numChanges: 0, commitPercentage: 0, changesPercentage: 0};
+      studentData[student.firstName] = {
+        github: student.github,
+        numCommits: 0,
+        numChanges: 0,
+        commitPercentage: 0,
+        changesPercentage: 0
+      };
     });
   }
 

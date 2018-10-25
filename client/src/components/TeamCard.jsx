@@ -6,8 +6,9 @@ import TeamBarChart from './TeamBarChart';
 // purpose: show meta-data for the team
 const TeamCard = (props) => {
   const { data, lifetimeContributions } = props;
-  console.log("IN TEAM CARD, data: ", data, "lifetimeContributions: ", lifetimeContributions);
-  const lifetimeChart = lifetimeContributions ? <TeamBarChart contributions={lifetimeContributions} /> : <div />
+  const lifetimeChart = lifetimeContributions
+    ? <TeamBarChart contributions={lifetimeContributions} />
+    : <div />;
   return (
     <div className="ui center aligned grid team-card">
       <div className="row">
@@ -27,6 +28,7 @@ const TeamCard = (props) => {
 
 TeamCard.propTypes = {
   data: PropTypes.instanceOf(Object).isRequired,
+  lifetimeContributions: PropTypes.instanceOf(Object).isRequired,
 };
 
 export default TeamCard;

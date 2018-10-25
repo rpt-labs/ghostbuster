@@ -16,7 +16,14 @@ const checkStudentFork = async(student, repoName) => {
   let commitMessages = student.commitMessages(commits);
   let BMR = student.passBMR(commitMessages);
   let percentComplete = student.percentComplete(allSprints[repoName], commitMessages);
-  let summary = {name: student.fullName, BMR, percentComplete, commitMessages, github: student.github, cohort: student.cohort };
+  let summary = {
+    name: student.fullName,
+    BMR,
+    percentComplete,
+    commitMessages,
+    github: student.github,
+    cohort: student.cohort
+  };
   return summary;
 }
 

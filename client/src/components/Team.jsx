@@ -5,7 +5,6 @@ import TeamCard from './TeamCard';
 
 const Team = (props) => {
   const { students, team, lifetimeContributions } = props;
-  console.log("IN TEAM, students: ", students, "TEAM, ", team, "LIFETZIME: ", lifetimeContributions);
   const names = Object.keys(students);
   const reportList = names.map(name => <StudentReport key={name} student={name} report={students[name]} />);
 
@@ -23,6 +22,7 @@ const Team = (props) => {
 };
 
 Team.propTypes = {
+  lifetimeContributions: PropTypes.instanceOf(Object).isRequired,
   students: PropTypes.instanceOf(Object).isRequired,
   team: PropTypes.string.isRequired,
 };

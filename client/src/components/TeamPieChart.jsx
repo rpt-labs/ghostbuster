@@ -16,7 +16,17 @@ const TeamPieChart = (props) => {
   ];
   const colors = possibleColors.slice(0, studentNames.length);
   const typeData = type === 'commits' ? commits : changes;
-  const title = type === 'commits' ? (<h2>Last Week's Commits </h2>) : (<h2>Last Week's Changes</h2>);
+  const title = type === 'commits'
+    ? (
+      <h2>
+        { "Last Week's Commits" }
+      </h2>
+    )
+    : (
+      <h2>
+        { "Last Week's Changes" }
+      </h2>
+    );
 
   const data = {
     labels: studentNames,

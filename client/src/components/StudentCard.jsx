@@ -30,7 +30,12 @@ class StudentCard extends React.Component {
               <Progress student={student} />
             </div>
             <div className="ten wide column">
-              <CommitList handleCommitChange={this.handleShowCommitsChange} show={showCommits} url={githubUrl} commits={student.commitMessages} />
+              <CommitList
+                handleCommitChange={this.handleShowCommitsChange}
+                show={showCommits}
+                url={githubUrl}
+                commits={student.commitMessages}
+              />
             </div>
           </div>
         </div>

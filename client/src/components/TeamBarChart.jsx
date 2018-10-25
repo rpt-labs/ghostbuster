@@ -16,19 +16,19 @@ const TeamBarChart = (props) => {
         borderWidth: 1,
         hoverBackgroundColor: 'rgba(133, 209, 156,0.8)',
         hoverBorderColor: 'rgba(133, 209, 156,1)',
-        data: commits
-      }
-    ]
+        data: commits,
+      },
+    ],
   };
   const options = {
     scales: {
       yAxes: [{
         ticks: {
           beginAtZero: true,
-          min: 0
-        }
-      }]
-    }
+          min: 0,
+        },
+      }],
+    },
   };
 
   if (students.length) {
@@ -39,14 +39,13 @@ const TeamBarChart = (props) => {
         width={50}
         height={25}
       />
-    )
-  } else {
-    return (<div />);
+    );
   }
+  return (<div />);
 };
 
 TeamBarChart.propTypes = {
   contributions: PropTypes.instanceOf(Object).isRequired,
-}
+};
 
 export default TeamBarChart;

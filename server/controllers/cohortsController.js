@@ -4,15 +4,15 @@ const cohortNames = Object.keys(cohorts);
 exports.getCohorts = (req, res) => {
   const sprintCohorts = cohortNames
     .filter(cohort => cohorts[cohort].phase === 'sprint')
-    .map(cohort => {
+    .map((cohort) => {
       return {name: cohort.toUpperCase()}
     });
-  const projectCohorts = cohortNames
+  const teamCohorts = cohortNames
     .filter(cohort => cohorts[cohort].phase === 'project')
-    .map(cohort => {
+    .map((cohort) => {
       return {name: cohort.toUpperCase()}
     });
-  res.send({ sprintCohorts, projectCohorts });
+  res.send({ sprintCohorts, teamCohorts });
 };
 
 exports.createCohort = (req, res) => {

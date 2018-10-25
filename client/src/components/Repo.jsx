@@ -4,7 +4,13 @@ import StudentCard from './StudentCard';
 
 const Repo = (props) => {
   const { name, students } = props;
-  const studentList = students.map(student => (<StudentCard key={student.name} repoName={name} student={student} />));
+  const studentList = students.map(student => (
+    <StudentCard
+      key={student.name}
+      repoName={name}
+      student={student}
+    />
+  ));
 
   return (
     <div className="repo-item">
