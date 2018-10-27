@@ -3,6 +3,7 @@ config/cohorts.js
 config/config.js
 config/sprints.js
 config/teams.js
+config/students.js
 
 ## new file structure config
 server/config/cohorts.js

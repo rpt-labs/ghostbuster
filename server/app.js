@@ -1,9 +1,11 @@
 const express = require('express');
-const app = express();
+const graphqlHTTP = require('express-graphql');
 const cors = require('cors');
+const app = express();
 const asyncMiddleware = require('./helpers/asyncMiddleware');
 const port = process.env.PORT || 1234;
 const path = require('path');
+const schema = require('./schema/schema');
 
 //controllers
 const sprintsController = require('./controllers/sprintsController');
@@ -13,7 +15,15 @@ const cohortsController = require('./controllers/cohortsController');
 
 //static files
 app.use('/', express.static(path.join(__dirname, '../public')));
+
+//cors
 app.use(cors());
+
+//graphql
+app.use('/graphql', graphqlHTTP({
+  schema,
+  graphiql: true
+}));
 
 //cohort information
 app.route('/ghostbuster/cohorts')
