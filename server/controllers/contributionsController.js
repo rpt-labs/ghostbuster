@@ -88,6 +88,6 @@ module.exports = async function getLifetimeContributionData(req, res, next) {
     ? thesisTeams
       : teamType === 'greenfield' ? greenfieldTeams
         : legacyTeams;
-  let report = await getContributionsByCohort(matchingTeam, cohort);
+  let report = await getContributionsByCohort(matchingTeam, cohort.toUpperCase());
   res.send(report);
 };
