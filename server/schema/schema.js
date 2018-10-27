@@ -6,7 +6,8 @@ const {
   GraphQLList,
 } = require('graphql');
 const _ = require('lodash');
-const { allCohorts, students } = require('../config/cohorts');
+const { allCohorts } = require('../config/cohorts');
+const { students } = require('../config/students');
 const { allTeams, teamStudents } = require('../config/teams');
 
 const CohortType = new GraphQLObjectType({
@@ -19,6 +20,12 @@ const CohortType = new GraphQLObjectType({
       type: new GraphQLList(StudentType),
       resolve(parent, args) {
         return _.filter(students, { cohortId: parent.id });
+      }
+    },
+    teams: {
+      type: new GraphQLList(TeamType),
+      resolve(parent, args) {
+        return _.filter(allTeams, { cohortId: parent.id });
       }
     }
   }),
