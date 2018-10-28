@@ -3,23 +3,23 @@ import PropTypes from 'prop-types';
 
 const StudentReport = (props) => {
   const { student, report } = props;
-  const reportList = (
-    <div>
-      <p>
-        Commits:
-        {' ' + report.numCommits}
-      </p>
-      <p>
-        Changes:
-        {' ' + report.numChanges}
-      </p>
-    </div>
-  );
+  const style = parseInt(report.numCommits, 10) === 0
+    ? { color: '#F44D63' }
+    : {};
+  const message = `Last week: ${report.numCommits} commits, ${report.numChanges} code changes.`;
 
   return (
     <div className="column">
-      <h4>{student}</h4>
-      {reportList}
+      <div className="item">
+        <div className="content">
+          <a href={`https://www.github.com/${report.github}`} className="header">{student}</a>
+          <div style={style} className="description">
+            <span>
+              <p>{message}</p>
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

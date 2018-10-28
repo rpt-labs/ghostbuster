@@ -5,32 +5,22 @@ import TopNav from './TopNav';
 import Cohort from './Cohort';
 import TeamList from './TeamList';
 
+/*
+  eslint no-underscore-dangle: ["error", { "allowAfterThis": true }]
+*/
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sprintCohorts: [
-        {
-          name: 'RPT10',
-        },
-        {
-          name: 'RPT11',
-        },
-      ],
-      teamCohorts: [
-        {
-          name: 'RPT07',
-        },
-        {
-          name: 'RPT08',
-        },
-      ],
-      display: 'sprints',
-      selectedCohort: 'RPT10',
+      sprintCohorts: [],
+      teamCohorts: [],
+      display: '',
+      selectedCohort: '',
       loading: false,
-      showSegment: false,
+      showSegment: true,
       currentCommitData: {},
-      currentProjectData: {},
+      projectData: {},
     };
     this.handleSelectCohort = this.handleSelectCohort.bind(this);
     this.handleSelectDisplay = this.handleSelectDisplay.bind(this);
@@ -39,8 +29,40 @@ export default class App extends React.Component {
     this.checkProjects = this.checkProjects.bind(this);
   }
 
+  componentDidMount() {
+    this._isMounted = true;
+    this.getCohorts();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+  getCohorts() {
+    axios.get('http://localhost:1234/ghostbuster/cohorts')
+      .then((response) => {
+        const { sprintCohorts, teamCohorts } = response.data;
+        const projectData = {};
+        teamCohorts.forEach((cohort) => {
+          projectData[cohort.name] = {};
+          projectData[cohort.name].fetched = false;
+        });
+        if (this._isMounted) {
+          this.setState({
+            sprintCohorts,
+            teamCohorts,
+            selectedCohort: sprintCohorts[0].name,
+            projectData,
+          });
+        }
+      });
+  }
+
   handleSelectDisplay(type) {
-    const selectedCohort = type === 'sprints' ? 'RPT10' : 'RPT07';
+    const { sprintCohorts, teamCohorts } = { ...this.state };
+    const selectedCohort = type === 'sprints'
+      ? sprintCohorts[0].name
+      : teamCohorts[0].name;
     this.setState({ display: type, selectedCohort });
   }
 
@@ -55,20 +77,33 @@ export default class App extends React.Component {
   }
 
   checkSprints() {
-    const { repos, selectedCohort } = this.state;
+    const { repos, selectedCohort } = { ...this.state };
     const repoString = repos.join('+');
     this.setState({ loading: true, showSegment: true }, () => {
       axios.get(`http://localhost:1234/ghostbuster/sprints/${repoString}?cohort=${selectedCohort}`)
-        .then(response => this.setState({ currentCommitData: response.data, loading: false, showSegment: true }))
+        .then(response => this.setState({
+          currentCommitData: response.data,
+          loading: false,
+          showSegment: true,
+        }))
         .catch(error => console.log(error));
     });
   }
 
   checkProjects() {
-    const { selectedCohort } = this.state;
+    const { selectedCohort, projectData } = { ...this.state };
     this.setState({ loading: true, showSegment: true }, () => {
+      axios.get(`http://localhost:1234/ghostbuster/teams/contributions/${selectedCohort}/thesis`)
+        .then((response) => {
+          projectData[selectedCohort].lifetimeData = response.data;
+        })
+        .catch(error => console.log(error));
       axios.get(`http://localhost:1234/ghostbuster/teams/projects/${selectedCohort}`)
-        .then(response => this.setState({ currentProjectData: response.data.results, loading: false, showSegment: true }))
+        .then((response) => {
+          projectData[selectedCohort].weekThesisData = response.data.results;
+          projectData[selectedCohort].fetched = true;
+          this.setState({ projectData, loading: false });
+        })
         .catch(error => console.log(error));
     });
   }
@@ -81,7 +116,7 @@ export default class App extends React.Component {
       loading,
       showSegment,
       currentCommitData,
-      currentProjectData,
+      projectData,
       display,
     } = this.state;
 
@@ -90,14 +125,34 @@ export default class App extends React.Component {
     if (display === 'projects') {
       cohorts = (
         <div className="ui container">
-          <TabNav selected={selectedCohort} cohorts={teamCohorts} selectCohort={this.handleSelectCohort} />
-          <TeamList checkProjects={this.checkProjects} loading={loading} showSegment={showSegment} projects={currentProjectData} />
-        </div>);
+          <TabNav
+            selected={selectedCohort}
+            cohorts={teamCohorts}
+            selectCohort={this.handleSelectCohort}
+          />
+          <TeamList
+            selectedCohort={selectedCohort}
+            checkProjects={this.checkProjects}
+            loading={loading}
+            showSegment={showSegment}
+            projects={projectData}
+          />
+        </div>
+      );
     } else {
       cohorts = (
         <div className="ui container">
-          <TabNav selected={selectedCohort} cohorts={sprintCohorts} selectCohort={this.handleSelectCohort} />
-          <Cohort repoSelect={this.handleRepoSelect} loading={loading} showSegment={showSegment} commits={currentCommitData} />
+          <TabNav
+            selected={selectedCohort}
+            cohorts={sprintCohorts}
+            selectCohort={this.handleSelectCohort}
+          />
+          <Cohort
+            repoSelect={this.handleRepoSelect}
+            loading={loading}
+            showSegment={showSegment}
+            commits={currentCommitData}
+          />
         </div>
       );
     }

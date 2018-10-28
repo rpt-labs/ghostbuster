@@ -5,15 +5,25 @@ const { allSprints } = require('../config/sprints');
 const checkStudentFork = async(student, repoName) => {
   let commits = await student.checkFork(repoName);
   let branches = await student.getBranches(repoName);
-  let notMaster = branches.slice(1);
-  for (let branch of notMaster) {
-    let newCommits = await student.checkBranch(repoName, branch.name);
-    commits = commits.concat(newCommits);
+  if (branches) {
+    let notMaster = branches.slice(1);
+    for (let branch of notMaster) {
+      let newCommits = await student.checkBranch(repoName, branch.name);
+      commits = commits.concat(newCommits);
+   }
   }
+
   let commitMessages = student.commitMessages(commits);
   let BMR = student.passBMR(commitMessages);
   let percentComplete = student.percentComplete(allSprints[repoName], commitMessages);
-  let summary = {name: student.fullName, BMR, percentComplete, commitMessages, github: student.github, cohort: student.cohort };
+  let summary = {
+    name: student.fullName,
+    BMR,
+    percentComplete,
+    commitMessages,
+    github: student.github,
+    cohort: student.cohort
+  };
   return summary;
 }
 

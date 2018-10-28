@@ -9,12 +9,35 @@ const TeamList = (props) => {
     loading,
     projects,
     showSegment,
+    selectedCohort,
   } = props;
+
   const style = loading
     ? 'ui bottom attached loading tab segment'
     : 'ui bottom attached active tab segment';
-  const teams = Object.keys(projects);
-  const teamList = teams.map(team => <Team key={team} team={team} students={projects[team]} />);
+
+  let teams;
+  let teamList;
+
+  if (projects[selectedCohort].fetched) {
+    teams = Object.keys(projects[selectedCohort].lifetimeData);
+    teamList = teams.map((team) => {
+      const lifetimeData = projects[selectedCohort].lifetimeData[team];
+      const students = projects[selectedCohort].weekThesisData[team];
+
+      return (
+        <Team
+          key={team}
+          team={team}
+          lifetimeContributions={lifetimeData}
+          students={students}
+        />
+      );
+    });
+  } else {
+    teamList = <div />;
+  }
+
   const segment = showSegment ? (
     <div className={style}>
       <div>
@@ -35,6 +58,7 @@ TeamList.propTypes = {
   loading: PropTypes.bool.isRequired,
   showSegment: PropTypes.bool.isRequired,
   projects: PropTypes.instanceOf(Object).isRequired,
+  selectedCohort: PropTypes.string.isRequired,
 };
 
 export default TeamList;

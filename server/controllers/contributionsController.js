@@ -6,11 +6,13 @@ const getContributorsByTeam = async (teamType, teamName) => {
   let students = teamType[teamName].students;
   let team = new Team(teamName, orgName, students);
   const repos = await team.getRepos();
-  const repoList = await team.getRepoNames(repos);
-  const allContributions = await team.getAllContributors(repoList);
-  const sorted = sortContributionsByStudent(team, allContributions);
-  const analyzed = analyzeContributions(sorted);
-
+  let analyzed = {};
+  if (repos) {
+    const repoList = await team.getRepoNames(repos);
+    const allContributions = await team.getAllContributors(repoList);
+    const sorted = sortContributionsByStudent(team, allContributions);
+    analyzed = analyzeContributions(sorted);
+  }
   return analyzed;
 }
 
@@ -22,7 +24,10 @@ const sortContributionsByStudent = (team, contributionData) => {
       if (contributions[student.firstName]) {
         contributions[student.firstName].numContributions += contribution.contributions;
       } else {
-        contributions[student.firstName] = {github:contribution.login, numContributions: contribution.contributions};
+        contributions[student.firstName] = {
+          github:contribution.login,
+          numContributions: contribution.contributions
+        };
       }
     }
   }
@@ -41,6 +46,17 @@ const analyzeContributions = (sortedContributions) => {
 
   return sortedContributions;
 }
+
+const getContributionsByCohort = async(teamType, cohort) => {
+  const teams = Object.keys(teamType);
+  const cohortTeams = teams.filter(team => teamType[team]['cohort'] === cohort);
+  let report = {};
+  for (let team of cohortTeams) {
+    let contributions = await getContributorsByTeam(teamType, team);
+    report[team] = contributions;
+  }
+  return report;
+};
 
 const getContributorsAllTeams = async() => {
   let thesisReport = {};
@@ -66,6 +82,12 @@ const getContributorsAllTeams = async() => {
 }
 
 module.exports = async function getLifetimeContributionData(req, res, next) {
-  let report = await getContributorsAllTeams();
+  const { cohort, teamType } = req.params;
+
+  let matchingTeam = teamType === 'thesis'
+    ? thesisTeams
+      : teamType === 'greenfield' ? greenfieldTeams
+        : legacyTeams;
+  let report = await getContributionsByCohort(matchingTeam, cohort);
   res.send(report);
-}
+};
