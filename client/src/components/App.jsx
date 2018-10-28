@@ -1,9 +1,14 @@
 import React from 'react';
 import axios from 'axios';
+
+//components
 import TabNav from './TabNav';
 import TopNav from './TopNav';
 import Cohort from './Cohort';
 import TeamList from './TeamList';
+
+//queries
+import { getAllCohorts } from '../queries/queries';
 
 /*
   eslint no-underscore-dangle: ["error", { "allowAfterThis": true }]
@@ -40,11 +45,7 @@ export default class App extends React.Component {
   }
 
   getCohorts() {
-    axios.get('/graphql', {
-      params: {
-        query: '{cohorts{name phase}}'
-      }
-    }).then((result) => {
+    getAllCohorts().then((result) => {
       const allCohorts = result.data.data.cohorts;
       const sprintCohorts = allCohorts.filter(cohort => cohort.phase === 'sprint');
       const teamCohorts = allCohorts.filter(cohort => cohort.phase === 'project');
