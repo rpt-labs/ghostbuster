@@ -1,43 +1,81 @@
-const cohorts = require('../config/cohorts');
-const cohortNames = Object.keys(cohorts);
+//db
+const students = require('../../db/models/students');
+const cohorts = require('../../db/models/cohorts');
 
-exports.getCohorts = (req, res) => {
-  const sprintCohorts = cohortNames
-    .filter(cohort => cohorts[cohort].phase === 'sprint')
-    .map((cohort) => {
-      return {name: cohort.toUpperCase()}
-    });
-  const teamCohorts = cohortNames
-    .filter(cohort => cohorts[cohort].phase === 'project')
-    .map((cohort) => {
-      return {name: cohort.toUpperCase()}
-    });
+//COHORT requests TODO: error handling for all functions, delete functionality
+exports.getCohorts = async(req, res) => {
+  const allCohorts = await cohorts.getAllCohorts();
+  const sprintCohorts = allCohorts.filter(cohort => cohort.phase === 'sprint');
+  const teamCohorts = allCohorts.filter(cohort => cohort.phase === 'project');
   res.send({ sprintCohorts, teamCohorts });
 };
 
-exports.createCohort = (req, res) => {
-  res.send("add functionality to create a cohort");
+exports.createCohort = async(req, res) => {
+  let { cohort_name, phase } = req.query;
+  //needs to be lower case for repo-matching
+  cohort_name = cohort_name.toLowerCase();
+  const newCohort = await cohorts.addCohort({ cohort_name, phase });
+
+  if (newCohort.name === 'error') {
+    res.status(400).json({error: newCohort.detail});
+  } else {
+    res.status(200).json({cohort: newCohort});
+  }
 };
 
-exports.updateCohort = (req, res) => {
-  res.send("add functionality to update a cohort");
+exports.updateCohort = async(req, res) => {
+  const { cohort_id, cohort_name, phase } = req.query;
+  const updated = await cohorts.updateCohort(cohort_id, { cohort_name, phase });
+  if (updated.name === 'error') {
+    res.status(400).json({error: updated.detail});
+  } else {
+    res.status(200).json({cohort: updated});
+  }
 };
 
 exports.deleteCohort = (req, res) => {
   res.send("add functionality to delete a cohort");
 };
 
-exports.getStudents = (req, res) => {
-  const { cohort } = req.query;
-  res.send(cohorts[cohort]['students']);
+//STUDENT requests
+exports.getStudents = async(req, res) => {
+  const { cohort_id } = req.query;
+  let studentData= cohort_id
+    ? await students.getStudentsByCohort(cohort_id)
+    : await students.getAllStudents();
+
+  if (studentData.length) {
+    res.status(200).json({students: studentData});
+  } else {
+    res.status(400).json({error: "error retrieving students.  check that cohort_id is a valid cohort id"});
+  }
 };
 
-exports.createStudent = (req, res) => {
-  res.send("add functionality to create a student");
+exports.createStudent = async(req, res) => {
+  const { first_name, last_name, github, cohort_id } = req.query;
+  let student = await students.addStudent({ first_name, last_name, github, cohort_id});
+
+  if (student.name==="error") {
+    res.status(400).json({error: student.detail});
+  } else {
+    res.status(200).json({student});
+  }
 };
 
-exports.updateStudent = (req, res) => {
-  res.send("add functionality to update a student");
+exports.updateStudent = async(req, res) => {
+  const { id, first_name, last_name, github, cohort_id } = req.query;
+  let updated = await students.updateStudent(id, {
+    first_name,
+    last_name,
+    github,
+    cohort_id
+  });
+
+  if (updated.name === 'error') {
+    res.status(200).json({error: "error updating student"});
+  } else {
+    res.status(200).json({student: updated});
+  }
 };
 
 exports.deleteStudent = (req, res) => {

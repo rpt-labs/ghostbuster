@@ -51,8 +51,8 @@ export default class App extends React.Component {
       const teamCohorts = allCohorts.filter(cohort => cohort.phase === 'project');
       const projectData = {};
       teamCohorts.forEach((cohort) => {
-        projectData[cohort.name] = {};
-        projectData[cohort.name].fetched = false;
+        projectData[cohort.cohort_name] = {};
+        projectData[cohort.cohort_name].fetched = false;
       });
 
       if (this._isMounted) {
@@ -60,7 +60,7 @@ export default class App extends React.Component {
           sprintCohorts,
           teamCohorts,
           allCohorts,
-          selectedCohort: sprintCohorts[0].name,
+          selectedCohort: sprintCohorts[0].cohort_name,
           projectData,
         });
       }
@@ -70,8 +70,8 @@ export default class App extends React.Component {
   handleSelectDisplay(type) {
     const { sprintCohorts, teamCohorts } = { ...this.state };
     const selectedCohort = type === 'sprints'
-      ? sprintCohorts[0].name
-      : teamCohorts[0].name;
+      ? sprintCohorts[0].cohort_name
+      : teamCohorts[0].cohort_name;
     this.setState({ display: type, selectedCohort });
   }
 
@@ -102,7 +102,7 @@ export default class App extends React.Component {
   checkProjects() {
     const { selectedCohort, projectData } = { ...this.state };
     this.setState({ loading: true, showSegment: true }, () => {
-      axios.get(`http://localhost:1234/ghostbuster/teams/contributions/${selectedCohort}/thesis`)
+      axios.get(`http://localhost:1234/ghostbuster/teams/projects/${selectedCohort}/thesis/lifetime`)
         .then((response) => {
           projectData[selectedCohort].lifetimeData = response.data;
         })

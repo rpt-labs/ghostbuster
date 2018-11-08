@@ -1,90 +1,92 @@
-const { thesisTeams } = require('../config/teams');
-const Team = require('../helpers/team');
-const daysAgo = 7;
+//github project checking utils
+const ghostBustWeek = require('../helpers/teamGhostbusterWeek');
+const ghostBustLifetime = require('../helpers/teamGhostbusterLifetime');
 
-const countTotalCommitsAndChanges = (sortedCommits) => {
-  let totalCommits = 0;
-  let totalChanges = 0;
-  for (let student in sortedCommits) {
-    totalCommits += sortedCommits[student].length;
-    totalChanges += sortedCommits[student]
-      .map(commit => commit.changes)
-      .reduce((a, b) => a + b);
+//db
+const teams = require('../../db/models/teams');
+
+//TEAMS requests TODO: delete functionality
+exports.getTeams = async(req, res) => {
+  const { cohort_id } = req.query;
+  let studentData = cohort_id
+    ? await teams.getTeamsByCohort(cohort_id)
+    : await teams.getAllTeams();
+
+  if (studentData.length) {
+    res.status(200).json({students: studentData});
+  } else {
+    res.status(400).json({error: "error retrieving students.  check that cohort_id is a valid cohort id"});
   }
-  return { totalCommits, totalChanges };
 };
 
-const countStudentChanges = (studentCommits) => {
-  return studentCommits.reduce((a, b) => { return a += b.changes; }, 0);
-};
+exports.createTeam = async(req, res) => {
+  const { team_name, team_type, github, cohort_id } = req.query;
+  let team = await teams.addTeam({ team_name, team_type, github}, cohort_id);
 
-//calculate number of commits/code changes and percentage of commits/code changes by team member
-const analyzeCommits = (sortedCommits, students) => {
-  let { totalChanges, totalCommits } = countTotalCommitsAndChanges(sortedCommits);
-  let allHandles = students.map(student => student.github);
-  let commitHandles = Object.keys(sortedCommits);
-  let studentData = {};
-
-  for (let student in sortedCommits) {
-    let currentStudent = students.filter(x => x.github === student)[0];
-    let github = currentStudent.github;
-    let numCommits = sortedCommits[student].length;
-    let numChanges = countStudentChanges(sortedCommits[student]);
-    let commitPercentage = Math.floor((numCommits / totalCommits)*100);
-    let changesPercentage = Math.floor((numChanges / totalChanges)*100);
-
-    studentData[currentStudent.firstName] = {
-      github,
-      numCommits,
-      numChanges,
-      commitPercentage,
-      changesPercentage
-    };
+  if (team.name==="error") {
+    res.status(400).json({error: team.detail || team});
+  } else {
+    res.status(200).json({team});
   }
-  //check for students who made no commits in the last week
-  if (allHandles.length !== commitHandles.length) {
-    let missingHandle = allHandles.filter(handle => commitHandles.includes(handle) === false);
-    let missingStudents = students.filter(student => missingHandle.includes(student.github));
-    missingStudents.forEach(student => {
-      studentData[student.firstName] = {
-        github: student.github,
-        numCommits: 0,
-        numChanges: 0,
-        commitPercentage: 0,
-        changesPercentage: 0
-      };
-    });
+};
+
+exports.updateTeam = async(req, res) => {
+  const { teamId, team_name, team_type, github, cohort_id } = req.query;
+  let updated = await teams.updateTeam(teamId, {
+    team_name,
+    team_type,
+    github,
+    cohort_id
+  });
+
+  if (updated.name === 'error') {
+    res.status(200).json({error: "error updating student"});
+  } else {
+    res.status(200).json({student: updated});
   }
-
-  return studentData;
 };
 
-const ghostBustByTeam = async (teamType, teamName) => {
-  let orgName = teamType[teamName].github;
-  let students = teamType[teamName].students;
-  let team = new Team(teamName, orgName, students);
-  const allCommits = await team.getAllCommits(daysAgo);
-  let sorted = await team.sortCommitsByStudent(allCommits, team.students);
-  let analyzed = analyzeCommits(sorted, students);
-  return analyzed;
+exports.deleteTeam = (req, res) => {
+  res.send("add functionality to delete a team");
 };
 
-const ghostBustAllTeams = async(cohort) => {
-  let thesisReport = {};
-  for (let team in thesisTeams) {
-    if (thesisTeams[team]['cohort'] === cohort.toUpperCase() ) {
-      let report = await ghostBustByTeam(thesisTeams, team);
-      thesisReport[team] = report;
-    }
+//TEAM_STUDENT requests TODO: error handling for all functions
+exports.addStudentsToTeam = async(req, res) => {
+  const { teamId, studentId } = req.params;
+  let added = await teams.addStudentToTeam(studentId, teamId);
+  res.json({message: added});
+};
+
+exports.removeStudentFromTeam = async(req, res) => {
+  const { teamId, studentId } = req.params;
+  let removed = await teams.removeStudentFromTeam(studentId, teamId);
+  res.json({message: removed});
+};
+
+exports.getTeamStudents = async(req, res) => {
+  const { teamId } = req.params;
+  const students = await teams.getStudentsByTeamId(teamId);
+
+  if (students.name === 'error') {
+    res.status(400).json({error: students.detail || students});
+  } else {
+    res.status(200).json({ students });
   }
-
-  return {
-    results: thesisReport
-  };
 };
 
-module.exports = async function getTeamGithubData(req, res, next) {
+//check last week's project phase
+
+//TODO: create redis store.  first check redis store to see if that week's data is there
+//only call ghostBust function if it's not in redis, it takes ~40 seconds to run!
+exports.getTeamGithubData = async(req, res, next) => {
   let { cohort } = req.params;
-  let report = await ghostBustAllTeams(cohort);
+  let report = await ghostBustWeek(cohort);
   res.send(report);
 }
+
+//check lifetime contribution by cohort.
+exports.getLifetimeContributionData = async(req, res, next) => {
+  const { cohort, teamType } = req.params;
+  let report = await ghostBustLifetime(teamType, cohort);
+  res.send(report);
+};
