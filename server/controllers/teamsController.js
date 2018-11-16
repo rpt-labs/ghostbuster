@@ -66,18 +66,18 @@ const ghostBustByTeam = async (teamType, teamName) => {
   const allCommits = await team.getAllCommits(daysAgo);
   let sorted = await team.sortCommitsByStudent(allCommits, team.students);
   let analyzed = analyzeCommits(sorted, students);
-
   return analyzed;
 };
 
 const ghostBustAllTeams = async(cohort) => {
   let thesisReport = {};
   for (let team in thesisTeams) {
-    if (thesisTeams[team]['cohort'] === cohort ) {
+    if (thesisTeams[team]['cohort'] === cohort.toUpperCase() ) {
       let report = await ghostBustByTeam(thesisTeams, team);
       thesisReport[team] = report;
     }
   }
+
   return {
     results: thesisReport
   };

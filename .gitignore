@@ -3,12 +3,14 @@ config/cohorts.js
 config/config.js
 config/sprints.js
 config/teams.js
+config/students.js
 
 ## new file structure config
 server/config/cohorts.js
 server/config/config.js
 server/config/sprints.js
 server/config/teams.js
+server/config/students.js
 
 ##environment variables
 .env

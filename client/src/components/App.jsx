@@ -1,9 +1,14 @@
 import React from 'react';
 import axios from 'axios';
+
+//components
 import TabNav from './TabNav';
 import TopNav from './TopNav';
 import Cohort from './Cohort';
 import TeamList from './TeamList';
+
+//queries
+import { getAllCohorts } from '../queries/queries';
 
 /*
   eslint no-underscore-dangle: ["error", { "allowAfterThis": true }]
@@ -13,6 +18,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      allCohorts: [],
       sprintCohorts: [],
       teamCohorts: [],
       display: '',
@@ -39,23 +45,26 @@ export default class App extends React.Component {
   }
 
   getCohorts() {
-    axios.get('http://localhost:1234/ghostbuster/cohorts')
-      .then((response) => {
-        const { sprintCohorts, teamCohorts } = response.data;
-        const projectData = {};
-        teamCohorts.forEach((cohort) => {
-          projectData[cohort.name] = {};
-          projectData[cohort.name].fetched = false;
-        });
-        if (this._isMounted) {
-          this.setState({
-            sprintCohorts,
-            teamCohorts,
-            selectedCohort: sprintCohorts[0].name,
-            projectData,
-          });
-        }
+    getAllCohorts().then((result) => {
+      const allCohorts = result.data.data.cohorts;
+      const sprintCohorts = allCohorts.filter(cohort => cohort.phase === 'sprint');
+      const teamCohorts = allCohorts.filter(cohort => cohort.phase === 'project');
+      const projectData = {};
+      teamCohorts.forEach((cohort) => {
+        projectData[cohort.name] = {};
+        projectData[cohort.name].fetched = false;
       });
+
+      if (this._isMounted) {
+        this.setState({
+          sprintCohorts,
+          teamCohorts,
+          allCohorts,
+          selectedCohort: sprintCohorts[0].name,
+          projectData,
+        });
+      }
+    }).catch(error => console.log(error));
   }
 
   handleSelectDisplay(type) {

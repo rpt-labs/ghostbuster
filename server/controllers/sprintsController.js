@@ -1,5 +1,5 @@
 const Student = require('../helpers/student');
-const Cohorts = require('../config/cohorts');
+const { allCohorts } = require('../config/cohorts');
 const { allSprints } = require('../config/sprints');
 
 const checkStudentFork = async(student, repoName) => {
@@ -63,8 +63,8 @@ module.exports = async function getSprintGithubData(req, res, next) {
   let { sprintNames } = req.params;
   sprintNames = sprintNames.split('+');
   const { cohort } = req.query;
-
-  const report = await checkCohort(Cohorts[cohort], sprintNames);
+  const matching = allCohorts.filter(x => x.name === cohort)[0];
+  const report = await checkCohort(matching, sprintNames);
   const sorted = sortReport(report);
   res.send(sorted);
 };
