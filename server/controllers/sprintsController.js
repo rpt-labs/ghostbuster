@@ -1,70 +1,59 @@
-const Student = require('../helpers/student');
-const { allCohorts } = require('../config/cohorts');
-const { allSprints } = require('../config/sprints');
+//github sprint checking util
+const getSprintDataByCohort= require('../helpers/sprintChecker');
 
-const checkStudentFork = async(student, repoName) => {
-  let commits = await student.checkFork(repoName);
-  let branches = await student.getBranches(repoName);
-  if (branches) {
-    let notMaster = branches.slice(1);
-    for (let branch of notMaster) {
-      let newCommits = await student.checkBranch(repoName, branch.name);
-      commits = commits.concat(newCommits);
-   }
-  }
+//db
+const sprints = require('../../db/models/sprints');
 
-  let commitMessages = student.commitMessages(commits);
-  let BMR = student.passBMR(commitMessages);
-  let percentComplete = student.percentComplete(allSprints[repoName], commitMessages);
-  let summary = {
-    name: student.fullName,
-    BMR,
-    percentComplete,
-    commitMessages,
-    github: student.github,
-    cohort: student.cohort
-  };
-  return summary;
+//SPRINTS requests TODO: error handling for all functions, delete functionality
+exports.getSprints = async(req, res, next) => {
+  const sprintData = await sprints.getAllSprints();
+  res.json({ sprints: sprintData });
+};
+
+exports.createSprint = async(req, res, next) => {
+  const { sprint_name } = req.query;
+  const newSprint = await sprints.addSprint(sprint_name);
+  res.json({sprint: newSprint});
+};
+
+exports.updateSprint = async(req, res, next) => {
+  const { sprint_id, sprint_name } = req.query;
+  const updated = await sprints.updateSprint(sprint_id, sprint_name);
+  res.json({sprint: updated});
+};
+
+exports.deleteSprint = async(req, res, next) => {
+  res.json({message: "add functionality to delete sprints" });
+};
+
+//MESSAGES requests
+exports.getMessagesBySprintId = async(req, res, next) => {
+  const { sprintId } = req.params;
+  const messages = await sprints.getMessagesBySprintId(sprintId);
+  res.json(messages);
+};
+
+exports.createMessage = async(req, res, next) => {
+  const { message_text, sprint_id } = req.query;
+  const newMessage = await sprints.addMessage(message_text, sprint_id);
+  res.json({message: newMessage});
 }
 
-const checkCohort = async(cohort, sprints=[]) => {
-  let report = {};
-  for (let student of cohort.students) {
-    var currentStudent = new Student(student.firstName, student.lastName, student.github, cohort.name);
-    for (let repo of sprints) {
-      let summary = await checkStudentFork(currentStudent, repo);
-      if (report[repo]) {
-        report[repo].push(summary);
-      } else {
-        report[repo] = [summary]
-      }
-    }
-  }
-
-  return report;
+exports.updateMessage = async(req, res, next) => {
+  const { message_id, sprint_id, message_text } = req.query;
+  const updated = await sprints.updateMessage(message_id, message_text, sprint_id);
+  res.json({message: updated});
 }
 
-const sortReport = (report) => {
-  for (let repo in report) {
-    report[repo] = report[repo].sort((a, b) => {
-      if (a.percentComplete < b.percentComplete) {
-        return -1;
-      } else if (a.percentComplete === b.percentComplete) {
-        return 0;
-      } else {
-        return 1;
-      }
-    });
-  }
-  return report;
+exports.deleteMessage = async(req, res, next) => {
+  res.json({message: "add functionality to delete new milestone message"});
 }
 
-module.exports = async function getSprintGithubData(req, res, next) {
+exports.getSprintGithubData = async(req, res, next) => {
   let { sprintNames } = req.params;
-  sprintNames = sprintNames.split('+');
   const { cohort } = req.query;
-  const matching = allCohorts.filter(x => x.name === cohort)[0];
-  const report = await checkCohort(matching, sprintNames);
-  const sorted = sortReport(report);
-  res.send(sorted);
+  sprintNames = sprintNames.split('+');
+
+  let result = await getSprintDataByCohort(cohort, sprintNames);
+  res.status(200).json(result);
 };

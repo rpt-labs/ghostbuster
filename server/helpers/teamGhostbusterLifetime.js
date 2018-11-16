@@ -1,5 +1,6 @@
+//TODO: refactor to use DB instead of config files.  May need to refactor team helper.
 const { thesisTeams, greenfieldTeams, legacyTeams } = require('../config/teams');
-const Team = require('../helpers/team');
+const Team = require('./team');
 
 const getContributorsByTeam = async (teamType, teamName) => {
   let orgName = teamType[teamName].github;
@@ -48,46 +49,17 @@ const analyzeContributions = (sortedContributions) => {
 }
 
 const getContributionsByCohort = async(teamType, cohort) => {
-  const teams = Object.keys(teamType);
-  const cohortTeams = teams.filter(team => teamType[team]['cohort'] === cohort);
+  let teamData = teamType === 'thesis'
+    ? thesisTeams : teamType === 'legacy'
+      ? legacyTeams : greenfieldTeams;
+  const teams = Object.keys(teamData);
+  const cohortTeams = teams.filter(team => teamData[team]['cohort'] === cohort.toUpperCase());
   let report = {};
   for (let team of cohortTeams) {
-    let contributions = await getContributorsByTeam(teamType, team);
+    let contributions = await getContributorsByTeam(teamData, team);
     report[team] = contributions;
   }
   return report;
 };
 
-const getContributorsAllTeams = async() => {
-  let thesisReport = {};
-  for (let team in thesisTeams) {
-    let results1 = await getContributorsByTeam(thesisTeams, team);
-    thesisReport[team] = results1;
-  }
-  let greenfieldReport = {};
-  for (let group in greenfieldTeams) {
-    let results2 = await getContributorsByTeam(greenfieldTeams, group);
-    greenFieldReport[group] = results2;
-  }
-  let legacyReport = {};
-  for (let gaggle in legacyTeams) {
-    let results3 = await getContributorsByTeam(legacyTeams, gaggle);
-    legacyReport[gaggle] = results3;
-  }
-  return {
-    thesis: thesisReport,
-    greenfield: greenfieldReport,
-    legacy: legacyReport
-  };
-}
-
-module.exports = async function getLifetimeContributionData(req, res, next) {
-  const { cohort, teamType } = req.params;
-
-  let matchingTeam = teamType === 'thesis'
-    ? thesisTeams
-      : teamType === 'greenfield' ? greenfieldTeams
-        : legacyTeams;
-  let report = await getContributionsByCohort(matchingTeam, cohort.toUpperCase());
-  res.send(report);
-};
+module.exports = getContributionsByCohort;

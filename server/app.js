@@ -5,13 +5,18 @@ const app = express();
 const asyncMiddleware = require('./helpers/asyncMiddleware');
 const port = process.env.PORT || 1234;
 const path = require('path');
+
+//graphql
 const schema = require('./schema/schema');
 
-//controllers
-const sprintsController = require('./controllers/sprintsController');
-const contributionsController = require('./controllers/contributionsController');
-const teamsController = require('./controllers/teamsController');
-const cohortsController = require('./controllers/cohortsController');
+//controllers (other controllers are used in routes)
+const seedersController = require('./controllers/seedersController');
+
+//routes
+const cohorts = require('./routes/cohorts');
+const students = require('./routes/students');
+const teams = require('./routes/teams');
+const sprints = require('./routes/sprints');
 
 //static files
 app.use('/', express.static(path.join(__dirname, '../public')));
@@ -25,27 +30,19 @@ app.use('/graphql', graphqlHTTP({
   graphiql: true
 }));
 
-//cohort information
-app.route('/ghostbuster/cohorts')
-  .get(asyncMiddleware(cohortsController.getCohorts))
-  .post(asyncMiddleware(cohortsController.createCohort))
-  .put(asyncMiddleware(cohortsController.updateCohort))
-  .delete(asyncMiddleware(cohortsController.deleteCohort));
+//sprints
+app.use('/ghostbuster/sprints', sprints);
 
-//student information
-app.route('/ghostbuster/cohorts/students')
-  .get(asyncMiddleware(cohortsController.getStudents))
-  .post(asyncMiddleware(cohortsController.createStudent))
-  .put(asyncMiddleware(cohortsController.updateStudent))
-  .delete(asyncMiddleware(cohortsController.deleteStudent));
+//cohorts
+app.use('/ghostbuster/cohorts', cohorts);
 
-//check sprints for pairing phase
-app.get('/ghostbuster/sprints/:sprintNames', asyncMiddleware(sprintsController));
+//students
+app.use('/ghostbuster/students', students);
 
-//check lifetime contributions for projects
-app.get('/ghostbuster/teams/contributions/:cohort/:teamType', asyncMiddleware(contributionsController));
+//teams
+app.use('/ghostbuster/teams', teams);
 
-//check last week's team status for thesis phase
-app.get('/ghostbuster/teams/projects/:cohort', asyncMiddleware(teamsController));
+//to seed DB with current student/cohort/team information
+app.get('/ghostbuster/seed/:seedType', asyncMiddleware(seedersController));
 
 app.listen(port, () => console.log(`listening on port ${port}`));

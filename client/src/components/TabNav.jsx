@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 const TabNav = (props) => {
   const { cohorts, selected, selectCohort } = props;
   const tabs = cohorts.map((cohort) => {
-    const style = selected === cohort.name
+    const style = selected === cohort.cohort_name
       ? 'item active'
       : 'item';
 
     return (
       <div role="presentation" key={cohort.name} className={style} onClick={e => selectCohort(e)}>
-        {cohort.name}
+        {cohort.cohort_name}
       </div>
     );
   });
