@@ -1,6 +1,8 @@
 const axios = require('axios');
 const AUTH_GITHUB_TOKEN = process.env.AUTH_GITHUB_TOKEN;
 
+//TODO: all axios calls go to lambda instead of github directly
+
 //so node won't throw an error and crash when a student doesn't have a fork
 process.on('uncaughtException', function (err) {
   console.log('Caught exception: ', err);

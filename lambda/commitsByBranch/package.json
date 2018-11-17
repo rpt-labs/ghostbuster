@@ -1,0 +1,14 @@
+{
+  "name": "commitsbybranch",
+  "version": "1.0.0",
+  "description": "gets all commits from a particular branch of a student fork",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0"
+  }
+}

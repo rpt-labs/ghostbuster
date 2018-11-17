@@ -1,6 +1,9 @@
 const axios = require('axios');
 const moment = require('moment');
 const AUTH_GITHUB_TOKEN = process.env.AUTH_GITHUB_TOKEN;
+
+//TODO: all axios calls go to lambda instead of Github directly
+
 //so node won't throw an error and crash when a team doesn't yet have any repos
 process.on('uncaughtException', function (err) {
   console.log('Caught exception: ', err);
