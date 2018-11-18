@@ -1,8 +1,7 @@
-const axios = require('axios');
-const moment = require('moment');
-const AUTH_GITHUB_TOKEN = process.env.AUTH_GITHUB_TOKEN;
 
-//TODO: all axios calls go to lambda instead of Github directly
+const moment = require('moment');
+const githubQuery = require('./githubQuery');
+
 
 //so node won't throw an error and crash when a team doesn't yet have any repos
 process.on('uncaughtException', function (err) {
@@ -14,6 +13,7 @@ module.exports = class Team {
     this.teamName = teamName;
     this.orgName = orgName;
     this.students = students;
+    this.githubQuery = githubQuery;
   }
 
   get firstNames() {
@@ -30,15 +30,11 @@ module.exports = class Team {
 
   async getContributorsByRepo(repo) {
     try {
-      let response = await axios({
-        method: 'get',
-        url: `https://api.github.com/repos/${this.orgName}/${repo}/contributors`,
-        headers: {
-          'Authorization': `token ${AUTH_GITHUB_TOKEN}`
-        }
-      });
-      return response.data;
+      let response = await this.githubQuery(
+        `https://api.github.com/repos/${this.orgName}/${repo}/contributors
+      `);
 
+      return response;
     } catch(error) {
       console.log("In getContributors", error);
     }
@@ -55,14 +51,11 @@ module.exports = class Team {
 
   async getRepos() {
     try {
-      let response = await axios({
-        method: 'get',
-        url: `https://api.github.com/orgs/${this.orgName}/repos`,
-        headers: {
-          'Authorization': `token ${AUTH_GITHUB_TOKEN}`
-        }
-      });
-      return response.data;
+      let response = await this.githubQuery(`
+        https://api.github.com/orgs/${this.orgName}/repos
+      `);
+
+      return response
     } catch(error) {
       console.log("In getRepos", error);
     }
@@ -72,14 +65,11 @@ module.exports = class Team {
     const daysAgo = moment().subtract(days, 'days');
 
     try {
-      let response = await axios({
-        method: 'get',
-        url: `https://api.github.com/repos/${this.orgName}/${repoName}/commits?since=${daysAgo}`,
-        headers: {
-          'Authorization': `token ${AUTH_GITHUB_TOKEN}`
-        }
-      });
-      return response.data;
+      let response = await this.githubQuery(`
+        https://api.github.com/repos/${this.orgName}/${repoName}/commits?since=${daysAgo}
+      `);
+
+      return response;
     } catch(error) {
       console.log(`In getCommitsByRepo, error retrieving ${repoName}`, error);
     }
@@ -109,14 +99,8 @@ module.exports = class Team {
 
   async analyzeCommit(commit) {
     try {
-      let response = await axios({
-        method: 'get',
-        url: commit.url,
-        headers: {
-          'Authorization': `token ${AUTH_GITHUB_TOKEN}`
-        }
-      });
-      return response.data;
+      let response = await this.githubQuery(commit.url);
+      return response;
     } catch(error) {
       console.log("In analyzeCommit", error);
     }

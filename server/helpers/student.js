@@ -1,7 +1,4 @@
-const axios = require('axios');
-const AUTH_GITHUB_TOKEN = process.env.AUTH_GITHUB_TOKEN;
-
-//TODO: all axios calls go to lambda instead of github directly
+const githubQuery = require('./githubQuery');
 
 //so node won't throw an error and crash when a student doesn't have a fork
 process.on('uncaughtException', function (err) {
@@ -14,6 +11,7 @@ module.exports = class Student {
     this.lastName = lastName;
     this.github = github;
     this.cohort = cohort;
+    this.githubQuery = githubQuery;
   }
 
   get fullName() {
@@ -22,29 +20,26 @@ module.exports = class Student {
 
   async checkFork(repoName) {
     try {
-      let response = await axios({
-        method: 'get',
-        url: `https://api.github.com/repos/${this.github}/${this.cohort}-${repoName}/commits`,
-        headers: {
-          'Authorization': `token ${AUTH_GITHUB_TOKEN}`
-        }
-      });
-      return response.data;
+      let response = await this.githubQuery(`
+        https://api.github.com/repos/${this.github}/${this.cohort}-${repoName}/commits
+      `);
+      if (response.length) {
+        return response;
+      } else {
+        return [{commit:{message: "no fork"}}];
+      }
     } catch(error) {
+      console.log(error);
       return [{commit:{message: "no fork"}}];
     }
   }
 
   async getBranches(repoName) {
     try {
-      let response = await axios({
-        method: 'get',
-        url: `https://api.github.com/repos/${this.github}/${this.cohort}-${repoName}/branches`,
-        headers: {
-          'Authorization': `token ${AUTH_GITHUB_TOKEN}`
-        }
-      });
-      return response.data;
+      let response = await this.githubQuery(`
+        https://api.github.com/repos/${this.github}/${this.cohort}-${repoName}/branches
+      `);
+      return response;
     } catch(error)  {
       //console.log(`Error checking branches for ${this.firstName}'s ${repoName}`);
     }
@@ -52,14 +47,10 @@ module.exports = class Student {
 
   async checkBranch(repoName, branchName) {
     try {
-      let response = await axios({
-        method: 'get',
-        url: `https://api.github.com/repos/${this.github}/${this.cohort}-${repoName}/commits?sha=${branchName}`,
-        headers: {
-          'Authorization': `token ${AUTH_GITHUB_TOKEN}`
-        }
-      });
-      return response.data;
+      let response = await this.githubQuery(`
+      https://api.github.com/repos/${this.github}/${this.cohort}-${repoName}/commits?sha=${branchName}
+      `);
+      return response;
     } catch(error) {
       console.log(error);
     }
@@ -98,19 +89,4 @@ module.exports = class Student {
     let percent = Math.floor((matching.length / possibleMessages.length)*100);
     return percent;
   }
-
-  //this version attempts to account for human error in missing a milestone commit, but does not account for students working out of order
-  // percentComplete(possibleCommits, commitData) {
-  //   let highestPercent = 0;
-  //   let possibleMessages = possibleCommits.map(x => x.message);
-  //   let matching = commitData.filter(x => possibleMessages.includes(x));
-  //   for (var i = 0; i < matching.length; i++) {
-  //     let currentCommitMessage = matching[i];
-  //     let fullCommit = possibleCommits.filter(x => x.message === currentCommitMessage)[0];
-  //     if (fullCommit.percent > highestPercent) {
-  //       highestPercent = fullCommit.percent
-  //     }
-  //   }
-  //   return highestPercent;
-  // }
-}
+};

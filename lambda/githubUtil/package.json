@@ -1,7 +1,7 @@
 {
-  "name": "getrepos",
+  "name": "githubutil",
   "version": "1.0.0",
-  "description": "gets all repos for an org",
+  "description": "query github for student data",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
