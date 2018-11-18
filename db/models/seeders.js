@@ -4,17 +4,17 @@ module.exports = {
   seedStudents: (students) => {
     return new Promise((resolve, reject) => {
       students.forEach(async(student, index) => {
-        let q = `
-        INSERT INTO students (id, first_name, last_name, github, cohort_id)
-        VALUES (
-          ${student.id},
-          '${student.firstName}',
-          '${student.lastName}',
-          '${student.github}',
-          ${student.cohortId}
+        let queryString = `
+          INSERT INTO students (id, first_name, last_name, github, cohort_id)
+          VALUES (
+            ${student.id},
+            '${student.firstName}',
+            '${student.lastName}',
+            '${student.github}',
+            ${student.cohortId}
         )`;
         try {
-          let insert = await query(q);
+          let insert = await query(queryString);
           if (insert.command) {
             console.log(`Inserted student ${student.firstName}`);
           }
@@ -35,13 +35,12 @@ module.exports = {
   seedCohorts: async(cohorts) => {
     return new Promise((resolve, reject) => {
       cohorts.forEach(async(cohort, index) => {
-        console.log(cohort.id, cohort.name, cohort.phase);
-        let q = `
+        let queryString = `
           INSERT INTO cohorts (id, cohort_name, phase)
           VALUES (${cohort.id}, '${cohort.name}', '${cohort.phase}')
         `;
         try {
-          let insert = await query(q);
+          let insert = await query(queryString);
           if (insert.command) {
             console.log(`Inserted cohort ${cohort.name}`);
           }
@@ -63,7 +62,7 @@ module.exports = {
   seedMessagesBySprint: async(sprintId, messages) => {
     return new Promise((resolve, reject) => {
       messages.forEach(async(message, index) => {
-        try{
+        try {
           const insertedMessage = await query(`
             INSERT INTO messages (message_text, sprint_id)
             VALUES ('${message.message}', ${sprintId})
@@ -84,7 +83,6 @@ module.exports = {
   seedSprints: (sprints) => {
     return new Promise((resolve, reject) => {
       let sprintNames = Object.keys(sprints);
-      console.log("sprintNames", sprintNames);
       sprintNames.forEach(async(sprint, index) => {
         try{
           let id = sprints[sprint].id;
@@ -120,8 +118,8 @@ module.exports = {
       teams.forEach(async(team, index) => {
         try {
           let insert = await query(`
-          INSERT INTO teams (id, team_name, team_type, github, cohort_id )
-          VALUES (${team.id}, '${team.name}', '${team.teamType}', '${team.github}', ${team.cohortId})`
+            INSERT INTO teams (id, team_name, team_type, github, cohort_id )
+            VALUES (${team.id}, '${team.name}', '${team.teamType}', '${team.github}', ${team.cohortId})`
           );
           if (insert.command) {
             console.log(`Inserted team ${team.name}`);
@@ -146,8 +144,8 @@ module.exports = {
       teamStudentRecords.forEach(async(currentRecord, index) => {
         try {
           let insert = await query(`
-          INSERT INTO team_student (id, team_id, student_id)
-          VALUES (${currentRecord.id}, ${currentRecord.teamId}, ${currentRecord.studentId})
+            INSERT INTO team_student (id, team_id, student_id)
+            VALUES (${currentRecord.id}, ${currentRecord.teamId}, ${currentRecord.studentId})
           `);
           if (insert.command) {
             console.log(`Sucess loading team_student record`);

@@ -72,7 +72,7 @@ exports.updateStudent = async(req, res) => {
   });
 
   if (updated.name === 'error') {
-    res.status(200).json({error: "error updating student"});
+    res.status(400).json({error: "error updating student"});
   } else {
     res.status(200).json({student: updated});
   }

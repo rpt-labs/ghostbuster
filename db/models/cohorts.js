@@ -17,17 +17,17 @@ module.exports = {
     console.log("In controller");
     try {
       let update = await query(`
-      UPDATE cohorts SET (cohort_name, phase) = (
-        '${newCohortInfo.cohort_name}',
-        '${newCohortInfo.phase}'
-      ) WHERE id = ${cohortId}
-    `);
+        UPDATE cohorts SET (cohort_name, phase) = (
+          '${newCohortInfo.cohort_name}',
+          '${newCohortInfo.phase}'
+        ) WHERE id = ${cohortId}
+      `);
 
-    if (update.rowCount) {
-      console.log(`Updated cohort ${cohortId}`)
-    } else {
-      return "unable to update cohort record"
-    }
+      if (update.rowCount) {
+        console.log(`Updated cohort ${cohortId}`)
+      } else {
+        return "unable to update cohort record"
+      }
     } catch (error) {
       console.log(error);
       return error;
