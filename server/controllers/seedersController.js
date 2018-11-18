@@ -33,7 +33,6 @@ module.exports = async function seedDatabase(req, res, next) {
       break;
     case 'teamstudent':
       const addedRecords = await seeders.seedTeamStudent(teamStudents);
-      console.log("AZDDED RECORDS", addedRecords);
       res.status(200).json({message: addedRecords});
       break;
     default:
