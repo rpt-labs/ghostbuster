@@ -18,7 +18,6 @@ const getContributorsByTeam = async (teamType, teamName) => {
 }
 
 const sortContributionsByStudent = (team, contributionData) => {
-  console.log(contributionData);
   let contributions = {};
   for (const contribution of contributionData) {
     if (contribution !== '') {
