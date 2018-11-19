@@ -8,7 +8,7 @@ import Cohort from './Cohort';
 import TeamList from './TeamList';
 
 //queries
-import { getAllCohorts } from '../queries/queries';
+import { getAllCohorts, getAllCohortsNoDb } from '../queries/queries';
 
 /*
   eslint no-underscore-dangle: ["error", { "allowAfterThis": true }]
@@ -43,9 +43,12 @@ export default class App extends React.Component {
   componentWillUnmount() {
     this._isMounted = false;
   }
-
+  //use getAllCohorts if using graphQL & DB
+  //use getAllCohortsNoDb if using config files only
   getCohorts() {
-    getAllCohorts().then((result) => {
+    const cohortsQuery = getAllCohorts;
+    //const cohortsQuery = getAllCohortsNoDb;
+    cohortsQuery().then((result) => {
       const allCohorts = result.data.data.cohorts;
       const sprintCohorts = allCohorts.filter(cohort => cohort.phase === 'sprint');
       const teamCohorts = allCohorts.filter(cohort => cohort.phase === 'project');
