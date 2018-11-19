@@ -22,13 +22,16 @@ const sortContributionsByStudent = (team, contributionData) => {
   for (const contribution of contributionData) {
     if (contribution !== '') {
       let student = team.students.filter(x => x.github === contribution.login)[0];
-      if (contributions[student.firstName]) {
-        contributions[student.firstName].numContributions += contribution.contributions;
-      } else {
-        contributions[student.firstName] = {
-          github:contribution.login,
-          numContributions: contribution.contributions
-        };
+      //only count contributions of students, so a staff member creating content will not throw error
+      if (student) {
+        if (contributions[student.firstName]) {
+          contributions[student.firstName].numContributions += contribution.contributions;
+        } else {
+          contributions[student.firstName] = {
+            github:contribution.login,
+            numContributions: contribution.contributions
+          };
+        }
       }
     }
   }
