@@ -11,4 +11,8 @@ const getAllCohorts = () => {
   });
 };
 
-export { getAllCohorts }
+const getAllCohortsNoDb = () => {
+  return Api.get(`${expressUrl}/cohorts`);
+}
+
+export { getAllCohorts, getAllCohortsNoDb }

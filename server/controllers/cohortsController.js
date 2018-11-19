@@ -2,12 +2,24 @@
 const students = require('../../db/models/students');
 const cohorts = require('../../db/models/cohorts');
 
+//config files (if you don't want to set up a local DB)
+const allCohortsConfig = require('../config/cohorts').allCohorts;
+
 //COHORT requests TODO: error handling for all functions, delete functionality
+
+//Uncomment either line 13 or lines 16-20, depending on whether you want front use the db or config files
 exports.getCohorts = async(req, res) => {
-  const allCohorts = await cohorts.getAllCohorts();
-  const sprintCohorts = allCohorts.filter(cohort => cohort.phase === 'sprint');
-  const teamCohorts = allCohorts.filter(cohort => cohort.phase === 'project');
-  res.send({ sprintCohorts, teamCohorts });
+  //for using DB and GraphQL
+  //const allCohorts = await cohorts.getAllCohorts();
+
+  //for using config files only
+  let allCohorts = allCohortsConfig;
+  allCohorts = allCohorts.map((cohort) => {
+    cohort.cohort_name = cohort.name;
+    return cohort;
+  });
+
+  res.send({ data: {cohorts: allCohorts} });
 };
 
 exports.createCohort = async(req, res) => {
