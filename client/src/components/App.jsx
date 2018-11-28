@@ -1,14 +1,15 @@
 import React from 'react';
 import axios from 'axios';
 
-//components
+// components
 import TabNav from './TabNav';
 import TopNav from './TopNav';
 import Cohort from './Cohort';
 import TeamList from './TeamList';
 
-//queries
-import { getAllCohorts, getAllCohortsNoDb } from '../queries/queries';
+// queries
+// import { getAllCohorts } from '../queries/queries';
+import { getAllCohortsNoDb } from '../queries/queries';
 
 /*
   eslint no-underscore-dangle: ["error", { "allowAfterThis": true }]
@@ -43,10 +44,11 @@ export default class App extends React.Component {
   componentWillUnmount() {
     this._isMounted = false;
   }
-  //use getAllCohorts if using graphQL & DB
-  //use getAllCohortsNoDb if using config files only
+
+  // use getAllCohorts if using graphQL & DB
+  // use getAllCohortsNoDb if using config files only
   getCohorts() {
-    //const cohortsQuery = getAllCohorts;
+    // const cohortsQuery = getAllCohorts;
     const cohortsQuery = getAllCohortsNoDb;
     cohortsQuery().then((result) => {
       const allCohorts = result.data.data.cohorts;
@@ -67,7 +69,7 @@ export default class App extends React.Component {
           projectData,
         });
       }
-    }).catch(error => console.log(error));
+    }).catch((error) => { throw error; });
   }
 
   handleSelectDisplay(type) {
@@ -98,7 +100,7 @@ export default class App extends React.Component {
           loading: false,
           showSegment: true,
         }))
-        .catch(error => console.log(error));
+        .catch((error) => { throw error; });
     });
   }
 
@@ -109,14 +111,14 @@ export default class App extends React.Component {
         .then((response) => {
           projectData[selectedCohort].lifetimeData = response.data;
         })
-        .catch(error => console.log(error));
+        .catch((error) => { throw error; });
       axios.get(`http://localhost:1234/ghostbuster/teams/projects/${selectedCohort}`)
         .then((response) => {
           projectData[selectedCohort].weekThesisData = response.data.results;
           projectData[selectedCohort].fetched = true;
           this.setState({ projectData, loading: false });
         })
-        .catch(error => console.log(error));
+        .catch((error) => { throw error; });
     });
   }
 
