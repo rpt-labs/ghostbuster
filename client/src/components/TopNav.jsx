@@ -12,10 +12,14 @@ const TopNav = (props) => {
         <div className="six wide column">
           <div className="ui horizontal right floated list">
             <div className="middle aligned item">
-              <p className="top-nav-item" onClick={() => handleSelectDisplay('sprints')}>Check Sprints</p>
+              <p className="top-nav-item" onClick={() => handleSelectDisplay('sprints')} role="presentation">
+              Check Sprints
+              </p>
             </div>
             <div className="middle aligned item">
-              <p className="top-nav-item" onClick={() => handleSelectDisplay('projects')}>Check Projects</p>
+              <p className="top-nav-item" onClick={() => handleSelectDisplay('projects')} role="presentation">
+              Check Projects
+              </p>
             </div>
           </div>
         </div>

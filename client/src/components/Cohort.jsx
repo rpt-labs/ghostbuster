@@ -87,7 +87,7 @@ class Cohort extends React.Component {
     const { repos } = this.state;
     const repoCopy = [].concat(repos);
 
-    for (let i = 0; i < repoCopy.length; i++) {
+    for (let i = 0; i < repoCopy.length; i += 1) {
       if (repoCopy[i].name === repo) {
         repoCopy[i].selected = !repoCopy[i].selected;
       }
