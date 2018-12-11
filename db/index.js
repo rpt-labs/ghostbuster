@@ -8,10 +8,10 @@ const {
 } = process.env;
 
 const pool = new Pool({
-  user: 'sa',
+  user: PGUSER,
   host: PGHOST,
   database: PGDATABASE,
-  password: 'sa',
+  password: PGPASSWORD,
   port: PGPORT,
 });
 
