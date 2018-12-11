@@ -14,7 +14,7 @@ const CohortType = new GraphQLObjectType({
   name: 'Cohort',
   fields: () => ({
     id: { type: GraphQLInt },
-    cohort_name: { type: GraphQLString },
+    name: { type: GraphQLString },
     phase: { type: GraphQLString },
     students: {
       type: new GraphQLList(StudentType),
@@ -223,14 +223,16 @@ const Mutation = new GraphQLObjectType({
     createCohort: {
       type: CohortType,
       args: {
-        cohort_name: { type: GraphQLString },
+        name: { type: GraphQLString },
         phase: { type: GraphQLString },
       },
       resolve(parent, args) {
-        let { cohort_name, phase } = args;
-        cohort_name = cohort_name.toLowerCase();
-        return cohorts.addCohort({ cohort_name, phase })
-          .then(result => result)
+        let { name, phase } = args;
+        name = name.toLowerCase();
+        return cohorts.addCohort({ name, phase })
+          .then((result) => {
+            return { id: result.cohort_id, name: result.cohort_name, phase: result.phase }
+          })
           .catch(error => error.detail || error);
       },
     },
