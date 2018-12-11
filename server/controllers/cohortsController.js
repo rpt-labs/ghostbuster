@@ -23,10 +23,10 @@ exports.getCohorts = async (req, res) => {
 };
 
 exports.createCohort = async (req, res) => {
-  let { cohort_name, phase } = req.query;
+  let { name, phase } = req.query;
   // needs to be lower case for repo-matching
-  cohort_name = cohort_name.toLowerCase();
-  const newCohort = await cohorts.addCohort({ cohort_name, phase });
+  name = name.toLowerCase();
+  const newCohort = await cohorts.addCohort({ name, phase });
 
   if (newCohort.name === 'error') {
     res.status(400).json({ error: newCohort.detail });
