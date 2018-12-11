@@ -2,12 +2,13 @@ const { query } = require('../index');
 
 module.exports = {
   addCohort: (cohort) => {
+    // console.log('cohort', cohort.name);
     return query(`
       INSERT INTO cohorts (cohort_name, phase)
-      VALUES ('${cohort.cohort_name}', '${cohort.phase}')
+      VALUES ('${cohort.name}', '${cohort.phase}')
     `).then(res => {
       return query(`
-        SELECT * FROM cohorts WHERE cohort_name='${cohort.cohort_name}'
+        SELECT * FROM cohorts WHERE cohort_name='${cohort.name}'
       `).then(res => res.rows[0])
         .catch(err => err);
     }).catch(err => err)

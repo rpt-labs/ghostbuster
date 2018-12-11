@@ -1,17 +1,10 @@
 const axios = require('axios');
 
-export const Api = {
-  get: (url, params = {}) => {
-    return axios.get(url, { params });
-  },
-  post: (url, data = {}) => {
-    return axios.post(url, data, { params });
-  },
-  delete: (url, params = {}) => {
-    return axios.delete(url, { params });
-  },
-  put: (url, data = {}) => {
-    return axios.put(url, data, { params });
-  }
+const Api = {
+  get: (url, params = {}) => axios.get(url, { params }),
+  post: (url, data = {}) => axios.post(url, data),
+  delete: (url, params = {}) => axios.delete(url, { params }),
+  put: (url, data = {}) => axios.put(url, data),
 };
 
+export { Api as default };
