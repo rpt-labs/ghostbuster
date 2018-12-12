@@ -230,9 +230,7 @@ const Mutation = new GraphQLObjectType({
         let { name, phase } = args;
         name = name.toLowerCase();
         return cohorts.addCohort({ name, phase })
-          .then((result) => {
-            return { id: result.cohort_id, name: result.cohort_name, phase: result.phase }
-          })
+          .then(result => result)
           .catch(error => error.detail || error);
       },
     },
