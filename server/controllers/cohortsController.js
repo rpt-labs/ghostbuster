@@ -65,12 +65,11 @@ exports.getStudents = async (req, res) => {
 
 exports.createStudent = async (req, res) => {
   const {
- first_name, last_name, github, cohort_id 
-} = req.query;
-  const student = await students.addStudent({ 
-first_name, last_name, github, cohort_id
- });
-
+    firstName, lastName, github, cohortId,
+  } = req.query;
+  const student = await students.addStudent({
+    firstName, lastName, github, cohortId,
+  });
   if (student.name === 'error') {
     res.status(400).json({ error: student.detail });
   } else {
@@ -80,13 +79,13 @@ first_name, last_name, github, cohort_id
 
 exports.updateStudent = async (req, res) => {
   const {
- id, first_name, last_name, github, cohort_id 
-} = req.query;
+    id, firstName, lastName, github, cohortId
+  } = req.query;
   const updated = await students.updateStudent(id, {
-    first_name,
-    last_name,
+    firstName,
+    lastName,
     github,
-    cohort_id,
+    cohortId,
   });
 
   if (updated.name === 'error') {
