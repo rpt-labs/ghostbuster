@@ -1,41 +1,41 @@
 const seeders = require('../../db/models/seeders');
 
-//cohorts
+// cohorts
 const { allCohorts } = require('../config/cohorts');
 
-//students
+// students
 const { students } = require('../config/students');
 
-//sprints
+// sprints
 const { allSprints } = require('../config/sprints');
 
-//teams
+// teams
 const { allTeams, teamStudents } = require('../config/teams');
 
-module.exports = async function seedDatabase(req, res, next) {
+module.exports = async function seedDatabase(req, res) {
   const { seedType } = req.params;
-  switch(seedType) {
+  switch (seedType) {
     case 'cohorts':
       const addedCohorts = await seeders.seedCohorts(allCohorts);
-      res.status(200).json({success: addedCohorts});
+      res.status(200).json({ success: addedCohorts });
       break;
     case 'students':
       const addedStudents = await seeders.seedStudents(students);
-      res.status(200).json({success: addedStudents});
+      res.status(200).json({ success: addedStudents });
       break;
     case 'sprints':
       const sprints = await seeders.seedSprints(allSprints);
-      res.status(200).json({success: sprints});
+      res.status(200).json({ success: sprints });
       break;
     case 'teams':
       const teams = await seeders.seedTeams(allTeams);
-      res.status(200).json({success: teams});
+      res.status(200).json({ success: teams });
       break;
     case 'teamstudent':
       const addedRecords = await seeders.seedTeamStudent(teamStudents);
-      res.status(200).json({message: addedRecords});
+      res.status(200).json({ message: addedRecords });
       break;
     default:
-      res.status(400).json({error: 'Invalid seed type'});
+      res.status(400).json({ error: 'Invalid seed type' });
   }
 };
