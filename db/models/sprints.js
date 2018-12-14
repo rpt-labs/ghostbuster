@@ -35,9 +35,9 @@ module.exports = {
     // update sprint
     try {
       const update = await query(`
-      UPDATE sprints SET sprint_name= '${newSprintName}'
-      WHERE id = ${sprintId}
-    `);
+        UPDATE sprints SET sprint_name= '${newSprintName}'
+        WHERE id = ${sprintId}
+      `);
       if (update.rowCount) {
         console.log(`Updated sprint ${sprintId}`);
       } else {
