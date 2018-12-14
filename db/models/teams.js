@@ -1,118 +1,117 @@
 const { query } = require('../index');
 
 module.exports = {
-  addTeam: (team, cohort_id) => {
+  addTeam: (team, cohortId) => {
+    console.log('cohortId', cohortId);
     return query(`
       INSERT INTO teams (team_name, team_type, github, cohort_id)
       VALUES (
-        '${team.team_name}',
-        '${team.team_type}',
+        '${team.teamName}',
+        '${team.teamType}',
         '${team.github}',
-        ${cohort_id}
-      )`
-    ).then(res => {
-      return query(`
-        SELECT * FROM teams WHERE team_name='${team.team_name}'
+        ${team.cohortId}
+      )`)
+      .then(() => query(`
+        SELECT * FROM teams WHERE team_name='${team.teamName}'
       `).then(res => res.rows[0])
-        .catch(err => err);
-    }).catch(err => err)
+        .catch(err => err))
+      .catch(err => err);
   },
-  addStudentToTeam: async(studentId, teamId) => {
-    //TODO:  don't add a student record twice to the same team
+  addStudentToTeam: async (studentId, teamId) => {
+    // TODO:  don't add a student record twice to the same team
     let existingRecord;
     try {
       existingRecord = await query(`
         SELECT * FROM team_student WHERE student_id=${studentId} AND team_id=${teamId}
       `);
-    if (existingRecord.rows.length) {
-      return "student is already part of this team";
-    }
-    } catch(error) {
+      if (existingRecord.rows.length) {
+        return 'student is already part of this team';
+      }
+    } catch (error) {
       console.log(error);
     }
     try {
-      let teamStudentRecord = await query(`
+      const teamStudentRecord = await query(`
         INSERT INTO team_student (team_id, student_id)
         VALUES (${teamId}, ${studentId})
       `);
       if (teamStudentRecord.rowCount) {
-        let team = await module.exports.getTeamById(teamId);
+        const team = await module.exports.getTeamById(teamId);
         return {success: `added student to team ${team.team_name}`}
       }
       console.log(teamStudentRecord);
       return teamStudentRecord;
-    } catch(error) {
+    } catch (error) {
       console.log(error);
       return error;
     }
   },
-  removeStudentFromTeam: async(studentId, teamId) => {
+  removeStudentFromTeam: async (studentId, teamId) => {
     try {
-      let deleted = await query(`
+      const deleted = await query(`
         DELETE FROM team_student
         WHERE student_id=${studentId}
         AND team_id=${teamId}
       `);
       if (deleted.rowCount) {
-        return "Student was removed from team";
-      } else {
-        return "Student is not part of this team";
+        return 'Student was removed from team';
       }
-    } catch(error) {
+      return 'Student is not part of this team';
+    } catch (error) {
       console.log(error);
     }
   },
-  updateTeam: async(teamId, newTeamInfo) => {
-    //update team
+  updateTeam: async (teamId, newTeamInfo) => {
+    // update team
     try {
-      let update = await query(`
+      const update = await query(`
       UPDATE teams SET (team_name, team_type, github, cohort_id) = (
-        '${newTeamInfo.team_name}',
-        '${newTeamInfo.team_type}',
+        '${newTeamInfo.teamName}',
+        '${newTeamInfo.teamType}',
         '${newTeamInfo.github}',
-        ${newTeamInfo.cohort_id}
+        ${newTeamInfo.cohortId}
       ) WHERE id = ${teamId}
     `);
-    if (update.rowCount) {
-      console.log(`Updated team ${teamId}`)
-    } else {
-      return "unable to update cohort record"
-    }
+      if (update.rowCount) {
+        console.log(`Updated team ${teamId}`);
+      } else {
+        return 'unable to update cohort record';
+      }
     } catch (error) {
       console.log(error);
       return error;
     }
 
-    //retrieve updated cohort
+    // retrieve updated cohort
     try {
-      let team = await module.exports.getTeamById(teamId);
+      const team = await module.exports.getTeamById(teamId);
       return team;
-    } catch(error) {
+    } catch (error) {
       console.log(error);
       return error;
     }
   },
-  getAllTeams: async() => {
+  getAllTeams: async () => {
     try {
       const teamQuery = await query(`SELECT * FROM teams ORDER BY id ASC`);
       return teamQuery.rows;
-    } catch(err) {
+    } catch (err) {
       console.log(err.detail || err);
       return err;
     }
   },
-  getTeamById: async(teamId) => {
+  getTeamById: async (teamId) => {
     try {
-      let team = await query(`SELECT * FROM teams WHERE id=${teamId}`);
-      return team.rows[0]
-    } catch(err) {
+      const team = await query(`SELECT * FROM teams WHERE id=${teamId}`);
+      return team.rows[0];
+    } catch (err) {
       console.log(err);
       return err;
     }
   },
-  getStudentsByTeamId: async(teamId) => {
+  getStudentsByTeamId: async (teamId) => {
     try {
-      studentQuery = await query(`
+      const studentQuery = await query(`
         SELECT
           students.id,
           students.first_name,
@@ -123,31 +122,28 @@ module.exports = {
         JOIN team_student ON(students.id=team_student.student_id)
         JOIN teams ON(teams.id=team_student.team_id)
         WHERE team_id=${teamId}
-        ORDER BY first_name ASC`
-      );
+        ORDER BY first_name ASC`);
 
       return studentQuery.rows;
-    } catch(error) {
+    } catch (error) {
       console.log(error);
     }
   },
-  getTeamWithStudents: async(teamId) => {
+  getTeamWithStudents: async (teamId) => {
     let team;
     let students;
-    //retrieve team
+    // retrieve team
     try {
       team = await module.exports.getTeamById(teamId);
-    } catch(error) {
-      console.log(error)
-    }
-
-    //retrive related students
-    try {
-      students = await module.exports.getStudentsByTeamId(teamId);
-    } catch(error) {
+    } catch (error) {
       console.log(error);
     }
-
-    return { team, students }
-  }
+    // retrive related students
+    try {
+      students = await module.exports.getStudentsByTeamId(teamId);
+    } catch (error) {
+      console.log(error);
+    }
+    return { team, students };
+  },
 };

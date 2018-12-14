@@ -5,45 +5,44 @@ module.exports = {
     return query(`
       INSERT INTO students (first_name, last_name, github, cohort_id)
       VALUES (
-        '${student.first_name}',
-        '${student.last_name}',
+        '${student.firstName}',
+        '${student.lastName}',
         '${student.github}',
-        ${student.cohort_id}
+        ${student.cohortId}
       )
-    `).then(res => {
+    `).then(() => {
       return query(`
         SELECT * FROM students WHERE github='${student.github}'
       `).then(res => res.rows[0])
         .catch(err => err);
-    }).catch(err => err)
+    }).catch(err => err);
   },
-  updateStudent: async(studentId, newStudentInfo) => {
-    //update student
-
+  updateStudent: async (studentId, newStudentInfo) => {
+    // update student
     try {
-      let update = await query(`
+      const update = await query(`
       UPDATE students SET (first_name, last_name, github, cohort_id) = (
-        '${newStudentInfo.first_name}',
-        '${newStudentInfo.last_name}',
+        '${newStudentInfo.firstName}',
+        '${newStudentInfo.lastName}',
         '${newStudentInfo.github}',
-        ${newStudentInfo.cohort_id}
+        ${newStudentInfo.cohortId}
       ) WHERE id = ${studentId}
     `);
-    if (update.rowCount) {
-      console.log(`Updated student ${studentId}`)
-    } else {
-      return "unable to update student record"
-    }
+      if (update.rowCount) {
+        console.log(`Updated student ${studentId}`);
+      } else {
+        return 'unable to update student record';
+      }
     } catch (error) {
       console.log(error);
       return error;
     }
 
-    //retrieve updated student
+    // retrieve updated student
     try {
-      let student = await module.exports.getStudentById(studentId);
+      const student = await module.exports.getStudentById(studentId);
       return student;
-    } catch(error) {
+    } catch (error) {
       console.log(error);
       return error;
     }

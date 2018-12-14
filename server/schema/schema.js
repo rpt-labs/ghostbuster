@@ -5,6 +5,7 @@ const {
   GraphQLInt,
   GraphQLList,
 } = require('graphql');
+const cohorts = require('../../db/models/cohorts');
 
 //db
 const { query } = require('../../db/index');
@@ -13,7 +14,7 @@ const CohortType = new GraphQLObjectType({
   name: 'Cohort',
   fields: () => ({
     id: { type: GraphQLInt },
-    cohort_name: { type: GraphQLString },
+    name: { type: GraphQLString },
     phase: { type: GraphQLString },
     students: {
       type: new GraphQLList(StudentType),
@@ -216,6 +217,27 @@ const RootQuery = new GraphQLObjectType({
   },
 });
 
+const Mutation = new GraphQLObjectType({
+  name: 'Mutation',
+  fields: {
+    createCohort: {
+      type: CohortType,
+      args: {
+        name: { type: GraphQLString },
+        phase: { type: GraphQLString },
+      },
+      resolve(parent, args) {
+        let { name, phase } = args;
+        name = name.toLowerCase();
+        return cohorts.addCohort({ name, phase })
+          .then(result => result)
+          .catch(error => error.detail || error);
+      },
+    },
+  },
+});
+
 module.exports = new GraphQLSchema({
-  query: RootQuery
+  query: RootQuery,
+  mutation: Mutation,
 });

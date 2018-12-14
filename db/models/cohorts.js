@@ -1,17 +1,16 @@
 const { query } = require('../index');
 
 module.exports = {
-  addCohort: (cohort) => {
-    return query(`
+  addCohort: cohort => query(`
       INSERT INTO cohorts (cohort_name, phase)
-      VALUES ('${cohort.cohort_name}', '${cohort.phase}')
-    `).then(res => {
-      return query(`
-        SELECT * FROM cohorts WHERE cohort_name='${cohort.cohort_name}'
-      `).then(res => res.rows[0])
-        .catch(err => err);
-    }).catch(err => err)
-  },
+      VALUES ('${cohort.name}', '${cohort.phase}')
+    `)
+    .then(() => query(`
+        SELECT * FROM cohorts WHERE cohort_name='${cohort.name}'`)
+      .then(res => ({ id: res.rows[0].id, name: res.rows[0].cohort_name, phase: res.rows[0].phase }))
+      .catch(err => err))
+    .catch(err => err),
+
   updateCohort: async(cohortId, newCohortInfo) => {
     //update cohort
     console.log("In controller");

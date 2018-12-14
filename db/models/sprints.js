@@ -1,20 +1,20 @@
 const { query } = require('../index');
 
 module.exports = {
-  getAllSprints: async() => {
+  getAllSprints: async () => {
     try {
       const sprintQuery = await query(`SELECT * FROM sprints ORDER BY id ASC`);
       return sprintQuery.rows;
-    } catch(err) {
+    } catch (err) {
       console.log(err.detail || err);
       return err;
     }
   },
-  getSprintById: async(sprintId) => {
+  getSprintById: async (sprintId) => {
     try {
-      let sprint = await query(`SELECT * FROM sprints WHERE id=${sprintId}`);
-      return sprint.rows[0]
-    } catch(err) {
+      const sprint = await query(`SELECT * FROM sprints WHERE id=${sprintId}`);
+      return sprint.rows[0];
+    } catch (err) {
       console.log(err);
       return err;
     }
@@ -24,54 +24,52 @@ module.exports = {
       INSERT INTO sprints (sprint_name)
       VALUES (
         '${sprintName}'
-      )`
-    ).then(res => {
-      return query(`
+      )`)
+      .then(() => query(`
         SELECT * FROM sprints WHERE sprint_name='${sprintName}'
       `).then(res => res.rows[0])
-        .catch(err => err);
-    }).catch(err => err);
+        .catch(err => err))
+      .catch(err => err);
   },
-  updateSprint: async(sprintId, newSprintName) => {
-    //update sprint
+  updateSprint: async (sprintId, newSprintName) => {
+    // update sprint
     try {
-      let update = await query(`
-      UPDATE sprints SET sprint_name= '${newSprintName}'
-      WHERE id = ${sprintId}
-    `);
+      const update = await query(`
+        UPDATE sprints SET sprint_name= '${newSprintName}'
+        WHERE id = ${sprintId}
+      `);
       if (update.rowCount) {
-        console.log(`Updated sprint ${sprintId}`)
+        console.log(`Updated sprint ${sprintId}`);
       } else {
-        return "unable to update sprint record"
+        return 'unable to update sprint record';
       }
     } catch (error) {
       console.log(error);
       return error;
     }
 
-    //retrieve updated sprint
+    // retrieve updated sprint
     try {
-      let sprint = await module.exports.getSprintById(sprintId);
+      const sprint = await module.exports.getSprintById(sprintId);
       return sprint;
-    } catch(error) {
+    } catch (error) {
       console.log(error);
       return error;
     }
   },
 
-  deleteSprint: async(sprintId) => {
-    return "add functionality to delete sprint";
+  deleteSprint: async (sprintId) => {
+    return 'add functionality to delete sprint';
   },
 
-  getMessagesBySprintId: async(sprintId) => {
+  getMessagesBySprintId: async (sprintId) => {
     try {
-      messageQuery = await query(`
+      const messageQuery = await query(`
         SELECT * FROM messages
         WHERE sprint_id=${sprintId}
-        ORDER BY id ASC`
-      );
+        ORDER BY id ASC`);
       return messageQuery.rows;
-    } catch(error) {
+    } catch (error) {
       console.log(error);
     }
   },
@@ -81,18 +79,17 @@ module.exports = {
       VALUES (
         '${messageText}',
         ${sprintId}
-      )`
-    ).then(res => {
-      return query(`
+      )`)
+      .then(() => query(`
         SELECT * FROM messages WHERE sprint_id=${sprintId}
       `).then(res => res.rows)
-        .catch(err => err)
-    }).catch(err => err);
+        .catch(err => err))
+      .catch(err => err);
   },
   updateMessage: async(messageId, newMessageText, sprintId) => {
-    //update the message
+    // update the message
     try {
-      let update = await query(`
+      const update = await query(`
         UPDATE messages SET (message_text, sprint_id) = (
           '${newMessageText}',
           ${sprintId}
@@ -100,48 +97,46 @@ module.exports = {
       `);
 
       if (update.rowCount) {
-        console.log(`Updated message ${messageId}`)
+        console.log(`Updated message ${messageId}`);
       } else {
-        return "unable to update sprint record";
+        return 'unable to update sprint record';
       }
-    } catch(error) {
+    } catch (error) {
       console.log(error);
       return error.detail || error;
     }
 
-    //retrieve updated message
+    // retrieve updated message
     try {
-      let updated = await query(`
+      const updated = await query(`
         SELECT * FROM messages WHERE id=${messageId}
       `);
       return updated.rows[0];
-    } catch(error) {
+    } catch (error) {
       console.log(error);
       return error || error.detail;
     }
   },
-  deleteMessage: async(messageId) => {
-    return "add funcitonality to delete message";
+  deleteMessage: async (messageId) => {
+    return 'add funcitonality to delete message';
   },
 
-  getSprintWithMessages: async(sprintId) => {
+  getSprintWithMessages: async (sprintId) => {
     let sprint;
     let messages;
-    //retrieve team
+    // retrieve team
     try {
       sprint = await module.exports.getSprintById(sprintId);
-    } catch(error) {
-      console.log(error)
-    }
-
-    //retreive related messages
-    try {
-      messages = await module.exports.getMessagesBySprintId(sprintId);
-    } catch(error) {
+    } catch (error) {
       console.log(error);
     }
 
-    return { sprint, messages }
+    // retreive related messages
+    try {
+      messages = await module.exports.getMessagesBySprintId(sprintId);
+    } catch (error) {
+      console.log(error);
+    }
+    return { sprint, messages };
   }
 };
-
