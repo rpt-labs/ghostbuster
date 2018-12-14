@@ -49,7 +49,7 @@ const Progress = (props) => {
 };
 
 Progress.propTypes = {
-  student: PropTypes.instanceOf(Object).isRequired,
+  student: PropTypes.instanceOf(Object).isRequired
 };
 
 export default Progress;

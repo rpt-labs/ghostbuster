@@ -28,7 +28,7 @@ const TeamCard = (props) => {
 
 TeamCard.propTypes = {
   data: PropTypes.instanceOf(Object).isRequired,
-  lifetimeContributions: PropTypes.instanceOf(Object).isRequired,
+  lifetimeContributions: PropTypes.instanceOf(Object).isRequired
 };
 
 export default TeamCard;

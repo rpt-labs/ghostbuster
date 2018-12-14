@@ -24,7 +24,7 @@ const Team = (props) => {
 Team.propTypes = {
   lifetimeContributions: PropTypes.instanceOf(Object).isRequired,
   students: PropTypes.instanceOf(Object).isRequired,
-  team: PropTypes.string.isRequired,
+  team: PropTypes.string.isRequired
 };
 
 export default Team;

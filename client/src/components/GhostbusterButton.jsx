@@ -25,7 +25,7 @@ const GhostbusterButton = (props) => {
 };
 
 GhostbusterButton.propTypes = {
-  clickHandler: PropTypes.func.isRequired,
+  clickHandler: PropTypes.func.isRequired
 };
 
 export default GhostbusterButton;

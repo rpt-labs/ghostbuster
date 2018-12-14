@@ -12,7 +12,7 @@ const TeamPieChart = (props) => {
     '#403F4C',
     '#F44D63',
     '#85D19C',
-    '#FFE65B',
+    '#FFE65B'
   ];
   const colors = possibleColors.slice(0, studentNames.length);
   const typeData = type === 'commits' ? commits : changes;
@@ -32,8 +32,8 @@ const TeamPieChart = (props) => {
     labels: studentNames,
     datasets: [{
       data: typeData,
-      backgroundColor: colors,
-    }],
+      backgroundColor: colors
+    }]
   };
 
   return (
@@ -48,7 +48,7 @@ const TeamPieChart = (props) => {
 
 TeamPieChart.propTypes = {
   students: PropTypes.instanceOf(Object).isRequired,
-  type: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired
 };
 
 export default TeamPieChart;

@@ -29,7 +29,7 @@ const TopNav = (props) => {
 };
 
 TopNav.propTypes = {
-  handleSelectDisplay: PropTypes.func.isRequired,
+  handleSelectDisplay: PropTypes.func.isRequired
 };
 
 export default TopNav;

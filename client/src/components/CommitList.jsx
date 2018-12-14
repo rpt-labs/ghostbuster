@@ -6,7 +6,7 @@ const CommitList = (props) => {
     commits,
     url,
     show,
-    handleCommitChange,
+    handleCommitChange
   } = props;
 
   const commitList = show ? commits.map(commit => (
@@ -34,7 +34,7 @@ CommitList.propTypes = {
   commits: PropTypes.instanceOf(Object).isRequired,
   url: PropTypes.string.isRequired,
   show: PropTypes.bool.isRequired,
-  handleCommitChange: PropTypes.func.isRequired,
+  handleCommitChange: PropTypes.func.isRequired
 };
 
 export default CommitList;

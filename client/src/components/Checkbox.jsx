@@ -17,7 +17,7 @@ const Checkbox = (props) => {
 
 Checkbox.propTypes = {
   repo: PropTypes.instanceOf(Object).isRequired,
-  handleCheckboxChange: PropTypes.func.isRequired,
+  handleCheckboxChange: PropTypes.func.isRequired
 };
 
 export default Checkbox;

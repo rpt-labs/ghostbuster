@@ -26,7 +26,7 @@ const StudentReport = (props) => {
 
 StudentReport.propTypes = {
   student: PropTypes.string.isRequired,
-  report: PropTypes.instanceOf(Object).isRequired,
+  report: PropTypes.instanceOf(Object).isRequired
 };
 
 export default StudentReport;

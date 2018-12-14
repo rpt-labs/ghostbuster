@@ -10,73 +10,73 @@ class Cohort extends React.Component {
       repos: [
         {
           name: 'underbar-review',
-          selected: false,
+          selected: false
         },
         {
           name: 'recursion-review',
-          selected: false,
+          selected: false
         },
         {
           name: 'data-structures',
-          selected: false,
+          selected: false
         },
         {
           name: 'beesbeesbees',
-          selected: false,
+          selected: false
         },
         {
           name: 'subclass-dance-party',
-          selected: false,
+          selected: false
         },
         {
           name: 'n-queens',
-          selected: false,
+          selected: false
         },
         {
           name: 'chatterbox-client',
-          selected: false,
+          selected: false
         },
         {
           name: '6ees6ees6ees',
-          selected: false,
+          selected: false
         },
         {
           name: 'react-components',
-          selected: false,
+          selected: false
         },
         {
           name: 'recast.ly',
-          selected: false,
+          selected: false
         },
         {
           name: 'recastly-redux',
-          selected: false,
+          selected: false
         },
         {
           name: 'chatterbox-server',
-          selected: false,
+          selected: false
         },
         {
           name: 'cruddy-todo',
-          selected: false,
+          selected: false
         },
         {
           name: 'sqool',
-          selected: false,
+          selected: false
         },
         {
           name: 'databases',
-          selected: false,
+          selected: false
         },
         {
           name: 'shortly-express',
-          selected: false,
+          selected: false
         },
         {
           name: 'fullstack-review',
-          selected: false,
-        },
-      ],
+          selected: false
+        }
+      ]
     };
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     this.storeCheckedRepos = this.storeCheckedRepos.bind(this);
@@ -152,7 +152,7 @@ Cohort.propTypes = {
   commits: PropTypes.instanceOf(Object).isRequired,
   loading: PropTypes.bool.isRequired,
   showSegment: PropTypes.bool.isRequired,
-  repoSelect: PropTypes.func.isRequired,
+  repoSelect: PropTypes.func.isRequired
 };
 
 export default Cohort;

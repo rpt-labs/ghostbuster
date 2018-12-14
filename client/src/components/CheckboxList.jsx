@@ -26,7 +26,7 @@ const CheckboxList = (props) => {
 CheckboxList.propTypes = {
   repos: PropTypes.arrayOf(Object).isRequired,
   handleCheckboxChange: PropTypes.func.isRequired,
-  storeCheckedRepos: PropTypes.func.isRequired,
+  storeCheckedRepos: PropTypes.func.isRequired
 };
 
 export default CheckboxList;

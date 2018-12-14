@@ -9,7 +9,7 @@ const TeamList = (props) => {
     loading,
     projects,
     showSegment,
-    selectedCohort,
+    selectedCohort
   } = props;
 
   const style = loading
@@ -58,7 +58,7 @@ TeamList.propTypes = {
   loading: PropTypes.bool.isRequired,
   showSegment: PropTypes.bool.isRequired,
   projects: PropTypes.instanceOf(Object).isRequired,
-  selectedCohort: PropTypes.string.isRequired,
+  selectedCohort: PropTypes.string.isRequired
 };
 
 export default TeamList;

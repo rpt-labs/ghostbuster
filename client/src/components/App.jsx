@@ -27,7 +27,7 @@ export default class App extends React.Component {
       loading: false,
       showSegment: true,
       currentCommitData: {},
-      projectData: {},
+      projectData: {}
     };
     this.handleSelectCohort = this.handleSelectCohort.bind(this);
     this.handleSelectDisplay = this.handleSelectDisplay.bind(this);
@@ -66,7 +66,7 @@ export default class App extends React.Component {
           teamCohorts,
           allCohorts,
           selectedCohort: sprintCohorts[0].cohort_name,
-          projectData,
+          projectData
         });
       }
     }).catch((error) => { throw error; });
@@ -98,7 +98,7 @@ export default class App extends React.Component {
         .then(response => this.setState({
           currentCommitData: response.data,
           loading: false,
-          showSegment: true,
+          showSegment: true
         }))
         .catch((error) => { throw error; });
     });
@@ -131,7 +131,7 @@ export default class App extends React.Component {
       showSegment,
       currentCommitData,
       projectData,
-      display,
+      display
     } = this.state;
 
     let cohorts;

@@ -24,7 +24,7 @@ const Repo = (props) => {
 
 Repo.propTypes = {
   name: PropTypes.string.isRequired,
-  students: PropTypes.instanceOf(Object).isRequired,
+  students: PropTypes.instanceOf(Object).isRequired
 };
 
 export default Repo;

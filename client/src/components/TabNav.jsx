@@ -25,7 +25,7 @@ const TabNav = (props) => {
 TabNav.propTypes = {
   cohorts: PropTypes.instanceOf(Object).isRequired,
   selected: PropTypes.string.isRequired,
-  selectCohort: PropTypes.func.isRequired,
+  selectCohort: PropTypes.func.isRequired
 };
 
 export default TabNav;
