@@ -10,15 +10,15 @@ const COHORT_NAME_ALL_CAPS = {
     {
       firstName: 'Mickey',
       lastName: 'Mouse',
-      github: 'm-o-u-s-e'
+      github: 'm-o-u-s-e',
     },
     {
       firstName: 'Cheese',
       lastName: 'Tart',
-      github: 'gotUHooked'
-    }
-  ]
-}
+      github: 'gotUHooked',
+    },
+  ],
+};
 
 const ANOTHER_COHORT = {
   name: 'anothercohortnamelowercase',
@@ -26,15 +26,15 @@ const ANOTHER_COHORT = {
     {
       firstName: 'Great',
       lastName: 'Like',
-      github: 'chicken'
+      github: 'chicken',
     },
     {
       firstName: 'Chris',
       lastName: 'P',
-      github: 'bacon'
-    }
-  ]
-}
+      github: 'bacon',
+    },
+  ],
+};
 
 
-module.exports = { COHORT_NAME_ALL_CAPS, ANOTHER_COHORT }
+module.exports = { COHORT_NAME_ALL_CAPS, ANOTHER_COHORT };

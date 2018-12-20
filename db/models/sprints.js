@@ -3,7 +3,7 @@ const { query } = require('../index');
 module.exports = {
   getAllSprints: async () => {
     try {
-      const sprintQuery = await query(`SELECT * FROM sprints ORDER BY id ASC`);
+      const sprintQuery = await query('SELECT * FROM sprints ORDER BY id ASC');
       return sprintQuery.rows;
     } catch (err) {
       console.log(err.detail || err);
@@ -19,18 +19,16 @@ module.exports = {
       return err;
     }
   },
-  addSprint: (sprintName) => {
-    return query(`
+  addSprint: sprintName => query(`
       INSERT INTO sprints (sprint_name)
       VALUES (
         '${sprintName}'
       )`)
-      .then(() => query(`
+    .then(() => query(`
         SELECT * FROM sprints WHERE sprint_name='${sprintName}'
       `).then(res => res.rows[0])
-        .catch(err => err))
-      .catch(err => err);
-  },
+      .catch(err => err))
+    .catch(err => err),
   updateSprint: async (sprintId, newSprintName) => {
     // update sprint
     try {
@@ -58,9 +56,7 @@ module.exports = {
     }
   },
 
-  deleteSprint: async (sprintId) => {
-    return 'add functionality to delete sprint';
-  },
+  // deleteSprint: async (sprintId) => 'add functionality to delete sprint',
 
   getMessagesBySprintId: async (sprintId) => {
     try {
@@ -71,22 +67,21 @@ module.exports = {
       return messageQuery.rows;
     } catch (error) {
       console.log(error);
+      return error;
     }
   },
-  addMessage: (messageText, sprintId) => {
-    return query(`
+  addMessage: (messageText, sprintId) => query(`
       INSERT INTO messages (message_text, sprint_id)
       VALUES (
         '${messageText}',
         ${sprintId}
       )`)
-      .then(() => query(`
+    .then(() => query(`
         SELECT * FROM messages WHERE sprint_id=${sprintId}
       `).then(res => res.rows)
-        .catch(err => err))
-      .catch(err => err);
-  },
-  updateMessage: async(messageId, newMessageText, sprintId) => {
+      .catch(err => err))
+    .catch(err => err),
+  updateMessage: async (messageId, newMessageText, sprintId) => {
     // update the message
     try {
       const update = await query(`
@@ -117,9 +112,7 @@ module.exports = {
       return error || error.detail;
     }
   },
-  deleteMessage: async (messageId) => {
-    return 'add funcitonality to delete message';
-  },
+  // deleteMessage: async messageId => 'add funcitonality to delete message',
 
   getSprintWithMessages: async (sprintId) => {
     let sprint;
@@ -138,5 +131,5 @@ module.exports = {
       console.log(error);
     }
     return { sprint, messages };
-  }
+  },
 };

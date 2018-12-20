@@ -37,7 +37,7 @@ module.exports = {
       `);
       if (teamStudentRecord.rowCount) {
         const team = await module.exports.getTeamById(teamId);
-        return {success: `added student to team ${team.team_name}`}
+        return { success: `added student to team ${team.team_name}` };
       }
       console.log(teamStudentRecord);
       return teamStudentRecord;
@@ -59,6 +59,7 @@ module.exports = {
       return 'Student is not part of this team';
     } catch (error) {
       console.log(error);
+      return error;
     }
   },
   updateTeam: async (teamId, newTeamInfo) => {
@@ -93,7 +94,7 @@ module.exports = {
   },
   getAllTeams: async () => {
     try {
-      const teamQuery = await query(`SELECT * FROM teams ORDER BY id ASC`);
+      const teamQuery = await query('SELECT * FROM teams ORDER BY id ASC');
       return teamQuery.rows;
     } catch (err) {
       console.log(err.detail || err);
@@ -126,7 +127,8 @@ module.exports = {
 
       return studentQuery.rows;
     } catch (error) {
-      console.log(error);
+      throw error;
+      // console.log(error);
     }
   },
   getTeamWithStudents: async (teamId) => {
@@ -136,13 +138,15 @@ module.exports = {
     try {
       team = await module.exports.getTeamById(teamId);
     } catch (error) {
-      console.log(error);
+      throw error;
+      // console.log(error);
     }
     // retrive related students
     try {
       students = await module.exports.getStudentsByTeamId(teamId);
     } catch (error) {
-      console.log(error);
+      throw error;
+      // console.log(error);
     }
     return { team, students };
   },

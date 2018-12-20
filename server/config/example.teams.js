@@ -3,34 +3,32 @@
 */
 
 const thesisTeams = {
-  "teamName": {
-    github: "github-org-name",
+  teamName: {
+    github: 'github-org-name',
     students: [
       {
-        firstName: "Person1",
-        github: "person1GithubHandle"
+        firstName: 'Person1',
+        github: 'person1GithubHandle',
       },
       {
-        firstName: "Person2",
-        github: "person2GithubHandle"
-      }
-    ]
+        firstName: 'Person2',
+        github: 'person2GithubHandle',
+      },
+    ],
   },
-  "anotherTeamName": {
-    github: "github-org-name",
+  anotherTeamName: {
+    github: 'github-org-name',
     students: [
       {
-        firstName: "Person3",
-        github: "person3GithubHandle"
+        firstName: 'Person3',
+        github: 'person3GithubHandle',
       },
       {
-        firstName: "Person4",
-        github: "person4GithubHandle"
-      }
-    ]
-  }
+        firstName: 'Person4',
+        github: 'person4GithubHandle',
+      },
+    ],
+  },
 };
 
-module.exports = { thesisTeams, greenfieldTeams, legacyTeams }
-
-
+module.exports = { thesisTeams, greenfieldTeams, legacyTeams };

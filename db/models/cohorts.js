@@ -11,11 +11,11 @@ module.exports = {
       .catch(err => err))
     .catch(err => err),
 
-  updateCohort: async(cohortId, newCohortInfo) => {
-    //update cohort
-    console.log("In controller");
+  updateCohort: async (cohortId, newCohortInfo) => {
+    // update cohort
+    console.log('In controller');
     try {
-      let update = await query(`
+      const update = await query(`
         UPDATE cohorts SET (cohort_name, phase) = (
           '${newCohortInfo.cohort_name}',
           '${newCohortInfo.phase}'
@@ -23,40 +23,40 @@ module.exports = {
       `);
 
       if (update.rowCount) {
-        console.log(`Updated cohort ${cohortId}`)
+        console.log(`Updated cohort ${cohortId}`);
       } else {
-        return "unable to update cohort record"
+        return 'unable to update cohort record';
       }
     } catch (error) {
       console.log(error);
       return error;
     }
 
-    //retrieve updated cohort
+    // retrieve updated cohort
     try {
-      let cohort = await module.exports.getCohortById(cohortId);
+      const cohort = await module.exports.getCohortById(cohortId);
       return cohort;
-    } catch(error) {
+    } catch (error) {
       console.log(error);
       return error;
     }
   },
-  getAllCohorts: async() => {
+  getAllCohorts: async () => {
     try {
-      const cohortQuery = await query(`SELECT * FROM cohorts ORDER BY id ASC`);
+      const cohortQuery = await query('SELECT * FROM cohorts ORDER BY id ASC');
       return cohortQuery.rows;
-    } catch(err) {
+    } catch (err) {
       console.log(err.detal || err);
       return err;
     }
   },
-  getCohortById: async(cohortId) => {
+  getCohortById: async (cohortId) => {
     try {
-      let cohort = await query(`SELECT * FROM cohorts WHERE id=${cohortId}`);
-      return cohort.rows[0]
-    } catch(err) {
+      const cohort = await query(`SELECT * FROM cohorts WHERE id=${cohortId}`);
+      return cohort.rows[0];
+    } catch (err) {
       console.log(err);
       return err;
     }
-  }
+  },
 };
