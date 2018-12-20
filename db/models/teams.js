@@ -37,7 +37,7 @@ module.exports = {
       `);
       if (teamStudentRecord.rowCount) {
         const team = await module.exports.getTeamById(teamId);
-        return {success: `added student to team ${team.team_name}`}
+        return { success: `added student to team ${team.team_name}` };
       }
       console.log(teamStudentRecord);
       return teamStudentRecord;

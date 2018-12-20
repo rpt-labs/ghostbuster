@@ -1,8 +1,7 @@
 const { query } = require('../index');
 
 module.exports = {
-  addStudent: (student) => {
-    return query(`
+  addStudent: student => query(`
       INSERT INTO students (first_name, last_name, github, cohort_id)
       VALUES (
         '${student.firstName}',
@@ -10,13 +9,10 @@ module.exports = {
         '${student.github}',
         ${student.cohortId}
       )
-    `).then(() => {
-      return query(`
+    `).then(() => query(`
         SELECT * FROM students WHERE github='${student.github}'
       `).then(res => res.rows[0])
-        .catch(err => err);
-    }).catch(err => err);
-  },
+    .catch(err => err)).catch(err => err),
   updateStudent: async (studentId, newStudentInfo) => {
     // update student
     try {
@@ -47,34 +43,34 @@ module.exports = {
       return error;
     }
   },
-  getAllStudents: async() => {
+  getAllStudents: async () => {
     try {
-      const studentQuery = await query(`SELECT * FROM students ORDER BY first_name ASC`);
+      const studentQuery = await query('SELECT * FROM students ORDER BY first_name ASC');
       return studentQuery.rows;
-    } catch(err) {
+    } catch (err) {
       console.log(err.detal || err);
       return err;
     }
   },
-  getStudentById: async(studentId) => {
+  getStudentById: async (studentId) => {
     try {
-      let student = await query(`SELECT * FROM students WHERE id=${studentId}`);
-      return student.rows[0]
-    } catch(err) {
+      const student = await query(`SELECT * FROM students WHERE id=${studentId}`);
+      return student.rows[0];
+    } catch (err) {
       console.log(err);
       return err;
     }
   },
-  getStudentsByCohort: async(cohortId) => {
+  getStudentsByCohort: async (cohortId) => {
     try {
-      let studentQuery = await query(`
+      const studentQuery = await query(`
         SELECT * FROM students WHERE cohort_id=${cohortId}
         ORDER BY id ASC
       `);
       return studentQuery.rows;
-    } catch(err) {
+    } catch (err) {
       console.log(err);
       return err;
     }
-  }
+  },
 };
