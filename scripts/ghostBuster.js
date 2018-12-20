@@ -1,8 +1,8 @@
 // right now, to add or edit team information, you'll use a file named teams.js in the root of the project
 // TODO: (maybe? not sure if it's worth the effort) integrate with Google Sheets to automate the team information
 
-const { thesisTeams, greenfieldTeams, legacyTeams } = require('../config/teams');
-const Team = require('../helpers/team');
+const { thesisTeams, greenfieldTeams, legacyTeams } = require('../server/config/teams');
+const Team = require('../server/helpers/team');
 
 let ghostMessages = [];
 let potentialGhostMessages = [];
@@ -109,7 +109,7 @@ const printReports = (teamName) => {
 
 const ghostBustByTeam = async (teamType, teamName) => {
   const orgName = teamType[teamName].github;
-  const students = teamType[teamName].students;
+  const { students } = teamType[teamName];
   const team = new Team(teamName, orgName, students);
   const allCommits = await team.getAllCommits(daysAgo);
   const sorted = await team.sortCommitsByStudent(allCommits, team.students);

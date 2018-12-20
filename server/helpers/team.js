@@ -38,6 +38,7 @@ module.exports = class Team {
       return response;
     } catch (error) {
       console.log('In getContributors', error);
+      return error;
     }
   }
 
@@ -74,6 +75,7 @@ module.exports = class Team {
       return response;
     } catch (error) {
       console.log(`In getCommitsByRepo, error retrieving ${repoName}`, error);
+      return error;
     }
   }
 

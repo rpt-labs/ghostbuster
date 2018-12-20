@@ -2,21 +2,6 @@
 const { thesisTeams, greenfieldTeams, legacyTeams } = require('../config/teams');
 const Team = require('./team');
 
-const getContributorsByTeam = async (teamType, teamName) => {
-  const orgName = teamType[teamName].github;
-  const students = teamType[teamName].students;
-  const team = new Team(teamName, orgName, students);
-  const repos = await team.getRepos();
-  let analyzed = {};
-  if (repos) {
-    const repoList = await team.getRepoNames(repos);
-    const allContributions = await team.getAllContributors(repoList);
-    const sorted = sortContributionsByStudent(team, allContributions);
-    analyzed = analyzeContributions(sorted);
-  }
-  return analyzed;
-};
-
 const sortContributionsByStudent = (team, contributionData) => {
   const contributions = {};
   for (const contribution of contributionData) {
@@ -47,6 +32,21 @@ const analyzeContributions = (sortedContributions) => {
   }
 
   return sortedContributions;
+};
+
+const getContributorsByTeam = async (teamType, teamName) => {
+  const orgName = teamType[teamName].github;
+  const { students } = teamType[teamName];
+  const team = new Team(teamName, orgName, students);
+  const repos = await team.getRepos();
+  let analyzed = {};
+  if (repos) {
+    const repoList = await team.getRepoNames(repos);
+    const allContributions = await team.getAllContributors(repoList);
+    const sorted = sortContributionsByStudent(team, allContributions);
+    analyzed = analyzeContributions(sorted);
+  }
+  return analyzed;
 };
 
 const getContributionsByCohort = async (teamType, cohort) => {

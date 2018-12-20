@@ -28,7 +28,7 @@ const analyzeCommits = (sortedCommits, students) => {
 
   for (const student in sortedCommits) {
     const currentStudent = students.filter(x => x.github === student)[0];
-    const github = currentStudent.github;
+    const { github } = currentStudent;
     const numCommits = sortedCommits[student].length;
     const numChanges = countStudentChanges(sortedCommits[student]);
     const commitPercentage = Math.floor((numCommits / totalCommits) * 100);
@@ -62,7 +62,7 @@ const analyzeCommits = (sortedCommits, students) => {
 
 const ghostBustByTeam = async (teamType, teamName) => {
   const orgName = teamType[teamName].github;
-  const students = teamType[teamName].students;
+  const { students } = teamType[teamName];
   const team = new Team(teamName, orgName, students);
   const allCommits = await team.getAllCommits(daysAgo);
   const sorted = await team.sortCommitsByStudent(allCommits, team.students);
