@@ -59,6 +59,7 @@ module.exports = {
       return 'Student is not part of this team';
     } catch (error) {
       console.log(error);
+      return error;
     }
   },
   updateTeam: async (teamId, newTeamInfo) => {

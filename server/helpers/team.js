@@ -59,6 +59,7 @@ module.exports = class Team {
       return response;
     } catch (error) {
       console.log('In getRepos', error);
+      return error;
     }
   }
 
@@ -94,6 +95,7 @@ module.exports = class Team {
       return [];
     } catch (error) {
       console.log('In getAllCommits', error);
+      return error;
     }
   }
 
@@ -132,6 +134,7 @@ module.exports = class Team {
       return commitsByStudent;
     } catch (error) {
       console.log('in sortCommitsByStudent', error);
+      return error;
     }
   }
 };

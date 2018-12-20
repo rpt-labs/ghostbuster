@@ -56,7 +56,7 @@ module.exports = {
     }
   },
 
-  deleteSprint: async sprintId => 'add functionality to delete sprint',
+  // deleteSprint: async (sprintId) => 'add functionality to delete sprint',
 
   getMessagesBySprintId: async (sprintId) => {
     try {
@@ -67,6 +67,7 @@ module.exports = {
       return messageQuery.rows;
     } catch (error) {
       console.log(error);
+      return error;
     }
   },
   addMessage: (messageText, sprintId) => query(`
@@ -111,7 +112,7 @@ module.exports = {
       return error || error.detail;
     }
   },
-  deleteMessage: async messageId => 'add funcitonality to delete message',
+  // deleteMessage: async messageId => 'add funcitonality to delete message',
 
   getSprintWithMessages: async (sprintId) => {
     let sprint;

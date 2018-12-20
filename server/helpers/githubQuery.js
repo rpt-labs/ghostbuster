@@ -17,5 +17,6 @@ module.exports = async function githubQuery(githubUrl) {
     return response.data.data;
   } catch (error) {
     console.log(error);
+    return error;
   }
 };

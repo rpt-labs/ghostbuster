@@ -40,7 +40,8 @@ module.exports = class Student {
       `);
       return response;
     } catch (error) {
-      // console.log(`Error checking branches for ${this.firstName}'s ${repoName}`);
+      console.log(`Error checking branches for ${this.firstName}'s ${repoName}`);
+      return error;
     }
   }
 
@@ -52,6 +53,7 @@ module.exports = class Student {
       return response;
     } catch (error) {
       console.log(error);
+      return error;
     }
   }
 
