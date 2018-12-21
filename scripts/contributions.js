@@ -3,7 +3,7 @@ const Team = require('../server/helpers/team');
 
 const getContributorsByTeam = async (teamType, teamName) => {
   const orgName = teamType[teamName].github;
-  const students = teamType[teamName].students;
+  const { students } = teamType[teamName];
   const team = new Team(teamName, orgName, students);
   const repos = await team.getRepos();
   const repoList = await team.getRepoNames(repos);
