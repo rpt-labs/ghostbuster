@@ -31,4 +31,5 @@ const thesisTeams = {
   },
 };
 
-module.exports = { thesisTeams, greenfieldTeams, legacyTeams };
+// module.exports = { thesisTeams, greenfieldTeams, legacyTeams };
+module.exports = { thesisTeams };
