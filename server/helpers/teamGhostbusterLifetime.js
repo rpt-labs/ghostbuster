@@ -50,9 +50,12 @@ const getContributorsByTeam = async (teamType, teamName) => {
 };
 
 const getContributionsByCohort = async (teamType, cohort) => {
-  const teamData = teamType === 'thesis'
-    ? thesisTeams : teamType === 'legacy'
-      ? legacyTeams : greenfieldTeams;
+  let teamData;
+  if (teamType === 'thesis') {
+    teamData = thesisTeams;
+  } else {
+    teamData = teamType === 'legacy' ? legacyTeams : greenfieldTeams;
+  }
   const teams = Object.keys(teamData);
   const cohortTeams = teams.filter(team => teamData[team].cohort === cohort.toUpperCase());
   const report = {};
