@@ -120,7 +120,7 @@ module.exports = class Team {
         }
 
         const studentGithub = commit.author.login;
-        const message = commit.commit.message;
+        const { message } = commit.commit;
 
         if (!message.includes('Merge')) {
           const commitData = await this.analyzeCommit(commit);

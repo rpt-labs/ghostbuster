@@ -72,7 +72,7 @@ const printReports = (report, includeMessages) => {
       } else {
         const beforeNumber = message.split('%')[0].split(' ');
         const afterNumber = message.split('%')[1];
-        const number = parseInt(beforeNumber.pop());
+        const number = parseInt(beforeNumber.pop(), 10);
 
         // color code the percent complete green, yellow, or red
         const numberColor = number < 50 ? '\x1b[31m'
