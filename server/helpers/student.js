@@ -66,6 +66,7 @@ module.exports = class Student {
         return 'Merge commit';
       });
     }
+    return null;
   }
 
   passBMR(commitData) {
@@ -73,6 +74,7 @@ module.exports = class Student {
       const lowerCases = commitData.map(message => message.toLowerCase());
       return lowerCases.includes('complete bare minimum requirements');
     }
+    return null;
   }
 
   // this version allows students to work out of order but does not account for human error of missing one of the milestone commits
