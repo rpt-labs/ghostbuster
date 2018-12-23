@@ -78,8 +78,8 @@ module.exports = {
     const sprintNames = Object.keys(sprints);
     sprintNames.forEach(async (sprint, index) => {
       try {
-        const id = sprints[sprint].id;
-        const messages = sprints[sprint].messages;
+        const { id } = sprints[sprint];
+        const { messages } = sprints[sprint];
 
         const insertedSprint = await query(`
             INSERT INTO sprints (id, sprint_name) VALUES (${id}, '${sprint}')

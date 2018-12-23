@@ -49,7 +49,7 @@ module.exports = {
       return studentQuery.rows;
     } catch (err) {
       console.log(err.detal || err);
-      return err;
+      return err.detail;
     }
   },
   getStudentById: async (studentId) => {
