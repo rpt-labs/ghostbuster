@@ -32,7 +32,8 @@
     "prop-types": "^15.6.2",
     "react": "^16.5.2",
     "react-chartjs-2": "^2.7.4",
-    "react-dom": "^16.5.2"
+    "react-dom": "^16.5.2",
+    "semantic-ui-react": "^0.84.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
