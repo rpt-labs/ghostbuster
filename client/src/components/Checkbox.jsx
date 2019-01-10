@@ -1,16 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Radio } from 'semantic-ui-react';
 
 const Checkbox = (props) => {
   const { repo, handleCheckboxChange } = props;
   return (
-    <div className="four wide column">
-      <div className="ui toggle checkbox">
-        <input id={repo.name} type="checkbox" checked={repo.selected} onChange={() => handleCheckboxChange(repo.name)} />
-        <label htmlFor={repo.name}>
-          {repo.name}
-        </label>
-      </div>
+    <div>
+      <Radio
+        toggle
+        label={repo.name}
+        checked={repo.selected}
+        onChange={() => handleCheckboxChange(repo.name)}
+      />
     </div>
   );
 };
