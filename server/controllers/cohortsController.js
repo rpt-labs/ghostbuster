@@ -79,7 +79,7 @@ exports.createStudent = async (req, res) => {
 
 exports.updateStudent = async (req, res) => {
   const {
-    id, firstName, lastName, github, cohortId
+    id, firstName, lastName, github, cohortId,
   } = req.query;
   const updated = await students.updateStudent(id, {
     firstName,

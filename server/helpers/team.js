@@ -3,8 +3,8 @@ const moment = require('moment');
 const githubQuery = require('./githubQuery');
 
 
-//so node won't throw an error and crash when a team doesn't yet have any repos
-process.on('uncaughtException', function (err) {
+// so node won't throw an error and crash when a team doesn't yet have any repos
+process.on('uncaughtException', (err) => {
   console.log('Caught exception: ', err);
 });
 
@@ -30,20 +30,22 @@ module.exports = class Team {
 
   async getContributorsByRepo(repo) {
     try {
-      let response = await this.githubQuery(
+      const response = await this.githubQuery(
         `https://api.github.com/repos/${this.orgName}/${repo}/contributors
-      `);
+      `,
+      );
 
       return response;
-    } catch(error) {
-      console.log("In getContributors", error);
+    } catch (error) {
+      console.log('In getContributors', error);
+      return error;
     }
   }
 
   async getAllContributors(repoList) {
     let contributions = [];
-    for (let repo of repoList) {
-      let currentContributors = await this.getContributorsByRepo(repo);
+    for (const repo of repoList) {
+      const currentContributors = await this.getContributorsByRepo(repo);
       contributions = contributions.concat(currentContributors);
     }
     return contributions;
@@ -51,13 +53,14 @@ module.exports = class Team {
 
   async getRepos() {
     try {
-      let response = await this.githubQuery(`
+      const response = await this.githubQuery(`
         https://api.github.com/orgs/${this.orgName}/repos
       `);
 
-      return response
-    } catch(error) {
-      console.log("In getRepos", error);
+      return response;
+    } catch (error) {
+      console.log('In getRepos', error);
+      return error;
     }
   }
 
@@ -65,57 +68,59 @@ module.exports = class Team {
     const daysAgo = moment().subtract(days, 'days');
 
     try {
-      let response = await this.githubQuery(`
+      const response = await this.githubQuery(`
         https://api.github.com/repos/${this.orgName}/${repoName}/commits?since=${daysAgo}
       `);
 
       return response;
-    } catch(error) {
+    } catch (error) {
       console.log(`In getCommitsByRepo, error retrieving ${repoName}`, error);
+      return error;
     }
   }
 
   async getAllCommits(days) {
     try {
-      let repos = await this.getRepos();
+      const repos = await this.getRepos();
       if (repos) {
-        let repoNames = this.getRepoNames(repos);
+        const repoNames = this.getRepoNames(repos);
         let allCommits = [];
 
-        for (let repo of repoNames) {
-          let commits = await this.getCommitsByRepo(repo, days);
+        for (const repo of repoNames) {
+          const commits = await this.getCommitsByRepo(repo, days);
           if (commits) {
             allCommits = allCommits.concat(commits);
           }
         }
         return allCommits;
-      } else {
-        return [];
       }
-    } catch(error) {
-      console.log("In getAllCommits", error);
+      return [];
+    } catch (error) {
+      console.log('In getAllCommits', error);
+      return error;
     }
   }
 
   async analyzeCommit(commit) {
     try {
-      let response = await this.githubQuery(commit.url);
+      const response = await this.githubQuery(commit.url);
       return response;
-    } catch(error) {
-      console.log("In analyzeCommit", error);
+    } catch (error) {
+      console.log('In analyzeCommit', error);
+      return error;
     }
   }
 
   async sortCommitsByStudent(commits) {
     try {
-      let commitsByStudent = {};
-      for (let commit of commits) {
+      const commitsByStudent = {};
+      for (const commit of commits) {
         if (!commit.author) {
           continue;
         }
 
-        let studentGithub = commit.author.login;
-        let message = commit.commit.message;
+        const studentGithub = commit.author.login;
+        const { message } = commit.commit;
 
         if (!message.includes("Merge")) {
           let commitData = await this.analyzeCommit(commit);
@@ -127,13 +132,13 @@ module.exports = class Team {
               } else {
                 commitsByStudent[studentGithub] = [{sha: commit.sha, changes: changeTotal}];
               }
-            }
           }
         }
       }
       return commitsByStudent;
-    } catch(error) {
-      console.log("in sortCommitsByStudent", error);
+    } catch (error) {
+      console.log('in sortCommitsByStudent', error);
+      return error;
     }
   }
-}
+};

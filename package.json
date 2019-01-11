@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --require dotenv/config server/app",
-    "build": "webpack --watch -d"
+    "build": "webpack --watch -d",
+    "lint": "eslint *.js client db scripts server"
   },
   "repository": {
     "type": "git",

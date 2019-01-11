@@ -2,11 +2,12 @@ const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const OktaJwtVerifier = require('@okta/jwt-verifier');
 const cors = require('cors');
-const app = express();
-const asyncMiddleware = require('./helpers/asyncMiddleware');
-const port = process.env.PORT || 1234;
 const path = require('path');
 
+const app = express();
+const asyncMiddleware = require('./helpers/asyncMiddleware');
+
+const port = process.env.PORT || 1234;
 const { OKTA_URL, OKTA_CLIENT_ID } = process.env;
 
 //okta authentication
@@ -18,13 +19,13 @@ const oktaJwtVerifier = new OktaJwtVerifier({
   },
 });
 
-//graphql
+// graphql
 const schema = require('./schema/schema');
 
-//controllers (other controllers are used in routes)
+// controllers (other controllers are used in routes)
 const seedersController = require('./controllers/seedersController');
 
-//routes
+// routes
 const cohorts = require('./routes/cohorts');
 const students = require('./routes/students');
 const teams = require('./routes/teams');
@@ -67,25 +68,25 @@ app.use(logger);
 // static files
 app.use('/', express.static(path.join(__dirname, '../public')));
 
-//graphql
+// graphql
 app.use('/graphql', graphqlHTTP({
   schema,
-  graphiql: true
+  graphiql: true,
 }));
 
-//sprints
+// sprints
 app.use('/ghostbuster/sprints', sprints);
 
-//cohorts
+// cohorts
 app.use('/ghostbuster/cohorts', cohorts);
 
-//students
+// students
 app.use('/ghostbuster/students', students);
 
-//teams
+// teams
 app.use('/ghostbuster/teams', teams);
 
-//to seed DB with current student/cohort/team information
+// to seed DB with current student/cohort/team information
 app.get('/ghostbuster/seed/:seedType', asyncMiddleware(seedersController));
 
 //wildcard
