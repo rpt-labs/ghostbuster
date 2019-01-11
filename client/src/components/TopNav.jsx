@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { withAuth } from '@okta/okta-react';
 
 const TopNav = (props) => {
   const { handleSelectDisplay } = props;
@@ -12,14 +14,19 @@ const TopNav = (props) => {
         <div className="six wide column">
           <div className="ui horizontal right floated list">
             <div className="middle aligned item">
-              <p className="top-nav-item" onClick={() => handleSelectDisplay('sprints')} role="presentation">
-              Check Sprints
-              </p>
+              <Link style={{ color: 'white', textDecoration: 'none' }} to="/sprints" className="top-nav-item" onClick={() => handleSelectDisplay('sprints')} role="presentation">
+              Sprints
+              </Link>
             </div>
             <div className="middle aligned item">
-              <p className="top-nav-item" onClick={() => handleSelectDisplay('projects')} role="presentation">
-              Check Projects
-              </p>
+              <Link style={{ color: 'white', textDecoration: 'none' }} to="/projects" className="top-nav-item" onClick={() => handleSelectDisplay('projects')} role="presentation">
+              Projects
+              </Link>
+            </div>
+            <div className="middle aligned item">
+              <Link style={{ color: 'white', textDecoration: 'none' }} to="/projects" className="top-nav-item" onClick={() => props.auth.logout('/sprints')} role="presentation">
+              Logout
+              </Link>
             </div>
           </div>
         </div>
@@ -32,4 +39,4 @@ TopNav.propTypes = {
   handleSelectDisplay: PropTypes.func.isRequired,
 };
 
-export default TopNav;
+export default withAuth(TopNav);
