@@ -2,7 +2,7 @@
   "name": "github-crawler",
   "version": "1.0.0",
   "description": "alert to ghosts",
-  "main": "ghostChecker.js",
+  "main": "server/app",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --require dotenv/config server/app",
@@ -20,6 +20,9 @@
   },
   "homepage": "https://github.com/rpt-ginko/github-crawler#readme",
   "dependencies": {
+    "@okta/jwt-verifier": "0.0.14",
+    "@okta/okta-react": "^1.1.4",
+    "@okta/okta-signin-widget": "^2.14.0",
     "axios": "^0.18.0",
     "chart.js": "^2.7.3",
     "cors": "^2.8.4",
@@ -33,7 +36,8 @@
     "react": "^16.5.2",
     "react-chartjs-2": "^2.7.4",
     "react-dom": "^16.5.2",
-    "semantic-ui-react": "^0.84.0"
+    "semantic-ui-react": "^0.84.0",
+    "react-router-dom": "^4.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",

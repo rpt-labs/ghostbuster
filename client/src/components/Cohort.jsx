@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Repo from './Repo';
 import CheckboxList from './CheckboxList';
+import TabNav from './TabNav';
 
 class Cohort extends React.Component {
   constructor(props) {
@@ -124,7 +125,14 @@ class Cohort extends React.Component {
   }
 
   render() {
-    const { loading, commits, showSegment } = this.props;
+    const {
+      loading,
+      commits,
+      showSegment,
+      selected,
+      cohorts,
+      selectCohort
+    } = this.props;
     const { repos } = this.state;
     const style = loading
       ? 'ui bottom attached loading tab segment'
@@ -141,6 +149,11 @@ class Cohort extends React.Component {
 
     return (
       <div>
+        <TabNav
+          selected={selected}
+          cohorts={cohorts}
+          selectCohort={selectCohort}
+        />
         <CheckboxList repos={repos} handleCheckboxChange={this.handleCheckboxChange} storeCheckedRepos={this.storeCheckedRepos} />
         {segment}
       </div>
