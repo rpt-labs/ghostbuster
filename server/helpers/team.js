@@ -132,6 +132,7 @@ module.exports = class Team {
               } else {
                 commitsByStudent[studentGithub] = [{sha: commit.sha, changes: changeTotal}];
               }
+            }
           }
         }
       }
