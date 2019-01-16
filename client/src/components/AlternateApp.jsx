@@ -2,25 +2,26 @@ import React from 'react';
 import axios from 'axios';
 
 // components
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Security, SecureRoute, ImplicitCallback } from '@okta/okta-react';
 import Home from './Home';
 import TopNav from './TopNav';
 import Cohort from './Cohort';
 import TeamList from './TeamList';
 import Login from './Login';
 
-//routing
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+// routing
 
-//auth
-import { Security, SecureRoute, ImplicitCallback } from '@okta/okta-react';
-const OKTA_BASE_URL = process.env.OKTA_BASE_URL;
-const OKTA_CLIENT_ID = process.env.OKTA_CLIENT_ID;
-const OKTA_URL = process.env.OKTA_URL;
+// auth
 
 // queries
 // import { getAllCohorts } from '../queries/queries';
 import { getAllCohortsNoDb } from '../queries/queries';
-const GHOSTBUSTER_BASE_URL = process.env.GHOSTBUSTER_BASE_URL;
+
+const { OKTA_BASE_URL } = process.env;
+const { OKTA_CLIENT_ID } = process.env;
+const { OKTA_URL } = process.env;
+const { GHOSTBUSTER_BASE_URL } = process.env;
 
 /*
   eslint no-underscore-dangle: ["error", { "allowAfterThis": true }]
@@ -28,7 +29,7 @@ const GHOSTBUSTER_BASE_URL = process.env.GHOSTBUSTER_BASE_URL;
 
 function onAuthRequired({ history }) {
   history.push('/login');
-};
+}
 
 export default class AlternateApp extends React.Component {
   constructor(props) {
@@ -146,7 +147,7 @@ export default class AlternateApp extends React.Component {
       showSegment,
       currentCommitData,
       projectData,
-      display,
+      // display,
     } = this.state;
 
     return (
@@ -154,42 +155,48 @@ export default class AlternateApp extends React.Component {
         <Security
           issuer={OKTA_URL}
           client_id={OKTA_CLIENT_ID}
-          redirect_uri={window.location.origin + '/implicit/callback'}
+          redirect_uri={`${window.location.origin}/implicit/callback`}
           onAuthRequired={onAuthRequired}
         >
           <div>
             <TopNav handleSelectDisplay={this.handleSelectDisplay} />
 
-            <div className="ui container" >
-              <SecureRoute path='/' exact={true} component={Home} />
-              <SecureRoute path='/sprints' render={(props) => {
-                return <Cohort {...props}
-                  selected={selectedCohort}
-                  cohorts={sprintCohorts}
-                  selectCohort={this.handleSelectCohort}
-                  repoSelect={this.handleRepoSelect}
-                  loading={loading}
-                  showSegment={showSegment}
-                  commits={currentCommitData}
-                />
-                }}
+            <div className="ui container">
+              <SecureRoute path="/" exact component={Home} />
+              <SecureRoute
+                path="/sprints"
+                render={props => (
+                  <Cohort
+                    {...props}
+                    selected={selectedCohort}
+                    cohorts={sprintCohorts}
+                    selectCohort={this.handleSelectCohort}
+                    repoSelect={this.handleRepoSelect}
+                    loading={loading}
+                    showSegment={showSegment}
+                    commits={currentCommitData}
+                  />
+                )}
               />
 
-              <SecureRoute path='/projects' render={(props) => {
-                return <TeamList {...props}
-                  cohorts={teamCohorts}
-                  selectCohort={this.handleSelectCohort}
-                  selectedCohort={selectedCohort}
-                  checkProjects={this.checkProjects}
-                  loading={loading}
-                  showSegment={showSegment}
-                  projects={projectData}
-                />
-                }}
+              <SecureRoute
+                path="/projects"
+                render={props => (
+                  <TeamList
+                    {...props}
+                    cohorts={teamCohorts}
+                    selectCohort={this.handleSelectCohort}
+                    selectedCohort={selectedCohort}
+                    checkProjects={this.checkProjects}
+                    loading={loading}
+                    showSegment={showSegment}
+                    projects={projectData}
+                  />
+                )}
               />
 
-              <Route path='/login' render={() => <Login baseUrl={OKTA_BASE_URL} />} />
-              <Route path='/implicit/callback' component={ImplicitCallback} />
+              <Route path="/login" render={() => <Login baseUrl={OKTA_BASE_URL} />} />
+              <Route path="/implicit/callback" component={ImplicitCallback} />
 
             </div>
           </div>
@@ -198,4 +205,4 @@ export default class AlternateApp extends React.Component {
 
     );
   }
-};
+}
