@@ -131,7 +131,7 @@ class Cohort extends React.Component {
       showSegment,
       selected,
       cohorts,
-      selectCohort
+      selectCohort,
     } = this.props;
     const { repos } = this.state;
     const style = loading
