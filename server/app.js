@@ -10,7 +10,7 @@ const asyncMiddleware = require('./helpers/asyncMiddleware');
 const port = process.env.PORT || 1234;
 const { OKTA_URL, OKTA_CLIENT_ID } = process.env;
 
-//okta authentication
+// okta authentication
 const oktaJwtVerifier = new OktaJwtVerifier({
   issuer: OKTA_URL,
   clientId: OKTA_CLIENT_ID,
@@ -52,12 +52,12 @@ function authenticationRequired(req, res, next) {
     .catch((err) => {
       res.status(401).send(err.message);
     });
-};
+}
 
 function logger(req, res, next) {
-  console.log("url", req.url, "path", req.path, "method: ", req.method, "query: ", req.query);
+  console.log('url', req.url, 'path', req.path, 'method: ', req.method, 'query: ', req.query);
   next();
-};
+}
 
 // cors
 app.use(cors());
@@ -89,12 +89,12 @@ app.use('/ghostbuster/teams', teams);
 // to seed DB with current student/cohort/team information
 app.get('/ghostbuster/seed/:seedType', asyncMiddleware(seedersController));
 
-//wildcard
-app.get('/*', function(req, res) {
-  console.log(req.method, "url",req.url, "path",req.path);
-  res.sendFile(path.join(__dirname, '../public/index.html'), function(err) {
+// wildcard
+app.get('/*', (req, res) => {
+  console.log(req.method, 'url', req.url, 'path', req.path);
+  res.sendFile(path.join(__dirname, '../public/index.html'), (err) => {
     if (err) {
-      res.status(500).send(err)
+      res.status(500).send(err);
     }
   });
 });
