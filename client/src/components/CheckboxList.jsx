@@ -1,23 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Grid } from 'semantic-ui-react';
 import Checkbox from './Checkbox';
 import GhostbusterButton from './GhostbusterButton';
 
 const CheckboxList = (props) => {
   const { repos, handleCheckboxChange, storeCheckedRepos } = props;
   const repoList = repos.map(repo => (
-    <Checkbox
-      repo={repo}
-      handleCheckboxChange={handleCheckboxChange}
-      key={`${repo.name}-checkbox`}
-    />));
+    <Grid.Column width={4} key={`${repo.name}-checkbox`}>
+      <Checkbox
+        repo={repo}
+        handleCheckboxChange={handleCheckboxChange}
+      />
+    </Grid.Column>
+  ));
 
   return (
     <div>
-      <div className="ui stackable grid checkboxes">
+      <Grid columns={4} padded="vertically">
         {repoList}
         <br />
-      </div>
+      </Grid>
       <GhostbusterButton clickHandler={storeCheckedRepos} />
     </div>
   );
