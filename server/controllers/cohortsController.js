@@ -23,6 +23,7 @@ exports.getCohorts = async (req, res) => {
 };
 
 exports.createCohort = async (req, res) => {
+  // eslint-disable-next-line prefer-const
   let { name, phase } = req.query;
   // needs to be lower case for repo-matching
   name = name.toLowerCase();
@@ -36,8 +37,8 @@ exports.createCohort = async (req, res) => {
 };
 
 exports.updateCohort = async (req, res) => {
-  const { cohort_id, cohort_name, phase } = req.query;
-  const updated = await cohorts.updateCohort(cohort_id, { cohort_name, phase });
+  const { cohortId, cohortName, phase } = req.query;
+  const updated = await cohorts.updateCohort(cohortId, { cohortName, phase });
   if (updated.name === 'error') {
     res.status(400).json({ error: updated.detail });
   } else {
@@ -51,8 +52,8 @@ exports.deleteCohort = (req, res) => {
 
 // STUDENT requests
 exports.getStudents = async (req, res) => {
-  const { cohort_id } = req.query;
-  const studentData = cohort_id
+  const { cohortId } = req.query;
+  const studentData = cohortId
     ? await students.getStudentsByCohort(cohort_id)
     : await students.getAllStudents();
 
