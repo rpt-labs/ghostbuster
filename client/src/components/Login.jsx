@@ -24,12 +24,12 @@ export default withAuth(class Login extends Component {
       return auth.redirect({
         sessionToken: res.session.token,
       });
-    } else {
+    } 
       // The user can be in another authentication state that requires further action.
       // For more information about these states, see:
       // https://github.com/okta/okta-signin-widget#rendereloptions-success-error
       return null;
-    }
+    
   }
 
   onError(err) {
@@ -45,11 +45,12 @@ export default withAuth(class Login extends Component {
 
   render() {
     if (this.state.authenticated === null) return null;
-    return this.state.authenticated ?
-      <Redirect to={{ pathname: '/' }}/> :
-      <OktaSignInWidget
+    return this.state.authenticated
+      ? <Redirect to={{ pathname: '/' }} />
+      : <OktaSignInWidget
         baseUrl={this.props.baseUrl}
         onSuccess={this.onSuccess}
-        onError={this.onError}/>;
+        onError={this.onError} 
+      />;
   }
 });
