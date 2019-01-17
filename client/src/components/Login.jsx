@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { withAuth } from '@okta/okta-react';
+import PropTypes from 'prop-types';
 import OktaSignInWidget from './OktaSignInWidget';
 
-export default withAuth(class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.onSuccess = this.onSuccess.bind(this);
@@ -24,32 +25,46 @@ export default withAuth(class Login extends Component {
       return auth.redirect({
         sessionToken: res.session.token,
       });
-    } else {
-      // The user can be in another authentication state that requires further action.
-      // For more information about these states, see:
-      // https://github.com/okta/okta-signin-widget#rendereloptions-success-error
-      return null;
     }
+    // The user can be in another authentication state that requires further action.
+    // For more information about these states, see:
+    // https://github.com/okta/okta-signin-widget#rendereloptions-success-error
+    return null;
   }
 
-  onError(err) {
-    console.log('error logging in', err);
+  onError() {
+    throw this.err;
+    // console.log('error logging in', this.err);
   }
 
   async checkAuthentication() {
-    const authenticated = await this.props.auth.isAuthenticated();
-    if (authenticated !== this.state.authenticated) {
-      this.setState({ authenticated });
+    const { auth } = this.props;
+    const isAuthenticated = await auth.isAuthenticated();
+    const { authenticated } = this.state;
+    if (isAuthenticated !== authenticated) {
+      this.setState({ authenticated: isAuthenticated });
     }
   }
 
   render() {
-    if (this.state.authenticated === null) return null;
-    return this.state.authenticated ?
-      <Redirect to={{ pathname: '/' }}/> :
-      <OktaSignInWidget
-        baseUrl={this.props.baseUrl}
-        onSuccess={this.onSuccess}
-        onError={this.onError}/>;
+    const { authenticated } = this.state;
+    const { baseUrl } = this.props;
+    if (authenticated === null) return null;
+    return authenticated
+      ? <Redirect to={{ pathname: '/' }} />
+      : (
+        <OktaSignInWidget
+          baseUrl={baseUrl}
+          onSuccess={this.onSuccess}
+          onError={this.onError}
+        />
+      );
   }
-});
+}
+
+Login.propTypes = {
+  auth: PropTypes.instanceOf(Object).isRequired,
+  baseUrl: PropTypes.string.isRequired,
+};
+
+export default withAuth(Login);

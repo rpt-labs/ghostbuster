@@ -37,6 +37,7 @@ const TopNav = (props) => {
 
 TopNav.propTypes = {
   handleSelectDisplay: PropTypes.func.isRequired,
+  auth: PropTypes.instanceOf(Object).isRequired,
 };
 
 export default withAuth(TopNav);

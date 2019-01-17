@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/rpt-ginko/github-crawler#readme",
   "dependencies": {
+    "@babel/polyfill": "^7.2.5",
     "@okta/jwt-verifier": "0.0.14",
     "@okta/okta-react": "^1.1.4",
     "@okta/okta-signin-widget": "^2.14.0",
@@ -36,8 +37,8 @@
     "react": "^16.5.2",
     "react-chartjs-2": "^2.7.4",
     "react-dom": "^16.5.2",
-    "semantic-ui-react": "^0.84.0",
-    "react-router-dom": "^4.3.1"
+    "react-router-dom": "^4.3.1",
+    "semantic-ui-react": "^0.84.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
