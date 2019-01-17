@@ -166,6 +166,9 @@ Cohort.propTypes = {
   loading: PropTypes.bool.isRequired,
   showSegment: PropTypes.bool.isRequired,
   repoSelect: PropTypes.func.isRequired,
+  selected: PropTypes.string.isRequired,
+  cohorts: PropTypes.instanceOf(Array).isRequired,
+  selectCohort: PropTypes.func.isRequired,
 };
 
 export default Cohort;
