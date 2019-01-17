@@ -1,30 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Tab } from 'semantic-ui-react';
 
 const TabNav = (props) => {
-  const { cohorts, selected, selectCohort } = props;
-  const tabs = cohorts.map((cohort) => {
-    const style = selected === cohort.cohort_name
-      ? 'item active'
-      : 'item';
-
-    return (
-      <div role="presentation" key={cohort.name} className={style} onClick={e => selectCohort(e)}>
-        {cohort.cohort_name}
-      </div>
-    );
-  });
+  const { cohorts, selectCohort } = props;
+  const panes = cohorts.map(cohort => ({ menuItem: cohort.name }));
+  const handleChange = e => selectCohort(e);
 
   return (
-    <div className="ui top attached tabular menu">
-      {tabs}
-    </div>
+    <Tab panes={panes} onTabChange={handleChange} />
   );
 };
 
 TabNav.propTypes = {
   cohorts: PropTypes.instanceOf(Object).isRequired,
-  selected: PropTypes.string.isRequired,
   selectCohort: PropTypes.func.isRequired,
 };
 
