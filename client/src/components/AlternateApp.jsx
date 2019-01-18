@@ -159,7 +159,7 @@ export default class AlternateApp extends React.Component {
           onAuthRequired={onAuthRequired}
         >
           <div>
-            <TopNav handleSelectDisplay={this.handleSelectDisplay} />
+            <TopNav />
 
             <div className="ui container">
               <SecureRoute path="/" exact component={Home} />
