@@ -6,33 +6,12 @@
   margin: 3em;
 }
 
-.top-nav {
-  color: white;
-  background-color: rgb(57, 57, 66);
-  padding: 30px;
-}
-
-.top-nav-item {
-  padding: 0px 20px;
-  font-size: 18px;
-}
-
 .ui.grid.checkboxes {
   margin-top: 25px;
 }
 
 #getSprints {
   margin: 20px;
-}
-
-#ghostbuster-button {
-  margin-top: 30px;
-  margin-bottom: 30px;
-  border: 1px solid #F44D63;
-}
-
-.ghostbuster-button-text {
-  color: #403F4C;
 }
 
 #github-button {
@@ -50,7 +29,6 @@
 .repo-item {
   padding-top: 20px;
 }
-
 
 .card-image img {
   height: 56px;

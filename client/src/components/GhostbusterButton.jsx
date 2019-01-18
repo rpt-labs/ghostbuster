@@ -14,7 +14,7 @@ const GhostbusterButton = (props) => {
     >
       <Header as="h2" textAlign="center">
         <Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8J9vA9QPiEykz90ij9IRaR3tMKt_kqA0Xpoe0Ha35owi_bWLa" />
-        <Header.Content>
+        <Header.Content style={{ color: '#403F4C' }}>
           Who you gonna call?
         </Header.Content>
         <Button primary onClick={e => clickHandler(e)} style={{ marginLeft: '30px' }}>GHOSTBUSTER</Button>
