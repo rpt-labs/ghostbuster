@@ -1,26 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { withAuth } from '@okta/okta-react';
 import { Menu } from 'semantic-ui-react';
+import { TopNavMenu, StyledLink } from './Styles/TopNavStyles';
 
 const TopNav = props => (
-  <Menu style={{ backgroundColor: '#393942', padding: '30px', borderRadius: '0px' }}>
-    <h1 style={{ color: 'white' }}>Ghostbuster</h1>
+  <TopNavMenu>
+    <h1>Ghostbuster</h1>
     <Menu.Menu position="right">
       <Menu.Item>
-        <Link to="/sprints" style={{ color: 'white', padding: '0px 20px', fontSize: '18px' }}>
+        <StyledLink to="/sprints">
           Sprints
-        </Link>
-        <Link to="/projects" style={{ color: 'white', padding: '0px 20px', fontSize: '18px' }}>
+        </StyledLink>
+        <StyledLink to="/projects">
           Projects
-        </Link>
-        <Link to="/login" onClick={() => props.auth.logout('/login')} style={{ color: 'white', padding: '0px 20px', fontSize: '18px' }}>
+        </StyledLink>
+        <StyledLink to="/login" onClick={() => props.auth.logout('/login')}>
           Logout
-        </Link>
+        </StyledLink>
       </Menu.Item>
     </Menu.Menu>
-  </Menu>
+  </TopNavMenu>
 );
 
 TopNav.propTypes = {
