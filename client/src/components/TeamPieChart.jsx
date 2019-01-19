@@ -37,7 +37,7 @@ const TeamPieChart = (props) => {
   };
 
   return (
-    <div>
+    <div style={{ textAlign: 'center' }}>
       {title}
       <Pie data={data} />
       <br />

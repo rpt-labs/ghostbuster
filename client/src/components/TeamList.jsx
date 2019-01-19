@@ -42,7 +42,7 @@ const TeamList = (props) => {
   }
 
   const segment = showSegment ? (
-    <div className={style}>
+    <div className={style} style={{ padding: '30px 0px' }}>
       <div>
         {teamList}
       </div>
