@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Grid, Segment } from 'semantic-ui-react';
 import TeamPieChart from './TeamPieChart';
 import TeamBarChart from './TeamBarChart';
 
@@ -10,19 +11,21 @@ const TeamCard = (props) => {
     ? <TeamBarChart contributions={lifetimeContributions} />
     : <div />;
   return (
-    <div className="ui center aligned grid team-card">
-      <div className="row">
-        <div className="eight wide column">
+    <Segment>
+      <Grid centered columns={2}>
+        <Grid.Column>
           {lifetimeChart}
-        </div>
-      </div>
-      <div className="eight wide column">
-        <TeamPieChart type="commits" students={data} />
-      </div>
-      <div className="eight wide column">
-        <TeamPieChart type="changes" students={data} />
-      </div>
-    </div>
+        </Grid.Column>
+        <Grid.Row centered columns={2}>
+          <Grid.Column>
+            <TeamPieChart type="commits" students={data} />
+          </Grid.Column>
+          <Grid.Column>
+            <TeamPieChart type="changes" students={data} />
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    </Segment>
   );
 };
 
