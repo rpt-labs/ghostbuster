@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { StyledHeader, StyledGrid } from './Styles/TeamStyles';
 import StudentReport from './StudentReport';
 import TeamCard from './TeamCard';
 
@@ -9,15 +10,13 @@ const Team = (props) => {
   const reportList = names.map(name => <StudentReport key={name} student={name} report={students[name]} />);
 
   return (
-    <div>
-      <h1 className="team-title">{team}</h1>
+    <React.Fragment>
+      <StyledHeader as="h1">{team}</StyledHeader>
       <TeamCard lifetimeContributions={lifetimeContributions} data={students} />
-      <div className="ui list report-detail">
-        <div className="ui two column stackable grid">
-          {reportList}
-        </div>
-      </div>
-    </div>
+      <StyledGrid stackable columns={2}>
+        {reportList}
+      </StyledGrid>
+    </React.Fragment>
   );
 };
 
