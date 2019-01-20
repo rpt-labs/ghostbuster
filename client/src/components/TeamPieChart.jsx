@@ -1,6 +1,8 @@
 import React from 'react';
 import { Pie } from 'react-chartjs-2';
 import PropTypes from 'prop-types';
+import { Container, Header } from 'semantic-ui-react';
+import { FooterText } from './Styles/TeamStyles';
 
 const TeamPieChart = (props) => {
   const { students, type } = props;
@@ -18,14 +20,14 @@ const TeamPieChart = (props) => {
   const typeData = type === 'commits' ? commits : changes;
   const title = type === 'commits'
     ? (
-      <h2>
+      <Header as="h2">
         { "Last Week's Commits" }
-      </h2>
+      </Header>
     )
     : (
-      <h2>
+      <Header as="h2">
         { "Last Week's Changes" }
-      </h2>
+      </Header>
     );
 
   const data = {
@@ -37,12 +39,12 @@ const TeamPieChart = (props) => {
   };
 
   return (
-    <div style={{ textAlign: 'center' }}>
+    <Container textAlign="center">
       {title}
       <Pie data={data} />
       <br />
-      <p style={{ color: 'lightgrey' }}>Commits with more than 5000 code changes omitted</p>
-    </div>
+      <FooterText>Commits with more than 5000 code changes omitted</FooterText>
+    </Container>
   );
 };
 
