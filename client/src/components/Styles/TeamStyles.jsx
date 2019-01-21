@@ -19,3 +19,7 @@ export const StyledHeader = styled(Header)`
 export const StyledGrid = styled(Grid)` 
   padding: 40px !important;
 `;
+
+export const PaddedGrid = styled(Grid)` 
+  padding-top: 30px !important;
+`;

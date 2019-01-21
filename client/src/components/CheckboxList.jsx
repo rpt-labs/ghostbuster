@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Grid } from 'semantic-ui-react';
 import Checkbox from './Checkbox';
 import GhostbusterButton from './GhostbusterButton';
+import { PaddedGrid } from './Styles/TeamStyles';
 
 const CheckboxList = (props) => {
   const { repos, handleCheckboxChange, storeCheckedRepos } = props;
@@ -17,10 +18,10 @@ const CheckboxList = (props) => {
 
   return (
     <div>
-      <Grid columns={4} padded="vertically">
+      <PaddedGrid columns={4} padded="vertically">
         {repoList}
         <br />
-      </Grid>
+      </PaddedGrid>
       <GhostbusterButton clickHandler={storeCheckedRepos} />
     </div>
   );

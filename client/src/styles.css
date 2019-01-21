@@ -2,10 +2,6 @@
   margin-top: 50px;
 }
 
-.ui.list.report-detail {
-  margin: 3em;
-}
-
 .ui.grid.checkboxes {
   margin-top: 25px;
 }
@@ -16,18 +12,6 @@
 
 #github-button {
   color: #403F4C;
-}
-
-.repo-title {
-  text-align: center;
-  padding: 10px;
-  margin-bottom: 30px;
-  border-bottom: 2px solid lightgrey;
-  color: #2185d0;
-}
-
-.repo-item {
-  padding-top: 20px;
 }
 
 .card-image img {
@@ -43,10 +27,6 @@
 
 .progress {
   padding-bottom: 10px;
-}
-
-.team-card {
-  border: 1px solid lightgrey;
 }
 
 #app .ui.complete-button {
