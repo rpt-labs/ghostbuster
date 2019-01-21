@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Grid } from 'semantic-ui-react';
 import { StyledHeader, StyledGrid } from './Styles/TeamStyles';
 import StudentReport from './StudentReport';
 import TeamCard from './TeamCard';
@@ -7,15 +8,23 @@ import TeamCard from './TeamCard';
 const Team = (props) => {
   const { students, team, lifetimeContributions } = props;
   const names = Object.keys(students);
-  const reportList = names.map(name => <StudentReport key={name} student={name} report={students[name]} />);
+  const reportList = (
+    <StyledGrid stackable>
+      <Grid.Row columns={2}>
+        {names.map(name => (
+          <Grid.Column>
+            <StudentReport key={name} student={name} report={students[name]} />
+            <br />
+          </Grid.Column>
+        ))}
+      </Grid.Row>
+    </StyledGrid>);
 
   return (
     <React.Fragment>
       <StyledHeader as="h1">{team}</StyledHeader>
       <TeamCard lifetimeContributions={lifetimeContributions} data={students} />
-      <StyledGrid stackable columns={2}>
-        {reportList}
-      </StyledGrid>
+      {reportList}
     </React.Fragment>
   );
 };

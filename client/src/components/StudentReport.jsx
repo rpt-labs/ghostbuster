@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { List } from 'semantic-ui-react';
 
 const StudentReport = (props) => {
   const { student, report } = props;
@@ -9,18 +10,14 @@ const StudentReport = (props) => {
   const message = `Last week: ${report.numCommits} commits, ${report.numChanges} code changes.`;
 
   return (
-    <div className="column">
-      <div className="item">
-        <div className="content">
-          <a href={`https://www.github.com/${report.github}`} className="header">{student}</a>
-          <div style={style} className="description">
-            <span>
-              <p>{message}</p>
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
+    <List>
+      <List.Item>
+        <a target="_blank" rel="noopener noreferrer" href={`https://www.github.com/${report.github}`}>{student}</a>
+      </List.Item>
+      <List.Item style={style}>
+        {message}
+      </List.Item>
+    </List>
   );
 };
 
