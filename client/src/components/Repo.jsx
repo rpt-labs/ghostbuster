@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Grid } from 'semantic-ui-react';
+import { StyledHeader } from './Styles/TeamStyles';
 import StudentCard from './StudentCard';
 
 const Repo = (props) => {
@@ -13,12 +15,12 @@ const Repo = (props) => {
   ));
 
   return (
-    <div className="repo-item">
-      <h1 className="repo-title">{name}</h1>
-      <div className="ui two column stackable divided grid">
+    <React.Fragment>
+      <StyledHeader as="h1">{name}</StyledHeader>
+      <Grid celled stackable columns={2} divided stretched>
         {studentList}
-      </div>
-    </div>
+      </Grid>
+    </React.Fragment>
   );
 };
 
