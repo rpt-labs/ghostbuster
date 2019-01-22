@@ -4,6 +4,7 @@ import axios from 'axios';
 // components
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Security, SecureRoute, ImplicitCallback } from '@okta/okta-react';
+import { Container } from 'semantic-ui-react';
 import Home from './Home';
 import TopNav from './TopNav';
 import Cohort from './Cohort';
@@ -161,7 +162,7 @@ export default class AlternateApp extends React.Component {
           <div>
             <TopNav />
 
-            <div className="ui container">
+            <Container>
               <SecureRoute path="/" exact component={Home} />
               <SecureRoute
                 path="/sprints"
@@ -198,7 +199,7 @@ export default class AlternateApp extends React.Component {
               <Route path="/login" render={() => <Login baseUrl={OKTA_BASE_URL} />} />
               <Route path="/implicit/callback" component={ImplicitCallback} />
 
-            </div>
+            </Container>
           </div>
         </Security>
       </Router>
