@@ -1,50 +1,54 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {
+  Button, Icon, Image, List, Header,
+} from 'semantic-ui-react';
 
 const Progress = (props) => {
   const { student } = props;
-  let buttonStyle;
+  let percentageButton;
   let icon;
 
   // dynamically render button with percentage complete
   if (student.percentComplete >= 85) {
-    buttonStyle = 'circular ui mini button complete-button';
+    percentageButton = <Button positive size="mini" style={{ borderRadius: '50px' }}>{`${student.percentComplete}%`}</Button>;
   } else if (student.percentComplete >= 50) {
-    buttonStyle = 'circular ui mini button progress-button';
+    percentageButton = <Button color="yellow" size="mini" style={{ borderRadius: '50px' }}>{`${student.percentComplete}%`}</Button>;
   } else {
-    buttonStyle = 'circular ui mini button danger-button';
+    percentageButton = <Button negative size="mini" style={{ borderRadius: '50px' }}>{`${student.percentComplete}%`}</Button>;
   }
 
   // dynamically render progress icon
   if (student.BMR) {
-    icon = (<i style={{ color: '#85D19C' }} className="huge check circle outline icon" />);
+    icon = <Icon name="check circle outline" style={{ color: '#85D19C' }} size="huge" />;
   } else if (student.percentComplete === 0) {
-    icon = <img className="ui middle aligned circular image" alt="progress" src="https://png.pngtree.com/element_origin_min_pic/16/12/25/a993726976f4619909704e1177d63658.jpg" />;
+    icon = (
+      <Image
+        src="https://png.pngtree.com/element_origin_min_pic/16/12/25/a993726976f4619909704e1177d63658.jpg"
+        size="tiny"
+        circular
+        centered
+        style={{ height: '56px', width: '56px' }}
+      />
+    );
   } else {
-    icon = (<i style={{ color: 'lightgrey' }} className="huge hourglass outline icon" />);
+    icon = <Icon name="hourglass outline" style={{ color: 'lightgrey' }} size="huge" />;
   }
 
   return (
-    <div className="progress">
-      <div className="ui list">
-        <div className="item">
-          <div className="card-image">
-            {icon}
-          </div>
-        </div>
-        <div className="item">
-          <div className="ui header">
-            {student.name}
-          </div>
-        </div>
-        <div className="item">
-          <div className={buttonStyle}>
-            {`${student.percentComplete}%`}
-          </div>
-        </div>
-      </div>
-    </div>
-
+    <React.Fragment>
+      <List>
+        <List.Item>
+          {icon}
+        </List.Item>
+        <List.Item>
+          <Header as="h3">{student.name}</Header>
+        </List.Item>
+        <List.Item>
+          {percentageButton}
+        </List.Item>
+      </List>
+    </React.Fragment>
   );
 };
 
