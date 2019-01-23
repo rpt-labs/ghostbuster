@@ -1,4 +1,6 @@
-import { Grid, Button, Image, Icon } from 'semantic-ui-react';
+import {
+  Grid, Button, Image, Icon,
+} from 'semantic-ui-react';
 import styled from 'styled-components';
 
 export const CardGrid = styled(Grid)`
