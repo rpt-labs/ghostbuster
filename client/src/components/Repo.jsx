@@ -17,7 +17,7 @@ const Repo = (props) => {
   return (
     <React.Fragment>
       <StyledHeader as="h1">{name}</StyledHeader>
-      <Grid celled stackable columns={2} divided stretched>
+      <Grid celled stackable columns={2} stretched>
         {studentList}
       </Grid>
     </React.Fragment>

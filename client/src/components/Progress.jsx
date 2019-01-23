@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { List, Header } from 'semantic-ui-react';
 import {
-  Button, Icon, Image, List, Header,
-} from 'semantic-ui-react';
+  PercentageButton, ProgressImage, CheckIcon, HourglassIcon,
+} from './Styles/StudentCardStyles';
 
 const Progress = (props) => {
   const { student } = props;
@@ -11,33 +12,32 @@ const Progress = (props) => {
 
   // dynamically render button with percentage complete
   if (student.percentComplete >= 85) {
-    percentageButton = <Button positive size="mini" style={{ borderRadius: '50px' }}>{`${student.percentComplete}%`}</Button>;
+    percentageButton = <PercentageButton positive size="mini">{`${student.percentComplete}%`}</PercentageButton>;
   } else if (student.percentComplete >= 50) {
-    percentageButton = <Button color="yellow" size="mini" style={{ borderRadius: '50px' }}>{`${student.percentComplete}%`}</Button>;
+    percentageButton = <PercentageButton color="yellow" size="mini">{`${student.percentComplete}%`}</PercentageButton>;
   } else {
-    percentageButton = <Button negative size="mini" style={{ borderRadius: '50px' }}>{`${student.percentComplete}%`}</Button>;
+    percentageButton = <PercentageButton negative size="mini">{`${student.percentComplete}%`}</PercentageButton>;
   }
 
   // dynamically render progress icon
   if (student.BMR) {
-    icon = <Icon name="check circle outline" style={{ color: '#85D19C' }} size="huge" />;
+    icon = <CheckIcon name="check circle outline" size="huge" />;
   } else if (student.percentComplete === 0) {
     icon = (
-      <Image
+      <ProgressImage
         src="https://png.pngtree.com/element_origin_min_pic/16/12/25/a993726976f4619909704e1177d63658.jpg"
         size="tiny"
         circular
         centered
-        style={{ height: '56px', width: '56px' }}
       />
     );
   } else {
-    icon = <Icon name="hourglass outline" style={{ color: 'lightgrey' }} size="huge" />;
+    icon = <HourglassIcon name="hourglass outline" size="huge" />;
   }
 
   return (
     <React.Fragment>
-      <List>
+      <List textAlign="center">
         <List.Item>
           {icon}
         </List.Item>
