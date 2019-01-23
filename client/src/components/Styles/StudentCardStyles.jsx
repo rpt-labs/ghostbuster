@@ -7,8 +7,22 @@ export const CardGrid = styled(Grid)`
   border-bottom: 1px solid lightgrey;  
   `;
 
-export const PercentageButton = styled(Button)`
+const StyledButton = styled(Button)`
   border-radius: 50px !important;
+  font-weight: bold !important;
+  color: white !important;
+`;
+export const CompleteButton = styled(StyledButton)`
+  background-color: #85D19C !important;
+  `;
+
+export const ProgressButton = styled(StyledButton)`
+  background-color: #FFE65B !important;
+  color: #403F4C !important;
+  `;
+
+export const DangerButton = styled(StyledButton)`
+  background-color: #F44D63 !important;
   `;
 
 export const ProgressImage = styled(Image)`
@@ -27,6 +41,7 @@ export const CheckIcon = styled(Icon)`
 export const GithubIcon = styled(Icon)`
   color: #403F4C !important;
   `;
+
 export const StarIcon = styled(Icon)`
   color: #2185D0 !important;
   `;

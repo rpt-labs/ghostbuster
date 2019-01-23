@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { List, Header } from 'semantic-ui-react';
 import {
-  PercentageButton, ProgressImage, CheckIcon, HourglassIcon,
+  CheckIcon, CompleteButton, DangerButton, HourglassIcon, ProgressImage, ProgressButton,
 } from './Styles/StudentCardStyles';
 
 const Progress = (props) => {
@@ -12,11 +12,11 @@ const Progress = (props) => {
 
   // dynamically render button with percentage complete
   if (student.percentComplete >= 85) {
-    percentageButton = <PercentageButton positive size="mini">{`${student.percentComplete}%`}</PercentageButton>;
+    percentageButton = <CompleteButton size="mini">{`${student.percentComplete}%`}</CompleteButton>;
   } else if (student.percentComplete >= 50) {
-    percentageButton = <PercentageButton color="yellow" size="mini">{`${student.percentComplete}%`}</PercentageButton>;
+    percentageButton = <ProgressButton size="mini">{`${student.percentComplete}%`}</ProgressButton>;
   } else {
-    percentageButton = <PercentageButton negative size="mini">{`${student.percentComplete}%`}</PercentageButton>;
+    percentageButton = <DangerButton size="mini">{`${student.percentComplete}%`}</DangerButton>;
   }
 
   // dynamically render progress icon
