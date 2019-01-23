@@ -37,7 +37,7 @@ const Progress = (props) => {
 
   return (
     <React.Fragment>
-      <List textAlign="center">
+      <List>
         <List.Item>
           {icon}
         </List.Item>
