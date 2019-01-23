@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Dimmer, Loader, Segment } from 'semantic-ui-react';
+import { TeamSegment } from './Styles/TeamStyles';
 import GhostbusterButton from './GhostbusterButton';
 import Team from './Team';
 import TabNav from './TabNav';
@@ -14,10 +16,6 @@ const TeamList = (props) => {
     cohorts,
     selectCohort,
   } = props;
-
-  const style = loading
-    ? 'ui bottom attached loading tab segment'
-    : 'ui bottom attached active tab segment';
 
   let teams;
   let teamList;
@@ -41,12 +39,21 @@ const TeamList = (props) => {
     teamList = <div />;
   }
 
-  const segment = showSegment ? (
-    <div className={style}>
-      <div>
-        {teamList}
-      </div>
-    </div>) : (<div />);
+  const teamDeatils = showSegment ? (
+    <TeamSegment>
+      {teamList}
+    </TeamSegment>
+  ) : <div />;
+
+  const displayDetails = loading
+    ? (
+      <Segment placeholder>
+        <Dimmer active inverted>
+          <Loader inverted content="Loading" />
+        </Dimmer>
+      </Segment>
+    )
+    : teamDeatils;
 
   return (
     <div>
@@ -56,7 +63,7 @@ const TeamList = (props) => {
         selectCohort={selectCohort}
       />
       <GhostbusterButton clickHandler={checkProjects} />
-      {segment}
+      {displayDetails}
     </div>
   );
 };

@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Grid } from 'semantic-ui-react';
 import Progress from './Progress';
 import CommitList from './CommitList';
+import { CardGrid } from './Styles/StudentCardStyles';
 
 class StudentCard extends React.Component {
   constructor(props) {
@@ -23,23 +25,23 @@ class StudentCard extends React.Component {
     const githubUrl = `http://www.github.com/${student.github}/${student.cohort}-${repoName}`;
 
     return (
-      <div className="eight wide column">
-        <div className="ui two column center aligned stackable grid">
-          <div className="student-card row">
-            <div className="six wide column">
+      <Grid.Column width={8}>
+        <Grid.Row>
+          <CardGrid columns="equal">
+            <Grid.Column textAlign="center">
               <Progress student={student} />
-            </div>
-            <div className="ten wide column">
+            </Grid.Column>
+            <Grid.Column floated="right">
               <CommitList
                 handleCommitChange={this.handleShowCommitsChange}
                 show={showCommits}
                 url={githubUrl}
                 commits={student.commitMessages}
               />
-            </div>
-          </div>
-        </div>
-      </div>
+            </Grid.Column>
+          </CardGrid>
+        </Grid.Row>
+      </Grid.Column>
     );
   }
 }

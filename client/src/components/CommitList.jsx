@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { List } from 'semantic-ui-react';
+import { GithubIcon, StarIcon } from './Styles/StudentCardStyles';
 
 const CommitList = (props) => {
   const {
@@ -10,23 +12,23 @@ const CommitList = (props) => {
   } = props;
 
   const commitList = show ? commits.map(commit => (
-    <div className="item">
-      <i className="star blue middle aligned icon" />
-      <div className="content">
+    <List.Item>
+      <StarIcon name="star" />
+      <List.Content style={{ textAlign: 'left' }}>
         <a target="_blank" rel="noopener noreferrer" href={url}>
-          <p className="description">{commit}</p>
+          {commit}
         </a>
-      </div>
-    </div>
-  )) : <div />;
+      </List.Content>
+    </List.Item>
+  )) : <List />;
 
   return (
-    <div id="commit-list">
-      <div className="ui relaxed divided list">
+    <React.Fragment>
+      <List divided relaxed>
         {commitList}
-        <i id="github-button" role="presentation" onClick={handleCommitChange} className="huge github icon" />
-      </div>
-    </div>
+        <GithubIcon name="github" size="huge" onClick={handleCommitChange} />
+      </List>
+    </React.Fragment>
   );
 };
 

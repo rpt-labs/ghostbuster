@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Dimmer, Loader, Segment } from 'semantic-ui-react';
+import { TeamSegment } from './Styles/TeamStyles';
 import Repo from './Repo';
 import CheckboxList from './CheckboxList';
 import TabNav from './TabNav';
@@ -134,29 +136,35 @@ class Cohort extends React.Component {
       selectCohort,
     } = this.props;
     const { repos } = this.state;
-    const style = loading
-      ? 'ui bottom attached loading tab segment'
-      : 'ui bottom attached active tab segment';
 
     const repoNames = Object.keys(commits);
     const repoList = repoNames.map(repo => <Repo key={repo.name} name={repo} students={commits[repo]} />);
-    const segment = showSegment ? (
-      <div className={style}>
-        <div className="repo-list">
-          {repoList}
-        </div>
-      </div>) : (<div />);
+    const currentStatus = showSegment ? (
+      <TeamSegment>
+        {repoList}
+      </TeamSegment>
+    ) : (<div />);
+
+    const viewDetails = loading
+      ? (
+        <Segment placeholder>
+          <Dimmer active inverted>
+            <Loader inverted content="Loading" />
+          </Dimmer>
+        </Segment>
+      )
+      : currentStatus;
 
     return (
-      <div>
+      <React.Fragment>
         <TabNav
           selected={selected}
           cohorts={cohorts}
           selectCohort={selectCohort}
         />
         <CheckboxList repos={repos} handleCheckboxChange={this.handleCheckboxChange} storeCheckedRepos={this.storeCheckedRepos} />
-        {segment}
-      </div>
+        {viewDetails}
+      </React.Fragment>
     );
   }
 }

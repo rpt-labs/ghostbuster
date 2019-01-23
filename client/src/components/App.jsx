@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 
 // components
+import { Container } from 'semantic-ui-react';
 import TabNav from './TabNav';
 import TopNav from './TopNav';
 import Cohort from './Cohort';
@@ -138,7 +139,7 @@ export default class App extends React.Component {
 
     if (display === 'projects') {
       cohorts = (
-        <div className="ui container">
+        <Container>
           <TabNav
             selected={selectedCohort}
             cohorts={teamCohorts}
@@ -151,11 +152,11 @@ export default class App extends React.Component {
             showSegment={showSegment}
             projects={projectData}
           />
-        </div>
+        </Container>
       );
     } else {
       cohorts = (
-        <div className="ui container">
+        <Container>
           <TabNav
             selected={selectedCohort}
             cohorts={sprintCohorts}
@@ -167,7 +168,7 @@ export default class App extends React.Component {
             showSegment={showSegment}
             commits={currentCommitData}
           />
-        </div>
+        </Container>
       );
     }
 
