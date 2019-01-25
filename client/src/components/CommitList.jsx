@@ -11,8 +11,9 @@ const CommitList = (props) => {
     handleCommitChange,
   } = props;
 
-  const commitList = show ? commits.map(commit => (
-    <List.Item>
+  const commitList = show ? commits.map((commit, index) => (
+    // eslint-disable-next-line react/no-array-index-key
+    <List.Item key={index}>
       <StarIcon name="star" />
       <List.Content style={{ textAlign: 'left' }}>
         <a target="_blank" rel="noopener noreferrer" href={url}>

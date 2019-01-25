@@ -12,8 +12,8 @@ const Team = (props) => {
     <StyledGrid stackable>
       <Grid.Row columns={2}>
         {names.map(name => (
-          <Grid.Column>
-            <StudentReport key={name} student={name} report={students[name]} />
+          <Grid.Column key={name}>
+            <StudentReport student={name} report={students[name]} />
             <br />
           </Grid.Column>
         ))}
