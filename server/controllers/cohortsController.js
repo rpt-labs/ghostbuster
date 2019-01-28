@@ -54,13 +54,13 @@ exports.deleteCohort = (req, res) => {
 exports.getStudents = async (req, res) => {
   const { cohortId } = req.query;
   const studentData = cohortId
-    ? await students.getStudentsByCohort(cohort_id)
+    ? await students.getStudentsByCohort(cohortId)
     : await students.getAllStudents();
 
   if (studentData.length) {
     res.status(200).json({ students: studentData });
   } else {
-    res.status(400).json({ error: 'error retrieving students.  check that cohort_id is a valid cohort id' });
+    res.status(400).json({ error: 'error retrieving students.  check cohort id is valid' });
   }
 };
 
