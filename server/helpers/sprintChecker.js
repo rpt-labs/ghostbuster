@@ -3,6 +3,7 @@
 const Student = require('./student');
 const { allCohorts } = require('../config/cohorts');
 const { allSprints } = require('../config/sprints');
+const { saveSprintData } = require('../../db/models/githubData');
 
 const checkStudentFork = async (student, repoName) => {
   let commits = await student.checkFork(repoName);
@@ -64,6 +65,8 @@ const getSprintGithubData = async (cohortName, sprintNames) => {
   const matching = allCohorts.filter(x => x.name === cohortName)[0];
   const report = await checkCohort(matching, sprintNames);
   const sorted = sortReport(report);
+  // for saving sprint data to db
+  // await saveSprintData(sorted);
   return sorted;
 };
 
