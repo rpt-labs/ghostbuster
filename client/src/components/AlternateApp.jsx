@@ -10,6 +10,7 @@ import TopNav from './TopNav';
 import Cohort from './Cohort';
 import TeamList from './TeamList';
 import Login from './Login';
+import Admin from './admin/Admin';
 
 // routing
 
@@ -164,6 +165,7 @@ export default class AlternateApp extends React.Component {
 
             <Container>
               <SecureRoute path="/" exact component={Home} />
+              <SecureRoute path="/admin" component={Admin} />
               <SecureRoute
                 path="/sprints"
                 render={props => (

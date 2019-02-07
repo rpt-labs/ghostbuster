@@ -9,6 +9,9 @@ const TopNav = props => (
     <h1>Ghostbuster</h1>
     <Menu.Menu position="right">
       <Menu.Item>
+        <StyledLink to="/admin">
+          Admin
+        </StyledLink>
         <StyledLink to="/sprints">
           Sprints
         </StyledLink>
