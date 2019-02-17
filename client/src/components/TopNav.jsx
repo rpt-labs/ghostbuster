@@ -12,6 +12,9 @@ const TopNav = props => (
         <StyledLink to="/admin">
           Admin
         </StyledLink>
+        <StyledLink to="/attendance">
+          Attendance
+        </StyledLink>
         <StyledLink to="/sprints">
           Sprints
         </StyledLink>

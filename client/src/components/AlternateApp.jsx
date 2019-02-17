@@ -11,7 +11,7 @@ import Cohort from './Cohort';
 import TeamList from './TeamList';
 import Login from './Login';
 import Admin from './admin/Admin';
-
+import Attendance from './attendance/Attendance';
 // routing
 
 // auth
@@ -166,6 +166,7 @@ export default class AlternateApp extends React.Component {
             <Container>
               <SecureRoute path="/" exact component={Home} />
               <SecureRoute path="/admin" component={Admin} />
+              <SecureRoute path="/attendance" component={Attendance} />
               <SecureRoute
                 path="/sprints"
                 render={props => (
