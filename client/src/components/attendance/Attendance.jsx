@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import CheckboxList from './CheckboxList';
+import CheckboxList from './CohortCheckboxList';
 
 const cohortsList = ['RPT09', 'RPT10', 'RTP11', 'RPT12', 'RTP13', 'RPT14'];
 

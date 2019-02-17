@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Grid } from 'semantic-ui-react';
-import Checkbox from './Checkbox';
+import Checkbox from './CohortCheckbox';
 import { PaddedGrid } from '../Styles/TeamStyles';
 
-const CheckboxList = (props) => {
+const CohortCheckboxList = (props) => {
   const { cohorts } = props;
   const cohortsList = cohorts.map(cohort => (
-    <Grid.Column width={4} key={cohort.name}>
+    <Grid.Column width={6} key={cohort.name}>
       <Checkbox
         cohort={cohort}
       />
@@ -26,8 +26,8 @@ const CheckboxList = (props) => {
   );
 };
 
-CheckboxList.propTypes = {
+CohortCheckboxList.propTypes = {
   cohorts: PropTypes.arrayOf(Object).isRequired,
 };
 
-export default CheckboxList;
+export default CohortCheckboxList;
