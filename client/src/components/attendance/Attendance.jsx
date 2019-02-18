@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import CheckboxList from './CohortCheckboxList';
+import RadioButtonList from './RadioButtonList';
 
 const cohortsList = ['RPT09', 'RPT10', 'RTP11', 'RPT12', 'RTP13', 'RPT14'];
 
@@ -12,16 +12,17 @@ class Attendance extends Component {
         isChecked: false
       }))
     };
-    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
+    this.handleRadioButtonChangeChange = this.handleRadioButtonChangeChange.bind(this);
   }
 
-  handleCheckboxChange(cohort) {
+  handleRadioButtonChangeChange(cohort) {
     const { cohorts } = this.state;
     const newCohortList = cohorts.slice();
     newCohortList.forEach(e => {
-      const currentCohort = e;
-      if (currentCohort.name === cohort) {
-        currentCohort.isChecked = !currentCohort.isChecked;
+      if (e.name === cohort) {
+        e.isChecked = true;
+      } else {
+        e.isChecked = false;
       }
     });
     this.setState({ cohorts: newCohortList });
@@ -32,7 +33,10 @@ class Attendance extends Component {
 
     return (
       <div>
-        <CheckboxList cohorts={cohorts} handleCheckboxChange={this.handleCheckboxChange} />
+        <RadioButtonList
+          cohorts={cohorts}
+          handleRadioButtonChangeChange={this.handleRadioButtonChangeChange}
+        />
       </div>
     );
   }

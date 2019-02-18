@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Grid } from 'semantic-ui-react';
-import Checkbox from './CohortCheckbox';
+import RadioButton from './RadioButton';
 import { PaddedGrid } from '../Styles/TeamStyles';
 
-const CohortCheckboxList = props => {
-  const { cohorts, handleCheckboxChange } = props;
+const RadioButtonList = props => {
+  const { cohorts, handleRadioButtonChangeChange } = props;
   const cohortsList = cohorts.map(cohort => (
     <Grid.Column width={6} key={cohort.name}>
-      <Checkbox cohort={cohort} handleCheckboxChange={handleCheckboxChange} />
+      <RadioButton cohort={cohort} handleRadioButtonChangeChange={handleRadioButtonChangeChange} />
     </Grid.Column>
   ));
 
@@ -23,9 +23,9 @@ const CohortCheckboxList = props => {
   );
 };
 
-CohortCheckboxList.propTypes = {
+RadioButtonList.propTypes = {
   cohorts: PropTypes.arrayOf(Object).isRequired,
-  handleCheckboxChange: PropTypes.func.isRequired
+  handleRadioButtonChangeChange: PropTypes.func.isRequired
 };
 
-export default CohortCheckboxList;
+export default RadioButtonList;
