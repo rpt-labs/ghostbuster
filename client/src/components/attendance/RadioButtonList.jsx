@@ -5,10 +5,10 @@ import RadioButton from './RadioButton';
 import { PaddedGrid } from '../Styles/TeamStyles';
 
 const RadioButtonList = props => {
-  const { cohorts, handleRadioButtonChangeChange, showAttendance } = props;
+  const { cohorts, handleRadioButtonChange, showAttendance } = props;
   const cohortsList = cohorts.map(cohort => (
     <Grid.Column width={8} key={cohort.name}>
-      <RadioButton cohort={cohort} handleRadioButtonChangeChange={handleRadioButtonChangeChange} />
+      <RadioButton cohort={cohort} handleRadioButtonChange={handleRadioButtonChange} />
     </Grid.Column>
   ));
 
@@ -27,7 +27,7 @@ const RadioButtonList = props => {
 
 RadioButtonList.propTypes = {
   cohorts: PropTypes.arrayOf(Object).isRequired,
-  handleRadioButtonChangeChange: PropTypes.func.isRequired,
+  handleRadioButtonChange: PropTypes.func.isRequired,
   showAttendance: PropTypes.func.isRequired
 };
 

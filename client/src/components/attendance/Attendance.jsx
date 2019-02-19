@@ -18,7 +18,7 @@ class Attendance extends Component {
       selectedCohortResult: [],
       cohorts: []
     };
-    this.handleRadioButtonChangeChange = this.handleRadioButtonChangeChange.bind(this);
+    this.handleRadioButtonChange = this.handleRadioButtonChange.bind(this);
     this.showAttendance = this.showAttendance.bind(this);
     this.getCohortsList = this.getCohortsList.bind(this);
   }
@@ -39,7 +39,7 @@ class Attendance extends Component {
     });
   }
 
-  handleRadioButtonChangeChange(cohort) {
+  handleRadioButtonChange(cohort) {
     const { cohorts } = this.state;
     const newCohortList = cohorts.slice();
     newCohortList.forEach(e => {
@@ -70,7 +70,7 @@ class Attendance extends Component {
           <Grid textAlign="center">
             <RadioButtonList
               cohorts={cohorts}
-              handleRadioButtonChangeChange={this.handleRadioButtonChangeChange}
+              handleRadioButtonChange={this.handleRadioButtonChange}
               showAttendance={this.showAttendance}
             />
           </Grid>

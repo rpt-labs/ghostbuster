@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Form, Radio } from 'semantic-ui-react';
 
 const RadioButton = props => {
-  const { cohort, handleRadioButtonChangeChange } = props;
+  const { cohort, handleRadioButtonChange } = props;
   return (
     <div>
       <Form.Field>
@@ -12,7 +12,7 @@ const RadioButton = props => {
           name="cohortList"
           value={cohort.name}
           checked={cohort.isChecked}
-          onChange={() => handleRadioButtonChangeChange(cohort.name)}
+          onChange={() => handleRadioButtonChange(cohort.name)}
         />
       </Form.Field>
     </div>
@@ -21,7 +21,7 @@ const RadioButton = props => {
 
 RadioButton.propTypes = {
   cohort: PropTypes.instanceOf(Object).isRequired,
-  handleRadioButtonChangeChange: PropTypes.func.isRequired
+  handleRadioButtonChange: PropTypes.func.isRequired
 };
 
 export default RadioButton;
