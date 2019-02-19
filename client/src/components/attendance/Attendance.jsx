@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { Segment, Grid } from 'semantic-ui-react';
 import RadioButtonList from './RadioButtonList';
 import StudentsList from './StudentsList';
+import { getAllCohorts } from '../../queries/queries';
 
-const cohortsList = ['RPT09', 'RPT10', 'RTP11', 'RPT12', 'RTP13', 'RPT14'];
 const studentsRecord = [
-  { name: 'Jessey', timeJoined: '4:45p.m', cohort: 'RPT09' },
-  { name: 'Jon', timeJoined: '4:50p.m', cohort: 'RPT09' },
-  { name: 'jonny', timeJoined: '4:55p.m', cohort: 'RPT14' },
-  { name: 'Jonn', timeJoined: '4:50p.m', cohort: 'RPT09' }
+  { name: 'Jessey', timeJoined: '4:45 p.m', cohort: 'RPT09' },
+  { name: 'Jon', timeJoined: '4:50 p.m', cohort: 'RPT09' },
+  { name: 'jonny', timeJoined: '4:55 p.m', cohort: 'RPT14' },
+  { name: 'Jonn', timeJoined: '4:50 p.m', cohort: 'RPT09' }
 ];
 
 class Attendance extends Component {
@@ -16,13 +16,27 @@ class Attendance extends Component {
     super();
     this.state = {
       selectedCohortResult: [],
-      cohorts: cohortsList.map(e => ({
-        name: e,
-        isChecked: false
-      }))
+      cohorts: []
     };
     this.handleRadioButtonChangeChange = this.handleRadioButtonChangeChange.bind(this);
     this.showAttendance = this.showAttendance.bind(this);
+    this.getCohortsList = this.getCohortsList.bind(this);
+  }
+
+  componentDidMount() {
+    this.getCohortsList();
+  }
+
+  getCohortsList() {
+    getAllCohorts().then(result => {
+      const cohortsList = result.data.data.cohorts.map(e => e.name.toUpperCase());
+      this.setState({
+        cohorts: cohortsList.map(e => ({
+          name: e,
+          isChecked: false
+        }))
+      });
+    });
   }
 
   handleRadioButtonChangeChange(cohort) {
@@ -42,7 +56,6 @@ class Attendance extends Component {
     const { cohorts } = this.state;
     const selectedCohort = cohorts.filter(e => e.isChecked === true);
     const selectedCohortData = studentsRecord.filter(e => {
-      // console.log('selectedCohortData', e.cohort);
       return e.cohort === selectedCohort[0].name;
     });
     this.setState({ selectedCohortResult: selectedCohortData });
