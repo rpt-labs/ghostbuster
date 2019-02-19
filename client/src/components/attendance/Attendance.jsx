@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Segment, Grid } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 import RadioButtonList from './RadioButtonList';
 import StudentsList from './StudentsList';
 import { getAllCohorts } from '../../queries/queries';
@@ -66,15 +66,13 @@ class Attendance extends Component {
 
     return (
       <React.Fragment>
-        <Segment style={{ padding: '30px' }}>
-          <Grid textAlign="center">
-            <RadioButtonList
-              cohorts={cohorts}
-              handleRadioButtonChange={this.handleRadioButtonChange}
-              showAttendance={this.showAttendance}
-            />
-          </Grid>
-        </Segment>
+        <Grid textAlign="center" style={{ padding: '30px' }}>
+          <RadioButtonList
+            cohorts={cohorts}
+            handleRadioButtonChange={this.handleRadioButtonChange}
+            showAttendance={this.showAttendance}
+          />
+        </Grid>
         {selectedCohortResult.length ? <StudentsList students={selectedCohortResult} /> : ''}
       </React.Fragment>
     );

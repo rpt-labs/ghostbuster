@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Grid } from 'semantic-ui-react';
+import { Button, Grid, Segment, Header } from 'semantic-ui-react';
 import RadioButton from './RadioButton';
 import { PaddedGrid } from '../Styles/TeamStyles';
 
@@ -13,15 +13,17 @@ const RadioButtonList = props => {
   ));
 
   return (
-    <div style={{ justifyContent: 'center' }}>
-      <PaddedGrid columns={3} padded="vertically">
+    <Segment placeholder>
+      <Header as="h2" style={{ textAlign: 'center', marginTop: '15px' }}>
+        Select A Cohort
+      </Header>
+      <PaddedGrid columns={2} relaxed style={{ marginLeft: '50px' }}>
         {cohortsList}
-        <br />
       </PaddedGrid>
-      <Button primary onClick={() => showAttendance()}>
+      <Button primary onClick={() => showAttendance()} style={{ marginTop: '30px' }}>
         SHOW ATTENDANCE
       </Button>
-    </div>
+    </Segment>
   );
 };
 
