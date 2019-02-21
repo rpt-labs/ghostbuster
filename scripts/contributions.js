@@ -1,7 +1,7 @@
 const { thesisTeams, greenfieldTeams, legacyTeams } = require('../server/config/teams');
 const Team = require('../server/helpers/team');
 
-const sortContributionsByStudent = (contributionData) => {
+const sortContributionsByStudent = contributionData => {
   const contributions = {};
   for (const contribution of contributionData) {
     if (contribution !== '') {
@@ -15,11 +15,16 @@ const sortContributionsByStudent = (contributionData) => {
   return contributions;
 };
 
-const analyzeContributions = (sortedContributions) => {
-  const totalContributions = Object.entries(sortedContributions).reduce((a, b) => a + b[1].numContributions, 0);
+const analyzeContributions = sortedContributions => {
+  const totalContributions = Object.entries(sortedContributions).reduce(
+    (a, b) => a + b[1].numContributions,
+    0
+  );
 
   for (const student in sortedContributions) {
-    const percentage = Math.floor(sortedContributions[student].numContributions / totalContributions * 100);
+    const percentage = Math.floor(
+      (sortedContributions[student].numContributions / totalContributions) * 100
+    );
     sortedContributions[student].percentage = percentage;
   }
 

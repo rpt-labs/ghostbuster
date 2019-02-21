@@ -19,7 +19,10 @@ const checkStudentFork = async (student, repoName) => {
   const BMR = student.passBMR(commitMessages);
   const percentComplete = student.percentComplete(allSprints[repoName], commitMessages);
   const summary = {
-    name: student.fullName, BMR, percentComplete, commitMessages,
+    name: student.fullName,
+    BMR,
+    percentComplete,
+    commitMessages
   };
 
   return summary;
@@ -28,7 +31,12 @@ const checkStudentFork = async (student, repoName) => {
 const checkCohort = async (cohort, sprints = []) => {
   const report = {};
   for (const student of cohort.students) {
-    const currentStudent = new Student(student.firstName, student.lastName, student.github, cohort.name);
+    const currentStudent = new Student(
+      student.firstName,
+      student.lastName,
+      student.github,
+      cohort.name
+    );
     for (const repo of sprints) {
       const summary = await checkStudentFork(currentStudent, repo);
       if (report[repo]) {
@@ -65,7 +73,7 @@ const printReports = (report, includeMessages) => {
     console.log('*******************************\n');
     noForks.forEach(name => console.log('\x1b[31m', '👻 ', name, 'has no fork.'));
     console.log('\x1b[37m', '\n******************************\n');
-    inProgress.forEach((message) => {
+    inProgress.forEach(message => {
       // get just the number
       if (Array.isArray(message)) {
         message.forEach(commit => console.log('\x1b[37m', commit));
@@ -81,11 +89,20 @@ const printReports = (report, includeMessages) => {
         } else {
           numberColor = number < 75 ? '\x1b[33m' : '\x1b[32m';
         }
-        console.log('\x1b[36m%s\x1b[0m', beforeNumber.join(' '), numberColor, `${number}%`, '\x1b[36m', afterNumber);
+        console.log(
+          '\x1b[36m%s\x1b[0m',
+          beforeNumber.join(' '),
+          numberColor,
+          `${number}%`,
+          '\x1b[36m',
+          afterNumber
+        );
       }
     });
     console.log('\x1b[37m', '\n******************************\n');
-    passedBMR.forEach(name => console.log('\x1b[32m', '💯 ', `${name} has completed bare minimum requirements`));
+    passedBMR.forEach(name =>
+      console.log('\x1b[32m', '💯 ', `${name} has completed bare minimum requirements`)
+    );
     // put back to white
     console.log('\x1b[37m');
   }
@@ -95,7 +112,6 @@ const printForCohort = async (cohort, sprints, includeMessages) => {
   const report = await checkCohort(cohort, sprints);
   printReports(report, includeMessages);
 };
-
 
 /* when you call printForCohort, pass true as the last argument if you want a detailed list of each student's commits.  Pass false if you just want the colorful report
   printForCohort(COHORT_OBJ, ['sprint-title', 'sprint2-title], false)

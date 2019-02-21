@@ -1,7 +1,8 @@
 const { query } = require('../index');
 
 module.exports = {
-  addStudent: student => query(`
+  addStudent: student =>
+    query(`
       INSERT INTO students (first_name, last_name, github, cohort_id)
       VALUES (
         '${student.firstName}',
@@ -9,10 +10,15 @@ module.exports = {
         '${student.github}',
         ${student.cohortId}
       )
-    `).then(() => query(`
+    `)
+      .then(() =>
+        query(`
         SELECT * FROM students WHERE github='${student.github}'
-      `).then(res => res.rows[0])
-    .catch(err => err)).catch(err => err),
+      `)
+          .then(res => res.rows[0])
+          .catch(err => err)
+      )
+      .catch(err => err),
   updateStudent: async (studentId, newStudentInfo) => {
     // update student
     try {
@@ -52,7 +58,7 @@ module.exports = {
       return err.detail;
     }
   },
-  getStudentById: async (studentId) => {
+  getStudentById: async studentId => {
     try {
       const student = await query(`SELECT * FROM students WHERE id=${studentId}`);
       return student.rows[0];
@@ -61,7 +67,7 @@ module.exports = {
       return err;
     }
   },
-  getStudentsByCohort: async (cohortId) => {
+  getStudentsByCohort: async cohortId => {
     try {
       const studentQuery = await query(`
         SELECT * FROM students WHERE cohort_id=${cohortId}
@@ -72,5 +78,5 @@ module.exports = {
       console.log(err);
       return err;
     }
-  },
+  }
 };

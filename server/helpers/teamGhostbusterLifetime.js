@@ -14,7 +14,7 @@ const sortContributionsByStudent = (team, contributionData) => {
         } else {
           contributions[student.firstName] = {
             github: contribution.login,
-            numContributions: contribution.contributions,
+            numContributions: contribution.contributions
           };
         }
       }
@@ -23,11 +23,16 @@ const sortContributionsByStudent = (team, contributionData) => {
   return contributions;
 };
 
-const analyzeContributions = (sortedContributions) => {
-  const totalContributions = Object.entries(sortedContributions).reduce((a, b) => a + b[1].numContributions, 0);
+const analyzeContributions = sortedContributions => {
+  const totalContributions = Object.entries(sortedContributions).reduce(
+    (a, b) => a + b[1].numContributions,
+    0
+  );
 
   for (const student in sortedContributions) {
-    const percentage = Math.floor(sortedContributions[student].numContributions / totalContributions * 100);
+    const percentage = Math.floor(
+      (sortedContributions[student].numContributions / totalContributions) * 100
+    );
     sortedContributions[student].percentage = percentage;
   }
 

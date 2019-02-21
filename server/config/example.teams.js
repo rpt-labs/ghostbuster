@@ -8,27 +8,27 @@ const thesisTeams = {
     students: [
       {
         firstName: 'Person1',
-        github: 'person1GithubHandle',
+        github: 'person1GithubHandle'
       },
       {
         firstName: 'Person2',
-        github: 'person2GithubHandle',
-      },
-    ],
+        github: 'person2GithubHandle'
+      }
+    ]
   },
   anotherTeamName: {
     github: 'github-org-name',
     students: [
       {
         firstName: 'Person3',
-        github: 'person3GithubHandle',
+        github: 'person3GithubHandle'
       },
       {
         firstName: 'Person4',
-        github: 'person4GithubHandle',
-      },
-    ],
-  },
+        github: 'person4GithubHandle'
+      }
+    ]
+  }
 };
 
 // module.exports = { thesisTeams, greenfieldTeams, legacyTeams };

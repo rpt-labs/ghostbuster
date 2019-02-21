@@ -15,8 +15,8 @@ const oktaJwtVerifier = new OktaJwtVerifier({
   issuer: OKTA_URL,
   clientId: OKTA_CLIENT_ID,
   assertClaims: {
-    aud: 'api://default',
-  },
+    aud: 'api://default'
+  }
 });
 
 // graphql
@@ -44,12 +44,13 @@ function authenticationRequired(req, res, next) {
 
   const accessToken = match[1];
 
-  return oktaJwtVerifier.verifyAccessToken(accessToken)
-    .then((jwt) => {
+  return oktaJwtVerifier
+    .verifyAccessToken(accessToken)
+    .then(jwt => {
       req.jwt = jwt;
       next();
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(401).send(err.message);
     });
 }
@@ -69,10 +70,13 @@ app.use(logger);
 app.use('/', express.static(path.join(__dirname, '../public')));
 
 // graphql
-app.use('/graphql', graphqlHTTP({
-  schema,
-  graphiql: true,
-}));
+app.use(
+  '/graphql',
+  graphqlHTTP({
+    schema,
+    graphiql: true
+  })
+);
 
 // sprints
 app.use('/ghostbuster/sprints', sprints);
@@ -92,12 +96,11 @@ app.get('/ghostbuster/seed/:seedType', asyncMiddleware(seedersController));
 // wildcard
 app.get('/*', (req, res) => {
   console.log(req.method, 'url', req.url, 'path', req.path);
-  res.sendFile(path.join(__dirname, '../public/index.html'), (err) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'), err => {
     if (err) {
       res.status(500).send(err);
     }
   });
 });
-
 
 app.listen(port, () => console.log(`ghostbuster server listening on port ${port}`));

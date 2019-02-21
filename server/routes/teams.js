@@ -24,6 +24,9 @@ teamsRouter.get('/:teamId/students', teamsController.getTeamStudents);
 teamsRouter.get('/projects/:cohort', teamsController.getTeamGithubData);
 
 // check on lifetime contributions for projects
-teamsRouter.get('/projects/:cohort/:teamType/lifetime', teamsController.getLifetimeContributionData);
+teamsRouter.get(
+  '/projects/:cohort/:teamType/lifetime',
+  teamsController.getLifetimeContributionData
+);
 
 module.exports = teamsRouter;
