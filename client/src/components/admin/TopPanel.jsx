@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Menu } from 'semantic-ui-react';
+// import { Link } from 'react-router-dom';
 
 class TopPanel extends Component {
   constructor(props) {
@@ -17,9 +18,21 @@ class TopPanel extends Component {
 
     return (
       <Menu tabular>
-        <Menu.Item name="Students" active={activeItem === 'Students'} onClick={this.handleItemClick} />
-        <Menu.Item name="Cohorts" active={activeItem === 'Cohorts'} onClick={this.handleItemClick} />
-        <Menu.Item name="Sprints" active={activeItem === 'Sprints'} onClick={this.handleItemClick} />
+        <Menu.Item
+          name="Students"
+          active={activeItem === 'Students'}
+          onClick={this.handleItemClick}
+        />
+        <Menu.Item
+          name="Cohorts"
+          active={activeItem === 'Cohorts'}
+          onClick={this.handleItemClick}
+        />
+        <Menu.Item
+          name="Sprints"
+          active={activeItem === 'Sprints'}
+          onClick={this.handleItemClick}
+        />
       </Menu>
     );
   }

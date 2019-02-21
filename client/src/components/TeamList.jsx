@@ -6,7 +6,7 @@ import GhostbusterButton from './GhostbusterButton';
 import Team from './Team';
 import TabNav from './TabNav';
 
-const TeamList = (props) => {
+const TeamList = props => {
   const {
     checkProjects,
     loading,
@@ -14,7 +14,7 @@ const TeamList = (props) => {
     showSegment,
     selectedCohort,
     cohorts,
-    selectCohort,
+    selectCohort
   } = props;
 
   let teams;
@@ -22,46 +22,33 @@ const TeamList = (props) => {
 
   if (projects && projects[selectedCohort] && projects[selectedCohort].fetched) {
     teams = Object.keys(projects[selectedCohort].lifetimeData);
-    teamList = teams.map((team) => {
+    teamList = teams.map(team => {
       const lifetimeData = projects[selectedCohort].lifetimeData[team];
       const students = projects[selectedCohort].weekThesisData[team];
 
       return (
-        <Team
-          key={team}
-          team={team}
-          lifetimeContributions={lifetimeData}
-          students={students}
-        />
+        <Team key={team} team={team} lifetimeContributions={lifetimeData} students={students} />
       );
     });
   } else {
     teamList = <div />;
   }
 
-  const teamDeatils = showSegment ? (
-    <TeamSegment>
-      {teamList}
-    </TeamSegment>
-  ) : <div />;
+  const teamDeatils = showSegment ? <TeamSegment>{teamList}</TeamSegment> : <div />;
 
-  const displayDetails = loading
-    ? (
-      <Segment placeholder>
-        <Dimmer active inverted>
-          <Loader inverted content="Loading" />
-        </Dimmer>
-      </Segment>
-    )
-    : teamDeatils;
+  const displayDetails = loading ? (
+    <Segment placeholder>
+      <Dimmer active inverted>
+        <Loader inverted content="Loading" />
+      </Dimmer>
+    </Segment>
+  ) : (
+    teamDeatils
+  );
 
   return (
     <div>
-      <TabNav
-        selected={selectedCohort}
-        cohorts={cohorts}
-        selectCohort={selectCohort}
-      />
+      <TabNav selected={selectedCohort} cohorts={cohorts} selectCohort={selectCohort} />
       <GhostbusterButton clickHandler={checkProjects} />
       {displayDetails}
     </div>
@@ -75,7 +62,7 @@ TeamList.propTypes = {
   loading: PropTypes.bool.isRequired,
   showSegment: PropTypes.bool.isRequired,
   projects: PropTypes.instanceOf(Object).isRequired,
-  selectedCohort: PropTypes.string.isRequired,
+  selectedCohort: PropTypes.string.isRequired
 };
 
 export default TeamList;

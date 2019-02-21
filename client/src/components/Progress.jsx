@@ -2,10 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { List, Header } from 'semantic-ui-react';
 import {
-  CheckIcon, CompleteButton, DangerButton, HourglassIcon, ProgressImage, ProgressButton,
+  CheckIcon,
+  CompleteButton,
+  DangerButton,
+  HourglassIcon,
+  ProgressImage,
+  ProgressButton
 } from './Styles/StudentCardStyles';
 
-const Progress = (props) => {
+const Progress = props => {
   const { student } = props;
   let percentageButton;
   let icon;
@@ -38,22 +43,18 @@ const Progress = (props) => {
   return (
     <React.Fragment>
       <List>
-        <List.Item>
-          {icon}
-        </List.Item>
+        <List.Item>{icon}</List.Item>
         <List.Item>
           <Header as="h3">{student.name}</Header>
         </List.Item>
-        <List.Item>
-          {percentageButton}
-        </List.Item>
+        <List.Item>{percentageButton}</List.Item>
       </List>
     </React.Fragment>
   );
 };
 
 Progress.propTypes = {
-  student: PropTypes.instanceOf(Object).isRequired,
+  student: PropTypes.instanceOf(Object).isRequired
 };
 
 export default Progress;

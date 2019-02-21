@@ -9,18 +9,10 @@ const TopNav = props => (
     <h1>Ghostbuster</h1>
     <Menu.Menu position="right">
       <Menu.Item>
-        <StyledLink to="/admin">
-          Admin
-        </StyledLink>
-        <StyledLink to="/attendance">
-          Attendance
-        </StyledLink>
-        <StyledLink to="/sprints">
-          Sprints
-        </StyledLink>
-        <StyledLink to="/projects">
-          Projects
-        </StyledLink>
+        <StyledLink to="/admin">Admin</StyledLink>
+        <StyledLink to="/attendance">Attendance</StyledLink>
+        <StyledLink to="/sprints">Sprints</StyledLink>
+        <StyledLink to="/projects">Projects</StyledLink>
         <StyledLink to="/login" onClick={() => props.auth.logout('/login')}>
           Logout
         </StyledLink>
@@ -30,7 +22,7 @@ const TopNav = props => (
 );
 
 TopNav.propTypes = {
-  auth: PropTypes.instanceOf(Object).isRequired,
+  auth: PropTypes.instanceOf(Object).isRequired
 };
 
 export default withAuth(TopNav);

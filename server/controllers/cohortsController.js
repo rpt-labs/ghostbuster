@@ -14,7 +14,7 @@ exports.getCohorts = async (req, res) => {
 
   // for using config files only
   let allCohorts = allCohortsConfig;
-  allCohorts = allCohorts.map((cohort) => {
+  allCohorts = allCohorts.map(cohort => {
     cohort.cohort_name = cohort.name;
     return cohort;
   });
@@ -60,16 +60,19 @@ exports.getStudents = async (req, res) => {
   if (studentData.length) {
     res.status(200).json({ students: studentData });
   } else {
-    res.status(400).json({ error: 'error retrieving students.  check that cohort_id is a valid cohort id' });
+    res
+      .status(400)
+      .json({ error: 'error retrieving students.  check that cohort_id is a valid cohort id' });
   }
 };
 
 exports.createStudent = async (req, res) => {
-  const {
-    firstName, lastName, github, cohortId,
-  } = req.query;
+  const { firstName, lastName, github, cohortId } = req.query;
   const student = await students.addStudent({
-    firstName, lastName, github, cohortId,
+    firstName,
+    lastName,
+    github,
+    cohortId
   });
   if (student.name === 'error') {
     res.status(400).json({ error: student.detail });
@@ -79,14 +82,12 @@ exports.createStudent = async (req, res) => {
 };
 
 exports.updateStudent = async (req, res) => {
-  const {
-    id, firstName, lastName, github, cohortId,
-  } = req.query;
+  const { id, firstName, lastName, github, cohortId } = req.query;
   const updated = await students.updateStudent(id, {
     firstName,
     lastName,
     github,
-    cohortId,
+    cohortId
   });
 
   if (updated.name === 'error') {

@@ -9,7 +9,7 @@ class StudentCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showCommits: false,
+      showCommits: false
     };
     this.handleShowCommitsChange = this.handleShowCommitsChange.bind(this);
   }
@@ -48,7 +48,7 @@ class StudentCard extends React.Component {
 
 StudentCard.propTypes = {
   student: PropTypes.instanceOf(Object).isRequired,
-  repoName: PropTypes.string.isRequired,
+  repoName: PropTypes.string.isRequired
 };
 
 export default StudentCard;

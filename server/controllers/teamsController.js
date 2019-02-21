@@ -8,23 +8,24 @@ const teams = require('../../db/models/teams');
 // TEAMS requests TODO: delete functionality
 exports.getTeams = async (req, res) => {
   const { cohortId } = req.query;
-  const studentData = cohortId
-    ? await teams.getTeamsByCohort(cohortId)
-    : await teams.getAllTeams();
+  const studentData = cohortId ? await teams.getTeamsByCohort(cohortId) : await teams.getAllTeams();
 
   if (studentData.length) {
     res.status(200).json({ students: studentData });
   } else {
-    res.status(400).json({ error: 'error retrieving students. Check that cohort_id is a valid cohort id' });
+    res
+      .status(400)
+      .json({ error: 'error retrieving students. Check that cohort_id is a valid cohort id' });
   }
 };
 
 exports.createTeam = async (req, res) => {
-  const {
-    teamName, teamType, github, cohortId,
-  } = req.query;
+  const { teamName, teamType, github, cohortId } = req.query;
   const team = await teams.addTeam({
-    teamName, teamType, github, cohortId,
+    teamName,
+    teamType,
+    github,
+    cohortId
   });
 
   if (team.name === 'error') {
@@ -35,14 +36,12 @@ exports.createTeam = async (req, res) => {
 };
 
 exports.updateTeam = async (req, res) => {
-  const {
-    teamId, teamName, teamType, github, cohortId,
-  } = req.query;
+  const { teamId, teamName, teamType, github, cohortId } = req.query;
   const updated = await teams.updateTeam(teamId, {
     teamName,
     teamType,
     github,
-    cohortId,
+    cohortId
   });
 
   if (updated.name === 'error') {

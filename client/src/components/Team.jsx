@@ -5,7 +5,7 @@ import { StyledHeader, StyledGrid } from './Styles/TeamStyles';
 import StudentReport from './StudentReport';
 import TeamCard from './TeamCard';
 
-const Team = (props) => {
+const Team = props => {
   const { students, team, lifetimeContributions } = props;
   const names = Object.keys(students);
   const reportList = (
@@ -18,7 +18,8 @@ const Team = (props) => {
           </Grid.Column>
         ))}
       </Grid.Row>
-    </StyledGrid>);
+    </StyledGrid>
+  );
 
   return (
     <React.Fragment>
@@ -32,7 +33,7 @@ const Team = (props) => {
 Team.propTypes = {
   lifetimeContributions: PropTypes.instanceOf(Object).isRequired,
   students: PropTypes.instanceOf(Object).isRequired,
-  team: PropTypes.string.isRequired,
+  team: PropTypes.string.isRequired
 };
 
 export default Team;
