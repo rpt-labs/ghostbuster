@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Grid } from 'semantic-ui-react';
 import RadioButtonList from './RadioButtonList';
-import AttendanceSummary from './AttendanceSummary';
+import CohortAttendanceSummary from './CohortAttendanceSummary';
 import { getAllCohorts } from '../../queries/queries';
 import { attendanceSummary } from '../../../data/demoData';
 
@@ -68,7 +68,11 @@ class Attendance extends Component {
           />
         </Grid>
         <Grid textAlign="center">
-          {selectedCohortResult.length ? <AttendanceSummary students={selectedCohortResult} /> : ''}
+          {selectedCohortResult.length ? (
+            <CohortAttendanceSummary students={selectedCohortResult} />
+          ) : (
+            ''
+          )}
         </Grid>
       </React.Fragment>
     );
