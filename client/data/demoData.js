@@ -142,9 +142,44 @@ export const studentsRecord = [
 ];
 
 export const attendanceSummary = [
-  { name: 'Adam Klevin', github: 'adams', absencePoints: 4, health: 86 },
-  { name: 'Bob Builder', github: 'bobs', absencePoints: 8, health: 30 },
-  { name: 'Aron Doe', github: 'arons', absencePoints: 11, health: 86 },
-  { name: 'John Smith', github: 'johns', absencePoints: 0, health: 90 },
-  { name: 'Jane Peter', github: 'janes', absencePoints: 15, health: 45 }
+  {
+    firstName: 'Adam',
+    lastName: 'Klevin',
+    github: 'adams',
+    absencePoints: 4,
+    attendanceHealth: 66,
+    cohort: 'RPT10'
+  },
+  {
+    firstName: 'Bob',
+    lastName: 'Builder',
+    github: 'bobs',
+    absencePoints: 8,
+    attendanceHealth: 30,
+    cohort: 'RPT09'
+  },
+  {
+    firstName: 'John',
+    lastName: 'Smith',
+    github: 'johns',
+    absencePoints: 0,
+    attendanceHealth: 90,
+    cohort: 'RPT10'
+  },
+  {
+    firstName: 'Jane',
+    lastName: 'Peter',
+    github: 'janes',
+    absencePoints: 15,
+    attendanceHealth: 45,
+    cohort: 'RPT10'
+  },
+  {
+    firstName: 'Aron',
+    lastName: 'Doe',
+    github: 'arons',
+    absencePoints: 11,
+    attendanceHealth: 86,
+    cohort: 'RPT09'
+  }
 ];

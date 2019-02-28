@@ -11,7 +11,8 @@ const AttendanceSummary = props => {
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Name</Table.HeaderCell>
-            <Table.HeaderCell>Time In</Table.HeaderCell>
+            <Table.HeaderCell>Points</Table.HeaderCell>
+            <Table.HeaderCell>Attendance Health</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>

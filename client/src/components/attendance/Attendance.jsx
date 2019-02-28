@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Grid } from 'semantic-ui-react';
 import RadioButtonList from './RadioButtonList';
-import StudentsList from './StudentsList';
 import AttendanceSummary from './AttendanceSummary';
 import { getAllCohorts } from '../../queries/queries';
-import { studentsRecord, attendanceSummary } from '../../../data/demoData';
+import { attendanceSummary } from '../../../data/demoData';
 
 class Attendance extends Component {
   constructor() {
@@ -50,9 +49,10 @@ class Attendance extends Component {
   showAttendance() {
     const { cohorts } = this.state;
     const selectedCohort = cohorts.filter(e => e.isChecked === true);
-    const selectedCohortData = studentsRecord.filter(e => {
+    const selectedCohortData = attendanceSummary.filter(e => {
       return e.cohort === selectedCohort[0].name;
     });
+    console.log('attendanceSummary', selectedCohortData);
     this.setState({ selectedCohortResult: selectedCohortData });
   }
 
