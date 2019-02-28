@@ -52,7 +52,6 @@ class Attendance extends Component {
     const selectedCohortData = attendanceSummary.filter(e => {
       return e.cohort === selectedCohort[0].name;
     });
-    console.log('attendanceSummary', selectedCohortData);
     this.setState({ selectedCohortResult: selectedCohortData });
   }
 
@@ -68,7 +67,9 @@ class Attendance extends Component {
             showAttendance={this.showAttendance}
           />
         </Grid>
-        {selectedCohortResult.length ? <AttendanceSummary students={selectedCohortResult} /> : ''}
+        <Grid textAlign="center">
+          {selectedCohortResult.length ? <AttendanceSummary students={selectedCohortResult} /> : ''}
+        </Grid>
       </React.Fragment>
     );
   }

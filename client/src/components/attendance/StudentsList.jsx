@@ -6,21 +6,19 @@ import StudentInfo from './StudentInfo';
 const StudentsList = props => {
   const { students } = props;
   return (
-    <div>
-      <Table celled striped>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>Name</Table.HeaderCell>
-            <Table.HeaderCell>Time In</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {students.map(student => (
-            <StudentInfo student={student} key={`${student.firstName} - ${student.join_time}`} />
-          ))}
-        </Table.Body>
-      </Table>
-    </div>
+    <Table striped>
+      <Table.Header>
+        <Table.Row>
+          <Table.HeaderCell>Name</Table.HeaderCell>
+          <Table.HeaderCell>Time In</Table.HeaderCell>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        {students.map(student => (
+          <StudentInfo student={student} key={`${student.firstName} - ${student.join_time}`} />
+        ))}
+      </Table.Body>
+    </Table>
   );
 };
 
