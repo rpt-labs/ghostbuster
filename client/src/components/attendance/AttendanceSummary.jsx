@@ -6,9 +6,9 @@ import StudentSummary from './StudentSummary';
 const AttendanceSummary = props => {
   const { students } = props;
   return (
-    <Table celled striped style={{ width: '75%' }}>
+    <Table collapsing celled striped>
       <Table.Header>
-        <Table.Row>
+        <Table.Row textAlign="center">
           <Table.HeaderCell>Name</Table.HeaderCell>
           <Table.HeaderCell>Points</Table.HeaderCell>
           <Table.HeaderCell>Attendance Health</Table.HeaderCell>

@@ -14,7 +14,7 @@ const StudentSummary = props => {
   }
 
   return (
-    <Table.Row key={`${student.firstName} - ${timeIn}`}>
+    <Table.Row key={`${student.firstName} - ${timeIn}`} textAlign="center">
       <Table.Cell>{`${student.firstName} ${student.lastName}`}</Table.Cell>
       <Table.Cell>{student.absencePoints}</Table.Cell>
       <Table.Cell>{statusButton}</Table.Cell>
