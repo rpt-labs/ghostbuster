@@ -2,14 +2,9 @@ import React, { Component } from 'react';
 import { Grid } from 'semantic-ui-react';
 import RadioButtonList from './RadioButtonList';
 import StudentsList from './StudentsList';
+import AttendanceSummary from './AttendanceSummary';
 import { getAllCohorts } from '../../queries/queries';
-
-const studentsRecord = [
-  { name: 'Jessey', timeJoined: '4:45 p.m', cohort: 'RPT09' },
-  { name: 'Jon', timeJoined: '4:50 p.m', cohort: 'RPT09' },
-  { name: 'jonny', timeJoined: '4:55 p.m', cohort: 'RPT14' },
-  { name: 'Jonn', timeJoined: '4:50 p.m', cohort: 'RPT09' }
-];
+import { studentsRecord, attendanceSummary } from '../../../data/demoData';
 
 class Attendance extends Component {
   constructor() {
@@ -73,7 +68,7 @@ class Attendance extends Component {
             showAttendance={this.showAttendance}
           />
         </Grid>
-        {selectedCohortResult.length ? <StudentsList students={selectedCohortResult} /> : ''}
+        {selectedCohortResult.length ? <AttendanceSummary students={selectedCohortResult} /> : ''}
       </React.Fragment>
     );
   }
