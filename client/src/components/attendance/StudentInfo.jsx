@@ -4,11 +4,11 @@ import { Table } from 'semantic-ui-react';
 
 const StudentInfo = props => {
   const { student } = props;
-  const timeIn = student.timeJoined || 'Absent';
+  const timeIn = student.join_time || 'Absent';
 
   return (
-    <Table.Row key={student.name - timeIn}>
-      <Table.Cell>{student.name}</Table.Cell>
+    <Table.Row key={`${student.firstName} - ${timeIn}`}>
+      <Table.Cell>{`${student.firstName} ${student.lastName}`}</Table.Cell>
       <Table.Cell>{timeIn}</Table.Cell>
     </Table.Row>
   );

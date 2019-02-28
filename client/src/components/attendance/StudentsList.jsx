@@ -16,7 +16,7 @@ const StudentsList = props => {
         </Table.Header>
         <Table.Body>
           {students.map(student => (
-            <StudentInfo student={student} key={`${student.name}-${student.timeJoined}`} />
+            <StudentInfo student={student} key={`${student.firstName} - ${student.join_time}`} />
           ))}
         </Table.Body>
       </Table>
