@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { Table } from 'semantic-ui-react';
 import queryString from 'query-string';
 import { studentsRecord } from '../../../data/demoData';
@@ -20,7 +20,8 @@ class StudentAttandancePreview extends Component {
   }
 
   getAttendance() {
-    const { cohort, firstName, lastName } = queryString.parse(this.props.location.search);
+    const { location } = this.props;
+    const { cohort, firstName, lastName } = queryString.parse(location.search);
     const name = `${firstName} ${lastName}`;
     const list = studentsRecord.filter(e => {
       return e.user_name === name;
@@ -54,5 +55,9 @@ class StudentAttandancePreview extends Component {
     );
   }
 }
+
+StudentAttandancePreview.propTypes = {
+  location: PropTypes.arrayOf(Object).isRequired
+};
 
 export default StudentAttandancePreview;
