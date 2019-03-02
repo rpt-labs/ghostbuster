@@ -11,7 +11,8 @@ export const studentsRecord = [
     lastName: 'Peter',
     room: 'All RPT Zoom Classroom',
     timestamp: '2/20/2019, 1:21:21 AM',
-    cohort: 'RPT10'
+    cohort: 'RPT10',
+    type: 'Opening'
   },
   {
     id: 'Sozb7E1oSlaNmb-z0Xffv2',
@@ -25,7 +26,8 @@ export const studentsRecord = [
     lastName: 'Smith',
     room: 'All RPT Zoom Classroom',
     timestamp: '2/20/2019, 1:22:21 AM',
-    cohort: 'RPT10'
+    cohort: 'RPT10',
+    type: 'Opening'
   },
   {
     id: 'Sozb7E1oSlaNmb-z0Xffv3',
@@ -39,7 +41,8 @@ export const studentsRecord = [
     lastName: 'Doe',
     room: 'All RPT Zoom Classroom',
     timestamp: '2/20/2019, 1:23:21 AM',
-    cohort: 'RPT09'
+    cohort: 'RPT09',
+    type: 'Closing'
   },
   {
     id: 'Sozb7E1oSlaNmb-z0Xffv4',
@@ -53,7 +56,8 @@ export const studentsRecord = [
     lastName: 'Builder',
     room: 'All RPT Zoom Classroom',
     timestamp: '2/20/2019, 1:24:21 AM',
-    cohort: 'RPT09'
+    cohort: 'RPT09',
+    type: 'Closing'
   },
   {
     id: 'Sozb7E1oSlaNmb-z0Xffvg',
@@ -67,7 +71,8 @@ export const studentsRecord = [
     lastName: 'Klevin',
     room: 'All RPT Zoom Classroom',
     timestamp: '2/20/2019, 1:25:21 AM',
-    cohort: 'RPT10'
+    cohort: 'RPT10',
+    type: 'Opening'
   },
   {
     id: 'Sozb7E1oSlaNmb-z0Xffvg',
@@ -81,7 +86,8 @@ export const studentsRecord = [
     lastName: 'Peter',
     room: 'All RPT Zoom Classroom',
     timestamp: '2/25/2019, 1:31:21 AM',
-    cohort: 'RPT10'
+    cohort: 'RPT10',
+    type: 'Opening'
   },
   {
     id: 'Sozb7E1oSlaNmb-z0Xffv2',
@@ -95,7 +101,8 @@ export const studentsRecord = [
     lastName: 'Smith',
     room: 'All RPT Zoom Classroom',
     timestamp: '2/25/2019, 1:32:21 AM',
-    cohort: 'RPT10'
+    cohort: 'RPT10',
+    type: 'Closing'
   },
   {
     id: 'Sozb7E1oSlaNmb-z0Xffv3',
@@ -109,7 +116,8 @@ export const studentsRecord = [
     lastName: 'Doe',
     room: 'All RPT Zoom Classroom',
     timestamp: '2/25/2019, 1:33:21 AM',
-    cohort: 'RPT09'
+    cohort: 'RPT09',
+    type: 'Opening'
   },
   {
     id: 'Sozb7E1oSlaNmb-z0Xffv4',
@@ -123,7 +131,8 @@ export const studentsRecord = [
     lastName: 'Builder',
     room: 'All RPT Zoom Classroom',
     timestamp: '2/25/2019, 1:34:21 AM',
-    cohort: 'RPT09'
+    cohort: 'RPT09',
+    type: 'Closing'
   },
   {
     id: 'Sozb7E1oSlaNmb-z0Xffvg',
@@ -137,7 +146,8 @@ export const studentsRecord = [
     lastName: 'Klevin',
     room: 'All RPT Zoom Classroom',
     timestamp: '2/25/2019, 1:35:21 AM',
-    cohort: 'RPT10'
+    cohort: 'RPT10',
+    type: 'Opening'
   }
 ];
 
