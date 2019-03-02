@@ -12,6 +12,7 @@ import TeamList from './TeamList';
 import Login from './Login';
 import Admin from './admin/Admin';
 import Attendance from './attendance/Attendance';
+import StudentAttendancePreview from './attendance/StudentAttendancePreview';
 // routing
 
 // auth
@@ -181,6 +182,7 @@ export default class AlternateApp extends React.Component {
               <SecureRoute path="/" exact component={Home} />
               <SecureRoute path="/admin" component={Admin} />
               <SecureRoute path="/attendance" component={Attendance} />
+              <SecureRoute path="/preview" component={StudentAttendancePreview} />
               <SecureRoute
                 path="/sprints"
                 render={props => (
