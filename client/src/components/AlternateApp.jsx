@@ -181,8 +181,8 @@ export default class AlternateApp extends React.Component {
             <Container>
               <SecureRoute path="/" exact component={Home} />
               <SecureRoute path="/admin" component={Admin} />
-              <SecureRoute path="/attendance" component={Attendance} />
-              <SecureRoute path="/preview" component={StudentAttendancePreview} />
+              <SecureRoute exact path="/attendance" component={Attendance} />
+              <SecureRoute path="/attendance/preview" component={StudentAttendancePreview} />
               <SecureRoute
                 path="/sprints"
                 render={props => (

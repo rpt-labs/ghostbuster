@@ -20,10 +20,9 @@ const AttendanceSummary = props => {
       <Table.Cell>{`${student.firstName} ${student.lastName}`}</Table.Cell>
       <Table.Cell>{student.absencePoints}</Table.Cell>
       <Table.Cell>
-        {/* {console.log(student)} */}
         <Link
           to={{
-            pathname: `/preview`,
+            pathname: `/attendance/preview`,
             search: `?cohort=${student.cohort}&lastName=${student.lastName}&firstName=${
               student.firstName
             }`
