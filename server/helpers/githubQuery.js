@@ -10,8 +10,8 @@ module.exports = async function githubQuery(githubUrl) {
       data: { githubUrl },
       headers: {
         'x-api-key': GITHUB_UTIL_TOKEN,
-        'content-type': 'application/json',
-      },
+        'content-type': 'application/json'
+      }
     });
 
     return response.data.data;

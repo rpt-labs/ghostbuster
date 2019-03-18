@@ -4,7 +4,7 @@ const {
   GraphQLString,
   GraphQLSchema,
   GraphQLInt,
-  GraphQLList,
+  GraphQLList
 } = require('graphql');
 const cohorts = require('../../db/models/cohorts');
 
@@ -15,7 +15,7 @@ const CohortType = new GraphQLObjectType({
   name: 'Cohort',
   fields: () => ({
     id: { type: GraphQLInt },
-    name: { type: GraphQLString },
+    cohort_name: { type: GraphQLString },
     phase: { type: GraphQLString },
     students: {
       type: new GraphQLList(StudentType),
@@ -26,7 +26,7 @@ const CohortType = new GraphQLObjectType({
         `)
           .then(result => result.rows)
           .catch(error => error.detail);
-      },
+      }
     },
     teams: {
       type: new GraphQLList(TeamType),
@@ -37,9 +37,9 @@ const CohortType = new GraphQLObjectType({
         `)
           .then(result => result.rows)
           .catch(error => error.detail);
-      },
-    },
-  }),
+      }
+    }
+  })
 });
 
 const StudentType = new GraphQLObjectType({
@@ -55,7 +55,7 @@ const StudentType = new GraphQLObjectType({
         return query(`SELECT * FROM cohorts WHERE id=${parent.cohort_id}`)
           .then(result => result.rows[0])
           .catch(err => err.detail);
-      },
+      }
     },
     teams: {
       type: new GraphQLList(TeamType),
@@ -69,9 +69,9 @@ const StudentType = new GraphQLObjectType({
         `)
           .then(result => result.rows)
           .catch(error => error.detail);
-      },
-    },
-  }),
+      }
+    }
+  })
 });
 
 const TeamType = new GraphQLObjectType({
@@ -86,7 +86,7 @@ const TeamType = new GraphQLObjectType({
         return query(`SELECT * FROM cohorts WHERE id=${parent.cohort_id}`)
           .then(result => result.rows[0])
           .catch(error => error.detail);
-      },
+      }
     },
     team_type: { type: GraphQLString },
     students: {
@@ -99,11 +99,12 @@ const TeamType = new GraphQLObjectType({
           JOIN team_student ON(students.id=team_student.student_id)
           JOIN teams ON(teams.id=team_student.team_id)
           WHERE team_id=${parent.id}
-          ORDER BY first_name ASC`).then(res => res.rows)
+          ORDER BY first_name ASC`)
+          .then(res => res.rows)
           .catch(err => console.log(err.details));
-      },
-    },
-  }),
+      }
+    }
+  })
 });
 
 const SprintType = new GraphQLObjectType({
@@ -117,11 +118,12 @@ const SprintType = new GraphQLObjectType({
         return query(`
           SELECT * from messages WHERE sprint_id=${parent.id}
           ORDER BY id ASC
-        `).then(result => result.rows)
+        `)
+          .then(result => result.rows)
           .catch(error => error.detail || error);
-      },
-    },
-  }),
+      }
+    }
+  })
 });
 
 const CommitMessageType = new GraphQLObjectType({
@@ -138,9 +140,9 @@ const CommitMessageType = new GraphQLObjectType({
         `)
           .then(result => result.rows)
           .catch(error => error.detail || error);
-      },
-    },
-  }),
+      }
+    }
+  })
 });
 
 const RootQuery = new GraphQLObjectType({
@@ -153,7 +155,7 @@ const RootQuery = new GraphQLObjectType({
         return query(`SELECT * FROM cohorts WHERE id=${args.id}`)
           .then(result => result.rows[0])
           .catch(error => error.detail);
-      },
+      }
     },
     student: {
       type: StudentType,
@@ -162,7 +164,7 @@ const RootQuery = new GraphQLObjectType({
         return query(`SELECT * FROM students WHERE id=${args.id}`)
           .then(result => result.rows[0])
           .catch(error => error.detail);
-      },
+      }
     },
     team: {
       type: TeamType,
@@ -171,7 +173,7 @@ const RootQuery = new GraphQLObjectType({
         return query(`SELECT * FROM teams WHERE id=${args.id}`)
           .then(result => result.rows[0])
           .catch(error => error.detail);
-      },
+      }
     },
     sprint: {
       type: SprintType,
@@ -180,7 +182,7 @@ const RootQuery = new GraphQLObjectType({
         return query(`SELECT * FROM sprints WHERE id=${args.id}`)
           .then(result => result.rows[0])
           .catch(error => error.detail || error);
-      },
+      }
     },
     cohorts: {
       type: new GraphQLList(CohortType),
@@ -188,7 +190,7 @@ const RootQuery = new GraphQLObjectType({
         return query('SELECT * FROM cohorts ORDER BY id ASC')
           .then(result => result.rows)
           .catch(error => error.detail);
-      },
+      }
     },
     students: {
       type: new GraphQLList(StudentType),
@@ -196,7 +198,7 @@ const RootQuery = new GraphQLObjectType({
         return query('SELECT * FROM students ORDER BY first_name ASC')
           .then(result => result.rows)
           .catch(error => error.detail);
-      },
+      }
     },
     teams: {
       type: new GraphQLList(TeamType),
@@ -204,7 +206,7 @@ const RootQuery = new GraphQLObjectType({
         return query('SELECT * FROM teams ORDER BY id ASC')
           .then(result => result.rows)
           .catch(error => error.detail);
-      },
+      }
     },
     sprints: {
       type: new GraphQLList(SprintType),
@@ -212,9 +214,9 @@ const RootQuery = new GraphQLObjectType({
         return query('SELECT * FROM sprints ORDER BY id ASC')
           .then(result => result.rows)
           .catch(error => error.detail || error);
-      },
-    },
-  },
+      }
+    }
+  }
 });
 
 const Mutation = new GraphQLObjectType({
@@ -224,21 +226,22 @@ const Mutation = new GraphQLObjectType({
       type: CohortType,
       args: {
         name: { type: GraphQLString },
-        phase: { type: GraphQLString },
+        phase: { type: GraphQLString }
       },
       resolve(args) {
         // eslint-disable-next-line prefer-const
         let { name, phase } = args;
         name = name.toLowerCase();
-        return cohorts.addCohort({ name, phase })
+        return cohorts
+          .addCohort({ name, phase })
           .then(result => result)
           .catch(error => error.detail || error);
-      },
-    },
-  },
+      }
+    }
+  }
 });
 
 module.exports = new GraphQLSchema({
   query: RootQuery,
-  mutation: Mutation,
+  mutation: Mutation
 });

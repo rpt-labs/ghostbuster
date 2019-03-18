@@ -13,73 +13,73 @@ class Cohort extends React.Component {
       repos: [
         {
           name: 'underbar-review',
-          selected: false,
+          selected: false
         },
         {
           name: 'recursion-review',
-          selected: false,
+          selected: false
         },
         {
           name: 'data-structures',
-          selected: false,
+          selected: false
         },
         {
           name: 'beesbeesbees',
-          selected: false,
+          selected: false
         },
         {
           name: 'subclass-dance-party',
-          selected: false,
+          selected: false
         },
         {
           name: 'n-queens',
-          selected: false,
+          selected: false
         },
         {
           name: 'chatterbox-client',
-          selected: false,
+          selected: false
         },
         {
           name: '6ees6ees6ees',
-          selected: false,
+          selected: false
         },
         {
           name: 'react-components',
-          selected: false,
+          selected: false
         },
         {
           name: 'recast.ly',
-          selected: false,
+          selected: false
         },
         {
           name: 'recastly-redux',
-          selected: false,
+          selected: false
         },
         {
           name: 'chatterbox-server',
-          selected: false,
+          selected: false
         },
         {
           name: 'cruddy-todo',
-          selected: false,
+          selected: false
         },
         {
           name: 'sqool',
-          selected: false,
+          selected: false
         },
         {
           name: 'databases',
-          selected: false,
+          selected: false
         },
         {
           name: 'shortly-express',
-          selected: false,
+          selected: false
         },
         {
           name: 'fullstack-review',
-          selected: false,
-        },
-      ],
+          selected: false
+        }
+      ]
     };
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     this.storeCheckedRepos = this.storeCheckedRepos.bind(this);
@@ -102,7 +102,7 @@ class Cohort extends React.Component {
     const { repos } = this.state;
     const copy = repos.slice();
 
-    copy.forEach((repo) => {
+    copy.forEach(repo => {
       const repo2 = repo;
       repo2.selected = false;
       return repo2;
@@ -116,7 +116,7 @@ class Cohort extends React.Component {
     const { repoSelect } = this.props;
     const newArgs = [];
 
-    repos.forEach((repo) => {
+    repos.forEach(repo => {
       if (repo.selected) {
         newArgs.push(repo.name);
       }
@@ -127,42 +127,33 @@ class Cohort extends React.Component {
   }
 
   render() {
-    const {
-      loading,
-      commits,
-      showSegment,
-      selected,
-      cohorts,
-      selectCohort,
-    } = this.props;
+    const { loading, commits, showSegment, selected, cohorts, selectCohort } = this.props;
     const { repos } = this.state;
 
     const repoNames = Object.keys(commits);
-    const repoList = repoNames.map(repo => <Repo key={repo.name} name={repo} students={commits[repo]} />);
-    const currentStatus = showSegment ? (
-      <TeamSegment>
-        {repoList}
-      </TeamSegment>
-    ) : (<div />);
+    const repoList = repoNames.map(repo => (
+      <Repo key={repo.name} name={repo} students={commits[repo]} />
+    ));
+    const currentStatus = showSegment ? <TeamSegment>{repoList}</TeamSegment> : <div />;
 
-    const viewDetails = loading
-      ? (
-        <Segment placeholder>
-          <Dimmer active inverted>
-            <Loader inverted content="Loading" />
-          </Dimmer>
-        </Segment>
-      )
-      : currentStatus;
+    const viewDetails = loading ? (
+      <Segment placeholder>
+        <Dimmer active inverted>
+          <Loader inverted content="Loading" />
+        </Dimmer>
+      </Segment>
+    ) : (
+      currentStatus
+    );
 
     return (
       <React.Fragment>
-        <TabNav
-          selected={selected}
-          cohorts={cohorts}
-          selectCohort={selectCohort}
+        <TabNav selected={selected} cohorts={cohorts} selectCohort={selectCohort} />
+        <CheckboxList
+          repos={repos}
+          handleCheckboxChange={this.handleCheckboxChange}
+          storeCheckedRepos={this.storeCheckedRepos}
         />
-        <CheckboxList repos={repos} handleCheckboxChange={this.handleCheckboxChange} storeCheckedRepos={this.storeCheckedRepos} />
         {viewDetails}
       </React.Fragment>
     );
@@ -176,7 +167,7 @@ Cohort.propTypes = {
   repoSelect: PropTypes.func.isRequired,
   selected: PropTypes.string.isRequired,
   cohorts: PropTypes.instanceOf(Array).isRequired,
-  selectCohort: PropTypes.func.isRequired,
+  selectCohort: PropTypes.func.isRequired
 };
 
 export default Cohort;

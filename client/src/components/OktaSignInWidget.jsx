@@ -7,8 +7,9 @@ export default class OktaSignInWidget extends Component {
     const el = this.node;
     const { baseUrl, onSuccess, onError } = this.props;
     this.widget = new OktaSignIn({
-      logo: 'https://png.pngtree.com/element_origin_min_pic/16/12/25/a993726976f4619909704e1177d63658.jpg',
-      baseUrl,
+      logo:
+        'https://png.pngtree.com/element_origin_min_pic/16/12/25/a993726976f4619909704e1177d63658.jpg',
+      baseUrl
     });
     this.widget.renderEl({ el }, onSuccess, onError);
   }
@@ -18,12 +19,18 @@ export default class OktaSignInWidget extends Component {
   }
 
   render() {
-    return <div ref={(n) => { this.node = n; }} />;
+    return (
+      <div
+        ref={n => {
+          this.node = n;
+        }}
+      />
+    );
   }
 }
 
 OktaSignInWidget.propTypes = {
   baseUrl: PropTypes.string.isRequired,
   onSuccess: PropTypes.func.isRequired,
-  onError: PropTypes.func.isRequired,
+  onError: PropTypes.func.isRequired
 };

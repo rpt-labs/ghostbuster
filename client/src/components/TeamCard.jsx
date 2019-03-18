@@ -5,17 +5,17 @@ import TeamPieChart from './TeamPieChart';
 import TeamBarChart from './TeamBarChart';
 
 // purpose: show meta-data for the team
-const TeamCard = (props) => {
+const TeamCard = props => {
   const { data, lifetimeContributions } = props;
-  const lifetimeChart = lifetimeContributions
-    ? <TeamBarChart contributions={lifetimeContributions} />
-    : <div />;
+  const lifetimeChart = lifetimeContributions ? (
+    <TeamBarChart contributions={lifetimeContributions} />
+  ) : (
+    <div />
+  );
   return (
     <Segment>
       <Grid centered columns={2}>
-        <Grid.Column>
-          {lifetimeChart}
-        </Grid.Column>
+        <Grid.Column>{lifetimeChart}</Grid.Column>
         <Grid.Row centered columns={2}>
           <Grid.Column>
             <TeamPieChart type="commits" students={data} />
@@ -31,7 +31,7 @@ const TeamCard = (props) => {
 
 TeamCard.propTypes = {
   data: PropTypes.instanceOf(Object).isRequired,
-  lifetimeContributions: PropTypes.instanceOf(Object).isRequired,
+  lifetimeContributions: PropTypes.instanceOf(Object).isRequired
 };
 
 export default TeamCard;

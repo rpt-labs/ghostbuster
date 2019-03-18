@@ -14,7 +14,7 @@ let reportMessagesChanges = [];
 */
 const daysAgo = 37;
 
-const countTotalCommitsAndChanges = (sortedCommits) => {
+const countTotalCommitsAndChanges = sortedCommits => {
   let totalCommits = 0;
   let totalChanges = 0;
   for (const student in sortedCommits) {
@@ -24,10 +24,10 @@ const countTotalCommitsAndChanges = (sortedCommits) => {
   return { totalCommits, totalChanges };
 };
 
-const countStudentChanges = studentCommits => studentCommits.reduce((a, b) => a += b.changes, 0);
+const countStudentChanges = studentCommits => studentCommits.reduce((a, b) => (a += b.changes), 0);
 
 // calculate number of commits/code changes and percentage of commits/code changes by team member
-const analyzeCommits = (sortedCommits) => {
+const analyzeCommits = sortedCommits => {
   const { totalChanges, totalCommits } = countTotalCommitsAndChanges(sortedCommits);
   const studentData = {};
   for (const student in sortedCommits) {
@@ -37,7 +37,10 @@ const analyzeCommits = (sortedCommits) => {
     const changesPercentage = Math.floor((numChanges / totalChanges) * 100);
 
     studentData[student] = {
-      numCommits, numChanges, commitPercentage, changesPercentage,
+      numCommits,
+      numChanges,
+      commitPercentage,
+      changesPercentage
     };
   }
   return studentData;
@@ -51,12 +54,18 @@ const checkForGhosts = (studentCommitData, students) => {
   if (allHandles.length !== commitHandles.length) {
     const missingHandle = allHandles.filter(handle => commitHandles.includes(handle) === false);
     const missingStudents = students.filter(student => missingHandle.includes(student.github));
-    missingStudents.forEach((student) => {
-      const ghostMessage = `${student.firstName} has not made any commits in the last ${daysAgo} days`;
+    missingStudents.forEach(student => {
+      const ghostMessage = `${
+        student.firstName
+      } has not made any commits in the last ${daysAgo} days`;
       ghostMessages.push(ghostMessage);
-      const reportMessage1 = `${student.firstName} has made 0 commits in the last ${daysAgo} days, 0% of all commits`;
+      const reportMessage1 = `${
+        student.firstName
+      } has made 0 commits in the last ${daysAgo} days, 0% of all commits`;
       reportMessagesCommits.push(reportMessage1);
-      const reportMessage2 = `${student.firstName} has made 0 code changes in the last ${daysAgo} days, 0% of all code changes`;
+      const reportMessage2 = `${
+        student.firstName
+      } has made 0 code changes in the last ${daysAgo} days, 0% of all code changes`;
       reportMessagesChanges.push(reportMessage2);
     });
   }
@@ -73,23 +82,39 @@ const checkForPotentialGhosts = (studentCommitData, students) => {
 
     if (currentStudent.length) {
       if (studentCommitData[handle].commitPercentage < fairPercent * 0.8) {
-        const potentialGhostMessage = `⚠️ ${currentStudent[0].firstName} has made less commits than their teammates`;
+        const potentialGhostMessage = `⚠️ ${
+          currentStudent[0].firstName
+        } has made less commits than their teammates`;
         potentialGhostMessages.push(potentialGhostMessage);
       }
       if (studentCommitData[handle].changesPercentage < fairPercent * 0.8) {
-        const potentialGhostMessage2 = `⚠️ ${currentStudent[0].firstName} has made less code changes than their teammates`;
+        const potentialGhostMessage2 = `⚠️ ${
+          currentStudent[0].firstName
+        } has made less code changes than their teammates`;
         potentialGhostMessages.push(potentialGhostMessage2);
       }
 
-      reportMessagesCommits.push(`${currentStudent[0].firstName} has made ${currentStudentData.numCommits} commits in the last ${daysAgo} days, ${currentStudentData.commitPercentage}% of all commits.`);
-      reportMessagesChanges.push(`${currentStudent[0].firstName} has made ${currentStudentData.numChanges} code changes in the last ${daysAgo} days, ${currentStudentData.changesPercentage}% of all code changes.`);
+      reportMessagesCommits.push(
+        `${currentStudent[0].firstName} has made ${
+          currentStudentData.numCommits
+        } commits in the last ${daysAgo} days, ${
+          currentStudentData.commitPercentage
+        }% of all commits.`
+      );
+      reportMessagesChanges.push(
+        `${currentStudent[0].firstName} has made ${
+          currentStudentData.numChanges
+        } code changes in the last ${daysAgo} days, ${
+          currentStudentData.changesPercentage
+        }% of all code changes.`
+      );
     } else {
       console.log(handle);
     }
   }
 };
 
-const printReports = (teamName) => {
+const printReports = teamName => {
   console.log('******************', teamName, '***********************');
   ghostMessages.forEach(message => console.log('\x1b[31m', '👻', message));
   ghostMessages = [];

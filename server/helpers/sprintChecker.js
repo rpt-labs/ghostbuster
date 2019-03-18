@@ -24,7 +24,7 @@ const checkStudentFork = async (student, repoName) => {
     percentComplete,
     commitMessages,
     github: student.github,
-    cohort: student.cohort,
+    cohort: student.cohort
   };
   return summary;
 };
@@ -32,7 +32,12 @@ const checkStudentFork = async (student, repoName) => {
 const checkCohort = async (cohort, sprints = []) => {
   const report = {};
   for (const student of cohort.students) {
-    const currentStudent = new Student(student.firstName, student.lastName, student.github, cohort.name);
+    const currentStudent = new Student(
+      student.firstName,
+      student.lastName,
+      student.github,
+      cohort.name
+    );
     for (const repo of sprints) {
       const summary = await checkStudentFork(currentStudent, repo);
       if (report[repo]) {
@@ -46,12 +51,13 @@ const checkCohort = async (cohort, sprints = []) => {
   return report;
 };
 
-const sortReport = (report) => {
+const sortReport = report => {
   for (const repo in report) {
     report[repo] = report[repo].sort((a, b) => {
       if (a.percentComplete < b.percentComplete) {
         return -1;
-      } if (a.percentComplete === b.percentComplete) {
+      }
+      if (a.percentComplete === b.percentComplete) {
         return 0;
       }
       return 1;

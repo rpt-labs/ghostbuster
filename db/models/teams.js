@@ -11,10 +11,13 @@ module.exports = {
         '${team.github}',
         ${team.cohortId}
       )`)
-      .then(() => query(`
+      .then(() =>
+        query(`
         SELECT * FROM teams WHERE team_name='${team.teamName}'
-      `).then(res => res.rows[0])
-        .catch(err => err))
+      `)
+          .then(res => res.rows[0])
+          .catch(err => err)
+      )
       .catch(err => err);
   },
   addStudentToTeam: async (studentId, teamId) => {
@@ -101,7 +104,7 @@ module.exports = {
       return err;
     }
   },
-  getTeamById: async (teamId) => {
+  getTeamById: async teamId => {
     try {
       const team = await query(`SELECT * FROM teams WHERE id=${teamId}`);
       return team.rows[0];
@@ -110,7 +113,7 @@ module.exports = {
       return err;
     }
   },
-  getStudentsByTeamId: async (teamId) => {
+  getStudentsByTeamId: async teamId => {
     try {
       const studentQuery = await query(`
         SELECT
@@ -131,7 +134,7 @@ module.exports = {
       // console.log(error);
     }
   },
-  getTeamWithStudents: async (teamId) => {
+  getTeamWithStudents: async teamId => {
     let team;
     let students;
     // retrieve team
@@ -149,5 +152,5 @@ module.exports = {
       // console.log(error);
     }
     return { team, students };
-  },
+  }
 };

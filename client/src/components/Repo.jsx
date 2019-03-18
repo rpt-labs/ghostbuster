@@ -4,14 +4,10 @@ import { Grid } from 'semantic-ui-react';
 import { StyledHeader } from './Styles/TeamStyles';
 import StudentCard from './StudentCard';
 
-const Repo = (props) => {
+const Repo = props => {
   const { name, students } = props;
   const studentList = students.map(student => (
-    <StudentCard
-      key={student.name}
-      repoName={name}
-      student={student}
-    />
+    <StudentCard key={student.name} repoName={name} student={student} />
   ));
 
   return (
@@ -26,7 +22,7 @@ const Repo = (props) => {
 
 Repo.propTypes = {
   name: PropTypes.string.isRequired,
-  students: PropTypes.instanceOf(Object).isRequired,
+  students: PropTypes.instanceOf(Object).isRequired
 };
 
 export default Repo;

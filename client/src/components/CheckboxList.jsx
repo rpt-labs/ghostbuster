@@ -5,14 +5,11 @@ import Checkbox from './Checkbox';
 import GhostbusterButton from './GhostbusterButton';
 import { PaddedGrid } from './Styles/TeamStyles';
 
-const CheckboxList = (props) => {
+const CheckboxList = props => {
   const { repos, handleCheckboxChange, storeCheckedRepos } = props;
   const repoList = repos.map(repo => (
     <Grid.Column width={4} key={`${repo.name}-checkbox`}>
-      <Checkbox
-        repo={repo}
-        handleCheckboxChange={handleCheckboxChange}
-      />
+      <Checkbox repo={repo} handleCheckboxChange={handleCheckboxChange} />
     </Grid.Column>
   ));
 
@@ -30,7 +27,7 @@ const CheckboxList = (props) => {
 CheckboxList.propTypes = {
   repos: PropTypes.arrayOf(Object).isRequired,
   handleCheckboxChange: PropTypes.func.isRequired,
-  storeCheckedRepos: PropTypes.func.isRequired,
+  storeCheckedRepos: PropTypes.func.isRequired
 };
 
 export default CheckboxList;

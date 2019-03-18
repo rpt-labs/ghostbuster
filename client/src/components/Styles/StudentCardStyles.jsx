@@ -1,13 +1,11 @@
-import {
-  Grid, Button, Image, Icon,
-} from 'semantic-ui-react';
+import { Grid, Button, Image, Icon } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 export const CardGrid = styled(Grid)`
   margin-bottom: 10px !important;
   margin-top: 10px !important;
-  border-bottom: 1px solid lightgrey;  
-  `;
+  border-bottom: 1px solid lightgrey;
+`;
 
 const StyledButton = styled(Button)`
   border-radius: 50px !important;
@@ -15,35 +13,35 @@ const StyledButton = styled(Button)`
   color: white !important;
 `;
 export const CompleteButton = styled(StyledButton)`
-  background-color: #85D19C !important;
-  `;
+  background-color: #85d19c !important;
+`;
 
 export const ProgressButton = styled(StyledButton)`
-  background-color: #FFE65B !important;
-  color: #403F4C !important;
-  `;
+  background-color: #ffe65b !important;
+  color: #403f4c !important;
+`;
 
 export const DangerButton = styled(StyledButton)`
-  background-color: #F44D63 !important;
-  `;
+  background-color: #f44d63 !important;
+`;
 
 export const ProgressImage = styled(Image)`
   height: 56px !important;
-  width: 56px !important; 
-  `;
+  width: 56px !important;
+`;
 
 export const HourglassIcon = styled(Icon)`
-  color: #D3D3D3 !important;
-  `;
+  color: #d3d3d3 !important;
+`;
 
 export const CheckIcon = styled(Icon)`
-  color: #85D19C !important;
-  `;
+  color: #85d19c !important;
+`;
 
 export const GithubIcon = styled(Icon)`
-  color: #403F4C !important;
-  `;
+  color: #403f4c !important;
+`;
 
 export const StarIcon = styled(Icon)`
-  color: #2185D0 !important;
-  `;
+  color: #2185d0 !important;
+`;

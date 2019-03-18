@@ -28,7 +28,7 @@ export default class App extends React.Component {
       loading: false,
       showSegment: true,
       currentCommitData: {},
-      projectData: {},
+      projectData: {}
     };
     this.handleSelectCohort = this.handleSelectCohort.bind(this);
     this.handleSelectDisplay = this.handleSelectDisplay.bind(this);
@@ -51,33 +51,36 @@ export default class App extends React.Component {
   getCohorts() {
     // const cohortsQuery = getAllCohorts;
     const cohortsQuery = getAllCohortsNoDb;
-    cohortsQuery().then((result) => {
-      const allCohorts = result.data.data.cohorts;
-      const sprintCohorts = allCohorts.filter(cohort => cohort.phase === 'sprint');
-      const teamCohorts = allCohorts.filter(cohort => cohort.phase === 'project');
-      const projectData = {};
-      teamCohorts.forEach((cohort) => {
-        projectData[cohort.cohort_name] = {};
-        projectData[cohort.cohort_name].fetched = false;
-      });
-
-      if (this._isMounted) {
-        this.setState({
-          sprintCohorts,
-          teamCohorts,
-          allCohorts,
-          selectedCohort: sprintCohorts[0].cohort_name,
-          projectData,
+    cohortsQuery()
+      .then(result => {
+        const allCohorts = result.data.data.cohorts;
+        const sprintCohorts = allCohorts.filter(cohort => cohort.phase === 'sprint');
+        const teamCohorts = allCohorts.filter(cohort => cohort.phase === 'project');
+        const projectData = {};
+        teamCohorts.forEach(cohort => {
+          projectData[cohort.cohort_name] = {};
+          projectData[cohort.cohort_name].fetched = false;
         });
-      }
-    }).catch((error) => { throw error; });
+
+        if (this._isMounted) {
+          this.setState({
+            sprintCohorts,
+            teamCohorts,
+            allCohorts,
+            selectedCohort: sprintCohorts[0].cohort_name,
+            projectData
+          });
+        }
+      })
+      .catch(error => {
+        throw error;
+      });
   }
 
   handleSelectDisplay(type) {
     const { sprintCohorts, teamCohorts } = { ...this.state };
-    const selectedCohort = type === 'sprints'
-      ? sprintCohorts[0].cohort_name
-      : teamCohorts[0].cohort_name;
+    const selectedCohort =
+      type === 'sprints' ? sprintCohorts[0].cohort_name : teamCohorts[0].cohort_name;
     this.setState({ display: type, selectedCohort });
   }
 
@@ -95,31 +98,42 @@ export default class App extends React.Component {
     const { repos, selectedCohort } = { ...this.state };
     const repoString = repos.join('+');
     this.setState({ loading: true, showSegment: true }, () => {
-      axios.get(`http://localhost:1234/ghostbuster/sprints/${repoString}?cohort=${selectedCohort}`)
-        .then(response => this.setState({
-          currentCommitData: response.data,
-          loading: false,
-          showSegment: true,
-        }))
-        .catch((error) => { throw error; });
+      axios
+        .get(`http://localhost:1234/ghostbuster/sprints/${repoString}?cohort=${selectedCohort}`)
+        .then(response =>
+          this.setState({
+            currentCommitData: response.data,
+            loading: false,
+            showSegment: true
+          })
+        )
+        .catch(error => {
+          throw error;
+        });
     });
   }
 
   checkProjects() {
     const { selectedCohort, projectData } = { ...this.state };
     this.setState({ loading: true, showSegment: true }, () => {
-      axios.get(`http://localhost:1234/ghostbuster/teams/projects/${selectedCohort}/thesis/lifetime`)
-        .then((response) => {
+      axios
+        .get(`http://localhost:1234/ghostbuster/teams/projects/${selectedCohort}/thesis/lifetime`)
+        .then(response => {
           projectData[selectedCohort].lifetimeData = response.data;
         })
-        .catch((error) => { throw error; });
-      axios.get(`http://localhost:1234/ghostbuster/teams/projects/${selectedCohort}`)
-        .then((response) => {
+        .catch(error => {
+          throw error;
+        });
+      axios
+        .get(`http://localhost:1234/ghostbuster/teams/projects/${selectedCohort}`)
+        .then(response => {
           projectData[selectedCohort].weekThesisData = response.data.results;
           projectData[selectedCohort].fetched = true;
           this.setState({ projectData, loading: false });
         })
-        .catch((error) => { throw error; });
+        .catch(error => {
+          throw error;
+        });
     });
   }
 
@@ -132,7 +146,7 @@ export default class App extends React.Component {
       showSegment,
       currentCommitData,
       projectData,
-      display,
+      display
     } = this.state;
 
     let cohorts;
