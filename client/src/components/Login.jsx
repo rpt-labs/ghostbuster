@@ -10,7 +10,7 @@ class Login extends Component {
     this.onSuccess = this.onSuccess.bind(this);
     this.onError = this.onError.bind(this);
     this.state = {
-      authenticated: null,
+      authenticated: null
     };
     this.checkAuthentication();
   }
@@ -23,7 +23,7 @@ class Login extends Component {
     const { auth } = this.props;
     if (res.status === 'SUCCESS') {
       return auth.redirect({
-        sessionToken: res.session.token,
+        sessionToken: res.session.token
       });
     }
     // The user can be in another authentication state that requires further action.
@@ -50,21 +50,17 @@ class Login extends Component {
     const { authenticated } = this.state;
     const { baseUrl } = this.props;
     if (authenticated === null) return null;
-    return authenticated
-      ? <Redirect to={{ pathname: '/' }} />
-      : (
-        <OktaSignInWidget
-          baseUrl={baseUrl}
-          onSuccess={this.onSuccess}
-          onError={this.onError}
-        />
-      );
+    return authenticated ? (
+      <Redirect to={{ pathname: '/' }} />
+    ) : (
+      <OktaSignInWidget baseUrl={baseUrl} onSuccess={this.onSuccess} onError={this.onError} />
+    );
   }
 }
 
 Login.propTypes = {
   auth: PropTypes.instanceOf(Object).isRequired,
-  baseUrl: PropTypes.string.isRequired,
+  baseUrl: PropTypes.string.isRequired
 };
 
 export default withAuth(Login);

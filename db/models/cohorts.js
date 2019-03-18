@@ -1,15 +1,22 @@
 const { query } = require('../index');
 
 module.exports = {
-  addCohort: cohort => query(`
+  addCohort: cohort =>
+    query(`
       INSERT INTO cohorts (cohort_name, phase)
       VALUES ('${cohort.name}', '${cohort.phase}')
     `)
-    .then(() => query(`
+      .then(() =>
+        query(`
         SELECT * FROM cohorts WHERE cohort_name='${cohort.name}'`)
-      .then(res => ({ id: res.rows[0].id, name: res.rows[0].cohort_name, phase: res.rows[0].phase }))
-      .catch(err => err))
-    .catch(err => err),
+          .then(res => ({
+            id: res.rows[0].id,
+            name: res.rows[0].cohort_name,
+            phase: res.rows[0].phase
+          }))
+          .catch(err => err)
+      )
+      .catch(err => err),
 
   updateCohort: async (cohortId, newCohortInfo) => {
     // update cohort
@@ -50,7 +57,7 @@ module.exports = {
       return err;
     }
   },
-  getCohortById: async (cohortId) => {
+  getCohortById: async cohortId => {
     try {
       const cohort = await query(`SELECT * FROM cohorts WHERE id=${cohortId}`);
       return cohort.rows[0];
@@ -58,5 +65,5 @@ module.exports = {
       console.log(err);
       return err;
     }
-  },
+  }
 };

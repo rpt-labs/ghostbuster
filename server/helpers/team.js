@@ -1,10 +1,8 @@
-
 const moment = require('moment');
 const githubQuery = require('./githubQuery');
 
-
 // so node won't throw an error and crash when a team doesn't yet have any repos
-process.on('uncaughtException', (err) => {
+process.on('uncaughtException', err => {
   console.log('Caught exception: ', err);
 });
 
@@ -32,7 +30,7 @@ module.exports = class Team {
     try {
       const response = await this.githubQuery(
         `https://api.github.com/repos/${this.orgName}/${repo}/contributors
-      `,
+      `
       );
 
       return response;

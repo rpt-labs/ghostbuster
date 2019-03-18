@@ -11,13 +11,13 @@ module.exports = () => {
 
   return {
     entry: {
-      main: [path.join(srcFolder, 'index.jsx')],
+      main: [path.join(srcFolder, 'index.jsx')]
     },
     resolve: { extensions: ['.js', '.jsx'] },
     output: {
       path: path.resolve(__dirname, 'public'),
       filename: '[name].js',
-      publicPath: '/',
+      publicPath: '/'
     },
     module: {
       rules: [
@@ -25,43 +25,43 @@ module.exports = () => {
           test: /\.jsx?$/,
           exclude: /node_modules/,
           use: {
-            loader: 'babel-loader',
-          },
+            loader: 'babel-loader'
+          }
         },
         {
           test: /\.jsx?$/,
           exclude: /node_modules/,
-          use: ['babel-loader', 'eslint-loader'],
+          use: ['babel-loader', 'eslint-loader']
         },
         {
           test: /\.html$/,
           use: [
             {
               loader: 'html-loader',
-              options: { minimize: true },
-            },
-          ],
+              options: { minimize: true }
+            }
+          ]
         },
         {
           test: /\.css$/,
-          use: [MiniCssExtractPlugin.loader, 'css-loader'],
-        },
-      ],
+          use: [MiniCssExtractPlugin.loader, 'css-loader']
+        }
+      ]
     },
     plugins: [
       new webpack.DefinePlugin({
         'process.env.OKTA_URL': JSON.stringify(env.OKTA_URL),
         'process.env.OKTA_CLIENT_ID': JSON.stringify(env.OKTA_CLIENT_ID),
         'process.env.OKTA_BASE_URL': JSON.stringify(env.OKTA_BASE_URL),
-        'process.env.GHOSTBUSTER_BASE_URL': JSON.stringify(env.GHOSTBUSTER_BASE_URL),
+        'process.env.GHOSTBUSTER_BASE_URL': JSON.stringify(env.GHOSTBUSTER_BASE_URL)
       }),
       new HtmlWebpackPlugin({
         template: path.join(srcFolder, 'index.html'),
-        filename: './index.html',
+        filename: './index.html'
       }),
       new MiniCssExtractPlugin({
-        filename: '[name].css',
-      }),
-    ],
+        filename: '[name].css'
+      })
+    ]
   };
 };

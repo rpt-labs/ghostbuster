@@ -10,7 +10,7 @@ module.exports = {
       return err;
     }
   },
-  getSprintById: async (sprintId) => {
+  getSprintById: async sprintId => {
     try {
       const sprint = await query(`SELECT * FROM sprints WHERE id=${sprintId}`);
       return sprint.rows[0];
@@ -19,16 +19,20 @@ module.exports = {
       return err;
     }
   },
-  addSprint: sprintName => query(`
+  addSprint: sprintName =>
+    query(`
       INSERT INTO sprints (sprint_name)
       VALUES (
         '${sprintName}'
       )`)
-    .then(() => query(`
+      .then(() =>
+        query(`
         SELECT * FROM sprints WHERE sprint_name='${sprintName}'
-      `).then(res => res.rows[0])
-      .catch(err => err))
-    .catch(err => err),
+      `)
+          .then(res => res.rows[0])
+          .catch(err => err)
+      )
+      .catch(err => err),
   updateSprint: async (sprintId, newSprintName) => {
     // update sprint
     try {
@@ -58,7 +62,7 @@ module.exports = {
 
   // deleteSprint: async (sprintId) => 'add functionality to delete sprint',
 
-  getMessagesBySprintId: async (sprintId) => {
+  getMessagesBySprintId: async sprintId => {
     try {
       const messageQuery = await query(`
         SELECT * FROM messages
@@ -70,17 +74,21 @@ module.exports = {
       return error;
     }
   },
-  addMessage: (messageText, sprintId) => query(`
+  addMessage: (messageText, sprintId) =>
+    query(`
       INSERT INTO messages (message_text, sprint_id)
       VALUES (
         '${messageText}',
         ${sprintId}
       )`)
-    .then(() => query(`
+      .then(() =>
+        query(`
         SELECT * FROM messages WHERE sprint_id=${sprintId}
-      `).then(res => res.rows)
-      .catch(err => err))
-    .catch(err => err),
+      `)
+          .then(res => res.rows)
+          .catch(err => err)
+      )
+      .catch(err => err),
   updateMessage: async (messageId, newMessageText, sprintId) => {
     // update the message
     try {
@@ -114,7 +122,7 @@ module.exports = {
   },
   // deleteMessage: async messageId => 'add funcitonality to delete message',
 
-  getSprintWithMessages: async (sprintId) => {
+  getSprintWithMessages: async sprintId => {
     let sprint;
     let messages;
     // retrieve team
@@ -131,5 +139,5 @@ module.exports = {
       console.log(error);
     }
     return { sprint, messages };
-  },
+  }
 };

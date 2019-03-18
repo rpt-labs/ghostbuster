@@ -10,7 +10,9 @@ import TopNav from './TopNav';
 import Cohort from './Cohort';
 import TeamList from './TeamList';
 import Login from './Login';
-
+import Admin from './admin/Admin';
+import Attendance from './attendance/Attendance';
+import StudentAttendancePreview from './attendance/StudentAttendancePreview';
 // routing
 
 // auth
@@ -44,7 +46,7 @@ export default class AlternateApp extends React.Component {
       loading: false,
       showSegment: true,
       currentCommitData: {},
-      projectData: {},
+      projectData: {}
     };
     this.handleSelectCohort = this.handleSelectCohort.bind(this);
     this.handleSelectDisplay = this.handleSelectDisplay.bind(this);
@@ -67,33 +69,36 @@ export default class AlternateApp extends React.Component {
   getCohorts() {
     // const cohortsQuery = getAllCohorts;
     const cohortsQuery = getAllCohortsNoDb;
-    cohortsQuery().then((result) => {
-      const allCohorts = result.data.data.cohorts;
-      const sprintCohorts = allCohorts.filter(cohort => cohort.phase === 'sprint');
-      const teamCohorts = allCohorts.filter(cohort => cohort.phase === 'project');
-      const projectData = {};
-      teamCohorts.forEach((cohort) => {
-        projectData[cohort.cohort_name] = {};
-        projectData[cohort.cohort_name].fetched = false;
-      });
-
-      if (this._isMounted) {
-        this.setState({
-          sprintCohorts,
-          teamCohorts,
-          allCohorts,
-          selectedCohort: sprintCohorts[0].cohort_name,
-          projectData,
+    cohortsQuery()
+      .then(result => {
+        const allCohorts = result.data.data.cohorts;
+        const sprintCohorts = allCohorts.filter(cohort => cohort.phase === 'sprint');
+        const teamCohorts = allCohorts.filter(cohort => cohort.phase === 'project');
+        const projectData = {};
+        teamCohorts.forEach(cohort => {
+          projectData[cohort.cohort_name] = {};
+          projectData[cohort.cohort_name].fetched = false;
         });
-      }
-    }).catch((error) => { throw error; });
+
+        if (this._isMounted) {
+          this.setState({
+            sprintCohorts,
+            teamCohorts,
+            allCohorts,
+            selectedCohort: sprintCohorts[0].cohort_name,
+            projectData
+          });
+        }
+      })
+      .catch(error => {
+        throw error;
+      });
   }
 
   handleSelectDisplay(type) {
     const { sprintCohorts, teamCohorts } = { ...this.state };
-    const selectedCohort = type === 'sprints'
-      ? sprintCohorts[0].cohort_name
-      : teamCohorts[0].cohort_name;
+    const selectedCohort =
+      type === 'sprints' ? sprintCohorts[0].cohort_name : teamCohorts[0].cohort_name;
     this.setState({ display: type, selectedCohort });
   }
 
@@ -111,31 +116,42 @@ export default class AlternateApp extends React.Component {
     const { repos, selectedCohort } = { ...this.state };
     const repoString = repos.join('+');
     this.setState({ loading: true, showSegment: true }, () => {
-      axios.get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/sprints/${repoString}?cohort=${selectedCohort}`)
-        .then(response => this.setState({
-          currentCommitData: response.data,
-          loading: false,
-          showSegment: true,
-        }))
-        .catch((error) => { throw error; });
+      axios
+        .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/sprints/${repoString}?cohort=${selectedCohort}`)
+        .then(response =>
+          this.setState({
+            currentCommitData: response.data,
+            loading: false,
+            showSegment: true
+          })
+        )
+        .catch(error => {
+          throw error;
+        });
     });
   }
 
   checkProjects() {
     const { selectedCohort, projectData } = { ...this.state };
     this.setState({ loading: true, showSegment: true }, () => {
-      axios.get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/teams/projects/${selectedCohort}/thesis/lifetime`)
-        .then((response) => {
+      axios
+        .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/teams/projects/${selectedCohort}/thesis/lifetime`)
+        .then(response => {
           projectData[selectedCohort].lifetimeData = response.data;
         })
-        .catch((error) => { throw error; });
-      axios.get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/teams/projects/${selectedCohort}`)
-        .then((response) => {
+        .catch(error => {
+          throw error;
+        });
+      axios
+        .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/teams/projects/${selectedCohort}`)
+        .then(response => {
           projectData[selectedCohort].weekThesisData = response.data.results;
           projectData[selectedCohort].fetched = true;
           this.setState({ projectData, loading: false });
         })
-        .catch((error) => { throw error; });
+        .catch(error => {
+          throw error;
+        });
     });
   }
 
@@ -147,7 +163,7 @@ export default class AlternateApp extends React.Component {
       loading,
       showSegment,
       currentCommitData,
-      projectData,
+      projectData
       // display,
     } = this.state;
 
@@ -164,6 +180,9 @@ export default class AlternateApp extends React.Component {
 
             <Container>
               <SecureRoute path="/" exact component={Home} />
+              <SecureRoute path="/admin" component={Admin} />
+              <SecureRoute exact path="/attendance" component={Attendance} />
+              <SecureRoute path="/attendance/preview" component={StudentAttendancePreview} />
               <SecureRoute
                 path="/sprints"
                 render={props => (
@@ -198,12 +217,10 @@ export default class AlternateApp extends React.Component {
 
               <Route path="/login" render={() => <Login baseUrl={OKTA_BASE_URL} />} />
               <Route path="/implicit/callback" component={ImplicitCallback} />
-
             </Container>
           </div>
         </Security>
       </Router>
-
     );
   }
 }

@@ -1,7 +1,7 @@
 const githubQuery = require('./githubQuery');
 
 // so node won't throw an error and crash when a student doesn't have a fork
-process.on('uncaughtException', (err) => {
+process.on('uncaughtException', err => {
   console.log('Caught exception: ', err);
 });
 
@@ -48,7 +48,9 @@ module.exports = class Student {
   async checkBranch(repoName, branchName) {
     try {
       const response = await this.githubQuery(`
-      https://api.github.com/repos/${this.github}/${this.cohort}-${repoName}/commits?sha=${branchName}
+      https://api.github.com/repos/${this.github}/${
+        this.cohort
+      }-${repoName}/commits?sha=${branchName}
       `);
       return response;
     } catch (error) {
@@ -59,7 +61,7 @@ module.exports = class Student {
 
   commitMessages(commitData) {
     if (commitData) {
-      return commitData.map((commit) => {
+      return commitData.map(commit => {
         if (!commit.commit.message.includes('Merge')) {
           return commit.commit.message.replace(/['"-]+/g, '');
         }
@@ -82,12 +84,14 @@ module.exports = class Student {
   percentComplete(possibleCommits, commitData) {
     const possibleMessages = possibleCommits.map(x => x.message);
     // filter by matching the predetermined commit messages, then make unique in case students make more than one of the same milestone commit messages
-    const matching = commitData.filter(x => possibleMessages.includes(x.toLowerCase())).reduce((a, b) => {
-      if (!a.includes(b)) {
-        a.push(b);
-      }
-      return a;
-    }, []);
+    const matching = commitData
+      .filter(x => possibleMessages.includes(x.toLowerCase()))
+      .reduce((a, b) => {
+        if (!a.includes(b)) {
+          a.push(b);
+        }
+        return a;
+      }, []);
     const percent = Math.floor((matching.length / possibleMessages.length) * 100);
     return percent;
   }

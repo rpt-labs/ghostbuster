@@ -9,12 +9,9 @@ const allSprints = {
     { message: 'complete some milestone' },
     { message: 'complete another milestone' },
     { message: 'look how productive we are' },
-    { message: 'and committing often too' },
+    { message: 'and committing often too' }
   ],
-  'another-sprint-name': [
-    { message: 'rinse, repeat' },
-    { message: 'etc' },
-  ],
+  'another-sprint-name': [{ message: 'rinse, repeat' }, { message: 'etc' }]
 };
 
 module.exports = { allSprints };

@@ -5,19 +5,17 @@ const Team = require('./team');
 
 const daysAgo = 7;
 
-const countTotalCommitsAndChanges = (sortedCommits) => {
+const countTotalCommitsAndChanges = sortedCommits => {
   let totalCommits = 0;
   let totalChanges = 0;
   for (const student in sortedCommits) {
     totalCommits += sortedCommits[student].length;
-    totalChanges += sortedCommits[student]
-      .map(commit => commit.changes)
-      .reduce((a, b) => a + b);
+    totalChanges += sortedCommits[student].map(commit => commit.changes).reduce((a, b) => a + b);
   }
   return { totalCommits, totalChanges };
 };
 
-const countStudentChanges = studentCommits => studentCommits.reduce((a, b) => a += b.changes, 0);
+const countStudentChanges = studentCommits => studentCommits.reduce((a, b) => (a += b.changes), 0);
 
 // calculate number of commits/code changes and percentage of commits/code changes by team member
 const analyzeCommits = (sortedCommits, students) => {
@@ -39,20 +37,20 @@ const analyzeCommits = (sortedCommits, students) => {
       numCommits,
       numChanges,
       commitPercentage,
-      changesPercentage,
+      changesPercentage
     };
   }
   // check for students who made no commits in the last week
   if (allHandles.length !== commitHandles.length) {
     const missingHandle = allHandles.filter(handle => commitHandles.includes(handle) === false);
     const missingStudents = students.filter(student => missingHandle.includes(student.github));
-    missingStudents.forEach((student) => {
+    missingStudents.forEach(student => {
       studentData[student.firstName] = {
         github: student.github,
         numCommits: 0,
         numChanges: 0,
         commitPercentage: 0,
-        changesPercentage: 0,
+        changesPercentage: 0
       };
     });
   }
@@ -70,7 +68,7 @@ const ghostBustByTeam = async (teamType, teamName) => {
   return analyzed;
 };
 
-const ghostBustAllTeams = async (cohort) => {
+const ghostBustAllTeams = async cohort => {
   const thesisReport = {};
   for (const team in thesisTeams) {
     if (thesisTeams[team].cohort === cohort.toUpperCase()) {
@@ -80,7 +78,7 @@ const ghostBustAllTeams = async (cohort) => {
   }
 
   return {
-    results: thesisReport,
+    results: thesisReport
   };
 };
 
