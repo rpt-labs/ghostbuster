@@ -133,7 +133,7 @@ const CommitMessageType = new GraphQLObjectType({
   name: 'CommitMessage',
   fields: () => ({
     id: { type: GraphQLInt },
-    message_text: { type: GraphQLString },
+    messageText: { type: GraphQLString },
     sprint: {
       type: SprintType,
       resolve(parent) {
@@ -266,6 +266,20 @@ const Mutation = new GraphQLObjectType({
         const { sprintName } = args;
         return sprints
           .addSprint(sprintName)
+          .then(result => result)
+          .catch(error => error.detail || error);
+      }
+    },
+    createCommitMessage: {
+      type: CommitMessageType,
+      args: {
+        sprintId: { type: new GraphQLNonNull(GraphQLInt) },
+        messageText: { type: new GraphQLNonNull(GraphQLString) }
+      },
+      resolve(parent, args) {
+        const { messageText, sprintId } = args;
+        return sprints
+          .addMessage(messageText, sprintId)
           .then(result => result)
           .catch(error => error.detail || error);
       }

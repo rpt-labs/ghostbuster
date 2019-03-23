@@ -87,7 +87,10 @@ module.exports = {
         query(`
         SELECT * FROM messages WHERE sprint_id=${sprintId}
       `)
-          .then(res => res.rows)
+          .then(res => {
+            const result = res.rows[res.rows.length - 1];
+            return { id: result.id, messageText: result.message_text, sprintId: result.sprint_id };
+          })
           .catch(err => err)
       )
       .catch(err => err),
