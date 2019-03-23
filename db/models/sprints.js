@@ -29,7 +29,9 @@ module.exports = {
         query(`
         SELECT * FROM sprints WHERE sprint_name='${sprintName}'
       `)
-          .then(res => res.rows[0])
+          .then(res => ({
+            sprintName: res.rows[0].sprint_name
+          }))
           .catch(err => err)
       )
       .catch(err => err),

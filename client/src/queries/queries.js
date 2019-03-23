@@ -3,7 +3,7 @@ import Api from './Api';
 const graphqlUrl = '/graphql';
 const expressUrl = '/ghostbuster';
 
-const getCohortsQuery = '{cohorts{name: cohort_name phase students{first_name last_name github}}}';
+const getCohortsQuery = '{cohorts{name: cohortName phase students{first_name last_name github}}}';
 
 const getAllCohorts = () =>
   Api.get(graphqlUrl, {

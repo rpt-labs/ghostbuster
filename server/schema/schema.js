@@ -4,9 +4,12 @@ const {
   GraphQLString,
   GraphQLSchema,
   GraphQLInt,
-  GraphQLList
+  GraphQLList,
+  GraphQLNonNull
 } = require('graphql');
 const cohorts = require('../../db/models/cohorts');
+const students = require('../../db/models/students');
+const sprints = require('../../db/models/sprints');
 
 // db
 const { query } = require('../../db/index');
@@ -15,7 +18,7 @@ const CohortType = new GraphQLObjectType({
   name: 'Cohort',
   fields: () => ({
     id: { type: GraphQLInt },
-    cohort_name: { type: GraphQLString },
+    cohortName: { type: GraphQLString },
     phase: { type: GraphQLString },
     students: {
       type: new GraphQLList(StudentType),
@@ -111,7 +114,7 @@ const SprintType = new GraphQLObjectType({
   name: 'Sprint',
   fields: () => ({
     id: { type: GraphQLInt },
-    sprint_name: { type: GraphQLString },
+    sprintName: { type: GraphQLString },
     messages: {
       type: new GraphQLList(CommitMessageType),
       resolve(parent) {
@@ -187,9 +190,10 @@ const RootQuery = new GraphQLObjectType({
     cohorts: {
       type: new GraphQLList(CohortType),
       resolve() {
-        return query('SELECT * FROM cohorts ORDER BY id ASC')
-          .then(result => result.rows)
-          .catch(error => error.detail);
+        return cohorts
+          .getAllCohorts()
+          .then(result => result)
+          .catch(error => error.detail || error);
       }
     },
     students: {
@@ -225,15 +229,43 @@ const Mutation = new GraphQLObjectType({
     createCohort: {
       type: CohortType,
       args: {
-        name: { type: GraphQLString },
+        cohortName: { type: GraphQLString },
         phase: { type: GraphQLString }
       },
-      resolve(args) {
-        // eslint-disable-next-line prefer-const
-        let { name, phase } = args;
-        name = name.toLowerCase();
+      resolve(parent, args) {
+        let { cohortName, phase } = args;
+        cohortName = cohortName.toLowerCase();
         return cohorts
-          .addCohort({ name, phase })
+          .addCohort({ cohortName, phase })
+          .then(result => result)
+          .catch(error => error.detail || error);
+      }
+    },
+    createStudent: {
+      type: StudentType,
+      args: {
+        firstName: { type: new GraphQLNonNull(GraphQLString) },
+        lastName: { type: new GraphQLNonNull(GraphQLString) },
+        github: { type: new GraphQLNonNull(GraphQLString) },
+        cohortId: { type: new GraphQLNonNull(GraphQLInt) }
+      },
+      resolve(parent, args) {
+        const { firstName, lastName, github, cohortId } = args;
+        return students
+          .addStudent({ firstName, lastName, github, cohortId })
+          .then(result => result)
+          .catch(error => error.detail || error);
+      }
+    },
+    createSprint: {
+      type: SprintType,
+      args: {
+        sprintName: { type: new GraphQLNonNull(GraphQLString) }
+      },
+      resolve(parent, args) {
+        const { sprintName } = args;
+        return sprints
+          .addSprint(sprintName)
           .then(result => result)
           .catch(error => error.detail || error);
       }
