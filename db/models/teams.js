@@ -1,8 +1,7 @@
 const { query } = require('../index');
 
 module.exports = {
-  addTeam: (team, cohortId) => {
-    console.log('cohortId', cohortId);
+  addTeam: team => {
     return query(`
       INSERT INTO teams (team_name, team_type, github, cohort_id)
       VALUES (
@@ -15,7 +14,15 @@ module.exports = {
         query(`
         SELECT * FROM teams WHERE team_name='${team.teamName}'
       `)
-          .then(res => res.rows[0])
+          .then(res => {
+            const result = res.rows[0];
+            return {
+              teamName: result.team_name,
+              teamType: result.team_type,
+              github: result.github,
+              cohortId: result.cohort_id
+            };
+          })
           .catch(err => err)
       )
       .catch(err => err);

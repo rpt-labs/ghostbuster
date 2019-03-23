@@ -10,6 +10,7 @@ const {
 const cohorts = require('../../db/models/cohorts');
 const students = require('../../db/models/students');
 const sprints = require('../../db/models/sprints');
+const teams = require('../../db/models/teams');
 
 // db
 const { query } = require('../../db/index');
@@ -64,7 +65,7 @@ const StudentType = new GraphQLObjectType({
       type: new GraphQLList(TeamType),
       resolve(parent) {
         return query(`
-          SELECT teams.id, teams.team_name, teams.github, teams.cohort_id FROM teams
+          SELECT teams.id, teams.teamName, teams.github, teams.cohortId FROM teams
           JOIN team_student ON(teams.id=team_student.team_id)
           JOIN students ON(students.id=team_student.student_id)
           WHERE student_id=${parent.id}
@@ -81,7 +82,7 @@ const TeamType = new GraphQLObjectType({
   name: 'Team',
   fields: () => ({
     id: { type: GraphQLInt },
-    team_name: { type: GraphQLString },
+    teamName: { type: GraphQLString },
     github: { type: GraphQLString },
     cohort: {
       type: CohortType,
@@ -91,7 +92,7 @@ const TeamType = new GraphQLObjectType({
           .catch(error => error.detail);
       }
     },
-    team_type: { type: GraphQLString },
+    teamType: { type: GraphQLString },
     students: {
       type: new GraphQLList(StudentType),
       resolve(parent) {
@@ -266,6 +267,22 @@ const Mutation = new GraphQLObjectType({
         const { sprintName } = args;
         return sprints
           .addSprint(sprintName)
+          .then(result => result)
+          .catch(error => error.detail || error);
+      }
+    },
+    createTeam: {
+      type: TeamType,
+      args: {
+        teamName: { type: new GraphQLNonNull(GraphQLString) },
+        teamType: { type: new GraphQLNonNull(GraphQLString) },
+        github: { type: new GraphQLNonNull(GraphQLString) },
+        cohortId: { type: new GraphQLNonNull(GraphQLInt) }
+      },
+      resolve(parent, args) {
+        const { teamName, teamType, github, cohortId } = args;
+        return teams
+          .addTeam({ teamName, teamType, github, cohortId })
           .then(result => result)
           .catch(error => error.detail || error);
       }
