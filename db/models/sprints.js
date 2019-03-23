@@ -29,7 +29,9 @@ module.exports = {
         query(`
         SELECT * FROM sprints WHERE sprint_name='${sprintName}'
       `)
-          .then(res => res.rows[0])
+          .then(res => ({
+            sprintName: res.rows[0].sprint_name
+          }))
           .catch(err => err)
       )
       .catch(err => err),
@@ -85,7 +87,10 @@ module.exports = {
         query(`
         SELECT * FROM messages WHERE sprint_id=${sprintId}
       `)
-          .then(res => res.rows)
+          .then(res => {
+            const result = res.rows[res.rows.length - 1];
+            return { id: result.id, messageText: result.message_text, sprintId: result.sprint_id };
+          })
           .catch(err => err)
       )
       .catch(err => err),

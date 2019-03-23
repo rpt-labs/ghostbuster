@@ -4,14 +4,14 @@ module.exports = {
   addCohort: cohort =>
     query(`
       INSERT INTO cohorts (cohort_name, phase)
-      VALUES ('${cohort.name}', '${cohort.phase}')
+      VALUES ('${cohort.cohortName}', '${cohort.phase}')
     `)
       .then(() =>
         query(`
-        SELECT * FROM cohorts WHERE cohort_name='${cohort.name}'`)
+        SELECT * FROM cohorts WHERE cohort_name='${cohort.cohortName}'`)
           .then(res => ({
             id: res.rows[0].id,
-            name: res.rows[0].cohort_name,
+            cohortName: res.rows[0].cohort_name,
             phase: res.rows[0].phase
           }))
           .catch(err => err)
@@ -51,7 +51,12 @@ module.exports = {
   getAllCohorts: async () => {
     try {
       const cohortQuery = await query('SELECT * FROM cohorts ORDER BY id ASC');
-      return cohortQuery.rows;
+      const cohorts = cohortQuery.rows.map(row => ({
+        id: row.id,
+        cohortName: row.cohort_name,
+        phase: row.phase
+      }));
+      return cohorts;
     } catch (err) {
       console.log(err.detal || err);
       return err;
