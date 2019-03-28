@@ -63,7 +63,24 @@ CREATE TABLE IF NOT EXISTS team_student_weekly_contributions (
   num_commits integer NOT NULL
 );
 
-
+CREATE TABLE IF NOT EXISTS student_attendance (
+    id SERIAL PRIMARY KEY,
+    student_id integer REFERENCES students ON DELETE CASCADE,
+    zoom_id text NOT NULL,
+    user_id integer NOT NULL,
+    user_name text NOT NULL,
+    device text,
+    LOCATION text,
+    data_center text,
+    join_time date NOT NULL,
+    leave_time date NOT NULL,
+    recording boolean,
+    pc_name text,
+    firstName text NOT NULL,
+    lastName text NOT NULL,
+    room text NOT NULL,
+    created_at timestamptz NOT NULL DEFAULT now()
+);
 
 
 
