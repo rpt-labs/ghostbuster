@@ -36,9 +36,9 @@
     "pg": "^7.6.0",
     "prop-types": "^15.6.2",
     "query-string": "^6.2.0",
-    "react": "^16.5.2",
+    "react": "^16.8.6",
     "react-chartjs-2": "^2.7.4",
-    "react-dom": "^16.5.2",
+    "react-dom": "^16.8.6",
     "react-router-dom": "^4.3.1",
     "semantic-ui-react": "^0.84.0",
     "styled-components": "^4.1.3"
