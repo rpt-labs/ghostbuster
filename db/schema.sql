@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS cohorts (
 );
 
 CREATE TABLE IF NOT EXISTS students (
-  id SERIAL PRIMARY KEY,
+  enrollment_id integer PRIMARY KEY,
   first_name text NOT NULL,
   last_name text NOT NULL,
   github text UNIQUE NOT NULL,
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS team_student_weekly_contributions (
 
 CREATE TABLE IF NOT EXISTS student_attendance (
     id SERIAL PRIMARY KEY,
-    student_id integer REFERENCES students ON DELETE CASCADE,
+    enrollment_id integer REFERENCES students ON DELETE CASCADE,
     zoom_id text NOT NULL,
     user_id integer NOT NULL,
     user_name text NOT NULL,
@@ -81,7 +81,4 @@ CREATE TABLE IF NOT EXISTS student_attendance (
     room text NOT NULL,
     created_at timestamptz NOT NULL DEFAULT now()
 );
-
-
-
 
