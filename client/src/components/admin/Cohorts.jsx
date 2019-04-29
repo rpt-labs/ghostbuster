@@ -1,13 +1,13 @@
 import React from 'react';
 import Sidebar from './Sidebar';
 
-function Students() {
+function Cohorts() {
   return (
     <div>
       <Sidebar />
-      students
+      cohorts
     </div>
   );
 }
 
-export default Students;
+export default Cohorts;

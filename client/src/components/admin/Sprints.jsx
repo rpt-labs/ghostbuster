@@ -1,13 +1,13 @@
 import React from 'react';
 import Sidebar from './Sidebar';
 
-function Students() {
+function Sprints() {
   return (
     <div>
       <Sidebar />
-      students
+      Sprints
     </div>
   );
 }
 
-export default Students;
+export default Sprints;
