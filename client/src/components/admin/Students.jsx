@@ -1,11 +1,10 @@
 import React from 'react';
-import Sidebar from './Sidebar';
+import StudentSideBar from './student/StudentSideBar';
 
 function Students() {
   return (
     <div>
-      <Sidebar />
-      students
+      <StudentSideBar />
     </div>
   );
 }
