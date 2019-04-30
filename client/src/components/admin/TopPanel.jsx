@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Menu } from 'semantic-ui-react';
 // import { Link } from 'react-router-dom';
-import Students from './Students';
+import StudentsView from './student/StudentsView';
 import Cohorts from './Cohorts';
 import Sprints from './Sprints';
 
 const RenderedContent = ({ tabName = 'Students' }) => {
-  if (tabName === 'Students') return <Students />;
+  if (tabName === 'Students') return <StudentsView />;
   if (tabName === 'Cohorts') return <Cohorts />;
   return <Sprints />;
 };

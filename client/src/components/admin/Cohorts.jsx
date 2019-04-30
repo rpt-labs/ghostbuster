@@ -1,13 +1,7 @@
 import React from 'react';
-import Sidebar from './Sidebar';
 
 function Cohorts() {
-  return (
-    <div>
-      <Sidebar />
-      cohorts
-    </div>
-  );
+  return <div>cohorts</div>;
 }
 
 export default Cohorts;

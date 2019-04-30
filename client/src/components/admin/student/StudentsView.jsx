@@ -10,7 +10,7 @@ const RenderedContent = ({ tabName = 'Add Student' }) => {
   return <AddStudent />;
 };
 
-export default class StudentSideBar extends Component {
+export default class Students extends Component {
   state = { activeItem: 'Add Student' };
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
