@@ -12,16 +12,22 @@ const options = [
 const AddStudent = () => (
   <Form>
     <Form.Field>
-      <label>First Name</label>
-      <input placeholder="First Name" />
+      <label htmlFor="firstName">
+        First Name
+        <input type="text" id="firstName" placeholder="First Name" />
+      </label>
     </Form.Field>
     <Form.Field>
-      <label>Last Name</label>
-      <input placeholder="Last Name" />
+      <label htmlFor="lastName">
+        Last Name
+        <input type="text" id="lastName" placeholder="Last Name" />
+      </label>
     </Form.Field>
     <Form.Field>
-      <label>Github Handle</label>
-      <input placeholder="Github Handle" />
+      <label htmlFor="githubHandle">
+        Github Handle
+        <input type="text" id="lastName" placeholder="Github Handle" />
+      </label>
     </Form.Field>
     <Form.Select label="Cohort" options={options} placeholder="Select Cohort" />
     <Button type="submit">Submit</Button>
