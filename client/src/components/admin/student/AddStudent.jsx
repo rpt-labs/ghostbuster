@@ -23,7 +23,7 @@ const AddStudent = () => (
       <label>Github Handle</label>
       <input placeholder="Github Handle" />
     </Form.Field>
-    <Form.Select options={options} placeholder="Cohort" />
+    <Form.Select label="Cohort" options={options} placeholder="Select Cohort" />
     <Button type="submit">Submit</Button>
   </Form>
 );
