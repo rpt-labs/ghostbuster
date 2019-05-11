@@ -51,12 +51,14 @@ export default class AddStudent extends Component {
               <input type="text" id="lastName" placeholder="Zoom Name" />
             </label>
           </Form.Field>
-          <Form.Select label="Cohort" options={options} placeholder="Select Cohort" />
-          <Form.Select
-            label="Enrollment Status"
-            options={enrollmentStatus}
-            placeholder="Enrollment Status"
-          />
+          <Form.Group widths="equal">
+            <Form.Select label="Cohort" options={options} placeholder="Select Cohort" />
+            <Form.Select
+              label="Enrollment Status"
+              options={enrollmentStatus}
+              placeholder="Enrollment Status"
+            />
+          </Form.Group>
           <Button type="submit">Submit</Button>
         </Form>
       </React.Fragment>
