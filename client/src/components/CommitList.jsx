@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { List } from 'semantic-ui-react';
-import { GithubIcon, StarIcon } from './Styles/StudentCardStyles';
+import { List, Label, Icon } from 'semantic-ui-react';
+import { StarIcon } from './Styles/StudentCardStyles';
 
 const CommitList = props => {
   const { commits, url, show, handleCommitChange } = props;
@@ -23,9 +23,13 @@ const CommitList = props => {
 
   return (
     <React.Fragment>
+      <Label as="a" color="teal" onClick={handleCommitChange} size="large">
+        <Icon name="github" />
+        Total # of Commits:
+        <Label.Detail>{commits.length ? commits.length : 0}</Label.Detail>
+      </Label>
       <List divided relaxed>
         {commitList}
-        <GithubIcon name="github" size="huge" onClick={handleCommitChange} />
       </List>
     </React.Fragment>
   );
