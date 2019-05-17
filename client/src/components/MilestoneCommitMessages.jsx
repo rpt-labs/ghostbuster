@@ -10,9 +10,7 @@ const MilestoneCommitMessages = props => {
   const messageList = messages.map(message => <List.Item>{message.message}</List.Item>);
   return (
     <React.Fragment>
-      <StyledHeader as="h2" style={{ padding: '-40px' }}>
-        Milestone Commit Messages
-      </StyledHeader>
+      <StyledHeader as="h2">Milestone Commit Messages</StyledHeader>
       <StyledList>{messageList}</StyledList>
     </React.Fragment>
   );
