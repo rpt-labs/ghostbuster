@@ -1,22 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { List, Label, Icon } from 'semantic-ui-react';
-import { StarIcon } from './Styles/StudentCardStyles';
+import { StarIconGreen, StarIconGrey } from './Styles/StudentCardStyles';
+import sprints from '../../../server/config/sprints';
 
 const CommitList = props => {
-  const { commits, url, show, handleCommitChange } = props;
+  const { commits, url, show, handleCommitChange, sprint } = props;
+
+  //  TODO: need to update while using DB
+  const { messages } = sprints.allSprints[sprint];
+  const milestoneCommits = messages.map(message => message.message);
 
   const commitList = show ? (
-    commits.map(commit => (
-      <List.Item>
-        <StarIcon name="star" />
-        <List.Content style={{ textAlign: 'left' }}>
-          <a target="_blank" rel="noopener noreferrer" href={url}>
-            {commit}
-          </a>
-        </List.Content>
-      </List.Item>
-    ))
+    commits.map(commit =>
+      milestoneCommits.includes(commit.toLowerCase()) ? (
+        <List.Item>
+          <StarIconGreen name="star" />
+          <List.Content style={{ textAlign: 'left' }}>
+            <a target="_blank" rel="noopener noreferrer" href={url}>
+              <strong style={{ color: 'green' }}>{commit}</strong>
+            </a>
+          </List.Content>
+        </List.Item>
+      ) : (
+        <List.Item>
+          <StarIconGrey name="star" />
+          <List.Content style={{ textAlign: 'left' }}>
+            <a target="_blank" rel="noopener noreferrer" href={url} style={{ color: 'grey' }}>
+              {commit}
+            </a>
+          </List.Content>
+        </List.Item>
+      )
+    )
   ) : (
     <List />
   );
@@ -39,7 +55,8 @@ CommitList.propTypes = {
   commits: PropTypes.instanceOf(Object).isRequired,
   url: PropTypes.string.isRequired,
   show: PropTypes.bool.isRequired,
-  handleCommitChange: PropTypes.func.isRequired
+  handleCommitChange: PropTypes.func.isRequired,
+  sprint: PropTypes.string.isRequired
 };
 
 export default CommitList;

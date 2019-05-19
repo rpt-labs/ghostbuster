@@ -27,16 +27,17 @@ class StudentCard extends React.Component {
     return (
       <Grid.Column width={8}>
         <Grid.Row>
-          <CardGrid columns="equal">
-            <Grid.Column textAlign="center">
+          <CardGrid>
+            <Grid.Column textAlign="center" width={6}>
               <Progress student={student} />
             </Grid.Column>
-            <Grid.Column floated="right">
+            <Grid.Column floated="right" width={10}>
               <CommitList
                 handleCommitChange={this.handleShowCommitsChange}
                 show={showCommits}
                 url={githubUrl}
                 commits={student.commitMessages}
+                sprint={repoName}
               />
             </Grid.Column>
           </CardGrid>

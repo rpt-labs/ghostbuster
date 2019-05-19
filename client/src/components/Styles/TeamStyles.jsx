@@ -12,7 +12,6 @@ export const FooterText = styled.p`
 export const StyledHeader = styled(Header)`
   color: #2185d0;
   text-align: center;
-  padding: 40px !important;
 `;
 
 export const StyledList = styled(List)`
