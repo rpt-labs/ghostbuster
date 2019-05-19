@@ -12,9 +12,9 @@ const CommitList = props => {
   const milestoneCommits = messages.map(message => message.message);
 
   const commitList = show ? (
-    commits.map(commit =>
+    commits.map((commit, i) =>
       milestoneCommits.includes(commit.toLowerCase()) ? (
-        <List.Item>
+        <List.Item key={i}>
           <StarIconGreen name="star" />
           <List.Content style={{ textAlign: 'left' }}>
             <a target="_blank" rel="noopener noreferrer" href={url}>
@@ -23,7 +23,7 @@ const CommitList = props => {
           </List.Content>
         </List.Item>
       ) : (
-        <List.Item>
+        <List.Item key={i}>
           <StarIconGrey name="star" />
           <List.Content style={{ textAlign: 'left' }}>
             <a target="_blank" rel="noopener noreferrer" href={url} style={{ color: 'grey' }}>
