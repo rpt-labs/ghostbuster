@@ -7,7 +7,9 @@ import sprints from '../../../server/config/sprints';
 const MilestoneCommitMessages = props => {
   const { sprint } = props;
   const { messages } = sprints.allSprints[sprint];
-  const messageList = messages.map(message => <List.Item>{message.message}</List.Item>);
+  const messageList = messages.map(message => (
+    <List.Item key={message.message}>{message.message}</List.Item>
+  ));
   return (
     <React.Fragment>
       <StyledHeader as="h2">Milestone Commit Messages</StyledHeader>
