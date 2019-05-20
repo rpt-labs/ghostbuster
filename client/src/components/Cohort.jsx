@@ -132,7 +132,7 @@ class Cohort extends React.Component {
 
     const repoNames = Object.keys(commits);
     const repoList = repoNames.map(repo => (
-      <Repo key={repo.name} name={repo} students={commits[repo]} />
+      <Repo key={repo} name={repo} students={commits[repo]} />
     ));
     const currentStatus = showSegment ? <TeamSegment>{repoList}</TeamSegment> : <div />;
 

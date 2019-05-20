@@ -42,6 +42,10 @@ export const GithubIcon = styled(Icon)`
   color: #403f4c !important;
 `;
 
-export const StarIcon = styled(Icon)`
-  color: #2185d0 !important;
+export const StarIconGreen = styled(Icon)`
+  color: green !important;
+`;
+
+export const StarIconGrey = styled(Icon)`
+  color: grey !important;
 `;
