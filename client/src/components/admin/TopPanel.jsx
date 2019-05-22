@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Menu } from 'semantic-ui-react';
 // import { Link } from 'react-router-dom';
 import StudentsView from './student/StudentsView';
@@ -9,6 +10,10 @@ const RenderedContent = ({ tabName = 'Students' }) => {
   if (tabName === 'Students') return <StudentsView />;
   if (tabName === 'Cohorts') return <Cohorts />;
   return <Sprints />;
+};
+
+RenderedContent.propTypes = {
+  tabName: PropTypes.string.isRequired
 };
 
 class TopPanel extends Component {
