@@ -25,7 +25,7 @@ const getPrListForStudent = async (cohort, student) => {
     }
   } catch (error) {
     console.log(error);
-    return [{ commit: { message: 'no fork' } }];
+    return [{ commit: { message: 'no pr!' } }];
   }
   return [];
 };
