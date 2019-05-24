@@ -10,11 +10,7 @@ function StudentPrDetails(props) {
       {pullRequestsList.map(item => (
         <div key={item.studentName}>
           <div style={{ fontWeight: 'bold' }}>{item.studentName}</div>
-          <div>
-            {item.pullRequests.map(pr => (
-              <div>{pr}</div>
-            ))}
-          </div>
+          <div>{item.matchedPrs.length ? item.matchedPrs.map(pr => <div>{pr}</div>) : <div />}</div>
           <br />
         </div>
       ))}

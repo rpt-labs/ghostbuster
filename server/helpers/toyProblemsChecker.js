@@ -1,5 +1,6 @@
 const githubQuery = require('./githubQuery');
 const { allCohorts } = require('../config/cohorts');
+const { allToyProblems } = require('../config/toyproblems');
 
 // so node won't throw an error and crash when a student doesn't have a fork
 process.on('uncaughtException', err => {
@@ -8,6 +9,16 @@ process.on('uncaughtException', err => {
 
 const getStudentsList = cohortName => {
   return allCohorts.filter(x => x.name === cohortName)[0].students;
+};
+
+const checkIfPrTitleMatches = prTitle => {
+  return allToyProblems.some(substring => prTitle.toLowerCase().includes(substring));
+};
+
+const AllPrsWithMatchingTitles = studentPrList => {
+  const allMatchedPrs = studentPrList.filter(e => checkIfPrTitleMatches(e.toLowerCase()));
+  console.log(allMatchedPrs);
+  return allMatchedPrs;
 };
 
 const getPrListForStudent = async (cohort, student) => {
@@ -21,7 +32,8 @@ const getPrListForStudent = async (cohort, student) => {
       const pullRequests = response.items.map(item => {
         return item.title;
       });
-      return { cohort, studentName, pullRequests };
+      const matchedPrs = AllPrsWithMatchingTitles(pullRequests) || [];
+      return { cohort, studentName, matchedPrs };
     }
   } catch (error) {
     console.log(error);
