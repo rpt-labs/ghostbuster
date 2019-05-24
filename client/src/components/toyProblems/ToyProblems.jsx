@@ -3,6 +3,7 @@ import { Button } from 'semantic-ui-react';
 import axios from 'axios';
 import StudentPrDetails from './StudentPrDetails';
 
+// TODO: Get cohortslist from DB/ config
 const COHORTS = ['RPT13', 'RPT14', 'RPT15'];
 const { GHOSTBUSTER_BASE_URL } = process.env;
 

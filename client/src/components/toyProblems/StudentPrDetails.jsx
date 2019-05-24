@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function StudentPrDetails(props) {
   const { pullRequestsList } = props;
@@ -7,7 +8,7 @@ function StudentPrDetails(props) {
       <br />
       <h1>Selected Cohort: {pullRequestsList[0].cohort.toUpperCase()}</h1>
       {pullRequestsList.map(item => (
-        <div>
+        <div key={item.studentName}>
           <div style={{ fontWeight: 'bold' }}>{item.studentName}</div>
           <div>
             {item.pullRequests.map(pr => (
@@ -20,5 +21,9 @@ function StudentPrDetails(props) {
     </div>
   );
 }
+
+StudentPrDetails.propTypes = {
+  pullRequestsList: PropTypes.instanceOf(Array).isRequired
+};
 
 export default StudentPrDetails;
