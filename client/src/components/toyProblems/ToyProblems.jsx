@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'semantic-ui-react';
 import axios from 'axios';
+import StudentPrDetails from './StudentPrDetails';
 
 const COHORTS = ['RPT13', 'RPT14', 'RPT15'];
 const { GHOSTBUSTER_BASE_URL } = process.env;
@@ -11,7 +12,8 @@ export default class ToyProblems extends Component {
     this.state = {
       allCohorts: [],
       selectedCohort: '',
-      pullRequestList: []
+      pullRequestsList: [],
+      showDetails: false
     };
     this.checkToyProblems = this.checkToyProblems.bind(this);
     this.onButtonClick = this.onButtonClick.bind(this);
@@ -30,23 +32,29 @@ export default class ToyProblems extends Component {
     const { selectedCohort } = { ...this.state };
     axios
       .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/toyproblems?cohort=${selectedCohort}`)
-      .then(response => console.log(response))
+      .then(response =>
+        this.setState({ pullRequestsList: response.data.toyProblems, showDetails: true })
+      )
       .catch(error => {
         throw error;
       });
   }
 
   render() {
-    const { allCohorts } = this.state;
+    const { allCohorts, pullRequestsList, showDetails } = this.state;
     return (
       <div>
-        {allCohorts.map(cohort => {
-          return (
-            <Button primary key={cohort} onClick={e => this.onButtonClick(e)}>
-              {cohort}
-            </Button>
-          );
-        })}
+
+        <div>
+          {allCohorts.map(cohort => {
+            return (
+              <Button primary key={cohort} onClick={e => this.onButtonClick(e)}>
+                {cohort}
+              </Button>
+            );
+          })}
+        </div>
+        {showDetails ? <StudentPrDetails pullRequestsList={pullRequestsList} /> : <div />}
       </div>
     );
   }
