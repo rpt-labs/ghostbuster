@@ -39,7 +39,9 @@ const numberOfUniquePrsWithMatchingTitles = prList => {
 };
 
 const getPrListForStudent = async (cohort, student) => {
+  console.log('student', student);
   const studentName = `${student.firstName} ${student.lastName}`;
+  const studentGithubHandle = student.github;
   try {
     const response = await githubQuery(`
       https://api.github.com/search/issues?q=is:pr+repo:hackreactor/${cohort}-toy-problems+author:${
@@ -51,7 +53,7 @@ const getPrListForStudent = async (cohort, student) => {
       });
       const matchedPrs = AllPrsWithMatchingTitles(pullRequests) || [];
       const uniqueMatchedPrCount = numberOfUniquePrsWithMatchingTitles(matchedPrs);
-      return { cohort, studentName, matchedPrs, uniqueMatchedPrCount };
+      return { cohort, studentName, studentGithubHandle, matchedPrs, uniqueMatchedPrCount };
     }
   } catch (error) {
     console.log(error);
