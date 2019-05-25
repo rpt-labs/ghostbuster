@@ -23,7 +23,11 @@ const AllPrsWithMatchingTitles = studentPrList => {
 
 const numberOfUniquePrsWithMatchingTitles = prList => {
   const allMatchedStrings = prList.map(pr => {
-    const prArray = pr.toLowerCase().split(' ');
+    const prArray = pr
+      .toLowerCase()
+      .replace(/[^a-z ]/g, '')
+      .split(' ');
+
     return prArray.filter(str => allToyProblems.indexOf(str) > -1);
   });
 
