@@ -17,8 +17,21 @@ const checkIfPrTitleMatches = prTitle => {
 
 const AllPrsWithMatchingTitles = studentPrList => {
   const allMatchedPrs = studentPrList.filter(e => checkIfPrTitleMatches(e.toLowerCase()));
-  console.log(allMatchedPrs);
+
   return allMatchedPrs;
+};
+
+const numberOfUniquePrsWithMatchingTitles = prList => {
+  const allMatchedStrings = prList.map(pr => {
+    const prArray = pr.toLowerCase().split(' ');
+    return prArray.filter(str => allToyProblems.indexOf(str) > -1);
+  });
+
+  const flattenedMatchedStrings = [];
+  allMatchedStrings.forEach(item => flattenedMatchedStrings.push(...item));
+  const uniqueMatchedPrsArray = Array.from(new Set(flattenedMatchedStrings));
+
+  return uniqueMatchedPrsArray.length;
 };
 
 const getPrListForStudent = async (cohort, student) => {
@@ -33,7 +46,8 @@ const getPrListForStudent = async (cohort, student) => {
         return item.title;
       });
       const matchedPrs = AllPrsWithMatchingTitles(pullRequests) || [];
-      return { cohort, studentName, matchedPrs };
+      const uniqueMatchedPrCount = numberOfUniquePrsWithMatchingTitles(matchedPrs);
+      return { cohort, studentName, matchedPrs, uniqueMatchedPrCount };
     }
   } catch (error) {
     console.log(error);
