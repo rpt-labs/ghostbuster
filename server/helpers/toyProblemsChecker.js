@@ -25,6 +25,7 @@ const numberOfUniquePrsWithMatchingTitles = prList => {
   const allMatchedStrings = prList.map(pr => {
     const prArray = pr
       .toLowerCase()
+      .replace('.js', '')
       .replace(/[^a-z ]/g, '')
       .split(' ');
 
@@ -34,7 +35,6 @@ const numberOfUniquePrsWithMatchingTitles = prList => {
   const flattenedMatchedStrings = [];
   allMatchedStrings.forEach(item => flattenedMatchedStrings.push(...item));
   const uniqueMatchedPrsArray = Array.from(new Set(flattenedMatchedStrings));
-
   return uniqueMatchedPrsArray.length;
 };
 
