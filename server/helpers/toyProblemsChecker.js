@@ -47,7 +47,7 @@ const getPrListForStudent = async (cohort, student) => {
       https://api.github.com/search/issues?q=is:pr+repo:hackreactor/${cohort}-toy-problems+author:${
       student.github
     }`);
-    if (response && response.items.length) {
+    if (response && response.items && response.items.length) {
       const pullRequests = response.items.map(item => {
         return item.title;
       });

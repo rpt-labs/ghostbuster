@@ -42,10 +42,9 @@ export default class ToyProblems extends Component {
   }
 
   render() {
-    const { allCohorts, pullRequestsList, showDetails } = this.state;
+    const { allCohorts, selectedCohort, pullRequestsList, showDetails } = this.state;
     return (
       <div>
-
         <div>
           {allCohorts.map(cohort => {
             return (
@@ -55,7 +54,11 @@ export default class ToyProblems extends Component {
             );
           })}
         </div>
-        {showDetails ? <StudentPrDetails pullRequestsList={pullRequestsList} /> : <div />}
+        {showDetails && pullRequestsList && pullRequestsList.length ? (
+          <StudentPrDetails pullRequestsList={pullRequestsList} selectedCohort={selectedCohort}/>
+        ) : (
+          <div>Select a cohort to view details</div>
+        )}
       </div>
     );
   }
