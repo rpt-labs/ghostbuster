@@ -55,9 +55,11 @@ export default class ToyProblems extends Component {
           })}
         </div>
         {showDetails && pullRequestsList && pullRequestsList.length ? (
-          <StudentPrDetails pullRequestsList={pullRequestsList} selectedCohort={selectedCohort}/>
+          <StudentPrDetails pullRequestsList={pullRequestsList} selectedCohort={selectedCohort} />
         ) : (
-          <div>Select a cohort to view details</div>
+          <div style={{ margin: '30px', fontSize: '40px', fontWeight: 'bold' }}>
+            Select a cohort to view details
+          </div>
         )}
       </div>
     );
