@@ -7,7 +7,7 @@ function StudentPrDetails(props) {
   return (
     <div>
       <br />
-      <h1>Selected Cohort: {selectedCohort}</h1>
+      <h1>Selected Cohort: {selectedCohort.toUpperCase()}</h1>
       <Card.Group itemsPerRow={2}>
         {pullRequestsList.map(item => (
           <Card>
@@ -19,20 +19,24 @@ function StudentPrDetails(props) {
                   item.cohort
                 }-toy-problems/pulls?q=is:pr+author:${item.studentGithubHandle}`}
               >
-                <Card.Header>
-                  <Label size="big" color="teal" floated="right">
-                    <Icon name="tasks" />
-                    {item.uniqueMatchedPrCount}
-                  </Label>
+                <Card.Header style={{ marginBottom: '10px' }}>
                   <Label size="big" color="teal">
                     <Icon name="github" />
                     {item.studentName}
+                  </Label>
+                  <Label size="big" color="teal" style={{ float: 'right', marginRight: '30px' }}>
+                    <Icon name="calculator" />
+                    {item.uniqueMatchedPrCount}
                   </Label>
                 </Card.Header>
               </a>
               <Card.Description />
               <div>
-                {item.matchedPrs.length ? item.matchedPrs.map(pr => <div>{pr}</div>) : <div />}
+                {item.matchedPrs && item.matchedPrs.length ? (
+                  item.matchedPrs.map(pr => <div>{pr}</div>)
+                ) : (
+                  <div />
+                )}
               </div>
               <br />
             </Card.Content>
