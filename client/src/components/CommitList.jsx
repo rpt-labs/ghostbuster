@@ -10,6 +10,9 @@ const CommitList = props => {
   //  TODO: need to update while using DB
   const { messages } = sprints.allSprints[sprint];
   const milestoneCommits = messages.map(message => message.message);
+  const numberOfMilestoneCommits = commits.filter(commit =>
+    milestoneCommits.includes(commit.toLowerCase())
+  );
 
   const commitList = show ? (
     commits.map((commit, i) =>
@@ -39,11 +42,19 @@ const CommitList = props => {
 
   return (
     <React.Fragment>
-      <Label as="a" color="teal" onClick={handleCommitChange} size="large">
-        <Icon name="github" />
-        Total # of Commits:
-        <Label.Detail>{commits.length ? commits.length : 0}</Label.Detail>
-      </Label>
+      <Label.Group>
+        <Label as="a" color="teal" onClick={handleCommitChange} size="large">
+          <Icon name="github" />
+          Total # of Commits:
+          <Label.Detail>{commits.length ? commits.length : 0}</Label.Detail>
+        </Label>
+        <Label as="a" color="blue" onClick={handleCommitChange} size="large">
+          # of Milestone Commits:
+          <Label.Detail>
+            {numberOfMilestoneCommits.length ? numberOfMilestoneCommits.length : 0}
+          </Label.Detail>
+        </Label>
+      </Label.Group>
       <List divided relaxed>
         {commitList}
       </List>
