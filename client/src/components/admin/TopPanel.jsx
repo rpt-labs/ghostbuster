@@ -4,12 +4,12 @@ import { Menu } from 'semantic-ui-react';
 import StudentsView from './student/StudentsView';
 import Cohorts from './Cohorts';
 import Sprints from './Sprints';
-import Teams from './Teams';
+import TeamsView from './teams/TeamsView';
 
 const RenderedContent = ({ tabName = 'Students' }) => {
   if (tabName === 'Students') return <StudentsView />;
   if (tabName === 'Cohorts') return <Cohorts />;
-  if (tabName === 'Teams') return <Teams />;
+  if (tabName === 'Teams') return <TeamsView />;
   return <Sprints />;
 };
 
