@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Grid } from 'semantic-ui-react';
-import RadioButtonList from './RadioButtonList';
+import RadioButtonList from '../shared/RadioButtonList';
 import CohortAttendanceSummary from './CohortAttendanceSummary';
 import { getAllCohorts } from '../../queries/queries';
 import { attendanceSummary } from '../../../data/demoData';
@@ -13,7 +13,7 @@ class Attendance extends Component {
       cohorts: []
     };
     this.handleRadioButtonChange = this.handleRadioButtonChange.bind(this);
-    this.showAttendance = this.showAttendance.bind(this);
+    this.showDetails = this.showDetails.bind(this);
     this.getCohortsList = this.getCohortsList.bind(this);
   }
 
@@ -46,7 +46,7 @@ class Attendance extends Component {
     this.setState({ cohorts: newCohortList });
   }
 
-  showAttendance() {
+  showDetails() {
     const { cohorts } = this.state;
     const selectedCohort = cohorts.filter(e => e.isChecked === true);
     const selectedCohortData = attendanceSummary.filter(e => {
@@ -64,7 +64,8 @@ class Attendance extends Component {
           <RadioButtonList
             cohorts={cohorts}
             handleRadioButtonChange={this.handleRadioButtonChange}
-            showAttendance={this.showAttendance}
+            showDetails={this.showDetails}
+            buttonLabel="SHOW ATTENDANCE"
           />
         </Grid>
         <Grid textAlign="center">
