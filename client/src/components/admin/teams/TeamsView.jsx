@@ -5,8 +5,8 @@ import CreateTeams from './CreateTeams';
 import EditTeams from './EditTeams';
 import { getAllCohorts } from '../../../queries/queries';
 
-const RenderedContent = (props, { tabName = 'Create Teams' }) => {
-  const { cohorts, handleRadioButtonChange, showDetails } = props;
+const RenderedContent = (props) => {
+  const { cohorts, handleRadioButtonChange, showDetails, tabName } = props;
 
   if (tabName === 'View and Edit Teams')
     return (
@@ -28,7 +28,8 @@ const RenderedContent = (props, { tabName = 'Create Teams' }) => {
 RenderedContent.propTypes = {
   cohorts: PropTypes.instanceOf(Array).isRequired,
   handleRadioButtonChange: PropTypes.func.isRequired,
-  showDetails: PropTypes.instanceOf(Object).isRequired
+  showDetails: PropTypes.instanceOf(Object).isRequired,
+  tabName: PropTypes.string.isRequired
 };
 
 class TeamsView extends Component {
