@@ -5,7 +5,7 @@ import RadioButton from './RadioButton';
 import { PaddedGrid } from '../Styles/TeamStyles';
 
 const RadioButtonList = props => {
-  const { cohorts, handleRadioButtonChange, showAttendance } = props;
+  const { cohorts, handleRadioButtonChange, showDetails, buttonLabel } = props;
   const cohortsList = cohorts.map(cohort => (
     <Grid.Column width={8} key={cohort.name}>
       <RadioButton cohort={cohort} handleRadioButtonChange={handleRadioButtonChange} />
@@ -20,8 +20,8 @@ const RadioButtonList = props => {
       <PaddedGrid columns={2} relaxed style={{ marginLeft: '50px' }}>
         {cohortsList}
       </PaddedGrid>
-      <Button primary onClick={() => showAttendance()} style={{ marginTop: '30px' }}>
-        SHOW ATTENDANCE
+      <Button primary onClick={() => showDetails()} style={{ marginTop: '30px' }}>
+        {buttonLabel}
       </Button>
     </Segment>
   );
@@ -30,7 +30,8 @@ const RadioButtonList = props => {
 RadioButtonList.propTypes = {
   cohorts: PropTypes.arrayOf(Object).isRequired,
   handleRadioButtonChange: PropTypes.func.isRequired,
-  showAttendance: PropTypes.func.isRequired
+  showDetails: PropTypes.func.isRequired,
+  buttonLabel: PropTypes.string.isRequired
 };
 
 export default RadioButtonList;

@@ -4,10 +4,12 @@ import { Menu } from 'semantic-ui-react';
 import StudentsView from './student/StudentsView';
 import Cohorts from './Cohorts';
 import Sprints from './Sprints';
+import TeamsView from './teams/TeamsView';
 
 const RenderedContent = ({ tabName = 'Students' }) => {
   if (tabName === 'Students') return <StudentsView />;
   if (tabName === 'Cohorts') return <Cohorts />;
+  if (tabName === 'Teams') return <TeamsView />;
   return <Sprints />;
 };
 
@@ -43,6 +45,7 @@ class TopPanel extends Component {
             active={activeItem === 'Sprints'}
             onClick={this.handleItemClick}
           />
+          <Menu.Item name="Teams" active={activeItem === 'Teams'} onClick={this.handleItemClick} />
         </Menu>
         <RenderedContent tabName={activeItem} />
       </div>
