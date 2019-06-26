@@ -1,8 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import RadioButtonList from '../../shared/RadioButtonList';
 
 function CreateTeams(props) {
-  console.log('props', props);
   const { cohorts, handleRadioButtonChange, showDetails } = props;
   return (
     <React.Fragment>
@@ -15,5 +15,11 @@ function CreateTeams(props) {
     </React.Fragment>
   );
 }
+
+CreateTeams.propTypes = {
+  cohorts: PropTypes.instanceOf(Array).isRequired,
+  handleRadioButtonChange: PropTypes.func.isRequired,
+  showDetails: PropTypes.instanceOf(Object).isRequired
+};
 
 export default CreateTeams;

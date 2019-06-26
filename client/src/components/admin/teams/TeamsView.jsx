@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { Grid, Menu, Segment } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 import CreateTeams from './CreateTeams';
 import EditTeams from './EditTeams';
 import { getAllCohorts } from '../../../queries/queries';
 
 const RenderedContent = (props, { tabName = 'Create Teams' }) => {
-  console.log('props', props);
-
   const { cohorts, handleRadioButtonChange, showDetails } = props;
 
   if (tabName === 'View and Edit Teams')
@@ -24,6 +23,12 @@ const RenderedContent = (props, { tabName = 'Create Teams' }) => {
       showDetails={showDetails}
     />
   );
+};
+
+RenderedContent.propTypes = {
+  cohorts: PropTypes.instanceOf(Array).isRequired,
+  handleRadioButtonChange: PropTypes.func.isRequired,
+  showDetails: PropTypes.instanceOf(Object).isRequired
 };
 
 class TeamsView extends Component {
