@@ -14,6 +14,7 @@ const CommitList = props => {
   const commitsWithMilestoneCommitMessage = commits.filter(commit =>
     milestoneCommits.includes(commit.toLowerCase())
   );
+  const uniqueMilestoneCommits = [...new Set(commitsWithMilestoneCommitMessage)];
 
   const commitList = show ? (
     commits.map((commit, i) =>
@@ -52,9 +53,7 @@ const CommitList = props => {
         <Label as="a" color="blue" onClick={handleCommitChange} size="large">
           # of Milestone Commits:
           <Label.Detail>
-            {commitsWithMilestoneCommitMessage.length
-              ? commitsWithMilestoneCommitMessage.length
-              : 0}
+            {uniqueMilestoneCommits.length ? uniqueMilestoneCommits.length : 0}
           </Label.Detail>
         </Label>
       </Label.Group>
