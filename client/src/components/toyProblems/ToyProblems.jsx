@@ -31,11 +31,15 @@ export default class ToyProblems extends Component {
 
   checkToyProblems() {
     const { selectedCohort } = { ...this.state };
+    let pullRequestsList = [];
     axios
       .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/toyproblems?cohort=${selectedCohort}`)
-      .then(response =>
-        this.setState({ pullRequestsList: response.data.toyProblems, showDetails: true })
-      )
+      .then(response => {
+        if (response && response.data && response.data.toyProblems) {
+          pullRequestsList = response.data.toyProblems;
+        }
+        this.setState({ pullRequestsList, showDetails: true });
+      })
       .catch(error => {
         throw error;
       });
