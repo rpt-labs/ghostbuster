@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { List, Label, Icon } from 'semantic-ui-react';
@@ -10,10 +11,10 @@ const CommitList = props => {
   //  TODO: need to update while using DB
   const { messages } = sprints.allSprints[sprint];
   const milestoneCommits = messages.map(message => message.message);
-  const numberOfMilestoneCommits = commits.filter(commit =>
-    milestoneCommits.includes(commit.toLowerCase())
+  const commitsWithMilestoneCommitMessage = commits.filter(commit =>
+    milestoneCommits.includes(commit.trim().toLowerCase())
   );
-  const numberOfUniqueMilestoneCommits = [...new Set(numberOfMilestoneCommits)];
+  const uniqueMilestoneCommits = [...new Set(commitsWithMilestoneCommitMessage)];
 
   const commitList = show ? (
     commits.map((commit, i) =>
@@ -52,7 +53,7 @@ const CommitList = props => {
         <Label as="a" color="blue" onClick={handleCommitChange} size="large">
           # of Milestone Commits:
           <Label.Detail>
-            {numberOfUniqueMilestoneCommits.length ? numberOfUniqueMilestoneCommits.length : 0}
+            {uniqueMilestoneCommits.length ? uniqueMilestoneCommits.length : 0}
           </Label.Detail>
         </Label>
       </Label.Group>

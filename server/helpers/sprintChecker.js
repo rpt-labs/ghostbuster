@@ -15,7 +15,8 @@ const checkStudentFork = async (student, repoName) => {
     }
   }
 
-  const commitMessages = student.commitMessages(commits);
+  let commitMessages = student.commitMessages(commits);
+  commitMessages = commitMessages.map(commit => commit.trim());
   const BMR = student.passBMR(commitMessages);
   const percentComplete = student.percentComplete(allSprints[repoName].messages, commitMessages);
   const summary = {
