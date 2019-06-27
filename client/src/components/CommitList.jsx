@@ -13,6 +13,7 @@ const CommitList = props => {
   const numberOfMilestoneCommits = commits.filter(commit =>
     milestoneCommits.includes(commit.toLowerCase())
   );
+  const numberOfUniqueMilestoneCommits = [...new Set(numberOfMilestoneCommits)];
 
   const commitList = show ? (
     commits.map((commit, i) =>
@@ -51,7 +52,7 @@ const CommitList = props => {
         <Label as="a" color="blue" onClick={handleCommitChange} size="large">
           # of Milestone Commits:
           <Label.Detail>
-            {numberOfMilestoneCommits.length ? numberOfMilestoneCommits.length : 0}
+            {numberOfUniqueMilestoneCommits.length ? numberOfUniqueMilestoneCommits.length : 0}
           </Label.Detail>
         </Label>
       </Label.Group>

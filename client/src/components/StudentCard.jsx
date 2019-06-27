@@ -27,7 +27,9 @@ class StudentCard extends React.Component {
       <Card style={{ minHeight: '150px' }}>
         <Card.Content>
           <span>
-            <Progress student={student} style={{ marginLeft: '20px' }} />
+            <a target="_blank" rel="noopener noreferrer" href={githubUrl}>
+              <Progress student={student} style={{ marginLeft: '20px' }} />
+            </a>
             <div style={{ marginTop: '-100px', marginLeft: '200px' }}>
               <CommitList
                 handleCommitChange={this.handleShowCommitsChange}
