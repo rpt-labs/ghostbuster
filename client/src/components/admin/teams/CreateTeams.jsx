@@ -10,7 +10,7 @@ function CreateTeams(props) {
         cohorts={cohorts}
         handleRadioButtonChange={handleRadioButtonChange}
         showDetails={showDetails}
-        buttonLabel="SHOW DETAILS"
+        buttonLabel="SHOW STUDENTS LIST"
       />
     </React.Fragment>
   );

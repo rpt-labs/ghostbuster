@@ -5,7 +5,7 @@ import CreateTeams from './CreateTeams';
 import EditTeams from './EditTeams';
 import { getAllCohorts } from '../../../queries/queries';
 
-const RenderedContent = (props) => {
+const RenderedContent = props => {
   const { cohorts, handleRadioButtonChange, showDetails, tabName } = props;
 
   if (tabName === 'View and Edit Teams')
@@ -37,12 +37,16 @@ class TeamsView extends Component {
     super();
     this.state = {
       activeItem: 'Create Teams',
-      cohorts: []
+      cohorts: [],
+      studentsListByCohort: [],
+      selectedCohort: '',
+      studentsListForSelectedCohort: []
     };
 
     this.handleRadioButtonChange = this.handleRadioButtonChange.bind(this);
     this.getCohortsList = this.getCohortsList.bind(this);
     this.handleItemClick = this.handleItemClick.bind(this);
+    this.showDetails = this.showDetails.bind(this);
   }
 
   componentDidMount() {
@@ -51,8 +55,10 @@ class TeamsView extends Component {
 
   getCohortsList() {
     getAllCohorts().then(result => {
+      const studentsListByCohort = result.data.data.cohorts;
       const cohortsList = result.data.data.cohorts.map(e => e.name.toUpperCase());
       this.setState({
+        studentsListByCohort,
         cohorts: cohortsList.map(e => ({
           name: e,
           isChecked: false
@@ -75,15 +81,29 @@ class TeamsView extends Component {
         e.isChecked = false;
       }
     });
-    this.setState({ cohorts: newCohortList });
+    const selectedCohort = newCohortList.filter(c => c.isChecked);
+    this.setState({
+      cohorts: newCohortList,
+      selectedCohort:
+        selectedCohort.length && selectedCohort[0].name ? selectedCohort[0].name.toLowerCase() : ''
+    });
   }
 
   showDetails() {
-    console.log('TODO: display list of students for the selected cohort');
+    const { selectedCohort, studentsListByCohort } = this.state;
+    const selectedCohortDetails = studentsListByCohort.filter(
+      cohort => cohort.name === selectedCohort
+    );
+    this.setState({
+      studentsListForSelectedCohort:
+        selectedCohortDetails && selectedCohortDetails.length
+          ? selectedCohortDetails[0].students
+          : []
+    });
   }
 
   render() {
-    const { cohorts, activeItem } = this.state;
+    const { cohorts, activeItem, studentsListForSelectedCohort } = this.state;
     return (
       <React.Fragment>
         <Grid>
@@ -112,6 +132,7 @@ class TeamsView extends Component {
             </Segment>
           </Grid.Column>
         </Grid>
+        <div>{JSON.stringify(studentsListForSelectedCohort)}</div>
       </React.Fragment>
     );
   }
