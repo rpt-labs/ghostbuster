@@ -12,7 +12,7 @@ const CommitList = props => {
   const { messages } = sprints.allSprints[sprint];
   const milestoneCommits = messages.map(message => message.message);
   const commitsWithMilestoneCommitMessage = commits.filter(commit =>
-    milestoneCommits.includes(commit.toLowerCase())
+    milestoneCommits.includes(commit.trim().toLowerCase())
   );
   const uniqueMilestoneCommits = [...new Set(commitsWithMilestoneCommitMessage)];
 

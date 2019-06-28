@@ -8,7 +8,8 @@ process.on('uncaughtException', err => {
 });
 
 const getStudentsList = cohortName => {
-  return allCohorts.filter(x => x.name === cohortName)[0].students;
+  const studentsList = allCohorts.filter(x => x.name === cohortName);
+  return studentsList && studentsList.length ? studentsList[0].students : [];
 };
 
 const checkIfPrTitleMatches = prTitle => {
@@ -63,11 +64,11 @@ const getPrListForStudent = async (cohort, student) => {
 };
 
 const checkToyProblems = async cohort => {
-  const studentsList = getStudentsList(cohort);
+  const studentsList = await getStudentsList(cohort);
   const getAllprs = async () => {
     return Promise.all(studentsList.map(student => getPrListForStudent(cohort, student)));
   };
-  const allPrs = getAllprs();
+  const allPrs = await getAllprs();
   return allPrs;
 };
 
