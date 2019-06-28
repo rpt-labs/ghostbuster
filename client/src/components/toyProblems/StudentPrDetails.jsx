@@ -37,7 +37,7 @@ export default class StudentPrDetails extends Component {
             </Header>
             <Card.Group itemsPerRow={2}>
               {pullRequestsList.map(item => (
-                <Card>
+                <Card key={item.studentName}>
                   <Card.Content>
                     <a
                       target="_blank"
