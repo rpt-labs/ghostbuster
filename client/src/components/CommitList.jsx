@@ -11,9 +11,10 @@ const CommitList = props => {
   //  TODO: need to update while using DB
   const { messages } = sprints.allSprints[sprint];
   const milestoneCommits = messages.map(message => message.message);
-  const numberOfMilestoneCommits = commits.filter(commit =>
-    milestoneCommits.includes(commit.toLowerCase())
+  const commitsWithMilestoneCommitMessage = commits.filter(commit =>
+    milestoneCommits.includes(commit.trim().toLowerCase())
   );
+  const uniqueMilestoneCommits = [...new Set(commitsWithMilestoneCommitMessage)];
 
   const commitList = show ? (
     commits.map((commit, i) =>
@@ -52,7 +53,7 @@ const CommitList = props => {
         <Label as="a" color="blue" onClick={handleCommitChange} size="large">
           # of Milestone Commits:
           <Label.Detail>
-            {numberOfMilestoneCommits.length ? numberOfMilestoneCommits.length : 0}
+            {uniqueMilestoneCommits.length ? uniqueMilestoneCommits.length : 0}
           </Label.Detail>
         </Label>
       </Label.Group>
