@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Menu, Segment } from 'semantic-ui-react';
+import { Grid, Menu, Segment, List } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import CreateTeams from './CreateTeams';
 import EditTeams from './EditTeams';
@@ -94,12 +94,11 @@ class TeamsView extends Component {
     const selectedCohortDetails = studentsListByCohort.filter(
       cohort => cohort.name === selectedCohort
     );
-    this.setState({
-      studentsListForSelectedCohort:
-        selectedCohortDetails && selectedCohortDetails.length
-          ? selectedCohortDetails[0].students
-          : []
-    });
+    if (selectedCohortDetails && selectedCohortDetails.length) {
+      this.setState({
+        studentsListForSelectedCohort: selectedCohortDetails[0].students
+      });
+    }
   }
 
   render() {
@@ -128,11 +127,24 @@ class TeamsView extends Component {
                 cohorts={cohorts}
                 handleRadioButtonChange={this.handleRadioButtonChange}
                 showDetails={this.showDetails}
+                studentsListForSelectedCohort={studentsListForSelectedCohort}
               />
             </Segment>
+            <div>
+              {studentsListForSelectedCohort.length ? (
+                <List>
+                  {studentsListForSelectedCohort.map(student => (
+                    <List.Item key={student.github}>
+                      {`${student.firstName} ${student.lastName}`}
+                    </List.Item>
+                  ))}
+                </List>
+              ) : (
+                <div />
+              )}
+            </div>
           </Grid.Column>
         </Grid>
-        <div>{JSON.stringify(studentsListForSelectedCohort)}</div>
       </React.Fragment>
     );
   }
