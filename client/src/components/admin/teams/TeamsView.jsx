@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Menu, Segment, List } from 'semantic-ui-react';
+import { Grid, Menu, Segment, List, Checkbox } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import CreateTeams from './CreateTeams';
 import EditTeams from './EditTeams';
@@ -135,7 +135,7 @@ class TeamsView extends Component {
                 <List>
                   {studentsListForSelectedCohort.map(student => (
                     <List.Item key={student.github}>
-                      {`${student.firstName} ${student.lastName}`}
+                      <Checkbox label={`${student.firstName} ${student.lastName}`} />
                     </List.Item>
                   ))}
                 </List>
