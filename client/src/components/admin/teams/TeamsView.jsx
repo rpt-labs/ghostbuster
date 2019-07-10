@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import React, { Component } from 'react';
 import { Grid, Menu, Segment, List, Checkbox } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
@@ -81,7 +82,7 @@ class TeamsView extends Component {
         e.isChecked = false;
       }
     });
-    const selectedCohort = newCohortList.filter(c => c.isChecked);
+    const selectedCohort = newCohortList.filter(cohort => cohort.isChecked);
     this.setState({
       cohorts: newCohortList,
       selectedCohort:
