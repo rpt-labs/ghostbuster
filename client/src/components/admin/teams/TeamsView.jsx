@@ -8,7 +8,7 @@ import { getAllCohorts } from '../../../queries/queries';
 const RenderedContent = props => {
   const { cohorts, handleRadioButtonChange, showDetails, tabName } = props;
 
-  if (tabName === 'View and Edit Teams')
+  if (tabName === 'Manage Teams')
     return (
       <EditTeams
         cohorts={cohorts}
@@ -40,7 +40,7 @@ class TeamsView extends Component {
       cohorts: [],
       studentsListByCohort: [],
       selectedCohort: '',
-      studentsListForSelectedCohort: []
+      selectedCohortStudents: []
     };
 
     this.handleRadioButtonChange = this.handleRadioButtonChange.bind(this);
@@ -91,18 +91,19 @@ class TeamsView extends Component {
 
   showDetails() {
     const { selectedCohort, studentsListByCohort } = this.state;
-    const selectedCohortDetails = studentsListByCohort.filter(
+    const selectedCohortDetails = studentsListByCohort.find(
       cohort => cohort.name === selectedCohort
     );
-    if (selectedCohortDetails && selectedCohortDetails.length) {
+
+    if (selectedCohortDetails) {
       this.setState({
-        studentsListForSelectedCohort: selectedCohortDetails[0].students
+        selectedCohortStudents: selectedCohortDetails.students
       });
     }
   }
 
   render() {
-    const { cohorts, activeItem, studentsListForSelectedCohort } = this.state;
+    const { cohorts, activeItem, selectedCohortStudents } = this.state;
     return (
       <React.Fragment>
         <Grid>
@@ -114,7 +115,7 @@ class TeamsView extends Component {
                 onClick={this.handleItemClick}
               />
               <Menu.Item
-                name="View and Edit Teams"
+                name="Manage Teams"
                 active={activeItem === 'View/ Edit Teams'}
                 onClick={this.handleItemClick}
               />
@@ -127,13 +128,13 @@ class TeamsView extends Component {
                 cohorts={cohorts}
                 handleRadioButtonChange={this.handleRadioButtonChange}
                 showDetails={this.showDetails}
-                studentsListForSelectedCohort={studentsListForSelectedCohort}
+                selectedCohortStudents={selectedCohortStudents}
               />
             </Segment>
             <div>
-              {studentsListForSelectedCohort.length ? (
+              {selectedCohortStudents.length ? (
                 <List>
-                  {studentsListForSelectedCohort.map(student => (
+                  {selectedCohortStudents.map(student => (
                     <List.Item key={student.github}>
                       <Checkbox label={`${student.firstName} ${student.lastName}`} />
                     </List.Item>
