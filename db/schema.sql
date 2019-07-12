@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS cohorts (
   id SERIAL PRIMARY KEY,
   cohort_name text NOT NULL UNIQUE,
-  phase text
+  phase text,
   status text
 );
 
