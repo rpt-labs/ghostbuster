@@ -35,38 +35,20 @@ RenderedContent.propTypes = {
 };
 
 class TeamsView extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    const { cohorts, studentsListByCohort } = this.props;
     this.state = {
       activeItem: 'Create Teams',
-      cohorts: [],
-      studentsListByCohort: [],
+      cohorts,
+      studentsListByCohort,
       selectedCohort: '',
       selectedCohortStudents: []
     };
 
     this.handleRadioButtonChange = this.handleRadioButtonChange.bind(this);
-    this.getCohortsList = this.getCohortsList.bind(this);
     this.handleItemClick = this.handleItemClick.bind(this);
     this.showDetails = this.showDetails.bind(this);
-  }
-
-  componentDidMount() {
-    this.getCohortsList();
-  }
-
-  getCohortsList() {
-    getAllCohorts().then(result => {
-      const studentsListByCohort = result.data.data.cohorts;
-      const cohortsList = result.data.data.cohorts.map(e => e.name.toUpperCase());
-      this.setState({
-        studentsListByCohort,
-        cohorts: cohortsList.map(e => ({
-          name: e,
-          isChecked: false
-        }))
-      });
-    });
   }
 
   handleItemClick(e, { name }) {
@@ -157,3 +139,8 @@ class TeamsView extends Component {
 }
 
 export default TeamsView;
+
+TeamsView.propTypes = {
+  cohorts: PropTypes.instanceOf(Array).isRequired,
+  studentsListByCohort: PropTypes.instanceOf(Array).isRequired
+};

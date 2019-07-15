@@ -7,10 +7,11 @@ import Sprints from './Sprints';
 import TeamsView from './teams/TeamsView';
 import { getAllCohorts } from '../../queries/queries';
 
-const RenderedContent = ({ tabName = 'Students', cohorts }) => {
+const RenderedContent = ({ tabName = 'Students', cohorts, studentsListByCohort }) => {
   if (tabName === 'Students') return <StudentsView cohorts={cohorts} />;
   if (tabName === 'Cohorts') return <Cohorts />;
-  if (tabName === 'Teams') return <TeamsView />;
+  if (tabName === 'Teams')
+    return <TeamsView cohorts={cohorts} studentsListByCohort={studentsListByCohort} />;
   return <Sprints />;
 };
 
@@ -53,7 +54,7 @@ class TopPanel extends Component {
   }
 
   render() {
-    const { activeItem, cohorts } = this.state;
+    const { activeItem, cohorts, studentsListByCohort } = this.state;
     return (
       <div>
         <Menu tabular>
@@ -74,7 +75,11 @@ class TopPanel extends Component {
           />
           <Menu.Item name="Teams" active={activeItem === 'Teams'} onClick={this.handleItemClick} />
         </Menu>
-        <RenderedContent tabName={activeItem} cohorts={cohorts} />
+        <RenderedContent
+          tabName={activeItem}
+          cohorts={cohorts}
+          studentsListByCohort={studentsListByCohort}
+        />
       </div>
     );
   }
