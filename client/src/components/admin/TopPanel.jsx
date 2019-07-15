@@ -17,7 +17,8 @@ const RenderedContent = ({ tabName = 'Students', cohorts, studentsListByCohort }
 
 RenderedContent.propTypes = {
   tabName: PropTypes.string.isRequired,
-  cohorts: PropTypes.instanceOf(Array).isRequired
+  cohorts: PropTypes.instanceOf(Array).isRequired,
+  studentsListByCohort: PropTypes.instanceOf(Array).isRequired
 };
 
 class TopPanel extends Component {

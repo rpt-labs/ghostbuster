@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import CreateTeams from './CreateTeams';
 import EditTeams from './EditTeams';
 import CreateTeamModal from './CreateTeamModal';
-import { getAllCohorts } from '../../../queries/queries';
 
 const RenderedContent = props => {
   const { cohorts, handleRadioButtonChange, showDetails, tabName } = props;
