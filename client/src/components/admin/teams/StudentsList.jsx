@@ -5,10 +5,11 @@ import CreateTeamModal from './CreateTeamModal';
 
 function StudentsList(props) {
   const { selectedCohortStudents } = props;
+  const currentStudents = selectedCohortStudents.filter(student => student.status === 'enrolled');
   return (
     <React.Fragment>
       <List>
-        {selectedCohortStudents.map(student => (
+        {currentStudents.map(student => (
           <List.Item key={student.github}>
             <Checkbox label={`${student.firstName} ${student.lastName}`} />
           </List.Item>

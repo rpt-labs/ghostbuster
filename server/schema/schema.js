@@ -53,6 +53,7 @@ const StudentType = new GraphQLObjectType({
     first_name: { type: GraphQLString },
     last_name: { type: GraphQLString },
     github: { type: GraphQLString },
+    status: { type: GraphQLString },
     cohort: {
       type: CohortType,
       resolve(parent) {
