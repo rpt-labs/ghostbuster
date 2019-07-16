@@ -4,7 +4,7 @@ const graphqlUrl = '/graphql';
 const expressUrl = '/ghostbuster';
 
 const getCohortsQuery =
-  '{cohorts{name: cohortName phase students{firstName: first_name lastName: last_name github status }}}';
+  '{cohorts{name: cohortName phase status students{firstName: first_name lastName: last_name github status }}}';
 
 const getAllCohorts = () =>
   Api.get(graphqlUrl, {

@@ -9,17 +9,19 @@ import StudentsList from './StudentsList';
 const RenderedContent = props => {
   const { cohorts, handleRadioButtonChange, showDetails, tabName } = props;
 
+  const activeCohorts = cohorts.filter(cohort => cohort.status.toLowerCase() === 'current');
+
   if (tabName === 'Manage Teams')
     return (
       <EditTeams
-        cohorts={cohorts}
+        cohorts={activeCohorts}
         handleRadioButtonChange={handleRadioButtonChange}
         showDetails={showDetails}
       />
     );
   return (
     <CreateTeams
-      cohorts={cohorts}
+      cohorts={activeCohorts}
       handleRadioButtonChange={handleRadioButtonChange}
       showDetails={showDetails}
     />

@@ -39,13 +39,14 @@ class TopPanel extends Component {
   getCohortsList() {
     getAllCohorts().then(result => {
       const studentsListByCohort = result.data.data.cohorts;
-      const cohortsList = result.data.data.cohorts.map(e => e.name.toUpperCase());
+      const cohortsList = result.data.data.cohorts.map(e => ({
+        name: e.name.toUpperCase(),
+        status: e.status,
+        isChecked: false
+      }));
       this.setState({
         studentsListByCohort,
-        cohorts: cohortsList.map(e => ({
-          name: e,
-          isChecked: false
-        }))
+        cohorts: cohortsList
       });
     });
   }
