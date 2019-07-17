@@ -30,6 +30,7 @@ const cohorts = require('./routes/cohorts');
 const students = require('./routes/students');
 const teams = require('./routes/teams');
 const sprints = require('./routes/sprints');
+const toyproblems = require('./routes/toyproblems');
 
 // use this as middleware on any routes you need to protect
 // be sure to include the authorization header on the request from client
@@ -89,6 +90,9 @@ app.use('/ghostbuster/students', students);
 
 // teams
 app.use('/ghostbuster/teams', teams);
+
+// toyproblems
+app.use('/ghostbuster/toyproblems', toyproblems);
 
 // to seed DB with current student/cohort/team information
 app.get('/ghostbuster/seed/:seedType', asyncMiddleware(seedersController));

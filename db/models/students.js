@@ -3,11 +3,12 @@ const { query } = require('../index');
 module.exports = {
   addStudent: student =>
     query(`
-      INSERT INTO students (first_name, last_name, github, cohort_id)
+      INSERT INTO students (first_name, last_name, github, status, cohort_id)
       VALUES (
         '${student.firstName}',
         '${student.lastName}',
         '${student.github}',
+        '${student.status}',
         ${student.cohortId}
       )
     `)
@@ -23,10 +24,11 @@ module.exports = {
     // update student
     try {
       const update = await query(`
-      UPDATE students SET (first_name, last_name, github, cohort_id) = (
+      UPDATE students SET (first_name, last_name, github, status, cohort_id) = (
         '${newStudentInfo.firstName}',
         '${newStudentInfo.lastName}',
         '${newStudentInfo.github}',
+        '${newStudentInfo.status}',
         ${newStudentInfo.cohortId}
       ) WHERE id = ${studentId}
     `);

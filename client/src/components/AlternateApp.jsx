@@ -9,6 +9,7 @@ import Home from './Home';
 import TopNav from './TopNav';
 import Cohort from './Cohort';
 import TeamList from './TeamList';
+import ToyProblems from './toyProblems/ToyProblems';
 import Login from './Login';
 import Admin from './admin/Admin';
 import Attendance from './attendance/Attendance';
@@ -214,6 +215,8 @@ export default class AlternateApp extends React.Component {
                   />
                 )}
               />
+
+              <SecureRoute path="/toyproblems" render={() => <ToyProblems />} />
 
               <Route path="/login" render={() => <Login baseUrl={OKTA_BASE_URL} />} />
               <Route path="/implicit/callback" component={ImplicitCallback} />
