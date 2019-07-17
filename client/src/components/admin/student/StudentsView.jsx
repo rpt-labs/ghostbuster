@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Menu, Segment } from 'semantic-ui-react';
-import PropTypes from 'prop-types';
 import AddStudent from './AddStudent';
 import EditStudent from './EditStudent';
 import GithubActivity from './GithubActivity';
