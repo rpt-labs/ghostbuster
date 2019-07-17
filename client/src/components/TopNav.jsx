@@ -13,6 +13,7 @@ const TopNav = props => (
         <StyledLink to="/attendance">Attendance</StyledLink>
         <StyledLink to="/sprints">Sprints</StyledLink>
         <StyledLink to="/projects">Projects</StyledLink>
+        <StyledLink to="/toyproblems">Toy Problems</StyledLink>
         <StyledLink to="/login" onClick={() => props.auth.logout('/login')}>
           Logout
         </StyledLink>
