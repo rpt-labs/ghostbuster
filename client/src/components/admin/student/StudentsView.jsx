@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Grid, Menu, Segment } from 'semantic-ui-react';
 import AddStudent from './AddStudent';
 import EditStudent from './EditStudent';
@@ -8,6 +9,10 @@ const RenderedContent = ({ tabName = 'Add Student' }) => {
   if (tabName === 'View and Edit Student') return <EditStudent />;
   if (tabName === 'Github Activity') return <GithubActivity />;
   return <AddStudent />;
+};
+
+RenderedContent.propTypes = {
+  tabName: PropTypes.string.isRequired
 };
 
 export default class Students extends Component {
