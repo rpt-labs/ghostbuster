@@ -26,7 +26,8 @@ export default class StudentPrDetails extends Component {
         {pullRequestsList && pullRequestsList.length ? (
           <div>
             <Header as="h1">
-              Selected Cohort: {selectedCohort.toUpperCase()}
+              Selected Cohort:
+              {selectedCohort.toUpperCase()}
               <Button
                 color="grey"
                 style={{ float: 'right', marginRight: '0px' }}

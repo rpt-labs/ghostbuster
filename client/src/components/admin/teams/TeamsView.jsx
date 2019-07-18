@@ -4,10 +4,9 @@ import { Grid, Menu, Segment } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import CreateTeams from './CreateTeams';
 import EditTeams from './EditTeams';
-import StudentsList from './StudentsList';
 
 const RenderedContent = props => {
-  const { cohorts, handleRadioButtonChange, showDetails, tabName } = props;
+  const { cohorts, handleRadioButtonChange, showDetails, tabName, selectedCohortStudents } = props;
 
   const activeCohorts = cohorts.filter(cohort => cohort.status.toLowerCase() === 'current');
 
@@ -24,12 +23,14 @@ const RenderedContent = props => {
       cohorts={activeCohorts}
       handleRadioButtonChange={handleRadioButtonChange}
       showDetails={showDetails}
+      selectedCohortStudents={selectedCohortStudents}
     />
   );
 };
 
 RenderedContent.propTypes = {
   cohorts: PropTypes.instanceOf(Array).isRequired,
+  selectedCohortStudents: PropTypes.instanceOf(Array).isRequired,
   handleRadioButtonChange: PropTypes.func.isRequired,
   showDetails: PropTypes.instanceOf(Object).isRequired,
   tabName: PropTypes.string.isRequired
@@ -116,13 +117,6 @@ class TeamsView extends Component {
                 selectedCohortStudents={selectedCohortStudents}
               />
             </Segment>
-            <div>
-              {selectedCohortStudents.length ? (
-                <StudentsList selectedCohortStudents={selectedCohortStudents} />
-              ) : (
-                <div />
-              )}
-            </div>
           </Grid.Column>
         </Grid>
       </React.Fragment>
