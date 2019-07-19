@@ -5,6 +5,7 @@ import StudentsList from './StudentsList';
 
 function CreateTeams(props) {
   const { cohorts, handleRadioButtonChange, showDetails, selectedCohortStudents } = props;
+  const currentStudents = selectedCohortStudents.filter(student => student.status === 'enrolled');
   return (
     <React.Fragment>
       <RadioButtonList
@@ -14,11 +15,7 @@ function CreateTeams(props) {
         buttonLabel="Show Students List"
       />
       <div>
-        {selectedCohortStudents.length ? (
-          <StudentsList selectedCohortStudents={selectedCohortStudents} />
-        ) : (
-          <div />
-        )}
+        {currentStudents.length ? <StudentsList currentStudents={currentStudents} /> : <div />}
       </div>
     </React.Fragment>
   );

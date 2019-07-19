@@ -10,7 +10,7 @@ function EditTeams(props) {
         cohorts={cohorts}
         handleRadioButtonChange={handleRadioButtonChange}
         showDetails={showDetails}
-        buttonLabel="SHOW DETAILS"
+        buttonLabel="Manage Teams"
       />
     </React.Fragment>
   );

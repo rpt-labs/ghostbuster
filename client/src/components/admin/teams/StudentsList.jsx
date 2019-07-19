@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import CreateTeamModal from './CreateTeamModal';
 
 function StudentsList(props) {
-  const { selectedCohortStudents } = props;
-  const currentStudents = selectedCohortStudents.filter(student => student.status === 'enrolled');
+  const { currentStudents } = props;
   return (
     <React.Fragment>
+      <h2>Enrolled Students</h2>
       <List>
         {currentStudents.map(student => (
           <List.Item key={student.github}>
@@ -23,5 +23,5 @@ function StudentsList(props) {
 export default StudentsList;
 
 StudentsList.propTypes = {
-  selectedCohortStudents: PropTypes.instanceOf(Array).isRequired
+  currentStudents: PropTypes.instanceOf(Array).isRequired
 };
