@@ -11,7 +11,8 @@ class StudentsList extends Component {
       studentsList: currentStudents.map(student => Object.assign(student, { isChecked: false })),
       selectedStudents: [],
       open: false,
-      size: 'tiny'
+      size: 'tiny',
+      currentStudents
     };
     this.selectStudent = this.selectStudent.bind(this);
   }
@@ -43,7 +44,11 @@ class StudentsList extends Component {
     });
   };
 
-  close = () => this.setState({ open: false });
+  close = () => {
+    this.setState({
+      open: false
+    });
+  };
 
   handleButtonClick = () => {
     const { studentsList } = this.state;

@@ -5,6 +5,10 @@ import PropTypes from 'prop-types';
 
 // TODO:remove eslint-disable and refactor to stateless function
 class CreateTeamModal extends Component {
+  createTeam = () => {
+    console.log('hi');
+  };
+
   render() {
     const { open, size, selectedStudents, close } = this.props;
 
@@ -22,8 +26,16 @@ class CreateTeamModal extends Component {
             </List>
           </Modal.Content>
           <Modal.Actions>
-            <Button negative>No</Button>
-            <Button positive icon="checkmark" labelPosition="right" content="Create Team?" />
+            <Button negative onClick={close}>
+              No
+            </Button>
+            <Button
+              positive
+              icon="checkmark"
+              labelPosition="right"
+              content="Create Team?"
+              onClick={this.createTeam}
+            />
           </Modal.Actions>
         </Modal>
       </div>
@@ -35,7 +47,7 @@ export default CreateTeamModal;
 
 CreateTeamModal.propTypes = {
   open: PropTypes.bool.isRequired,
-  close: PropTypes.bool.isRequired,
+  close: PropTypes.func.isRequired,
   size: PropTypes.string.isRequired,
   selectedStudents: PropTypes.instanceOf(Array).isRequired
 };
