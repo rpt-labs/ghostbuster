@@ -1,36 +1,86 @@
 import React, { Component } from 'react';
-import { List, Checkbox } from 'semantic-ui-react';
+import { List, Checkbox, Button, Modal } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import CreateTeamModal from './CreateTeamModal';
 
 class StudentsList extends Component {
   constructor(props) {
-    const { currentStudents } = props;
     super(props);
+    const { currentStudents } = props;
     this.state = {
-      studentsList: currentStudents.map(student => Object.assign(student, { isChecked: false }))
+      studentsList: currentStudents.map(student => Object.assign(student, { isChecked: false })),
+      selectedStudents: [],
+      open: false,
+      size: 'tiny'
     };
-    this.handleClick = this.handleClick.bind(this);
+    this.selectStudent = this.selectStudent.bind(this);
   }
 
-  handleClick = e => console.log('Click', e.target.innerHTML);
+  selectStudent = e => {
+    const { studentsList } = this.state;
+    const currentList = studentsList.slice();
+    const firstName = e.target.innerHTML
+      .substring(0, e.target.innerHTML.indexOf(' '))
+      .trim()
+      .toLowerCase();
+    const lastName = e.target.innerHTML
+      .substring(e.target.innerHTML.indexOf(' '))
+      .trim()
+      .toLowerCase();
+    const matchedStudent = studentsList.find(
+      student =>
+        student.firstName.toLowerCase() === firstName && student.lastName.toLowerCase() === lastName
+    );
+    if (matchedStudent) {
+      const index = currentList.indexOf(matchedStudent);
+      matchedStudent.isChecked = !matchedStudent.isChecked;
+      currentList[index] = matchedStudent;
+    }
+
+    this.setState({
+      studentsList: currentList
+    });
+  };
+
+  close = () => this.setState({ open: false });
+
+  handleButtonClick = () => {
+    const { studentsList } = this.state;
+    this.setState({
+      selectedStudents: studentsList.filter(student => student.isChecked),
+      open: true
+    });
+  };
 
   render() {
-    const { studentsList } = this.state;
+    const { studentsList, size, open, selectedStudents } = this.state;
     return (
       <React.Fragment>
         <h2>Enrolled Students</h2>
         <List>
           {studentsList.map(student => (
-            <List.Item key={student.github}>
-              <Checkbox
-                label={`${student.firstName} ${student.lastName}`}
-                onClick={this.handleClick}
-              />
+            <List.Item key={student.github} onClick={e => this.selectStudent(e)}>
+              <Checkbox label={`${student.firstName} ${student.lastName}`} />
             </List.Item>
           ))}
         </List>
-        <CreateTeamModal />
+        <Button onClick={() => this.handleButtonClick()}>Create Team</Button>
+        <Modal size={size} open={open} onClose={this.close}>
+          <Modal.Header>Create Team</Modal.Header>
+          <Modal.Content>
+            <List>
+              {selectedStudents.map(student => (
+                <List.Item key={student.github}>
+                  {`${student.firstName} ${student.lastName}`}
+                </List.Item>
+              ))}
+            </List>
+            <p>Create Team?</p>
+          </Modal.Content>
+          <Modal.Actions>
+            <Button negative>No</Button>
+            <Button positive icon="checkmark" labelPosition="right" content="Yes" />
+          </Modal.Actions>
+        </Modal>
       </React.Fragment>
     );
   }
