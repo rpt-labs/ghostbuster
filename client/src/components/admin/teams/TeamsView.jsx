@@ -70,6 +70,7 @@ class TeamsView extends Component {
     const selectedCohort = newCohortList.filter(cohort => cohort.isChecked);
     this.setState({
       cohorts: newCohortList,
+      selectedCohortStudents: [],
       selectedCohort:
         selectedCohort.length && selectedCohort[0].name ? selectedCohort[0].name.toLowerCase() : ''
     });

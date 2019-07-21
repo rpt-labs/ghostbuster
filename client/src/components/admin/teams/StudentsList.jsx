@@ -18,12 +18,13 @@ class StudentsList extends Component {
   selectStudent = e => {
     const { studentsList } = this.state;
     const currentList = studentsList.slice();
-    const firstName = e.target.innerHTML
-      .substring(0, e.target.innerHTML.indexOf(' '))
+    const name = e.target.innerHTML;
+    const firstName = name
+      .substring(0, name.indexOf(' '))
       .trim()
       .toLowerCase();
-    const lastName = e.target.innerHTML
-      .substring(e.target.innerHTML.indexOf(' '))
+    const lastName = name
+      .substring(name.indexOf(' '))
       .trim()
       .toLowerCase();
     const matchedStudent = studentsList.find(
