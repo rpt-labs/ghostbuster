@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { List, Checkbox, Button, Modal } from 'semantic-ui-react';
+import { List, Checkbox, Button } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+import CreateTeamModal from './CreateTeamModal';
 
 class StudentsList extends Component {
   constructor(props) {
@@ -65,23 +66,12 @@ class StudentsList extends Component {
           ))}
         </List>
         <Button onClick={() => this.handleButtonClick()}>Create Team</Button>
-        <Modal size={size} open={open} onClose={this.close}>
-          <Modal.Header>Create Team</Modal.Header>
-          <Modal.Content>
-            <List>
-              {selectedStudents.map(student => (
-                <List.Item key={student.github}>
-                  {`${student.firstName} ${student.lastName}`}
-                </List.Item>
-              ))}
-            </List>
-            <p>Create Team?</p>
-          </Modal.Content>
-          <Modal.Actions>
-            <Button negative>No</Button>
-            <Button positive icon="checkmark" labelPosition="right" content="Yes" />
-          </Modal.Actions>
-        </Modal>
+        <CreateTeamModal
+          close={this.close}
+          selectedStudents={selectedStudents}
+          size={size}
+          open={open}
+        />
       </React.Fragment>
     );
   }

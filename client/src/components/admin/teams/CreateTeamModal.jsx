@@ -1,27 +1,29 @@
+/* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
-import { Button, Modal } from 'semantic-ui-react';
+import { Button, Modal, List } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 
+// TODO:remove eslint-disable and refactor to stateless function
 class CreateTeamModal extends Component {
-  state = { open: false };
-
-  show = size => () => this.setState({ size, open: true });
-
-  close = () => this.setState({ open: false });
-
   render() {
-    const { open, size } = this.state;
+    const { open, size, selectedStudents, close } = this.props;
 
     return (
       <div>
-        <Button onClick={this.show('tiny')}>Create Team</Button>
-        <Modal size={size} open={open} onClose={this.close}>
+        <Modal size={size} open={open} onClose={close}>
           <Modal.Header>Create Team</Modal.Header>
           <Modal.Content>
-            <p>Create Team?</p>
+            <List>
+              {selectedStudents.map(student => (
+                <List.Item key={student.github}>
+                  {`${student.firstName} ${student.lastName}`}
+                </List.Item>
+              ))}
+            </List>
           </Modal.Content>
           <Modal.Actions>
             <Button negative>No</Button>
-            <Button positive icon="checkmark" labelPosition="right" content="Yes" />
+            <Button positive icon="checkmark" labelPosition="right" content="Create Team?" />
           </Modal.Actions>
         </Modal>
       </div>
@@ -30,3 +32,10 @@ class CreateTeamModal extends Component {
 }
 
 export default CreateTeamModal;
+
+CreateTeamModal.propTypes = {
+  open: PropTypes.bool.isRequired,
+  close: PropTypes.bool.isRequired,
+  size: PropTypes.string.isRequired,
+  selectedStudents: PropTypes.instanceOf(Array).isRequired
+};
