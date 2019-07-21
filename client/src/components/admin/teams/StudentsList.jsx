@@ -11,8 +11,7 @@ class StudentsList extends Component {
       studentsList: currentStudents.map(student => Object.assign(student, { isChecked: false })),
       selectedStudents: [],
       open: false,
-      size: 'tiny',
-      currentStudents
+      size: 'tiny'
     };
     this.selectStudent = this.selectStudent.bind(this);
   }
