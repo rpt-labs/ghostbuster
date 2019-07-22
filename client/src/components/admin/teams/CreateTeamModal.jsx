@@ -1,7 +1,9 @@
-/* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import { Button, Modal, List, Input, Form, Select } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+
+const { GHOSTBUSTER_BASE_URL } = process.env;
 
 const options = [
   { key: 'fec', text: 'FEC', value: 'FEC' },
@@ -9,10 +11,45 @@ const options = [
   { key: 'other', text: 'Other', value: 'other' }
 ];
 
-// TODO:remove eslint-disable and refactor to stateless function
 class CreateTeamModal extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      teamName: '',
+      teamType: '',
+      github: ''
+    };
+  }
+
+  handleInputChange = event => {
+    const { target } = event;
+    const { value, name } = target;
+
+    this.setState({
+      [name]: value
+    });
+  };
+
+  handleSelectionChange = (e, { value }) => this.setState({ teamType: value });
+
   createTeam = () => {
-    console.log('hi');
+    const { teamName, teamType } = this.state;
+    let { github } = this.state;
+    const { selectedCohort, selectedStudents } = this.props;
+    // console.log(selectedStudents);
+    github = !github ? `${teamType}_${teamName}` : github;
+    axios
+      .post(
+        `${GHOSTBUSTER_BASE_URL}/ghostbuster/teams?teamName=${teamName}&teamType=${teamType}&github=${github}&cohortId=${
+          selectedCohort.id
+        }`
+      )
+      .then(response => {
+        console.log('response', response);
+      })
+      .catch(error => {
+        throw error;
+      });
   };
 
   render() {
@@ -25,12 +62,27 @@ class CreateTeamModal extends Component {
           <Modal.Content>
             <Form>
               <Form.Group widths="equal">
-                <Form.Field control={Input} label="Team Name" placeholder="Team Name" />
+                <Form.Field
+                  control={Input}
+                  label="Team Name"
+                  placeholder="Team Name"
+                  name="teamName"
+                  onChange={this.handleInputChange}
+                />
+                <Form.Field
+                  control={Input}
+                  label="Github"
+                  placeholder="Github Handle"
+                  name="github"
+                  onChange={this.handleInputChange}
+                />
                 <Form.Field
                   control={Select}
                   label="Team Type"
                   options={options}
                   placeholder="Team Type"
+                  onChange={this.handleSelectionChange}
+                  name="teamType"
                 />
               </Form.Group>
             </Form>
@@ -65,5 +117,6 @@ export default CreateTeamModal;
 CreateTeamModal.propTypes = {
   open: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
-  selectedStudents: PropTypes.instanceOf(Array).isRequired
+  selectedStudents: PropTypes.instanceOf(Array).isRequired,
+  selectedCohort: PropTypes.instanceOf(Object).isRequired
 };

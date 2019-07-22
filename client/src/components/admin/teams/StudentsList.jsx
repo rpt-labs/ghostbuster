@@ -6,7 +6,7 @@ import CreateTeamModal from './CreateTeamModal';
 class StudentsList extends Component {
   constructor(props) {
     super(props);
-    const { currentStudents, selectedCohort } = props;
+    const { currentStudents } = props;
     this.state = {
       studentsList: currentStudents.map(student => Object.assign(student, { isChecked: false })),
       selectedStudents: [],
@@ -86,5 +86,6 @@ class StudentsList extends Component {
 export default StudentsList;
 
 StudentsList.propTypes = {
-  currentStudents: PropTypes.instanceOf(Array).isRequired
+  currentStudents: PropTypes.instanceOf(Array).isRequired,
+  selectedCohort: PropTypes.instanceOf(Object).isRequired
 };
