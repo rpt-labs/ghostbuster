@@ -92,5 +92,5 @@ export default class StudentPrDetails extends Component {
 
 StudentPrDetails.propTypes = {
   pullRequestsList: PropTypes.instanceOf(Array).isRequired,
-  selectedCohort: PropTypes.string.isRequired
+  selectedCohort: PropTypes.instanceOf(Object).isRequired
 };

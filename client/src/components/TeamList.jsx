@@ -62,7 +62,7 @@ TeamList.propTypes = {
   loading: PropTypes.bool.isRequired,
   showSegment: PropTypes.bool.isRequired,
   projects: PropTypes.instanceOf(Object).isRequired,
-  selectedCohort: PropTypes.string.isRequired
+  selectedCohort: PropTypes.instanceOf(Object).isRequired
 };
 
 export default TeamList;

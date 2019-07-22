@@ -6,7 +6,14 @@ import CreateTeams from './CreateTeams';
 import EditTeams from './EditTeams';
 
 const RenderedContent = props => {
-  const { cohorts, handleRadioButtonChange, showDetails, tabName, selectedCohortStudents } = props;
+  const {
+    cohorts,
+    handleRadioButtonChange,
+    showDetails,
+    tabName,
+    selectedCohortStudents,
+    selectedCohort
+  } = props;
 
   const activeCohorts = cohorts.filter(cohort => cohort.status.toLowerCase() === 'current');
 
@@ -24,6 +31,7 @@ const RenderedContent = props => {
       handleRadioButtonChange={handleRadioButtonChange}
       showDetails={showDetails}
       selectedCohortStudents={selectedCohortStudents}
+      selectedCohort={selectedCohort}
     />
   );
 };
@@ -33,7 +41,8 @@ RenderedContent.propTypes = {
   selectedCohortStudents: PropTypes.instanceOf(Array).isRequired,
   handleRadioButtonChange: PropTypes.func.isRequired,
   showDetails: PropTypes.instanceOf(Object).isRequired,
-  tabName: PropTypes.string.isRequired
+  tabName: PropTypes.string.isRequired,
+  selectedCohort: PropTypes.instanceOf(Object).isRequired
 };
 
 class TeamsView extends Component {
@@ -44,7 +53,7 @@ class TeamsView extends Component {
       activeItem: 'Create Teams',
       cohorts,
       studentsListByCohort,
-      selectedCohort: '',
+      selectedCohort: {},
       selectedCohortStudents: []
     };
 
@@ -68,18 +77,20 @@ class TeamsView extends Component {
       }
     });
     const selectedCohort = newCohortList.filter(cohort => cohort.isChecked);
+    console.log('selectedCohortselectedCohort', selectedCohort);
     this.setState({
       cohorts: newCohortList,
       selectedCohortStudents: [],
-      selectedCohort:
-        selectedCohort.length && selectedCohort[0].name ? selectedCohort[0].name.toLowerCase() : ''
+      selectedCohort: selectedCohort.length
+        ? { name: selectedCohort[0].name.toLowerCase(), id: selectedCohort[0].id }
+        : { name: '', id: undefined }
     });
   }
 
   showDetails() {
     const { selectedCohort, studentsListByCohort } = this.state;
     const selectedCohortDetails = studentsListByCohort.find(
-      cohort => cohort.name === selectedCohort
+      cohort => cohort.name === selectedCohort.name
     );
 
     if (selectedCohortDetails) {
@@ -90,7 +101,7 @@ class TeamsView extends Component {
   }
 
   render() {
-    const { cohorts, activeItem, selectedCohortStudents } = this.state;
+    const { cohorts, activeItem, selectedCohortStudents, selectedCohort } = this.state;
     return (
       <React.Fragment>
         <Grid>
@@ -116,6 +127,7 @@ class TeamsView extends Component {
                 handleRadioButtonChange={this.handleRadioButtonChange}
                 showDetails={this.showDetails}
                 selectedCohortStudents={selectedCohortStudents}
+                selectedCohort={selectedCohort}
               />
             </Segment>
           </Grid.Column>

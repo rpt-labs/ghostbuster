@@ -6,7 +6,7 @@ import CreateTeamModal from './CreateTeamModal';
 class StudentsList extends Component {
   constructor(props) {
     super(props);
-    const { currentStudents } = props;
+    const { currentStudents, selectedCohort } = props;
     this.state = {
       studentsList: currentStudents.map(student => Object.assign(student, { isChecked: false })),
       selectedStudents: [],
@@ -59,6 +59,7 @@ class StudentsList extends Component {
 
   render() {
     const { studentsList, size, open, selectedStudents } = this.state;
+    const { selectedCohort } = this.props;
     return (
       <React.Fragment>
         <h2>Enrolled Students</h2>
@@ -75,6 +76,7 @@ class StudentsList extends Component {
           selectedStudents={selectedStudents}
           size={size}
           open={open}
+          selectedCohort={selectedCohort}
         />
       </React.Fragment>
     );
