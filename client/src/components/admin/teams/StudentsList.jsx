@@ -62,11 +62,14 @@ class StudentsList extends Component {
     const { selectedCohort } = this.props;
     return (
       <React.Fragment>
-        <h2>Enrolled Students</h2>
-        <List>
+        <h2>Enrolled Students:</h2>
+        <List size="large">
           {studentsList.map(student => (
             <List.Item key={student.github} onClick={e => this.selectStudent(e)}>
-              <Checkbox label={`${student.firstName} ${student.lastName}`} />
+              <Checkbox
+                label={`${student.firstName} ${student.lastName}`}
+                style={{ fontSize: '18px' }}
+              />
             </List.Item>
           ))}
         </List>

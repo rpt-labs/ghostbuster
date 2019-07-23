@@ -99,7 +99,7 @@ class CreateTeamModal extends Component {
             </Form>
             <List divided relaxed>
               {selectedStudents.map(student => (
-                <List.Item key={student.github}>
+                <List.Item key={student.github} style={{ fontSize: '18px' }}>
                   {`${student.firstName} ${student.lastName}`}
                 </List.Item>
               ))}
