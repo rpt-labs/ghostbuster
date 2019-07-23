@@ -17,6 +17,7 @@ module.exports = {
           .then(res => {
             const result = res.rows[0];
             return {
+              teamId: result.id,
               teamName: result.team_name,
               teamType: result.team_type,
               github: result.github,

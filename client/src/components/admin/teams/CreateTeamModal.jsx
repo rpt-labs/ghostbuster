@@ -36,7 +36,6 @@ class CreateTeamModal extends Component {
     const { teamName, teamType } = this.state;
     let { github } = this.state;
     const { selectedCohort, selectedStudents } = this.props;
-    // console.log(selectedStudents);
     github = !github ? `${teamType}_${teamName}` : github;
     axios
       .post(
@@ -45,7 +44,19 @@ class CreateTeamModal extends Component {
         }`
       )
       .then(response => {
-        console.log('response', response);
+        if (response.data && response.data.team) {
+          const { teamId } = response.data.team;
+          if (teamId) {
+            selectedStudents.forEach(student => {
+              const { id } = student;
+              axios
+                .post(`${GHOSTBUSTER_BASE_URL}/ghostbuster/teams/${teamId}/students/${id}`)
+                .then(res => {
+                  console.log('res', res);
+                });
+            });
+          }
+        }
       })
       .catch(error => {
         throw error;
