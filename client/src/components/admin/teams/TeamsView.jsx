@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 import React, { Component } from 'react';
 import { Grid, Menu, Segment } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
@@ -66,18 +65,13 @@ class TeamsView extends Component {
     this.setState({ activeItem: name });
   }
 
-  handleRadioButtonChange(cohort) {
+  handleRadioButtonChange(cohortName) {
     const { cohorts } = this.state;
     const newCohortList = cohorts.slice();
     newCohortList.forEach(e => {
-      if (e.name === cohort) {
-        e.isChecked = true;
-      } else {
-        e.isChecked = false;
-      }
+      e.isChecked = e.name === cohortName;
     });
     const selectedCohort = newCohortList.filter(cohort => cohort.isChecked);
-    console.log('selectedCohortselectedCohort', selectedCohort);
     this.setState({
       cohorts: newCohortList,
       selectedCohortStudents: [],
