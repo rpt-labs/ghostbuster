@@ -1,26 +1,27 @@
 import React, { Component } from 'react';
 import { Button, Form, Header } from 'semantic-ui-react';
-
-const options = [
-  { key: 1, text: 'RPT11', value: 'RPT11' },
-  { key: 2, text: 'RPT12', value: 'RPT12' },
-  { key: 3, text: 'RPT13', value: 'RPT13' },
-  { key: 4, text: 'RPT14', value: 'RPT14' },
-  { key: 5, text: 'RPT15', value: 'RPT15' }
-];
+import PropTypes from 'prop-types';
 
 const enrollmentStatus = [
-  { key: 1, text: 'Enrolled', value: 'enrolled' },
-  { key: 2, text: 'Withdrawn', value: 'withdrawn' },
-  { key: 3, text: 'Removed', value: 'removed' },
-  { key: 4, text: 'Mulligan', value: 'mulligan' },
-  { key: 5, text: 'Alum', value: 'alum' },
-  { key: 6, text: 'Precourse', value: 'precourse' }
+  { key: 1, text: 'Alum', value: 'alum' },
+  { key: 2, text: 'Deferred', value: 'deferred' },
+  { key: 3, text: 'Withdrew', value: 'withdrew' },
+  { key: 4, text: 'Completed', value: 'completed' },
+  { key: 5, text: 'Enrolled', value: 'enrolled' },
+  { key: 6, text: 'Mulligan', value: 'mulligan' },
+  { key: 7, text: 'Removed', value: 'removed' },
+  { key: 8, text: 'Precourse', value: 'precourse' }
 ];
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class AddStudent extends Component {
   render() {
+    const { cohorts } = this.props;
+    const cohortsList = cohorts.map(cohort => ({
+      key: cohort.name,
+      text: cohort.name,
+      value: cohort.name
+    }));
     return (
       <React.Fragment>
         <Header as="h1" textAlign="center">
@@ -52,7 +53,7 @@ export default class AddStudent extends Component {
             </label>
           </Form.Field>
           <Form.Group widths="equal">
-            <Form.Select label="Cohort" options={options} placeholder="Select Cohort" />
+            <Form.Select label="Cohort" options={cohortsList} placeholder="Select Cohort" />
             <Form.Select
               label="Enrollment Status"
               options={enrollmentStatus}
@@ -65,3 +66,7 @@ export default class AddStudent extends Component {
     );
   }
 }
+
+AddStudent.propTypes = {
+  cohorts: PropTypes.instanceOf(Array).isRequired
+};

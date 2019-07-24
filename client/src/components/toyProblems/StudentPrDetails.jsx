@@ -26,7 +26,8 @@ export default class StudentPrDetails extends Component {
         {pullRequestsList && pullRequestsList.length ? (
           <div>
             <Header as="h1">
-              Selected Cohort: {selectedCohort.toUpperCase()}
+              Selected Cohort:
+              {selectedCohort.toUpperCase()}
               <Button
                 color="grey"
                 style={{ float: 'right', marginRight: '0px' }}
@@ -91,5 +92,5 @@ export default class StudentPrDetails extends Component {
 
 StudentPrDetails.propTypes = {
   pullRequestsList: PropTypes.instanceOf(Array).isRequired,
-  selectedCohort: PropTypes.string.isRequired
+  selectedCohort: PropTypes.instanceOf(Object).isRequired
 };

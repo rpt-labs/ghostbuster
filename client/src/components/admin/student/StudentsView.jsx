@@ -5,23 +5,25 @@ import AddStudent from './AddStudent';
 import EditStudent from './EditStudent';
 import GithubActivity from './GithubActivity';
 
-const RenderedContent = ({ tabName = 'Add Student' }) => {
+const RenderedContent = ({ tabName = 'Add Student', cohorts }) => {
   if (tabName === 'View and Edit Student') return <EditStudent />;
   if (tabName === 'Github Activity') return <GithubActivity />;
-  return <AddStudent />;
+  return <AddStudent cohorts={cohorts} />;
 };
 
 RenderedContent.propTypes = {
-  tabName: PropTypes.string.isRequired
+  tabName: PropTypes.string.isRequired,
+  cohorts: PropTypes.instanceOf(Array).isRequired
 };
 
-export default class Students extends Component {
+class StudentsView extends Component {
   state = { activeItem: 'Add Student' };
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
   render() {
     const { activeItem } = this.state;
+    const { cohorts } = this.props;
 
     return (
       <React.Fragment>
@@ -47,7 +49,7 @@ export default class Students extends Component {
           </Grid.Column>
           <Grid.Column stretched width={12}>
             <Segment>
-              <RenderedContent tabName={activeItem} />
+              <RenderedContent tabName={activeItem} cohorts={cohorts} />
             </Segment>
           </Grid.Column>
         </Grid>
@@ -55,3 +57,9 @@ export default class Students extends Component {
     );
   }
 }
+
+export default StudentsView;
+
+StudentsView.propTypes = {
+  cohorts: PropTypes.instanceOf(Array).isRequired
+};
