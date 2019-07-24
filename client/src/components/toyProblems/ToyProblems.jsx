@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { Button } from 'semantic-ui-react';
 import axios from 'axios';
 import StudentPrDetails from './StudentPrDetails';
+import { getAllCohorts } from '../../queries/queries';
 
-// TODO: Get cohortslist from DB/ config
-const COHORTS = ['RPT13', 'RPT14', 'RPT15'];
 const { GHOSTBUSTER_BASE_URL } = process.env;
 
 export default class ToyProblems extends Component {
@@ -21,12 +20,22 @@ export default class ToyProblems extends Component {
   }
 
   componentDidMount() {
-    this.setState({ allCohorts: COHORTS });
+    this.getCohortsList();
   }
 
   onButtonClick(e) {
     const selectedCohort = e.target.innerHTML.toLowerCase();
     this.setState({ selectedCohort }, () => this.checkToyProblems());
+  }
+
+  // TODO: get only active cohorts
+  getCohortsList() {
+    getAllCohorts().then(result => {
+      const cohorts = result.data.data.cohorts.map(e => e.name.toUpperCase());
+      this.setState({
+        allCohorts: cohorts
+      });
+    });
   }
 
   checkToyProblems() {

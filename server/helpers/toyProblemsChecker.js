@@ -52,7 +52,8 @@ const getPrListForStudent = async (cohort, student) => {
       const pullRequests = response.items.map(item => {
         return item.title;
       });
-      const matchedPrs = AllPrsWithMatchingTitles(pullRequests) || [];
+      let matchedPrs = AllPrsWithMatchingTitles(pullRequests) || [];
+      matchedPrs = [...new Set(matchedPrs)];
       const uniqueMatchedPrCount = numberOfUniquePrsWithMatchingTitles(matchedPrs);
       return { cohort, studentName, studentGithubHandle, matchedPrs, uniqueMatchedPrCount };
     }
