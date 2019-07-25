@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import RadioButtonList from '../../shared/RadioButtonList';
+import TeamsList from './TeamsList';
 
-function EditTeams(props) {
+function ManageTeams(props) {
   const { cohorts, handleRadioButtonChange, showDetails } = props;
   return (
     <React.Fragment>
@@ -12,14 +13,15 @@ function EditTeams(props) {
         showDetails={showDetails}
         buttonLabel="Manage Teams"
       />
+      <TeamsList />
     </React.Fragment>
   );
 }
 
-EditTeams.propTypes = {
+ManageTeams.propTypes = {
   cohorts: PropTypes.instanceOf(Array).isRequired,
   handleRadioButtonChange: PropTypes.func.isRequired,
   showDetails: PropTypes.instanceOf(Object).isRequired
 };
 
-export default EditTeams;
+export default ManageTeams;

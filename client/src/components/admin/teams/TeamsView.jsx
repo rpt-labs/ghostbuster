@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Grid, Menu, Segment } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import CreateTeams from './CreateTeams';
-import EditTeams from './EditTeams';
+import ManageTeams from './ManageTeams';
 
 const RenderedContent = props => {
   const {
@@ -18,7 +18,7 @@ const RenderedContent = props => {
 
   if (tabName === 'Manage Teams')
     return (
-      <EditTeams
+      <ManageTeams
         cohorts={activeCohorts}
         handleRadioButtonChange={handleRadioButtonChange}
         showDetails={showDetails}
@@ -108,7 +108,7 @@ class TeamsView extends Component {
               />
               <Menu.Item
                 name="Manage Teams"
-                active={activeItem === 'View/ Edit Teams'}
+                active={activeItem === 'Manage Teams'}
                 onClick={this.handleItemClick}
               />
             </Menu>
