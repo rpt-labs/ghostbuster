@@ -160,5 +160,16 @@ module.exports = {
       // console.log(error);
     }
     return { team, students };
+  },
+  getTeamsByCohortId: async cohortId => {
+    try {
+      const teamsByCohortQuery = await query(
+        `SELECT * FROM teams WHERE cohort_id= ${cohortId} ORDER BY id ASC`
+      );
+      return teamsByCohortQuery.rows;
+    } catch (err) {
+      console.log(err.detail || err);
+      return err;
+    }
   }
 };

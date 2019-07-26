@@ -29,4 +29,7 @@ teamsRouter.get(
   teamsController.getLifetimeContributionData
 );
 
+// get teams by cohort id
+teamsRouter.get('/cohort/:cohortId', teamsController.getTeamsByCohortId);
+
 module.exports = teamsRouter;
