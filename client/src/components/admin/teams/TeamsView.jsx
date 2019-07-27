@@ -6,6 +6,7 @@ import CreateTeams from './CreateTeams';
 import ManageTeams from './ManageTeams';
 
 const { GHOSTBUSTER_BASE_URL } = process.env;
+
 const RenderedContent = props => {
   const {
     cohorts,
@@ -14,7 +15,8 @@ const RenderedContent = props => {
     showTeamDetails,
     tabName,
     selectedCohortStudents,
-    selectedCohort
+    selectedCohort,
+    teamsListForSelectedCohort
   } = props;
 
   const activeCohorts = cohorts.filter(cohort => cohort.status.toLowerCase() === 'current');
@@ -26,6 +28,7 @@ const RenderedContent = props => {
         handleRadioButtonChange={handleRadioButtonChange}
         showTeamDetails={showTeamDetails}
         selectedCohort={selectedCohort}
+        teamsListForSelectedCohort={teamsListForSelectedCohort}
       />
     );
   return (
@@ -42,6 +45,7 @@ const RenderedContent = props => {
 RenderedContent.propTypes = {
   cohorts: PropTypes.instanceOf(Array).isRequired,
   selectedCohortStudents: PropTypes.instanceOf(Array).isRequired,
+  teamsListForSelectedCohort: PropTypes.instanceOf(Array).isRequired,
   handleRadioButtonChange: PropTypes.func.isRequired,
   showDetails: PropTypes.func.isRequired,
   showTeamDetails: PropTypes.func.isRequired,
@@ -58,7 +62,8 @@ class TeamsView extends Component {
       cohorts,
       studentsListByCohort,
       selectedCohort: {},
-      selectedCohortStudents: []
+      selectedCohortStudents: [],
+      teamsListForSelectedCohort: []
     };
   }
 
@@ -96,7 +101,10 @@ class TeamsView extends Component {
     const { id } = selectedCohort;
 
     axios.get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/teams/cohort/${id}`).then(response => {
-      console.log(response);
+      if (response.data) {
+        const teamsListForSelectedCohort = response.data.teamsList || [];
+        this.setState({ teamsListForSelectedCohort });
+      }
     });
   };
 
@@ -105,7 +113,14 @@ class TeamsView extends Component {
   };
 
   render() {
-    const { cohorts, activeItem, selectedCohortStudents, selectedCohort } = this.state;
+    const {
+      cohorts,
+      activeItem,
+      selectedCohortStudents,
+      selectedCohort,
+      teamsListForSelectedCohort
+    } = this.state;
+
     return (
       <React.Fragment>
         <Grid>
@@ -133,6 +148,7 @@ class TeamsView extends Component {
                 showTeamDetails={this.showTeamDetails}
                 selectedCohortStudents={selectedCohortStudents}
                 selectedCohort={selectedCohort}
+                teamsListForSelectedCohort={teamsListForSelectedCohort}
               />
             </Segment>
           </Grid.Column>

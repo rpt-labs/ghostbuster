@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { List, Checkbox, Button } from 'semantic-ui-react';
 
 class TeamsList extends Component {
   constructor(props) {
@@ -7,8 +9,22 @@ class TeamsList extends Component {
   }
 
   render() {
-    return <React.Fragment>hi</React.Fragment>;
+    const { teamsListForSelectedCohort } = this.props;
+
+    return (
+      <React.Fragment>
+        <List size="large">
+          {teamsListForSelectedCohort.map(team => (
+            <List.Item key={team.id}>{team.team_name}</List.Item>
+          ))}
+        </List>
+      </React.Fragment>
+    );
   }
 }
 
 export default TeamsList;
+
+TeamsList.propTypes = {
+  teamsListForSelectedCohort: PropTypes.instanceOf(Array).isRequired
+};
