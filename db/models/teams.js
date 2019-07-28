@@ -166,7 +166,14 @@ module.exports = {
       const teamsByCohortQuery = await query(
         `SELECT * FROM teams WHERE cohort_id= ${cohortId} ORDER BY id ASC`
       );
-      return teamsByCohortQuery.rows;
+      const formattedResult = teamsByCohortQuery.rows.map(team => ({
+        teamId: team.id,
+        teamName: team.team_name,
+        teamType: team.team_type,
+        github: team.github,
+        cohortId: team.cohort_id
+      }));
+      return formattedResult;
     } catch (err) {
       console.log(err.detail || err);
       return err;

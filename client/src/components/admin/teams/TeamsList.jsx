@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { List, Checkbox, Button } from 'semantic-ui-react';
+import { List } from 'semantic-ui-react';
 
 class TeamsList extends Component {
   constructor(props) {
@@ -15,7 +15,7 @@ class TeamsList extends Component {
       <React.Fragment>
         <List size="large">
           {teamsListForSelectedCohort.map(team => (
-            <List.Item key={team.id}>{team.team_name}</List.Item>
+            <List.Item key={team.teamId}>{team.teamName}</List.Item>
           ))}
         </List>
       </React.Fragment>
