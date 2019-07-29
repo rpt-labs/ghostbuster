@@ -40,7 +40,6 @@ const numberOfUniquePrsWithMatchingTitles = prList => {
 };
 
 const getPrListForStudent = async (cohort, student) => {
-  console.log('student', student);
   const studentName = `${student.firstName} ${student.lastName}`;
   const studentGithubHandle = student.github;
   try {
@@ -53,7 +52,8 @@ const getPrListForStudent = async (cohort, student) => {
         return item.title;
       });
       let matchedPrs = AllPrsWithMatchingTitles(pullRequests) || [];
-      matchedPrs = [...new Set(matchedPrs)];
+      // remove duplicates
+      matchedPrs = [...new Set(matchedPrs.map(pr => pr.toLowerCase()))];
       const uniqueMatchedPrCount = numberOfUniquePrsWithMatchingTitles(matchedPrs);
       return { cohort, studentName, studentGithubHandle, matchedPrs, uniqueMatchedPrCount };
     }
