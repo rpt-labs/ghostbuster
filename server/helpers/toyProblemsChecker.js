@@ -53,7 +53,7 @@ const getPrListForStudent = async (cohort, student) => {
       });
       let matchedPrs = AllPrsWithMatchingTitles(pullRequests) || [];
       // remove duplicates
-      matchedPrs = [...new Set(matchedPrs.map(pr => pr.toLowerCase()))];
+      matchedPrs = [...new Set(matchedPrs.map(pr => pr.toLowerCase().trim()))];
       const uniqueMatchedPrCount = numberOfUniquePrsWithMatchingTitles(matchedPrs);
       return { cohort, studentName, studentGithubHandle, matchedPrs, uniqueMatchedPrCount };
     }
