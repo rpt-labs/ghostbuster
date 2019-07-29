@@ -28,10 +28,11 @@ export default class ToyProblems extends Component {
     this.setState({ selectedCohort }, () => this.checkToyProblems());
   }
 
-  // TODO: get only active cohorts
   getCohortsList() {
     getAllCohorts().then(result => {
-      const cohorts = result.data.data.cohorts.map(e => e.name.toUpperCase());
+      const cohorts = result.data.data.cohorts
+        .filter(e => e.status === 'current')
+        .map(e => e.name.toUpperCase());
       this.setState({
         allCohorts: cohorts
       });
