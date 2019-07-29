@@ -31,8 +31,8 @@ export default class ToyProblems extends Component {
   getCohortsList() {
     getAllCohorts().then(result => {
       const cohorts = result.data.data.cohorts
-        .filter(e => e.status === 'current')
-        .map(e => e.name.toUpperCase());
+        .filter(cohort => cohort.status === 'current')
+        .map(cohort => cohort.name.toUpperCase());
       this.setState({
         allCohorts: cohorts
       });
