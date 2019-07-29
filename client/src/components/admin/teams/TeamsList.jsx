@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { List } from 'semantic-ui-react';
+import _ from 'lodash';
 
 class TeamsList extends Component {
   constructor(props) {
@@ -10,14 +11,18 @@ class TeamsList extends Component {
 
   render() {
     const { teamsListForSelectedCohort } = this.props;
+    const teamsByTeamType = _.groupBy(teamsListForSelectedCohort, 'teamType');
 
     return (
       <React.Fragment>
-        <List size="large">
-          {teamsListForSelectedCohort.map(team => (
-            <List.Item key={team.teamId}>{team.teamName}</List.Item>
-          ))}
-        </List>
+        {Object.keys(teamsByTeamType).map(teamType => (
+          <div key={teamType}>
+            <h1 key={teamType}>{teamType}</h1>
+            {teamsByTeamType[teamType].map(team => (
+              <div key={team.id}>{team.teamName}</div>
+            ))}
+          </div>
+        ))}
       </React.Fragment>
     );
   }
