@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { List } from 'semantic-ui-react';
+import { List, Card } from 'semantic-ui-react';
 import _ from 'lodash';
 
 class TeamsList extends Component {
@@ -17,10 +17,17 @@ class TeamsList extends Component {
       <React.Fragment>
         {Object.keys(teamsByTeamType).map(teamType => (
           <div key={teamType}>
-            <h1 key={teamType}>{teamType}</h1>
-            {teamsByTeamType[teamType].map(team => (
-              <div key={team.id}>{team.teamName}</div>
-            ))}
+            <h1>{teamType}</h1>
+            <Card.Group>
+              {teamsByTeamType[teamType].map(team => (
+                <Card key={team.id}>
+                  {console.log('team', team)}
+                  <Card.Content>
+                    <Card.Header>{team.teamName}</Card.Header>
+                  </Card.Content>
+                </Card>
+              ))}
+            </Card.Group>
           </div>
         ))}
       </React.Fragment>
