@@ -66,7 +66,7 @@ export default class StudentPrDetails extends Component {
                     {showAllAttemptedToyProblems ? (
                       <div>
                         {item.matchedPrs && item.matchedPrs.length ? (
-                          item.matchedPrs.map(pr => <div>{pr}</div>)
+                          item.matchedPrs.map(pr => <div key={pr}>{pr}</div>)
                         ) : (
                           <div />
                         )}
@@ -92,5 +92,5 @@ export default class StudentPrDetails extends Component {
 
 StudentPrDetails.propTypes = {
   pullRequestsList: PropTypes.instanceOf(Array).isRequired,
-  selectedCohort: PropTypes.instanceOf(Object).isRequired
+  selectedCohort: PropTypes.string.isRequired
 };
