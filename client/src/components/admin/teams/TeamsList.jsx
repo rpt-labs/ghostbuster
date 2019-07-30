@@ -17,13 +17,17 @@ class TeamsList extends Component {
       <React.Fragment>
         {Object.keys(teamsByTeamType).map(teamType => (
           <div key={teamType}>
-            <h1>{teamType}</h1>
+            <h1>{`${teamType} teams`}</h1>
             <Card.Group>
               {teamsByTeamType[teamType].map(team => (
                 <Card key={team.id}>
-                  {console.log('team', team)}
                   <Card.Content>
                     <Card.Header>{team.teamName}</Card.Header>
+                    <Card.Description>
+                      {team.students.map(student => (
+                        <li>{student.name}</li>
+                      ))}
+                    </Card.Description>
                   </Card.Content>
                 </Card>
               ))}

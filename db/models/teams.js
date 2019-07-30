@@ -179,7 +179,11 @@ module.exports = {
         teamType: teamData.team.team_type,
         github: teamData.team.github,
         cohortId: teamData.team.cohort_id,
-        students: teamData.students
+        students: teamData.students.map(student => ({
+          studentId: student.id,
+          name: `${student.first_name} ${student.last_name}`,
+          studentGithub: student.github
+        }))
       }));
       return formattedTeamList;
     } catch (err) {
