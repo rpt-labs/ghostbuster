@@ -1,27 +1,34 @@
 import React, { Component } from 'react';
 import { Grid, Menu, Segment } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import CreateTeams from './CreateTeams';
-import EditTeams from './EditTeams';
+import ManageTeams from './ManageTeams';
+
+const { GHOSTBUSTER_BASE_URL } = process.env;
 
 const RenderedContent = props => {
   const {
     cohorts,
     handleRadioButtonChange,
     showDetails,
+    showTeamDetails,
     tabName,
     selectedCohortStudents,
-    selectedCohort
+    selectedCohort,
+    teamsListForSelectedCohort
   } = props;
 
   const activeCohorts = cohorts.filter(cohort => cohort.status.toLowerCase() === 'current');
 
   if (tabName === 'Manage Teams')
     return (
-      <EditTeams
+      <ManageTeams
         cohorts={activeCohorts}
         handleRadioButtonChange={handleRadioButtonChange}
-        showDetails={showDetails}
+        showTeamDetails={showTeamDetails}
+        selectedCohort={selectedCohort}
+        teamsListForSelectedCohort={teamsListForSelectedCohort}
       />
     );
   return (
@@ -38,8 +45,10 @@ const RenderedContent = props => {
 RenderedContent.propTypes = {
   cohorts: PropTypes.instanceOf(Array).isRequired,
   selectedCohortStudents: PropTypes.instanceOf(Array).isRequired,
+  teamsListForSelectedCohort: PropTypes.instanceOf(Array).isRequired,
   handleRadioButtonChange: PropTypes.func.isRequired,
-  showDetails: PropTypes.instanceOf(Object).isRequired,
+  showDetails: PropTypes.func.isRequired,
+  showTeamDetails: PropTypes.func.isRequired,
   tabName: PropTypes.string.isRequired,
   selectedCohort: PropTypes.instanceOf(Object).isRequired
 };
@@ -53,19 +62,12 @@ class TeamsView extends Component {
       cohorts,
       studentsListByCohort,
       selectedCohort: {},
-      selectedCohortStudents: []
+      selectedCohortStudents: [],
+      teamsListForSelectedCohort: []
     };
-
-    this.handleRadioButtonChange = this.handleRadioButtonChange.bind(this);
-    this.handleItemClick = this.handleItemClick.bind(this);
-    this.showDetails = this.showDetails.bind(this);
   }
 
-  handleItemClick(e, { name }) {
-    this.setState({ activeItem: name });
-  }
-
-  handleRadioButtonChange(cohortName) {
+  handleRadioButtonChange = cohortName => {
     const { cohorts } = this.state;
     const newCohortList = cohorts.slice();
     newCohortList.forEach(e => {
@@ -79,9 +81,9 @@ class TeamsView extends Component {
         ? { name: selectedCohort[0].name.toLowerCase(), id: selectedCohort[0].id }
         : { name: '', id: undefined }
     });
-  }
+  };
 
-  showDetails() {
+  showDetails = () => {
     const { selectedCohort, studentsListByCohort } = this.state;
     const selectedCohortDetails = studentsListByCohort.find(
       cohort => cohort.name === selectedCohort.name
@@ -92,10 +94,33 @@ class TeamsView extends Component {
         selectedCohortStudents: selectedCohortDetails.students
       });
     }
-  }
+  };
+
+  showTeamDetails = () => {
+    const { selectedCohort } = this.state;
+    const { id } = selectedCohort;
+
+    axios.get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/teams/cohort/${id}`).then(response => {
+      if (response.data) {
+        const teamsListForSelectedCohort = response.data.teamsList || [];
+        this.setState({ teamsListForSelectedCohort });
+      }
+    });
+  };
+
+  handleItemClick = (e, { name }) => {
+    this.setState({ activeItem: name });
+  };
 
   render() {
-    const { cohorts, activeItem, selectedCohortStudents, selectedCohort } = this.state;
+    const {
+      cohorts,
+      activeItem,
+      selectedCohortStudents,
+      selectedCohort,
+      teamsListForSelectedCohort
+    } = this.state;
+
     return (
       <React.Fragment>
         <Grid>
@@ -108,7 +133,7 @@ class TeamsView extends Component {
               />
               <Menu.Item
                 name="Manage Teams"
-                active={activeItem === 'View/ Edit Teams'}
+                active={activeItem === 'Manage Teams'}
                 onClick={this.handleItemClick}
               />
             </Menu>
@@ -120,8 +145,10 @@ class TeamsView extends Component {
                 cohorts={cohorts}
                 handleRadioButtonChange={this.handleRadioButtonChange}
                 showDetails={this.showDetails}
+                showTeamDetails={this.showTeamDetails}
                 selectedCohortStudents={selectedCohortStudents}
                 selectedCohort={selectedCohort}
+                teamsListForSelectedCohort={teamsListForSelectedCohort}
               />
             </Segment>
           </Grid.Column>

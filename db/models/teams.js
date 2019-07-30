@@ -160,5 +160,35 @@ module.exports = {
       // console.log(error);
     }
     return { team, students };
+  },
+  getTeamsByCohortId: async cohortId => {
+    const teamsByCohortQuery = await query(
+      `SELECT * FROM teams WHERE cohort_id= ${cohortId} ORDER BY id ASC`
+    );
+    try {
+      const teamsList = teamsByCohortQuery.rows;
+      const teamsListWithStudents = await Promise.all(
+        teamsList.map(async team => {
+          const response = await module.exports.getTeamWithStudents(team.id);
+          return response;
+        })
+      );
+      const formattedTeamList = teamsListWithStudents.map(teamData => ({
+        teamId: teamData.team.id,
+        teamName: teamData.team.team_name,
+        teamType: teamData.team.team_type,
+        github: teamData.team.github,
+        cohortId: teamData.team.cohort_id,
+        students: teamData.students.map(student => ({
+          studentId: student.id,
+          name: `${student.first_name} ${student.last_name}`,
+          studentGithub: student.github
+        }))
+      }));
+      return formattedTeamList;
+    } catch (err) {
+      console.log(err.detail || err);
+      return err;
+    }
   }
 };

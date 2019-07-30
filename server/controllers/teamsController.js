@@ -2,7 +2,7 @@
 const ghostBustWeek = require('../helpers/teamGhostbusterWeek');
 const ghostBustLifetime = require('../helpers/teamGhostbusterLifetime');
 
-// db
+// db 
 const teams = require('../../db/models/teams');
 
 // TEAMS requests TODO: delete functionality
@@ -94,4 +94,10 @@ exports.getLifetimeContributionData = async (req, res) => {
   const { cohort, teamType } = req.params;
   const report = await ghostBustLifetime(teamType, cohort);
   res.send(report);
+};
+
+exports.getTeamsByCohortId = async (req, res) => {
+  const { cohortId } = req.params;
+  const teamsList = await teams.getTeamsByCohortId(cohortId);
+  res.status(200).json({ teamsList });
 };
