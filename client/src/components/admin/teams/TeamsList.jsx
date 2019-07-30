@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { List, Card } from 'semantic-ui-react';
+import { Card, Button } from 'semantic-ui-react';
 import _ from 'lodash';
 
 class TeamsList extends Component {
@@ -28,6 +28,16 @@ class TeamsList extends Component {
                         <li>{student.name}</li>
                       ))}
                     </Card.Description>
+                  </Card.Content>
+                  <Card.Content extra>
+                    <div>
+                      <Button basic color="blue" disabled>
+                        Edit Team
+                      </Button>
+                      <Button basic color="red">
+                        Delete Team
+                      </Button>
+                    </div>
                   </Card.Content>
                 </Card>
               ))}
