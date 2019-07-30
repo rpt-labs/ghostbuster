@@ -7,7 +7,7 @@ const teamsController = require('../controllers/teamsController');
 teamsRouter.get('/', teamsController.getTeams);
 teamsRouter.post('/', teamsController.createTeam);
 teamsRouter.put('/', teamsController.updateTeam);
-teamsRouter.delete('/', teamsController.deleteTeam);
+teamsRouter.delete('/:teamId', teamsController.deleteTeamById);
 
 // team_student
 
