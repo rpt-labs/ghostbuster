@@ -162,18 +162,26 @@ module.exports = {
     return { team, students };
   },
   getTeamsByCohortId: async cohortId => {
+    const teamsByCohortQuery = await query(
+      `SELECT * FROM teams WHERE cohort_id= ${cohortId} ORDER BY id ASC`
+    );
     try {
-      const teamsByCohortQuery = await query(
-        `SELECT * FROM teams WHERE cohort_id= ${cohortId} ORDER BY id ASC`
+      const teamsList = teamsByCohortQuery.rows;
+      const teamsListWithStudents = await Promise.all(
+        teamsList.map(async team => {
+          const response = await module.exports.getTeamWithStudents(team.id);
+          return response;
+        })
       );
-      const formattedResult = teamsByCohortQuery.rows.map(team => ({
-        teamId: team.id,
-        teamName: team.team_name,
-        teamType: team.team_type,
-        github: team.github,
-        cohortId: team.cohort_id
+      const formattedTeamList = teamsListWithStudents.map(teamData => ({
+        teamId: teamData.team.id,
+        teamName: teamData.team.team_name,
+        teamType: teamData.team.team_type,
+        github: teamData.team.github,
+        cohortId: teamData.team.cohort_id,
+        students: teamData.students
       }));
-      return formattedResult;
+      return formattedTeamList;
     } catch (err) {
       console.log(err.detail || err);
       return err;
