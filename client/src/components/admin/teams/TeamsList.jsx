@@ -15,8 +15,10 @@ class TeamsList extends Component {
   }
 
   deleteTeam = teamId => {
+    const { showTeamDetails } = this.props;
     axios.delete(`${GHOSTBUSTER_BASE_URL}/ghostbuster/teams/${teamId}`).then(response => {
-      console.log(response.data, response.status);
+      if (response.data && response.status === 200);
+      showTeamDetails();
     });
   };
 
@@ -75,5 +77,6 @@ class TeamsList extends Component {
 export default TeamsList;
 
 TeamsList.propTypes = {
-  teamsListForSelectedCohort: PropTypes.instanceOf(Array).isRequired
+  teamsListForSelectedCohort: PropTypes.instanceOf(Array).isRequired,
+  showTeamDetails: PropTypes.func.isRequired
 };

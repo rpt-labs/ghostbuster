@@ -22,6 +22,7 @@ function ManageTeams(props) {
       <TeamsList
         teamsListForSelectedCohort={teamsListForSelectedCohort}
         selectedCohort={selectedCohort}
+        showTeamDetails={showTeamDetails}
       />
     </React.Fragment>
   );
@@ -30,7 +31,7 @@ function ManageTeams(props) {
 ManageTeams.propTypes = {
   cohorts: PropTypes.instanceOf(Array).isRequired,
   handleRadioButtonChange: PropTypes.func.isRequired,
-  showTeamDetails: PropTypes.instanceOf(Object).isRequired,
+  showTeamDetails: PropTypes.func.isRequired,
   selectedCohort: PropTypes.instanceOf(Object).isRequired,
   teamsListForSelectedCohort: PropTypes.instanceOf(Array).isRequired
 };
