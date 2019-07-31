@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Card, Button } from 'semantic-ui-react';
+import { Card, Button, Confirm } from 'semantic-ui-react';
 import _ from 'lodash';
 import axios from 'axios';
 
@@ -10,28 +10,35 @@ class TeamsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedTeamId: null
+      selectedTeamId: null,
+      openConfirmationModal: false
     };
   }
 
   deleteTeam = teamId => {
     const { showTeamDetails } = this.props;
     axios.delete(`${GHOSTBUSTER_BASE_URL}/ghostbuster/teams/${teamId}`).then(response => {
-      if (response.data && response.status === 200);
-      showTeamDetails();
+      if (response.data && response.status === 200) {
+        showTeamDetails();
+        this.setState({ openConfirmationModal: false });
+      }
     });
   };
 
-  handleDeleteButtonClick = e => {
-    this.setState({ selectedTeamId: e.target.value }, () => {
-      const { selectedTeamId } = this.state;
-      this.deleteTeam(selectedTeamId);
-    });
+  handleDeleteButtonClick = () => {
+    const { selectedTeamId } = this.state;
+    this.deleteTeam(selectedTeamId);
   };
+
+  openConfirmationModal = e =>
+    this.setState({ openConfirmationModal: true, selectedTeamId: e.target.value });
+
+  closeConfirmationModal = () => this.setState({ openConfirmationModal: false });
 
   render() {
     const { teamsListForSelectedCohort } = this.props;
     const teamsByTeamType = _.groupBy(teamsListForSelectedCohort, 'teamType');
+    const { openConfirmationModal } = this.state;
 
     return (
       <React.Fragment>
@@ -51,13 +58,14 @@ class TeamsList extends Component {
                   </Card.Content>
                   <Card.Content extra>
                     <div>
+                      {/* #TODO: implement edit team feature */}
                       <Button basic color="blue" disabled value={team.teamId}>
                         Edit Team
                       </Button>
                       <Button
                         basic
                         color="red"
-                        onClick={this.handleDeleteButtonClick}
+                        onClick={this.openConfirmationModal}
                         value={team.teamId}
                       >
                         Delete Team
@@ -67,6 +75,13 @@ class TeamsList extends Component {
                 </Card>
               ))}
             </Card.Group>
+            <Confirm
+              open={openConfirmationModal}
+              onCancel={this.closeConfirmationModal}
+              onConfirm={this.handleDeleteButtonClick}
+              content="Delete Team?"
+              size="mini"
+            />
           </div>
         ))}
       </React.Fragment>
