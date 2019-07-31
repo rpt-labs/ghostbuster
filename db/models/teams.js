@@ -28,6 +28,7 @@ module.exports = {
       )
       .catch(err => err);
   },
+
   addStudentToTeam: async (studentId, teamId) => {
     // TODO:  don't add a student record twice to the same team
     let existingRecord;
@@ -57,6 +58,7 @@ module.exports = {
       return error;
     }
   },
+
   removeStudentFromTeam: async (studentId, teamId) => {
     try {
       const deleted = await query(`
@@ -73,6 +75,7 @@ module.exports = {
       return error;
     }
   },
+
   updateTeam: async (teamId, newTeamInfo) => {
     // update team
     try {
@@ -103,6 +106,7 @@ module.exports = {
       return error;
     }
   },
+
   getAllTeams: async () => {
     try {
       const teamQuery = await query('SELECT * FROM teams ORDER BY id ASC');
@@ -112,6 +116,7 @@ module.exports = {
       return err;
     }
   },
+
   getTeamById: async teamId => {
     try {
       const team = await query(`SELECT * FROM teams WHERE id=${teamId}`);
@@ -121,6 +126,7 @@ module.exports = {
       return err;
     }
   },
+
   getStudentsByTeamId: async teamId => {
     try {
       const studentQuery = await query(`
@@ -142,6 +148,7 @@ module.exports = {
       // console.log(error);
     }
   },
+
   getTeamWithStudents: async teamId => {
     let team;
     let students;
@@ -161,11 +168,12 @@ module.exports = {
     }
     return { team, students };
   },
+
   getTeamsByCohortId: async cohortId => {
-    const teamsByCohortQuery = await query(
-      `SELECT * FROM teams WHERE cohort_id= ${cohortId} ORDER BY id ASC`
-    );
     try {
+      const teamsByCohortQuery = await query(
+        `SELECT * FROM teams WHERE cohort_id= ${cohortId} ORDER BY id ASC`
+      );
       const teamsList = teamsByCohortQuery.rows;
       const teamsListWithStudents = await Promise.all(
         teamsList.map(async team => {
@@ -189,6 +197,29 @@ module.exports = {
     } catch (err) {
       console.log(err.detail || err);
       return err;
+    }
+  },
+
+  deleteTeamById: async teamId => {
+    try {
+      const deleteAssociatedStudents = await query(`
+        DELETE FROM team_student
+        WHERE team_id=${teamId}
+      `);
+      if (deleteAssociatedStudents.rowCount) {
+        console.log(`${deleteAssociatedStudents.rowCount} Students were removed from team`);
+      }
+      const deletedTeam = await query(`
+      DELETE FROM teams
+      WHERE id=${teamId}
+    `);
+      if (deletedTeam.rowCount) {
+        return 'removed team';
+      }
+      return 'no team found';
+    } catch (error) {
+      console.log(error);
+      return error;
     }
   }
 };

@@ -2,7 +2,7 @@
 const ghostBustWeek = require('../helpers/teamGhostbusterWeek');
 const ghostBustLifetime = require('../helpers/teamGhostbusterLifetime');
 
-// db 
+// db
 const teams = require('../../db/models/teams');
 
 // TEAMS requests TODO: delete functionality
@@ -51,8 +51,10 @@ exports.updateTeam = async (req, res) => {
   }
 };
 
-exports.deleteTeam = (req, res) => {
-  res.send('add functionality to delete a team');
+exports.deleteTeamById = async (req, res) => {
+  const { teamId } = req.params;
+  const deleted = await teams.deleteTeamById(teamId);
+  res.json({ message: deleted });
 };
 
 // TEAM_STUDENT requests TODO: error handling for all functions
