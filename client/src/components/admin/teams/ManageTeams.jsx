@@ -4,7 +4,13 @@ import RadioButtonList from '../../shared/RadioButtonList';
 import TeamsList from './TeamsList';
 
 function ManageTeams(props) {
-  const { cohorts, handleRadioButtonChange, showTeamDetails, teamsListForSelectedCohort } = props;
+  const {
+    cohorts,
+    handleRadioButtonChange,
+    showTeamDetails,
+    teamsListForSelectedCohort,
+    selectedCohort
+  } = props;
   return (
     <React.Fragment>
       <RadioButtonList
@@ -13,7 +19,10 @@ function ManageTeams(props) {
         showDetails={showTeamDetails}
         buttonLabel="Manage Teams"
       />
-      <TeamsList teamsListForSelectedCohort={teamsListForSelectedCohort} />
+      <TeamsList
+        teamsListForSelectedCohort={teamsListForSelectedCohort}
+        selectedCohort={selectedCohort}
+      />
     </React.Fragment>
   );
 }
@@ -22,6 +31,7 @@ ManageTeams.propTypes = {
   cohorts: PropTypes.instanceOf(Array).isRequired,
   handleRadioButtonChange: PropTypes.func.isRequired,
   showTeamDetails: PropTypes.instanceOf(Object).isRequired,
+  selectedCohort: PropTypes.instanceOf(Object).isRequired,
   teamsListForSelectedCohort: PropTypes.instanceOf(Array).isRequired
 };
 
