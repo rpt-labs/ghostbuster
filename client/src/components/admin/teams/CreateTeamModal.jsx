@@ -35,7 +35,7 @@ class CreateTeamModal extends Component {
   createTeam = () => {
     const { teamName, teamType } = this.state;
     let { github } = this.state;
-    const { selectedCohort, selectedStudents } = this.props;
+    const { selectedCohort, selectedStudents, close } = this.props;
     github = !github ? `${teamType}_${teamName}` : github;
     axios
       .post(
@@ -52,7 +52,7 @@ class CreateTeamModal extends Component {
               axios
                 .post(`${GHOSTBUSTER_BASE_URL}/ghostbuster/teams/${teamId}/students/${id}`)
                 .then(res => {
-                  console.log('res', res);
+                  if (res.data && res.status === 200) close();
                 });
             });
           }
