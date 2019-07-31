@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Card, Button, Confirm } from 'semantic-ui-react';
+import { Card, Button, Confirm, Icon } from 'semantic-ui-react';
 import _ from 'lodash';
 import axios from 'axios';
 
@@ -43,13 +43,21 @@ class TeamsList extends Component {
     return (
       <React.Fragment>
         {Object.keys(teamsByTeamType).map(teamType => (
-          <div key={teamType}>
+          <div key={teamType} style={{ padding: '10px', margin: 'auto', width: '90%' }}>
             <h1>{`${teamType} teams`}</h1>
             <Card.Group>
               {teamsByTeamType[teamType].map(team => (
-                <Card key={team.teamId}>
+                <Card key={team.teamId} style={{ margin: '20px' }}>
                   <Card.Content>
                     <Card.Header>{team.teamName}</Card.Header>
+                    <Card.Meta>
+                      <p>
+                        <Icon name="github" />
+                        <span>{team.github}</span>
+                      </p>
+                    </Card.Meta>
+                  </Card.Content>
+                  <Card.Content>
                     <Card.Description>
                       {team.students.map(student => (
                         <li key={student.studentId}>{student.name}</li>
@@ -80,6 +88,7 @@ class TeamsList extends Component {
               onCancel={this.closeConfirmationModal}
               onConfirm={this.handleDeleteButtonClick}
               content="Delete Team?"
+              dimmer="blurring"
               size="mini"
             />
           </div>

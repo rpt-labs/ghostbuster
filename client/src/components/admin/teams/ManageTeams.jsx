@@ -20,6 +20,7 @@ function ManageTeams(props) {
         buttonLabel="Manage Teams"
       />
       <TeamsList
+        style={{ marginLeft: '50px', marginTop: '15px' }}
         teamsListForSelectedCohort={teamsListForSelectedCohort}
         selectedCohort={selectedCohort}
         showTeamDetails={showTeamDetails}
