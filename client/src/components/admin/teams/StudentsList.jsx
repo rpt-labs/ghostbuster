@@ -44,8 +44,10 @@ class StudentsList extends Component {
   };
 
   close = () => {
+    const { studentsList } = this.state;
     this.setState({
-      open: false
+      open: false,
+      studentsList: studentsList.map(student => Object.assign(student, { isChecked: false }))
     });
   };
 
@@ -69,6 +71,7 @@ class StudentsList extends Component {
               <Checkbox
                 label={`${student.firstName} ${student.lastName}`}
                 style={{ fontSize: '18px' }}
+                checked={student.isChecked}
               />
             </List.Item>
           ))}
