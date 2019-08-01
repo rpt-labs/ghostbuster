@@ -39,13 +39,17 @@ class StudentsList extends Component {
     }
 
     this.setState({
-      studentsList: currentList
+      studentsList: currentList,
+      selectedStudents: studentsList.filter(student => student.isChecked)
     });
   };
 
   close = () => {
+    const { studentsList } = this.state;
     this.setState({
-      open: false
+      open: false,
+      studentsList: studentsList.map(student => Object.assign(student, { isChecked: false })),
+      selectedStudents: []
     });
   };
 
@@ -69,11 +73,18 @@ class StudentsList extends Component {
               <Checkbox
                 label={`${student.firstName} ${student.lastName}`}
                 style={{ fontSize: '18px' }}
+                checked={student.isChecked}
               />
             </List.Item>
           ))}
         </List>
-        <Button onClick={() => this.handleButtonClick()}>Create Team</Button>
+        {selectedStudents.length ? (
+          <Button color="blue" onClick={() => this.handleButtonClick()}>
+            Create Team
+          </Button>
+        ) : (
+          <Button disabled>Create Team</Button>
+        )}
         <CreateTeamModal
           close={this.close}
           selectedStudents={selectedStudents}
