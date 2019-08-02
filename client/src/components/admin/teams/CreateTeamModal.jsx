@@ -36,7 +36,7 @@ class CreateTeamModal extends Component {
     const { teamName, teamType } = this.state;
     let { github } = this.state;
     const { selectedCohort, selectedStudents, close, showDetails } = this.props;
-    github = !github ? `${teamType}_${teamName}` : github;
+    github = !github ? `${teamType}_${teamName}_${selectedCohort.id}` : github;
     axios
       .post(
         `${GHOSTBUSTER_BASE_URL}/ghostbuster/teams?teamName=${teamName}&teamType=${teamType}&github=${github}&cohortId=${
@@ -131,6 +131,7 @@ export default CreateTeamModal;
 CreateTeamModal.propTypes = {
   open: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
+  showDetails: PropTypes.func.isRequired,
   selectedStudents: PropTypes.instanceOf(Array).isRequired,
   selectedCohort: PropTypes.instanceOf(Object).isRequired
 };

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Checkbox, Button, Grid } from 'semantic-ui-react';
+import { Checkbox, Button, Grid, Header } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import CreateTeamModal from './CreateTeamModal';
 import { PaddedGrid } from '../../Styles/TeamStyles';
@@ -67,7 +67,9 @@ class StudentsList extends Component {
     const { selectedCohort, showDetails } = this.props;
     return (
       <React.Fragment>
-        <h2>Enrolled Students:</h2>
+        <Header as="h2" style={{ textAlign: 'center', marginTop: '15px' }}>
+          {`${selectedCohort.name.toUpperCase()} - Enrolled Students`}
+        </Header>
         <PaddedGrid columns={3} style={{ marginLeft: '50px' }}>
           {studentsList.map(student => (
             <Grid.Column key={student.github} onClick={e => this.selectStudent(e)}>

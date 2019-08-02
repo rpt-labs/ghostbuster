@@ -7,7 +7,7 @@ import { PaddedGrid } from '../Styles/TeamStyles';
 const RadioButtonList = props => {
   const { cohorts, handleRadioButtonChange, showDetails, buttonLabel } = props;
   const cohortsList = cohorts.map(cohort => (
-    <Grid.Column width={8} key={cohort.name}>
+    <Grid.Column key={cohort.name}>
       <RadioButton cohort={cohort} handleRadioButtonChange={handleRadioButtonChange} />
     </Grid.Column>
   ));
@@ -17,7 +17,7 @@ const RadioButtonList = props => {
       <Header as="h2" style={{ textAlign: 'center', marginTop: '15px' }}>
         Select A Cohort
       </Header>
-      <PaddedGrid columns={2} relaxed style={{ marginLeft: '50px' }}>
+      <PaddedGrid columns={3} relaxed style={{ marginLeft: '50px' }}>
         {cohortsList}
       </PaddedGrid>
       <Button primary onClick={() => showDetails()} style={{ marginTop: '30px' }}>

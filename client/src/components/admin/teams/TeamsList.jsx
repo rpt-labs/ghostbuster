@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Card, Button, Confirm, Icon } from 'semantic-ui-react';
+import { Card, Button, Confirm, Icon, Header } from 'semantic-ui-react';
 import _ from 'lodash';
 import axios from 'axios';
 
@@ -36,12 +36,15 @@ class TeamsList extends Component {
   closeConfirmationModal = () => this.setState({ openConfirmationModal: false });
 
   render() {
-    const { teamsListForSelectedCohort } = this.props;
+    const { teamsListForSelectedCohort, selectedCohort } = this.props;
     const teamsByTeamType = _.groupBy(teamsListForSelectedCohort, 'teamType');
     const { openConfirmationModal } = this.state;
 
     return (
       <React.Fragment>
+        <Header as="h2" style={{ textAlign: 'center', marginTop: '15px' }}>
+          {`${selectedCohort.name.toUpperCase()} - Teams`}
+        </Header>
         {Object.keys(teamsByTeamType).map(teamType => (
           <div key={teamType} style={{ padding: '10px' }}>
             <h1>{`${teamType} teams`}</h1>
@@ -102,5 +105,6 @@ export default TeamsList;
 
 TeamsList.propTypes = {
   teamsListForSelectedCohort: PropTypes.instanceOf(Array).isRequired,
+  selectedCohort: PropTypes.instanceOf(Object).isRequired,
   showTeamDetails: PropTypes.func.isRequired
 };
