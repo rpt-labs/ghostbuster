@@ -17,8 +17,7 @@ class CreateTeamModal extends Component {
     this.state = {
       teamName: '',
       teamType: '',
-      github: '',
-      openConfirmationModal: false
+      github: ''
     };
   }
 
@@ -32,8 +31,6 @@ class CreateTeamModal extends Component {
   };
 
   handleSelectionChange = (e, { value }) => this.setState({ teamType: value });
-
-  handleClose = () => this.setState({ openConfirmationModal: false });
 
   createTeam = () => {
     const { teamName, teamType } = this.state;
@@ -57,7 +54,6 @@ class CreateTeamModal extends Component {
                 .then(res => {
                   if (res.data && res.status === 200) {
                     close();
-                    this.setState({ openConfirmationModal: true });
                   }
                 });
             });
@@ -71,7 +67,6 @@ class CreateTeamModal extends Component {
 
   render() {
     const { open, selectedStudents, close } = this.props;
-    const { openConfirmationModal, teamName } = this.state;
 
     return (
       <div>
@@ -123,28 +118,6 @@ class CreateTeamModal extends Component {
               content="Create Team?"
               onClick={this.createTeam}
             />
-          </Modal.Actions>
-        </Modal>
-        <Modal open={openConfirmationModal} size="mini">
-          <Modal.Header>Success!</Modal.Header>
-          <Modal.Content style={{ fontSize: '18px' }}>
-            Created New Team:
-            <span>
-              <b style={{ color: 'green' }}>{`  ${teamName}`}</b>
-            </span>
-            <List style={{ fontSize: '15px' }}>
-              <List.Header>With Students:</List.Header>
-              {selectedStudents.map(student => (
-                <List.Item key={student.github}>
-                  {`- ${student.firstName} ${student.lastName}`}
-                </List.Item>
-              ))}
-            </List>
-          </Modal.Content>
-          <Modal.Actions>
-            <Button positive onClick={this.handleClose}>
-              OK
-            </Button>
           </Modal.Actions>
         </Modal>
       </div>
