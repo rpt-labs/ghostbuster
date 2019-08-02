@@ -70,7 +70,13 @@ class TeamsList extends Component {
                   <Card.Content extra>
                     <div>
                       {/* #TODO: implement edit team feature */}
-                      <Button basic color="blue" disabled value={team.teamId}>
+                      <Button
+                        basic
+                        color="blue"
+                        disabled
+                        value={team.teamId}
+                        style={{ float: 'left' }}
+                      >
                         Edit Team
                       </Button>
                       <Button
@@ -78,6 +84,7 @@ class TeamsList extends Component {
                         color="red"
                         onClick={this.openConfirmationModal}
                         value={team.teamId}
+                        style={{ float: 'right' }}
                       >
                         Delete Team
                       </Button>

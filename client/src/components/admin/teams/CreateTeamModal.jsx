@@ -70,6 +70,8 @@ class CreateTeamModal extends Component {
 
   render() {
     const { open, selectedStudents, close } = this.props;
+    const { teamName } = this.state;
+    const isDisabled = !teamName.length;
 
     return (
       <div>
@@ -84,6 +86,7 @@ class CreateTeamModal extends Component {
                   placeholder="Team Name"
                   name="teamName"
                   onChange={this.handleInputChange}
+                  required
                 />
                 <Form.Field
                   control={Input}
@@ -112,7 +115,7 @@ class CreateTeamModal extends Component {
           </Modal.Content>
           <Modal.Actions>
             <Button negative onClick={close}>
-              No
+              Cancel
             </Button>
             <Button
               positive
@@ -120,6 +123,7 @@ class CreateTeamModal extends Component {
               labelPosition="right"
               content="Create Team?"
               onClick={this.createTeam}
+              disabled={isDisabled}
             />
           </Modal.Actions>
         </Modal>
