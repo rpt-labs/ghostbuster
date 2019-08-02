@@ -11,6 +11,8 @@ const RadioButtonList = props => {
       <RadioButton cohort={cohort} handleRadioButtonChange={handleRadioButtonChange} />
     </Grid.Column>
   ));
+  // returns true when at least one cohort is selected
+  const isSelected = cohorts.some(cohort => cohort.isChecked);
 
   return (
     <Segment placeholder>
@@ -20,7 +22,12 @@ const RadioButtonList = props => {
       <PaddedGrid columns={3} relaxed style={{ marginLeft: '50px' }}>
         {cohortsList}
       </PaddedGrid>
-      <Button primary onClick={() => showDetails()} style={{ marginTop: '30px' }}>
+      <Button
+        disabled={!isSelected}
+        primary
+        onClick={() => showDetails()}
+        style={{ marginTop: '30px' }}
+      >
         {buttonLabel}
       </Button>
     </Segment>
