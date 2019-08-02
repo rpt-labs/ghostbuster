@@ -38,6 +38,8 @@ const RenderedContent = props => {
       showDetails={showDetails}
       selectedCohortStudents={selectedCohortStudents}
       selectedCohort={selectedCohort}
+      showTeamDetails={showTeamDetails}
+      teamsListForSelectedCohort={teamsListForSelectedCohort}
     />
   );
 };
@@ -77,6 +79,7 @@ class TeamsView extends Component {
     this.setState({
       cohorts: newCohortList,
       selectedCohortStudents: [],
+      teamsListForSelectedCohort: [],
       selectedCohort: selectedCohort.length
         ? { name: selectedCohort[0].name.toLowerCase(), id: selectedCohort[0].id }
         : { name: '', id: undefined }
@@ -85,6 +88,7 @@ class TeamsView extends Component {
 
   showDetails = () => {
     const { selectedCohort, studentsListByCohort } = this.state;
+    const { id } = selectedCohort;
     const selectedCohortDetails = studentsListByCohort.find(
       cohort => cohort.name === selectedCohort.name
     );
@@ -94,6 +98,12 @@ class TeamsView extends Component {
         selectedCohortStudents: selectedCohortDetails.students
       });
     }
+    axios.get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/teams/cohort/${id}`).then(response => {
+      if (response.data) {
+        const teamsListForSelectedCohort = response.data.teamsList || [];
+        this.setState({ teamsListForSelectedCohort });
+      }
+    });
   };
 
   showTeamDetails = () => {

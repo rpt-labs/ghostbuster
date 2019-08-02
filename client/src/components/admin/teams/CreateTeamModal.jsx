@@ -35,7 +35,7 @@ class CreateTeamModal extends Component {
   createTeam = () => {
     const { teamName, teamType } = this.state;
     let { github } = this.state;
-    const { selectedCohort, selectedStudents, close } = this.props;
+    const { selectedCohort, selectedStudents, close, showDetails } = this.props;
     github = !github ? `${teamType}_${teamName}` : github;
     axios
       .post(
@@ -54,6 +54,7 @@ class CreateTeamModal extends Component {
                 .then(res => {
                   if (res.data && res.status === 200) {
                     close();
+                    showDetails();
                   }
                 });
             });
