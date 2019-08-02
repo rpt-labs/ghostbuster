@@ -43,7 +43,7 @@ class TeamsList extends Component {
     return (
       <React.Fragment>
         {Object.keys(teamsByTeamType).map(teamType => (
-          <div key={teamType} style={{ padding: '10px', margin: 'auto', width: '90%' }}>
+          <div key={teamType} style={{ padding: '10px' }}>
             <h1>{`${teamType} teams`}</h1>
             <Card.Group>
               {teamsByTeamType[teamType].map(team => (

@@ -23,7 +23,7 @@ function CreateTeams(props) {
         cohorts={cohorts}
         handleRadioButtonChange={handleRadioButtonChange}
         showDetails={showDetails}
-        buttonLabel="Show Students List"
+        buttonLabel="Show Students and Teams"
       />
 
       {currentStudents.length ? (

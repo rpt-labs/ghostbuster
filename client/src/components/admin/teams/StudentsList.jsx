@@ -66,9 +66,9 @@ class StudentsList extends Component {
     const { studentsList, size, open, selectedStudents } = this.state;
     const { selectedCohort, showDetails } = this.props;
     return (
-      <React.Fragment style={{ textAlign: 'center', marginTop: '15px' }}>
+      <React.Fragment>
         <h2>Enrolled Students:</h2>
-        <PaddedGrid columns={2} style={{ marginLeft: '50px' }}>
+        <PaddedGrid columns={3} style={{ marginLeft: '50px' }}>
           {studentsList.map(student => (
             <Grid.Column key={student.github} onClick={e => this.selectStudent(e)}>
               <Checkbox
