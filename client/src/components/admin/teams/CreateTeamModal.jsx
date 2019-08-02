@@ -16,7 +16,7 @@ class CreateTeamModal extends Component {
     super(props);
     this.state = {
       teamName: '',
-      teamType: '',
+      teamType: 'Other',
       github: ''
     };
   }
@@ -46,7 +46,7 @@ class CreateTeamModal extends Component {
       .then(response => {
         if (response.data && response.data.team) {
           const { teamId } = response.data.team;
-          if (teamId) {
+          if (teamId && selectedStudents) {
             selectedStudents.forEach(student => {
               const { id } = student;
               axios
@@ -59,6 +59,8 @@ class CreateTeamModal extends Component {
                 });
             });
           }
+          close();
+          showDetails();
         }
       })
       .catch(error => {
