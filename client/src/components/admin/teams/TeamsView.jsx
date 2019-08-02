@@ -19,7 +19,11 @@ class TeamsView extends Component {
     };
   }
 
-  handleRadioButtonChange = cohortName => {
+  componentDidMount() {
+    this.handleSelectionChange();
+  }
+
+  handleSelectionChange = cohortName => {
     const { cohorts } = this.state;
     const newCohortList = cohorts.slice();
     newCohortList.forEach(e => {
@@ -83,7 +87,7 @@ class TeamsView extends Component {
         <Segment>
           <CreateTeams
             cohorts={activeCohorts}
-            handleRadioButtonChange={this.handleRadioButtonChange}
+            handleRadioButtonChange={this.handleSelectionChange}
             showDetails={this.showDetails}
             selectedCohortStudents={selectedCohortStudents}
             selectedCohort={selectedCohort}
