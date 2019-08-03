@@ -5,8 +5,15 @@ CREATE TABLE IF NOT EXISTS cohorts (
   status text
 );
 
+CREATE TABLE IF NOT EXISTS enrollments (
+  id SERIAL PRIMARY KEY,
+  cohort_id integer REFERENCES cohorts ON DELETE CASCADE,
+  student_id integer,
+  status text
+);
+
 CREATE TABLE IF NOT EXISTS students (
-  enrollment_id integer PRIMARY KEY,
+  id integer REFERENCES enrollments,
   first_name text NOT NULL,
   last_name text NOT NULL,
   github text UNIQUE NOT NULL,
@@ -25,7 +32,7 @@ CREATE TABLE IF NOT EXISTS teams (
 CREATE TABLE IF NOT EXISTS team_student (
   id SERIAL PRIMARY KEY,
   team_id integer REFERENCES teams ON DELETE CASCADE,
-  student_id integer REFERENCES students ON DELETE CASCADE
+  enrollment_id integer REFERENCES enrollments ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS sprints (
@@ -41,7 +48,7 @@ CREATE TABLE IF NOT EXISTS messages (
 
 CREATE TABLE IF NOT EXISTS student_sprints (
   id SERIAL PRIMARY KEY,
-  student_id integer REFERENCES students ON DELETE CASCADE,
+  enrollment_id integer REFERENCES enrollments,
   sprint_id integer REFERENCES sprints ON DELETE CASCADE,
   fork boolean NOT NULL,
   bmr boolean NOT NULL,
@@ -67,7 +74,7 @@ CREATE TABLE IF NOT EXISTS team_student_weekly_contributions (
 
 CREATE TABLE IF NOT EXISTS student_attendance (
     id SERIAL PRIMARY KEY,
-    enrollment_id integer REFERENCES students ON DELETE CASCADE,
+    enrollment_id integer REFERENCES enrollments,
     zoom_id text NOT NULL,
     user_id integer NOT NULL,
     user_name text NOT NULL,
