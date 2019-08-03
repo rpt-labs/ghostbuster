@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid } from 'semantic-ui-react';
+import { Card } from 'semantic-ui-react';
 import Progress from './Progress';
 import CommitList from './CommitList';
-import { CardGrid } from './Styles/StudentCardStyles';
 
 class StudentCard extends React.Component {
   constructor(props) {
@@ -25,23 +24,24 @@ class StudentCard extends React.Component {
     const githubUrl = `http://www.github.com/${student.github}/${student.cohort}-${repoName}`;
 
     return (
-      <Grid.Column width={8}>
-        <Grid.Row>
-          <CardGrid columns="equal">
-            <Grid.Column textAlign="center">
-              <Progress student={student} />
-            </Grid.Column>
-            <Grid.Column floated="right">
+      <Card style={{ minHeight: '150px' }}>
+        <Card.Content>
+          <span>
+            <a target="_blank" rel="noopener noreferrer" href={githubUrl}>
+              <Progress student={student} style={{ marginLeft: '20px' }} />
+            </a>
+            <div style={{ marginTop: '-100px', marginLeft: '200px' }}>
               <CommitList
                 handleCommitChange={this.handleShowCommitsChange}
                 show={showCommits}
                 url={githubUrl}
                 commits={student.commitMessages}
+                sprint={repoName}
               />
-            </Grid.Column>
-          </CardGrid>
-        </Grid.Row>
-      </Grid.Column>
+            </div>
+          </span>
+        </Card.Content>
+      </Card>
     );
   }
 }

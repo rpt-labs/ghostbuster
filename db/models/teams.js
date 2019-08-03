@@ -17,6 +17,7 @@ module.exports = {
           .then(res => {
             const result = res.rows[0];
             return {
+              teamId: result.id,
               teamName: result.team_name,
               teamType: result.team_type,
               github: result.github,
@@ -27,6 +28,7 @@ module.exports = {
       )
       .catch(err => err);
   },
+
   addStudentToTeam: async (studentId, teamId) => {
     // TODO:  don't add a student record twice to the same team
     let existingRecord;
@@ -56,6 +58,7 @@ module.exports = {
       return error;
     }
   },
+
   removeStudentFromTeam: async (studentId, teamId) => {
     try {
       const deleted = await query(`
@@ -72,6 +75,7 @@ module.exports = {
       return error;
     }
   },
+
   updateTeam: async (teamId, newTeamInfo) => {
     // update team
     try {
@@ -102,6 +106,7 @@ module.exports = {
       return error;
     }
   },
+
   getAllTeams: async () => {
     try {
       const teamQuery = await query('SELECT * FROM teams ORDER BY id ASC');
@@ -111,6 +116,7 @@ module.exports = {
       return err;
     }
   },
+
   getTeamById: async teamId => {
     try {
       const team = await query(`SELECT * FROM teams WHERE id=${teamId}`);
@@ -120,6 +126,7 @@ module.exports = {
       return err;
     }
   },
+
   getStudentsByTeamId: async teamId => {
     try {
       const studentQuery = await query(`
@@ -141,6 +148,7 @@ module.exports = {
       // console.log(error);
     }
   },
+
   getTeamWithStudents: async teamId => {
     let team;
     let students;
@@ -159,5 +167,59 @@ module.exports = {
       // console.log(error);
     }
     return { team, students };
+  },
+
+  getTeamsByCohortId: async cohortId => {
+    try {
+      const teamsByCohortQuery = await query(
+        `SELECT * FROM teams WHERE cohort_id= ${cohortId} ORDER BY id ASC`
+      );
+      const teamsList = teamsByCohortQuery.rows;
+      const teamsListWithStudents = await Promise.all(
+        teamsList.map(async team => {
+          const response = await module.exports.getTeamWithStudents(team.id);
+          return response;
+        })
+      );
+      const formattedTeamList = teamsListWithStudents.map(teamData => ({
+        teamId: teamData.team.id,
+        teamName: teamData.team.team_name,
+        teamType: teamData.team.team_type,
+        github: teamData.team.github,
+        cohortId: teamData.team.cohort_id,
+        students: teamData.students.map(student => ({
+          studentId: student.id,
+          name: `${student.first_name} ${student.last_name}`,
+          studentGithub: student.github
+        }))
+      }));
+      return formattedTeamList;
+    } catch (err) {
+      console.log(err.detail || err);
+      return err;
+    }
+  },
+
+  deleteTeamById: async teamId => {
+    try {
+      const deleteAssociatedStudents = await query(`
+        DELETE FROM team_student
+        WHERE team_id=${teamId}
+      `);
+      if (deleteAssociatedStudents.rowCount) {
+        console.log(`${deleteAssociatedStudents.rowCount} Students were removed from team`);
+      }
+      const deletedTeam = await query(`
+      DELETE FROM teams
+      WHERE id=${teamId}
+    `);
+      if (deletedTeam.rowCount) {
+        return 'removed team';
+      }
+      return 'no team found';
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
   }
 };

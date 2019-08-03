@@ -7,7 +7,7 @@ const teamsController = require('../controllers/teamsController');
 teamsRouter.get('/', teamsController.getTeams);
 teamsRouter.post('/', teamsController.createTeam);
 teamsRouter.put('/', teamsController.updateTeam);
-teamsRouter.delete('/', teamsController.deleteTeam);
+teamsRouter.delete('/:teamId', teamsController.deleteTeamById);
 
 // team_student
 
@@ -28,5 +28,8 @@ teamsRouter.get(
   '/projects/:cohort/:teamType/lifetime',
   teamsController.getLifetimeContributionData
 );
+
+// get teams by cohort id
+teamsRouter.get('/cohort/:cohortId', teamsController.getTeamsByCohortId);
 
 module.exports = teamsRouter;

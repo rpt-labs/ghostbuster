@@ -3,8 +3,8 @@ const { query } = require('../index');
 module.exports = {
   addCohort: cohort =>
     query(`
-      INSERT INTO cohorts (cohort_name, phase)
-      VALUES ('${cohort.cohortName}', '${cohort.phase}')
+      INSERT INTO cohorts (cohort_name, phase, status)
+      VALUES ('${cohort.cohortName}', '${cohort.phase}','${cohort.status}')
     `)
       .then(() =>
         query(`
@@ -12,7 +12,8 @@ module.exports = {
           .then(res => ({
             id: res.rows[0].id,
             cohortName: res.rows[0].cohort_name,
-            phase: res.rows[0].phase
+            phase: res.rows[0].phase,
+            status: res.rows[0].status
           }))
           .catch(err => err)
       )
@@ -25,7 +26,8 @@ module.exports = {
       const update = await query(`
         UPDATE cohorts SET (cohort_name, phase) = (
           '${newCohortInfo.cohort_name}',
-          '${newCohortInfo.phase}'
+          '${newCohortInfo.phase}',
+          '${newCohortInfo.status}'
         ) WHERE id = ${cohortId}
       `);
 
@@ -54,7 +56,8 @@ module.exports = {
       const cohorts = cohortQuery.rows.map(row => ({
         id: row.id,
         cohortName: row.cohort_name,
-        phase: row.phase
+        phase: row.phase,
+        status: row.status
       }));
       return cohorts;
     } catch (err) {

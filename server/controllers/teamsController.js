@@ -51,8 +51,10 @@ exports.updateTeam = async (req, res) => {
   }
 };
 
-exports.deleteTeam = (req, res) => {
-  res.send('add functionality to delete a team');
+exports.deleteTeamById = async (req, res) => {
+  const { teamId } = req.params;
+  const deleted = await teams.deleteTeamById(teamId);
+  res.json({ message: deleted });
 };
 
 // TEAM_STUDENT requests TODO: error handling for all functions
@@ -94,4 +96,10 @@ exports.getLifetimeContributionData = async (req, res) => {
   const { cohort, teamType } = req.params;
   const report = await ghostBustLifetime(teamType, cohort);
   res.send(report);
+};
+
+exports.getTeamsByCohortId = async (req, res) => {
+  const { cohortId } = req.params;
+  const teamsList = await teams.getTeamsByCohortId(cohortId);
+  res.status(200).json({ teamsList });
 };

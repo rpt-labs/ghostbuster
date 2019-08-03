@@ -21,6 +21,7 @@ const CohortType = new GraphQLObjectType({
     id: { type: GraphQLInt },
     cohortName: { type: GraphQLString },
     phase: { type: GraphQLString },
+    status: { type: GraphQLString },
     students: {
       type: new GraphQLList(StudentType),
       resolve(parent) {
@@ -53,6 +54,7 @@ const StudentType = new GraphQLObjectType({
     first_name: { type: GraphQLString },
     last_name: { type: GraphQLString },
     github: { type: GraphQLString },
+    status: { type: GraphQLString },
     cohort: {
       type: CohortType,
       resolve(parent) {

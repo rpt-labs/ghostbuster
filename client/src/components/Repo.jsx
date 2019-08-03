@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid } from 'semantic-ui-react';
+import { Card } from 'semantic-ui-react';
 import { StyledHeader } from './Styles/TeamStyles';
 import StudentCard from './StudentCard';
+import MilestoneCommitMessages from './MilestoneCommitMessages';
 
 const Repo = props => {
   const { name, students } = props;
@@ -13,9 +14,8 @@ const Repo = props => {
   return (
     <React.Fragment>
       <StyledHeader as="h1">{name}</StyledHeader>
-      <Grid celled stackable columns={2} stretched>
-        {studentList}
-      </Grid>
+      <MilestoneCommitMessages sprint={name} />
+      <Card.Group itemsPerRow={2}>{studentList}</Card.Group>
     </React.Fragment>
   );
 };

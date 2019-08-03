@@ -12,6 +12,8 @@ import TeamList from './TeamList';
 // import { getAllCohorts } from '../queries/queries';
 import { getAllCohortsNoDb } from '../queries/queries';
 
+const port = process.env.PORT || 1234;
+
 /*
   eslint no-underscore-dangle: ["error", { "allowAfterThis": true }]
 */
@@ -99,7 +101,7 @@ export default class App extends React.Component {
     const repoString = repos.join('+');
     this.setState({ loading: true, showSegment: true }, () => {
       axios
-        .get(`http://localhost:1234/ghostbuster/sprints/${repoString}?cohort=${selectedCohort}`)
+        .get(`http://localhost:${port}/ghostbuster/sprints/${repoString}?cohort=${selectedCohort}`)
         .then(response =>
           this.setState({
             currentCommitData: response.data,
@@ -117,7 +119,7 @@ export default class App extends React.Component {
     const { selectedCohort, projectData } = { ...this.state };
     this.setState({ loading: true, showSegment: true }, () => {
       axios
-        .get(`http://localhost:1234/ghostbuster/teams/projects/${selectedCohort}/thesis/lifetime`)
+        .get(`http://localhost:${port}/ghostbuster/teams/projects/${selectedCohort}/thesis/lifetime`)
         .then(response => {
           projectData[selectedCohort].lifetimeData = response.data;
         })
@@ -125,7 +127,7 @@ export default class App extends React.Component {
           throw error;
         });
       axios
-        .get(`http://localhost:1234/ghostbuster/teams/projects/${selectedCohort}`)
+        .get(`http://localhost:${port}/ghostbuster/teams/projects/${selectedCohort}`)
         .then(response => {
           projectData[selectedCohort].weekThesisData = response.data.results;
           projectData[selectedCohort].fetched = true;

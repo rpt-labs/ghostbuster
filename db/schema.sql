@@ -1,7 +1,8 @@
 CREATE TABLE IF NOT EXISTS cohorts (
   id SERIAL PRIMARY KEY,
   cohort_name text NOT NULL UNIQUE,
-  phase text
+  phase text,
+  status text
 );
 
 CREATE TABLE IF NOT EXISTS students (
@@ -9,6 +10,7 @@ CREATE TABLE IF NOT EXISTS students (
   first_name text NOT NULL,
   last_name text NOT NULL,
   github text UNIQUE NOT NULL,
+  status text NOT NULL,
   cohort_id integer REFERENCES cohorts ON DELETE CASCADE
 );
 

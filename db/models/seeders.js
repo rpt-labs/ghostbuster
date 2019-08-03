@@ -5,18 +5,19 @@ module.exports = {
     new Promise((resolve, reject) => {
       students.forEach(async (student, index) => {
         const queryString = `
-          INSERT INTO students (id, first_name, last_name, github, cohort_id)
+          INSERT INTO students (id, first_name, last_name, github, status, cohort_id)
           VALUES (
             ${student.id},
             '${student.firstName}',
             '${student.lastName}',
             '${student.github}',
+            '${student.status}',
             ${student.cohortId}
         )`;
         try {
           const insert = await query(queryString);
           if (insert.command) {
-            console.log(`Inserted student ${student.firstName}`);
+            console.log(`Inserted student ${student.id} ${student.firstName} ${student.lastName}`);
           }
           if (index === students.length - 1) {
             try {
@@ -35,8 +36,8 @@ module.exports = {
     new Promise((resolve, reject) => {
       cohorts.forEach(async (cohort, index) => {
         const queryString = `
-          INSERT INTO cohorts (id, cohort_name, phase)
-          VALUES (${cohort.id}, '${cohort.name}', '${cohort.phase}')
+          INSERT INTO cohorts (id, cohort_name, phase, status)
+          VALUES (${cohort.id}, '${cohort.name}', '${cohort.phase}', '${cohort.status}')
         `;
         try {
           const insert = await query(queryString);
