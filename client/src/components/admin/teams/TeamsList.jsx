@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Card, Button, Confirm, Icon, Header } from 'semantic-ui-react';
 import _ from 'lodash';
 import axios from 'axios';
+import EditTeamModal from './EditTeamModal';
 
 const { GHOSTBUSTER_BASE_URL } = process.env;
 
@@ -11,7 +12,8 @@ class TeamsList extends Component {
     super(props);
     this.state = {
       selectedTeamId: null,
-      openConfirmationModal: false
+      openConfirmationModal: false,
+      openEditModal: false
     };
   }
 
@@ -33,12 +35,26 @@ class TeamsList extends Component {
   openConfirmationModal = e =>
     this.setState({ openConfirmationModal: true, selectedTeamId: e.target.value });
 
+  openEditModal = e => {
+    const id = parseInt(e.target.value, 10);
+    const { teamsListForSelectedCohort } = this.props;
+    const selectedTeam = teamsListForSelectedCohort.find(team => team.teamId === id);
+    console.log('selectedTeam', selectedTeam);
+    this.setState({ openEditModal: true, selectedTeamId: e.target.value });
+  };
+
   closeConfirmationModal = () => this.setState({ openConfirmationModal: false });
+
+  closeEditModal = () => {
+    this.setState({
+      openEditModal: false
+    });
+  };
 
   render() {
     const { teamsListForSelectedCohort, selectedCohort } = this.props;
     const teamsByTeamType = _.groupBy(teamsListForSelectedCohort, 'teamType');
-    const { openConfirmationModal } = this.state;
+    const { openConfirmationModal, openEditModal } = this.state;
 
     return (
       <React.Fragment>
@@ -76,6 +92,7 @@ class TeamsList extends Component {
                         disabled
                         value={team.teamId}
                         style={{ float: 'left' }}
+                        onClick={e => this.openEditModal(e)}
                       >
                         Edit Team
                       </Button>
@@ -100,6 +117,13 @@ class TeamsList extends Component {
               content="Delete Team?"
               dimmer="blurring"
               size="mini"
+            />
+            <EditTeamModal
+              close={this.close}
+              size="tiny"
+              openEditModal={openEditModal}
+              closeEditModal={this.closeEditModal}
+              selectedCohort={selectedCohort}
             />
           </div>
         ))}
