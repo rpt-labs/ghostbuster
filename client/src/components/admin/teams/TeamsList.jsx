@@ -12,6 +12,7 @@ class TeamsList extends Component {
     super(props);
     this.state = {
       selectedTeamId: null,
+      selectedTeamDetails: {},
       openConfirmationModal: false,
       openEditModal: false
     };
@@ -38,9 +39,8 @@ class TeamsList extends Component {
   openEditModal = e => {
     const id = parseInt(e.target.value, 10);
     const { teamsListForSelectedCohort } = this.props;
-    const selectedTeam = teamsListForSelectedCohort.find(team => team.teamId === id);
-    console.log('selectedTeam', selectedTeam);
-    this.setState({ openEditModal: true, selectedTeamId: e.target.value });
+    const selectedTeamDetails = teamsListForSelectedCohort.find(team => team.teamId === id);
+    this.setState({ openEditModal: true, selectedTeamId: e.target.value, selectedTeamDetails });
   };
 
   closeConfirmationModal = () => this.setState({ openConfirmationModal: false });
@@ -54,7 +54,7 @@ class TeamsList extends Component {
   render() {
     const { teamsListForSelectedCohort, selectedCohort } = this.props;
     const teamsByTeamType = _.groupBy(teamsListForSelectedCohort, 'teamType');
-    const { openConfirmationModal, openEditModal } = this.state;
+    const { openConfirmationModal, openEditModal, selectedTeamDetails } = this.state;
 
     return (
       <React.Fragment>
@@ -124,6 +124,7 @@ class TeamsList extends Component {
               openEditModal={openEditModal}
               closeEditModal={this.closeEditModal}
               selectedCohort={selectedCohort}
+              selectedTeamDetails={selectedTeamDetails}
             />
           </div>
         ))}

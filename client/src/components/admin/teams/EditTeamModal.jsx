@@ -32,13 +32,13 @@ class EditTeamModal extends Component {
   };
 
   render() {
-    const { openEditModal, closeEditModal } = this.props;
+    const { openEditModal, closeEditModal, selectedTeamDetails } = this.props;
     const { teamName } = this.state;
     const isDisabled = !teamName.length;
 
     return (
       <div>
-        <Modal size="small" open={openEditModal} onClose={close}>
+        <Modal size="small" open={openEditModal} onClose={closeEditModal}>
           <Modal.Header>Edit Team</Modal.Header>
           <Modal.Content>
             <Form>
@@ -47,6 +47,7 @@ class EditTeamModal extends Component {
                   control={Input}
                   label="Team Name"
                   placeholder="Team Name"
+                  value={selectedTeamDetails.teamName}
                   name="teamName"
                   onChange={this.handleInputChange}
                   required
@@ -55,6 +56,7 @@ class EditTeamModal extends Component {
                   control={Input}
                   label="Github"
                   placeholder="Github Handle"
+                  value={selectedTeamDetails.github}
                   name="github"
                   onChange={this.handleInputChange}
                 />
@@ -63,6 +65,7 @@ class EditTeamModal extends Component {
                   label="Team Type"
                   options={options}
                   placeholder="Team Type"
+                  defaultValue={selectedTeamDetails.teamType}
                   onChange={this.handleSelectionChange}
                   name="teamType"
                 />
@@ -92,5 +95,6 @@ export default EditTeamModal;
 
 EditTeamModal.propTypes = {
   openEditModal: PropTypes.bool.isRequired,
-  closeEditModal: PropTypes.func.isRequired
+  closeEditModal: PropTypes.func.isRequired,
+  selectedTeamDetails: PropTypes.instanceOf(Object).isRequired
 };
