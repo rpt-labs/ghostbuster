@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Button, Modal, Input, Form, Select, List, Header, Icon, Grid } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import EditStudentAssignments from './EditStudentAssignment';
-import { throws } from 'assert';
+
+const { GHOSTBUSTER_BASE_URL } = process.env;
 
 const options = [
   { key: '-', text: '-', value: '-' },
@@ -48,7 +50,24 @@ class EditTeamModal extends Component {
   handleSelectionChange = (e, { value }) => this.setState({ teamType: value });
 
   editTeam = () => {
-    console.log('edit team');
+    const { teamName, teamType } = this.state;
+    let { github } = this.state;
+    const { selectedTeamDetails, selectedCohort, closeEditModal, showTeamDetails } = this.props;
+    github = !github ? `${teamType}_${teamName}_${selectedCohort.id}` : github;
+    axios
+      .put(
+        `${GHOSTBUSTER_BASE_URL}/ghostbuster/teams?teamId=${selectedTeamDetails.teamId}&teamName=${teamName}&teamType=${teamType}&github=${github}&cohortId=${
+          selectedTeamDetails.cohortId
+        }`
+      )
+      .then(response => {
+        console.log(response.data);
+        closeEditModal();
+        showTeamDetails();
+      })
+      .catch(error => {
+        throw error;
+      });
   };
 
   toggleDisplay = () => {

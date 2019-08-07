@@ -52,7 +52,12 @@ class TeamsList extends Component {
   };
 
   render() {
-    const { teamsListForSelectedCohort, selectedCohort, currentStudents } = this.props;
+    const {
+      teamsListForSelectedCohort,
+      selectedCohort,
+      currentStudents,
+      showTeamDetails
+    } = this.props;
     const teamsByTeamType = _.groupBy(teamsListForSelectedCohort, 'teamType');
     const { openConfirmationModal, openEditModal, selectedTeamDetails } = this.state;
 
@@ -126,6 +131,7 @@ class TeamsList extends Component {
               selectedCohort={selectedCohort}
               selectedTeamDetails={selectedTeamDetails}
               currentStudents={currentStudents}
+              showTeamDetails={showTeamDetails}
             />
           </div>
         ))}
