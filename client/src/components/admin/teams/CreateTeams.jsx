@@ -45,6 +45,7 @@ function CreateTeams(props) {
             teamsListForSelectedCohort={teamsListForSelectedCohort}
             selectedCohort={selectedCohort}
             showTeamDetails={showTeamDetails}
+            currentStudents={currentStudents}
           />
         </Segment>
       ) : (
