@@ -3,6 +3,7 @@ import { Button, Modal, Input, Form, Select } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 const options = [
+  { key: '-', text: '-', value: '-' },
   { key: 'fec', text: 'FEC', value: 'FEC' },
   { key: 'sdc', text: 'SDC', value: 'SDC' },
   { key: 'other', text: 'Other', value: 'other' }
@@ -12,8 +13,22 @@ class EditTeamModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      teamName: ''
+      teamName: '',
+      github: '',
+      teamType: '-',
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    const { selectedTeamDetails } = this.props;
+    if (selectedTeamDetails !== prevProps.selectedTeamDetails) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        teamName: selectedTeamDetails.teamName,
+        github: selectedTeamDetails.github,
+        teamType: selectedTeamDetails.teamType
+      });
+    }
   }
 
   handleInputChange = event => {
@@ -33,8 +48,10 @@ class EditTeamModal extends Component {
 
   render() {
     const { openEditModal, closeEditModal, selectedTeamDetails } = this.props;
-    const { teamName } = this.state;
+    const { teamName, github } = this.state;
     const isDisabled = !teamName.length;
+    let index = options.findIndex(option => option.value === selectedTeamDetails.teamType);
+    index = index > 0 ? index : 0;
 
     return (
       <div>
@@ -47,7 +64,7 @@ class EditTeamModal extends Component {
                   control={Input}
                   label="Team Name"
                   placeholder="Team Name"
-                  value={selectedTeamDetails.teamName}
+                  value={teamName}
                   name="teamName"
                   onChange={this.handleInputChange}
                   required
@@ -56,7 +73,7 @@ class EditTeamModal extends Component {
                   control={Input}
                   label="Github"
                   placeholder="Github Handle"
-                  value={selectedTeamDetails.github}
+                  value={github}
                   name="github"
                   onChange={this.handleInputChange}
                 />
@@ -65,7 +82,7 @@ class EditTeamModal extends Component {
                   label="Team Type"
                   options={options}
                   placeholder="Team Type"
-                  defaultValue={selectedTeamDetails.teamType}
+                  defaultValue={options[index].value}
                   onChange={this.handleSelectionChange}
                   name="teamType"
                 />
