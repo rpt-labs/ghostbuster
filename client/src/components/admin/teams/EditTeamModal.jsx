@@ -16,24 +16,36 @@ const options = [
 class EditTeamModal extends Component {
   constructor(props) {
     super(props);
+    const { currentStudents } = this.props;
     this.state = {
       teamName: '',
       github: '',
       teamType: '-',
       studentsAssigned: [],
-      showStudentsList: false
+      showStudentsList: false,
+      studentsList: currentStudents.map(student => Object.assign(student, { isChecked: false }))
     };
   }
 
   componentDidUpdate(prevProps) {
     const { selectedTeamDetails } = this.props;
+    const { studentsList } = this.state;
     if (selectedTeamDetails !== prevProps.selectedTeamDetails) {
+      selectedTeamDetails.students.forEach(item => {
+        studentsList.map(student => {
+          if (student.id === item.studentId) {
+            // eslint-disable-next-line no-param-reassign
+            student.isChecked = true;
+          }
+        });
+      });
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
         teamName: selectedTeamDetails.teamName,
         github: selectedTeamDetails.github,
         teamType: selectedTeamDetails.teamType,
-        studentsAssigned: selectedTeamDetails.students
+        studentsAssigned: selectedTeamDetails.students,
+        studentsList
       });
     }
   }
@@ -56,7 +68,9 @@ class EditTeamModal extends Component {
     github = !github ? `${teamType}_${teamName}_${selectedCohort.id}` : github;
     axios
       .put(
-        `${GHOSTBUSTER_BASE_URL}/ghostbuster/teams?teamId=${selectedTeamDetails.teamId}&teamName=${teamName}&teamType=${teamType}&github=${github}&cohortId=${
+        `${GHOSTBUSTER_BASE_URL}/ghostbuster/teams?teamId=${
+          selectedTeamDetails.teamId
+        }&teamName=${teamName}&teamType=${teamType}&github=${github}&cohortId=${
           selectedTeamDetails.cohortId
         }`
       )
@@ -83,7 +97,7 @@ class EditTeamModal extends Component {
       selectedCohort,
       currentStudents
     } = this.props;
-    const { teamName, github, studentsAssigned, showStudentsList } = this.state;
+    const { teamName, github, studentsAssigned, showStudentsList, studentsList } = this.state;
     const isDisabled = !teamName.length;
     let index = options.findIndex(option => option.value === selectedTeamDetails.teamType);
     index = index > 0 ? index : 0;
@@ -134,7 +148,7 @@ class EditTeamModal extends Component {
                 style={{ position: 'absolute', left: '250px', color: '#07a', cursor: 'pointer' }}
               >
                 <Icon name="edit" size="small" />
-                Edit Assignment
+                Edit Student Assignment
               </span>
             </Header>
             <Grid>
@@ -149,7 +163,11 @@ class EditTeamModal extends Component {
               </Grid.Column>
               {showStudentsList ? (
                 <Grid.Column width={12}>
-                  <EditStudentAssignments currentStudents={currentStudents} />
+                  <EditStudentAssignments
+                    studentsAssigned={studentsAssigned}
+                    currentStudents={currentStudents}
+                    studentsList={studentsList}
+                  />
                 </Grid.Column>
               ) : (
                 <Grid.Column width={12} />

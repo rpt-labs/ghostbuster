@@ -5,14 +5,15 @@ import PropTypes from 'prop-types';
 class EditStudentAssignments extends Component {
   constructor(props) {
     super(props);
-    const { currentStudents } = props;
-    this.state = {
-      studentsList: currentStudents.map(student => Object.assign(student, { isChecked: false })),
-    };
+    // const { currentStudents } = props;
+    // this.state = {
+    //   studentsList: currentStudents.map(student => Object.assign(student, { isChecked: false })),
+    // };
   }
 
   render() {
-    const { studentsList } = this.state;
+    const { studentsList } = this.props;
+
     return (
       <React.Fragment>
         <Grid columns={2} style={{ marginLeft: '50px' }}>
@@ -34,5 +35,5 @@ class EditStudentAssignments extends Component {
 export default EditStudentAssignments;
 
 EditStudentAssignments.propTypes = {
-  currentStudents: PropTypes.instanceOf(Array).isRequired
+  studentsList: PropTypes.instanceOf(Array).isRequired
 };

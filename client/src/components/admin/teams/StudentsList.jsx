@@ -14,7 +14,6 @@ class StudentsList extends Component {
       open: false,
       size: 'tiny'
     };
-    this.selectStudent = this.selectStudent.bind(this);
   }
 
   selectStudent = e => {
