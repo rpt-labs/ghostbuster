@@ -1,8 +1,18 @@
 import React, { Component } from 'react';
-import { Button, Modal, Input, Form, Select, List, Header, Icon, Grid } from 'semantic-ui-react';
+import {
+  Button,
+  Modal,
+  Input,
+  Form,
+  Select,
+  List,
+  Header,
+  Icon,
+  Grid,
+  Checkbox
+} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import EditStudentAssignments from './EditStudentAssignment';
 
 const { GHOSTBUSTER_BASE_URL } = process.env;
 
@@ -89,14 +99,41 @@ class EditTeamModal extends Component {
     this.setState({ showStudentsList: !showStudentsList });
   };
 
+  selectStudent = e => {
+    const { studentsList } = this.state;
+    const currentList = studentsList.slice();
+    const name = e.target.innerHTML;
+    const firstName = name
+      .substring(0, name.indexOf(' '))
+      .trim()
+      .toLowerCase();
+    const lastName = name
+      .substring(name.indexOf(' '))
+      .trim()
+      .toLowerCase();
+    const matchedStudent = studentsList.find(
+      student =>
+        student.firstName.toLowerCase() === firstName && student.lastName.toLowerCase() === lastName
+    );
+    if (matchedStudent) {
+      const index = currentList.indexOf(matchedStudent);
+      matchedStudent.isChecked = !matchedStudent.isChecked;
+      currentList[index] = matchedStudent;
+    }
+    this.setState({
+      studentsList: currentList,
+      studentsAssigned: studentsList
+        .filter(student => student.isChecked)
+        .map(student => ({
+          studentId: student.id,
+          name: `${student.firstName} ${student.lastName}`,
+          studentGithub: student.github
+        }))
+    });
+  };
+
   render() {
-    const {
-      openEditModal,
-      closeEditModal,
-      selectedTeamDetails,
-      selectedCohort,
-      currentStudents
-    } = this.props;
+    const { openEditModal, closeEditModal, selectedTeamDetails, selectedCohort } = this.props;
     const { teamName, github, studentsAssigned, showStudentsList, studentsList } = this.state;
     const isDisabled = !teamName.length;
     let index = options.findIndex(option => option.value === selectedTeamDetails.teamType);
@@ -154,6 +191,7 @@ class EditTeamModal extends Component {
             <Grid>
               <Grid.Column width={4}>
                 <List relaxed>
+                  {console.log('studentsAssigned@@@', studentsAssigned)}
                   {studentsAssigned.map(student => (
                     <List.Item key={student.studentId} style={{ fontSize: '16px' }}>
                       {student.name}
@@ -163,11 +201,17 @@ class EditTeamModal extends Component {
               </Grid.Column>
               {showStudentsList ? (
                 <Grid.Column width={12}>
-                  <EditStudentAssignments
-                    studentsAssigned={studentsAssigned}
-                    currentStudents={currentStudents}
-                    studentsList={studentsList}
-                  />
+                  <Grid columns={2} style={{ marginLeft: '50px' }}>
+                    {studentsList.map(student => (
+                      <Grid.Column key={student.id} onClick={e => this.selectStudent(e)}>
+                        <Checkbox
+                          label={`${student.firstName} ${student.lastName}`}
+                          style={{ fontSize: '14px' }}
+                          checked={student.isChecked}
+                        />
+                      </Grid.Column>
+                    ))}
+                  </Grid>
                 </Grid.Column>
               ) : (
                 <Grid.Column width={12} />
