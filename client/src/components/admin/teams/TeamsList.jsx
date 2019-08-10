@@ -41,8 +41,17 @@ class TeamsList extends Component {
 
   openEditModal = e => {
     const id = parseInt(e.target.value, 10);
-    const { teamsListForSelectedCohort } = this.props;
+    const { teamsListForSelectedCohort, currentStudents } = this.props;
     const selectedTeamDetails = teamsListForSelectedCohort.find(team => team.teamId === id);
+    selectedTeamDetails.students.forEach(item => {
+      // eslint-disable-next-line array-callback-return
+      currentStudents.map(student => {
+        if (student.id === item.studentId) {
+          // eslint-disable-next-line no-param-reassign
+          student.isChecked = true;
+        }
+      });
+    });
     this.setState({ openEditModal: true, selectedTeamId: e.target.value, selectedTeamDetails });
   };
 

@@ -40,15 +40,6 @@ class EditTeamModal extends Component {
     const { selectedTeamDetails } = this.props;
     const { studentsList } = this.state;
     if (selectedTeamDetails !== prevProps.selectedTeamDetails) {
-      selectedTeamDetails.students.forEach(item => {
-        // eslint-disable-next-line array-callback-return
-        studentsList.map(student => {
-          if (student.id === item.studentId) {
-            // eslint-disable-next-line no-param-reassign
-            student.isChecked = true;
-          }
-        });
-      });
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
         teamName: selectedTeamDetails.teamName,
@@ -268,7 +259,7 @@ EditTeamModal.propTypes = {
   closeEditModal: PropTypes.func.isRequired,
   toggleDisplay: PropTypes.func.isRequired,
   showStudentsList: PropTypes.bool.isRequired,
-  showTeamDetails: PropTypes.bool.isRequired,
+  showTeamDetails: PropTypes.func.isRequired,
   selectedTeamDetails: PropTypes.instanceOf(Object).isRequired,
   selectedCohort: PropTypes.instanceOf(Object).isRequired,
   currentStudents: PropTypes.instanceOf(Array).isRequired
