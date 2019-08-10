@@ -72,7 +72,7 @@ class EditTeamModal extends Component {
   handleSelectionChange = (e, { value }) => this.setState({ teamType: value });
 
   editTeam = () => {
-    const { teamName, teamType } = this.state;
+    const { teamName, teamType, studentsList } = this.state;
     let { github } = this.state;
     const { selectedTeamDetails, selectedCohort, closeEditModal, showTeamDetails } = this.props;
     github = !github ? `${teamType}_${teamName}_${selectedCohort.id}` : github;
@@ -85,9 +85,32 @@ class EditTeamModal extends Component {
         }`
       )
       .then(response => {
-        console.log(response.data);
-        closeEditModal();
-        showTeamDetails();
+        if (response.data) {
+          axios
+            .delete(
+              `${GHOSTBUSTER_BASE_URL}/ghostbuster/teams/${selectedTeamDetails.teamId}/students`
+            )
+            .then(() => {
+              const currentlySelectedStudents = studentsList.filter(student => student.isChecked);
+              if (currentlySelectedStudents.length) {
+                currentlySelectedStudents.forEach(student => {
+                  const { id } = student;
+                  axios
+                    .post(
+                      `${GHOSTBUSTER_BASE_URL}/ghostbuster/teams/${
+                        selectedTeamDetails.teamId
+                      }/students/${id}`
+                    )
+                    .then(res => {
+                      if (res.data && res.status === 200) {
+                        closeEditModal();
+                        showTeamDetails();
+                      }
+                    });
+                });
+              }
+            });
+        }
       })
       .catch(error => {
         throw error;
@@ -191,7 +214,6 @@ class EditTeamModal extends Component {
             <Grid>
               <Grid.Column width={4}>
                 <List relaxed>
-                  {console.log('studentsAssigned@@@', studentsAssigned)}
                   {studentsAssigned.map(student => (
                     <List.Item key={student.studentId} style={{ fontSize: '16px' }}>
                       {student.name}

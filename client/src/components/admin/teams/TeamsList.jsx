@@ -10,11 +10,13 @@ const { GHOSTBUSTER_BASE_URL } = process.env;
 class TeamsList extends Component {
   constructor(props) {
     super(props);
+    const { currentStudents } = this.props;
     this.state = {
       selectedTeamId: null,
       selectedTeamDetails: {},
       openConfirmationModal: false,
-      openEditModal: false
+      openEditModal: false,
+      currentStudents
     };
   }
 
@@ -46,20 +48,22 @@ class TeamsList extends Component {
   closeConfirmationModal = () => this.setState({ openConfirmationModal: false });
 
   closeEditModal = () => {
+    const { currentStudents } = this.props;
     this.setState({
-      openEditModal: false
+      openEditModal: false,
+      currentStudents: currentStudents.map(student => Object.assign(student, { isChecked: false }))
     });
   };
 
   render() {
-    const {
-      teamsListForSelectedCohort,
-      selectedCohort,
-      currentStudents,
-      showTeamDetails
-    } = this.props;
+    const { teamsListForSelectedCohort, selectedCohort, showTeamDetails } = this.props;
     const teamsByTeamType = _.groupBy(teamsListForSelectedCohort, 'teamType');
-    const { openConfirmationModal, openEditModal, selectedTeamDetails } = this.state;
+    const {
+      openConfirmationModal,
+      openEditModal,
+      selectedTeamDetails,
+      currentStudents
+    } = this.state;
 
     return (
       <React.Fragment>
@@ -94,7 +98,6 @@ class TeamsList extends Component {
                       <Button
                         basic
                         color="blue"
-                        disabled
                         value={team.teamId}
                         style={{ float: 'left' }}
                         onClick={e => this.openEditModal(e)}

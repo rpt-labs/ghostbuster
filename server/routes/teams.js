@@ -17,6 +17,9 @@ teamsRouter.post('/:teamId/students/:studentId', teamsController.addStudentsToTe
 // remove a student from a team
 teamsRouter.delete('/:teamId/students/:studentId', teamsController.removeStudentFromTeam);
 
+// remove all students from a team
+teamsRouter.delete('/:teamId/students', teamsController.removeAllStudentsFromTeam);
+
 // retrieve students for a particular team
 teamsRouter.get('/:teamId/students', teamsController.getTeamStudents);
 

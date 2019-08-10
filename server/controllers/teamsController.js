@@ -36,6 +36,7 @@ exports.createTeam = async (req, res) => {
 };
 
 exports.updateTeam = async (req, res) => {
+  console.log('req', req)
   const { teamId, teamName, teamType, github, cohortId } = req.query;
   const updated = await teams.updateTeam(teamId, {
     teamName,
@@ -67,6 +68,12 @@ exports.addStudentsToTeam = async (req, res) => {
 exports.removeStudentFromTeam = async (req, res) => {
   const { teamId, studentId } = req.params;
   const removed = await teams.removeStudentFromTeam(studentId, teamId);
+  res.json({ message: removed });
+};
+
+exports.removeAllStudentsFromTeam = async (req, res) => {
+  const { teamId } = req.params;
+  const removed = await teams.removeStudentsFromTeam(teamId);
   res.json({ message: removed });
 };
 
