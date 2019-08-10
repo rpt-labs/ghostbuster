@@ -16,6 +16,7 @@ class TeamsList extends Component {
       selectedTeamDetails: {},
       openConfirmationModal: false,
       openEditModal: false,
+      showStudentsList: false,
       currentStudents
     };
   }
@@ -45,12 +46,18 @@ class TeamsList extends Component {
     this.setState({ openEditModal: true, selectedTeamId: e.target.value, selectedTeamDetails });
   };
 
+  toggleDisplay = () => {
+    const { showStudentsList } = this.state;
+    this.setState({ showStudentsList: !showStudentsList });
+  };
+
   closeConfirmationModal = () => this.setState({ openConfirmationModal: false });
 
   closeEditModal = () => {
     const { currentStudents } = this.props;
     this.setState({
       openEditModal: false,
+      showStudentsList: false,
       currentStudents: currentStudents.map(student => Object.assign(student, { isChecked: false }))
     });
   };
@@ -62,7 +69,8 @@ class TeamsList extends Component {
       openConfirmationModal,
       openEditModal,
       selectedTeamDetails,
-      currentStudents
+      currentStudents,
+      showStudentsList
     } = this.state;
 
     return (
@@ -94,7 +102,6 @@ class TeamsList extends Component {
                   </Card.Content>
                   <Card.Content extra>
                     <div>
-                      {/* #TODO: implement edit team feature */}
                       <Button
                         basic
                         color="blue"
@@ -135,6 +142,8 @@ class TeamsList extends Component {
               selectedTeamDetails={selectedTeamDetails}
               currentStudents={currentStudents}
               showTeamDetails={showTeamDetails}
+              toggleDisplay={this.toggleDisplay}
+              showStudentsList={showStudentsList}
             />
           </div>
         ))}
@@ -147,6 +156,7 @@ export default TeamsList;
 
 TeamsList.propTypes = {
   teamsListForSelectedCohort: PropTypes.instanceOf(Array).isRequired,
+  currentStudents: PropTypes.instanceOf(Array).isRequired,
   selectedCohort: PropTypes.instanceOf(Object).isRequired,
   showTeamDetails: PropTypes.func.isRequired
 };

@@ -32,7 +32,6 @@ class EditTeamModal extends Component {
       github: '',
       teamType: '-',
       studentsAssigned: [],
-      showStudentsList: false,
       studentsList: currentStudents.map(student => Object.assign(student, { isChecked: false }))
     };
   }
@@ -42,6 +41,7 @@ class EditTeamModal extends Component {
     const { studentsList } = this.state;
     if (selectedTeamDetails !== prevProps.selectedTeamDetails) {
       selectedTeamDetails.students.forEach(item => {
+        // eslint-disable-next-line array-callback-return
         studentsList.map(student => {
           if (student.id === item.studentId) {
             // eslint-disable-next-line no-param-reassign
@@ -117,11 +117,6 @@ class EditTeamModal extends Component {
       });
   };
 
-  toggleDisplay = () => {
-    const { showStudentsList } = this.state;
-    this.setState({ showStudentsList: !showStudentsList });
-  };
-
   selectStudent = e => {
     const { studentsList } = this.state;
     const currentList = studentsList.slice();
@@ -156,8 +151,15 @@ class EditTeamModal extends Component {
   };
 
   render() {
-    const { openEditModal, closeEditModal, selectedTeamDetails, selectedCohort } = this.props;
-    const { teamName, github, studentsAssigned, showStudentsList, studentsList } = this.state;
+    const {
+      openEditModal,
+      closeEditModal,
+      selectedTeamDetails,
+      selectedCohort,
+      showStudentsList,
+      toggleDisplay
+    } = this.props;
+    const { teamName, github, studentsAssigned, studentsList } = this.state;
     const isDisabled = !teamName.length;
     let index = options.findIndex(option => option.value === selectedTeamDetails.teamType);
     index = index > 0 ? index : 0;
@@ -204,7 +206,7 @@ class EditTeamModal extends Component {
               Students Assigned:
               <span
                 role="presentation"
-                onClick={this.toggleDisplay}
+                onClick={e => toggleDisplay(e)}
                 style={{ position: 'absolute', left: '250px', color: '#07a', cursor: 'pointer' }}
               >
                 <Icon name="edit" size="small" />
@@ -264,6 +266,9 @@ export default EditTeamModal;
 EditTeamModal.propTypes = {
   openEditModal: PropTypes.bool.isRequired,
   closeEditModal: PropTypes.func.isRequired,
+  toggleDisplay: PropTypes.func.isRequired,
+  showStudentsList: PropTypes.bool.isRequired,
+  showTeamDetails: PropTypes.bool.isRequired,
   selectedTeamDetails: PropTypes.instanceOf(Object).isRequired,
   selectedCohort: PropTypes.instanceOf(Object).isRequired,
   currentStudents: PropTypes.instanceOf(Array).isRequired
