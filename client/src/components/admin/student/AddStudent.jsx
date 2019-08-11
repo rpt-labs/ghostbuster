@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, Header } from 'semantic-ui-react';
+import { Button, Form, Header, Input } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
@@ -31,7 +31,6 @@ export default class AddStudent extends Component {
     };
   }
 
-  // #TODO: create 2 functions
   handleInputChange = event => {
     const { target } = event;
     const { value, id } = target;
@@ -54,6 +53,7 @@ export default class AddStudent extends Component {
       cohort,
       enrollmentStatus
     } = this.state;
+
     const selectedCohort = cohorts.find(currentCohort => currentCohort.name === cohort);
     if (selectedCohort && selectedCohort.id) {
       axios
@@ -66,7 +66,6 @@ export default class AddStudent extends Component {
           console.log(response);
         });
     }
-    // console.log('add student', this.state);
   };
 
   render() {
@@ -81,37 +80,46 @@ export default class AddStudent extends Component {
         <Header as="h1" textAlign="center">
           Add Student
         </Header>
-        <Form>
-          <Form.Field onChange={this.handleInputChange}>
-            <label htmlFor="enrollmentId">
-              Enrollment Id
-              <input type="text" id="enrollmentId" placeholder="Enrollment Id" />
-            </label>
-          </Form.Field>
-          <Form.Field onChange={this.handleInputChange}>
-            <label htmlFor="firstName">
-              First Name
-              <input type="text" id="firstName" placeholder="First Name" />
-            </label>
-          </Form.Field>
-          <Form.Field onChange={this.handleInputChange}>
-            <label htmlFor="lastName">
-              Last Name
-              <input type="text" id="lastName" placeholder="Last Name" />
-            </label>
-          </Form.Field>
-          <Form.Field onChange={this.handleInputChange}>
-            <label htmlFor="githubHandle">
-              Github Handle
-              <input type="text" id="githubHandle" placeholder="Github Handle" />
-            </label>
-          </Form.Field>
-          <Form.Field onChange={this.handleInputChange}>
-            <label htmlFor="zoomName">
-              Zoom Name
-              <input type="text" id="zoomName" placeholder="Zoom Name" />
-            </label>
-          </Form.Field>
+        <Form onSubmit={this.addStudent}>
+          <Form.Field
+            control={Input}
+            label="Enrollment Id"
+            placeholder="Enrollment Id"
+            id="enrollmentId"
+            onChange={this.handleInputChange}
+            required
+          />
+          <Form.Field
+            control={Input}
+            label="First Name"
+            placeholder="First Name"
+            id="firstName"
+            onChange={this.handleInputChange}
+            required
+          />
+          <Form.Field
+            control={Input}
+            label="Last Name"
+            placeholder="Last Name"
+            id="lastName"
+            onChange={this.handleInputChange}
+            required
+          />
+          <Form.Field
+            control={Input}
+            label="Github Handle"
+            placeholder="Github Handle"
+            id="githubHandle"
+            onChange={this.handleInputChange}
+            required
+          />
+          <Form.Field
+            control={Input}
+            label="Zoom Name"
+            placeholder="Zoom Name"
+            id="zoomName"
+            onChange={this.handleInputChange}
+          />
           <Form.Group widths="equal">
             <Form.Select
               label="Cohort"
@@ -119,6 +127,7 @@ export default class AddStudent extends Component {
               options={cohortsList}
               placeholder="Select Cohort"
               onChange={this.handleSelectionChange}
+              required
             />
             <Form.Select
               label="Enrollment Status"
@@ -126,9 +135,10 @@ export default class AddStudent extends Component {
               options={enrollmentStatus}
               placeholder="Enrollment Status"
               onChange={this.handleSelectionChange}
+              required
             />
           </Form.Group>
-          <Button type="submit" onClick={this.addStudent}>
+          <Button primary type="submit">
             Submit
           </Button>
         </Form>
