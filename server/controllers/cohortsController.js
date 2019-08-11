@@ -67,13 +67,17 @@ exports.getStudents = async (req, res) => {
 };
 
 exports.createStudent = async (req, res) => {
-  const { firstName, lastName, github, cohortId } = req.query;
+  const { firstName, lastName, github, status } = req.query;
+  let { cohortId } = req.query;
+  cohortId = parseInt(cohortId, 10);
   const student = await students.addStudent({
     firstName,
     lastName,
     github,
+    status,
     cohortId
   });
+
   if (student.name === 'error') {
     res.status(400).json({ error: student.detail });
   } else {
