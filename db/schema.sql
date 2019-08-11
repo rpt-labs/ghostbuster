@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS students (
   id integer REFERENCES enrollments,
   first_name text NOT NULL,
   last_name text NOT NULL,
+  zoom_name text,
   github text UNIQUE NOT NULL,
   status text NOT NULL,
   cohort_id integer REFERENCES cohorts ON DELETE CASCADE
