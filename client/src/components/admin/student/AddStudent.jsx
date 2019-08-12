@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, Header, Input } from 'semantic-ui-react';
+import { Button, Form, Header, Input, Message, Icon } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
@@ -27,7 +27,8 @@ export default class AddStudent extends Component {
       githubHandle: '',
       zoomName: '',
       cohort: '',
-      enrollmentStatus: enrollmentStatusList[3].value
+      enrollmentStatus: enrollmentStatusList[3].value,
+      showSuccessMessage: false
     };
   }
 
@@ -36,7 +37,8 @@ export default class AddStudent extends Component {
     const { value, id } = target;
 
     this.setState({
-      [id]: value
+      [id]: value,
+      showSuccessMessage: false
     });
   };
 
@@ -56,11 +58,12 @@ export default class AddStudent extends Component {
 
     const selectedCohort = cohorts.find(currentCohort => currentCohort.name === cohort);
     if (selectedCohort && selectedCohort.id) {
+      const { id } = selectedCohort;
       axios
         .post(
-          `${GHOSTBUSTER_BASE_URL}/ghostbuster/students?enrollmentId=${enrollmentId}&firstName=${firstName}&lastName=${lastName}&github=${githubHandle}&zoomName=${zoomName}&cohortId=${
-            selectedCohort.id
-          }&status=${enrollmentStatus}`
+          `${GHOSTBUSTER_BASE_URL}/ghostbuster/students?enrollmentId=${enrollmentId}
+          &firstName=${firstName}&lastName=${lastName}&github=${githubHandle}
+          &zoomName=${zoomName}&cohortId=${id}&status=${enrollmentStatus}`
         )
         .then(response => {
           if (response.data.student) {
@@ -71,7 +74,8 @@ export default class AddStudent extends Component {
               githubHandle: '',
               zoomName: '',
               cohort: '',
-              enrollmentStatus: enrollmentStatusList[3].value
+              enrollmentStatus: enrollmentStatusList[3].value,
+              showSuccessMessage: true
             });
           }
         });
@@ -92,12 +96,22 @@ export default class AddStudent extends Component {
       githubHandle,
       zoomName,
       cohort,
-      enrollmentStatus
+      enrollmentStatus,
+      showSuccessMessage
     } = this.state;
     return (
       <React.Fragment>
         <Header as="h1" textAlign="center">
           Add Student
+          {showSuccessMessage ? (
+            <div>
+              <Message positive compact size="mini">
+                <Message.Header>Student added!</Message.Header>
+              </Message>
+            </div>
+          ) : (
+            <div />
+          )}
         </Header>
         <Form onSubmit={this.addStudent}>
           <Form.Field
