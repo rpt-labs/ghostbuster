@@ -5,15 +5,15 @@ import axios from 'axios';
 
 const { GHOSTBUSTER_BASE_URL } = process.env;
 
-const enrollmentStatus = [
-  { key: 1, text: 'Alum', value: 'alum' },
+const enrollmentStatusList = [
+  { key: 0, text: 'Alum', value: 'alum' },
+  { key: 1, text: 'Completed', value: 'completed' },
   { key: 2, text: 'Deferred', value: 'deferred' },
-  { key: 3, text: 'Withdrew', value: 'withdrew' },
-  { key: 4, text: 'Completed', value: 'completed' },
-  { key: 5, text: 'Enrolled', value: 'enrolled' },
-  { key: 6, text: 'Mulligan', value: 'mulligan' },
-  { key: 7, text: 'Removed', value: 'removed' },
-  { key: 8, text: 'Precourse', value: 'precourse' }
+  { key: 3, text: 'Enrolled', value: 'enrolled' },
+  { key: 4, text: 'Mulligan', value: 'mulligan' },
+  { key: 5, text: 'Precourse', value: 'precourse' },
+  { key: 6, text: 'Removed', value: 'removed' },
+  { key: 7, text: 'Withdrew', value: 'withdrew' }
 ];
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -27,7 +27,7 @@ export default class AddStudent extends Component {
       githubHandle: '',
       zoomName: '',
       cohort: '',
-      enrollmentStatus: ''
+      enrollmentStatus: enrollmentStatusList[3].value
     };
   }
 
@@ -63,7 +63,17 @@ export default class AddStudent extends Component {
           }&status=${enrollmentStatus}`
         )
         .then(response => {
-          console.log(response);
+          if (response.data.student) {
+            this.setState({
+              enrollmentId: '',
+              firstName: '',
+              lastName: '',
+              githubHandle: '',
+              zoomName: '',
+              cohort: '',
+              enrollmentStatus: enrollmentStatusList[3].value
+            });
+          }
         });
     }
   };
@@ -75,6 +85,15 @@ export default class AddStudent extends Component {
       text: cohort.name,
       value: cohort.name
     }));
+    const {
+      enrollmentId,
+      firstName,
+      lastName,
+      githubHandle,
+      zoomName,
+      cohort,
+      enrollmentStatus
+    } = this.state;
     return (
       <React.Fragment>
         <Header as="h1" textAlign="center">
@@ -85,6 +104,7 @@ export default class AddStudent extends Component {
             control={Input}
             label="Enrollment Id"
             placeholder="Enrollment Id"
+            value={enrollmentId}
             id="enrollmentId"
             onChange={this.handleInputChange}
             required
@@ -94,6 +114,7 @@ export default class AddStudent extends Component {
             label="First Name"
             placeholder="First Name"
             id="firstName"
+            value={firstName}
             onChange={this.handleInputChange}
             required
           />
@@ -102,6 +123,7 @@ export default class AddStudent extends Component {
             label="Last Name"
             placeholder="Last Name"
             id="lastName"
+            value={lastName}
             onChange={this.handleInputChange}
             required
           />
@@ -110,6 +132,7 @@ export default class AddStudent extends Component {
             label="Github Handle"
             placeholder="Github Handle"
             id="githubHandle"
+            value={githubHandle}
             onChange={this.handleInputChange}
             required
           />
@@ -118,6 +141,7 @@ export default class AddStudent extends Component {
             label="Zoom Name"
             placeholder="Zoom Name"
             id="zoomName"
+            value={zoomName}
             onChange={this.handleInputChange}
           />
           <Form.Group widths="equal">
@@ -126,14 +150,16 @@ export default class AddStudent extends Component {
               id="cohort"
               options={cohortsList}
               placeholder="Select Cohort"
+              value={cohort}
               onChange={this.handleSelectionChange}
               required
             />
             <Form.Select
               label="Enrollment Status"
               id="enrollmentStatus"
-              options={enrollmentStatus}
+              options={enrollmentStatusList}
               placeholder="Enrollment Status"
+              value={enrollmentStatus}
               onChange={this.handleSelectionChange}
               required
             />
