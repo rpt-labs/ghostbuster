@@ -5,16 +5,17 @@ import axios from 'axios';
 
 const { GHOSTBUSTER_BASE_URL } = process.env;
 
-const enrollmentStatusList = [
-  { key: 0, text: 'Alum', value: 'alum' },
-  { key: 1, text: 'Completed', value: 'completed' },
-  { key: 2, text: 'Deferred', value: 'deferred' },
-  { key: 3, text: 'Enrolled', value: 'enrolled' },
-  { key: 4, text: 'Mulligan', value: 'mulligan' },
-  { key: 5, text: 'Precourse', value: 'precourse' },
-  { key: 6, text: 'Removed', value: 'removed' },
-  { key: 7, text: 'Withdrew', value: 'withdrew' }
+let enrollmentStatusList = [
+  'Alum',
+  'Completed',
+  'Deferred',
+  'Enrolled',
+  'Mulligan',
+  'Precourse',
+  'Removed',
+  'Withdrew'
 ];
+enrollmentStatusList = enrollmentStatusList.map(item => ({ key: item, text: item, value: item }));
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class AddStudent extends Component {
@@ -27,7 +28,7 @@ export default class AddStudent extends Component {
       githubHandle: '',
       zoomName: '',
       cohort: '',
-      enrollmentStatus: enrollmentStatusList[3].value,
+      enrollmentStatus: 'Enrolled',
       showSuccessMessage: false
     };
   }
@@ -37,7 +38,7 @@ export default class AddStudent extends Component {
     const { value, id } = target;
 
     this.setState({
-      [id]: value,
+      [id]: value.trim(),
       showSuccessMessage: false
     });
   };
@@ -63,10 +64,11 @@ export default class AddStudent extends Component {
         .post(
           `${GHOSTBUSTER_BASE_URL}/ghostbuster/students?enrollmentId=${enrollmentId}
           &firstName=${firstName}&lastName=${lastName}&github=${githubHandle}
-          &zoomName=${zoomName}&cohortId=${id}&status=${enrollmentStatus}`
+          &zoomName=${zoomName}&cohortId=${id}&status=${enrollmentStatus.toLowerCase()}`
         )
         .then(response => {
           if (response.data.student) {
+            console.log(response.data.student);
             this.setState({
               enrollmentId: '',
               firstName: '',
@@ -74,7 +76,7 @@ export default class AddStudent extends Component {
               githubHandle: '',
               zoomName: '',
               cohort: '',
-              enrollmentStatus: enrollmentStatusList[3].value,
+              enrollmentStatus: 'Enrolled',
               showSuccessMessage: true
             });
           }
