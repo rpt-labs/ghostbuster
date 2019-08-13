@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, Header, Input, Message, Icon } from 'semantic-ui-react';
+import { Button, Form, Header, Input, Message } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
@@ -22,7 +22,6 @@ export default class AddStudent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      enrollmentId: '',
       firstName: '',
       lastName: '',
       githubHandle: '',
@@ -47,40 +46,25 @@ export default class AddStudent extends Component {
 
   addStudent = () => {
     const { cohorts } = this.props;
-    const {
-      enrollmentId,
-      firstName,
-      lastName,
-      githubHandle,
-      zoomName,
-      cohort,
-      enrollmentStatus
-    } = this.state;
+    const { firstName, lastName, githubHandle, zoomName, cohort, enrollmentStatus } = this.state;
 
     const selectedCohort = cohorts.find(currentCohort => currentCohort.name === cohort);
     if (selectedCohort && selectedCohort.id) {
       const { id } = selectedCohort;
-      axios
-        .post(
-          `${GHOSTBUSTER_BASE_URL}/ghostbuster/students?enrollmentId=${enrollmentId}
-          &firstName=${firstName}&lastName=${lastName}&github=${githubHandle}
-          &zoomName=${zoomName}&cohortId=${id}&status=${enrollmentStatus.toLowerCase()}`
-        )
-        .then(response => {
-          if (response.data.student) {
-            console.log(response.data.student);
-            this.setState({
-              enrollmentId: '',
-              firstName: '',
-              lastName: '',
-              githubHandle: '',
-              zoomName: '',
-              cohort: '',
-              enrollmentStatus: 'Enrolled',
-              showSuccessMessage: true
-            });
-          }
-        });
+      const url = `${GHOSTBUSTER_BASE_URL}/ghostbuster/students?&firstName=${firstName}&lastName=${lastName}&github=${githubHandle}&zoomName=${zoomName}&cohortId=${id}&status=${enrollmentStatus.toLowerCase()}`;
+      axios.post(url).then(response => {
+        if (response.data.student) {
+          this.setState({
+            firstName: '',
+            lastName: '',
+            githubHandle: '',
+            zoomName: '',
+            cohort: '',
+            enrollmentStatus: 'Enrolled',
+            showSuccessMessage: true
+          });
+        }
+      });
     }
   };
 
@@ -92,7 +76,6 @@ export default class AddStudent extends Component {
       value: cohort.name
     }));
     const {
-      enrollmentId,
       firstName,
       lastName,
       githubHandle,
@@ -116,15 +99,6 @@ export default class AddStudent extends Component {
           )}
         </Header>
         <Form onSubmit={this.addStudent}>
-          <Form.Field
-            control={Input}
-            label="Enrollment Id"
-            placeholder="Enrollment Id"
-            value={enrollmentId}
-            id="enrollmentId"
-            onChange={this.handleInputChange}
-            required
-          />
           <Form.Field
             control={Input}
             label="First Name"
