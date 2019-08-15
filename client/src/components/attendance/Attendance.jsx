@@ -23,7 +23,9 @@ class Attendance extends Component {
 
   getCohortsList() {
     getAllCohorts().then(result => {
-      const cohortsList = result.data.data.cohorts.map(e => e.name.toUpperCase());
+      const cohortsList = result.data.data.cohorts
+        .filter(cohort => cohort.status.toLowerCase() === 'current')
+        .map(e => e.name.toUpperCase());
       this.setState({
         cohorts: cohortsList.map(e => ({
           name: e,
@@ -65,7 +67,7 @@ class Attendance extends Component {
             cohorts={cohorts}
             handleRadioButtonChange={this.handleRadioButtonChange}
             showDetails={this.showDetails}
-            buttonLabel="SHOW ATTENDANCE"
+            buttonLabel="Show Attendance"
           />
         </Grid>
         <Grid textAlign="center">

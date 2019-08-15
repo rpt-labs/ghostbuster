@@ -11,7 +11,7 @@ export const studentsRecord = [
     lastName: 'Peter',
     room: 'All RPT Zoom Classroom',
     timestamp: '2/20/2019, 1:21:21 AM',
-    cohort: 'RPT10',
+    cohort: 'RPT13',
     type: 'Opening'
   },
   {
@@ -26,7 +26,7 @@ export const studentsRecord = [
     lastName: 'Smith',
     room: 'All RPT Zoom Classroom',
     timestamp: '2/20/2019, 1:22:21 AM',
-    cohort: 'RPT10',
+    cohort: 'RPT13',
     type: 'Opening'
   },
   {
@@ -41,7 +41,7 @@ export const studentsRecord = [
     lastName: 'Doe',
     room: 'All RPT Zoom Classroom',
     timestamp: '2/20/2019, 1:23:21 AM',
-    cohort: 'RPT09',
+    cohort: 'RPT14',
     type: 'Closing'
   },
   {
@@ -56,7 +56,7 @@ export const studentsRecord = [
     lastName: 'Builder',
     room: 'All RPT Zoom Classroom',
     timestamp: '2/20/2019, 1:24:21 AM',
-    cohort: 'RPT09',
+    cohort: 'RPT14',
     type: 'Closing'
   },
   {
@@ -71,7 +71,7 @@ export const studentsRecord = [
     lastName: 'Klevin',
     room: 'All RPT Zoom Classroom',
     timestamp: '2/20/2019, 1:25:21 AM',
-    cohort: 'RPT10',
+    cohort: 'RPT13',
     type: 'Opening'
   },
   {
@@ -86,7 +86,7 @@ export const studentsRecord = [
     lastName: 'Peter',
     room: 'All RPT Zoom Classroom',
     timestamp: '2/25/2019, 1:31:21 AM',
-    cohort: 'RPT10',
+    cohort: 'RPT13',
     type: 'Opening'
   },
   {
@@ -101,7 +101,7 @@ export const studentsRecord = [
     lastName: 'Smith',
     room: 'All RPT Zoom Classroom',
     timestamp: '2/25/2019, 1:32:21 AM',
-    cohort: 'RPT10',
+    cohort: 'RPT13',
     type: 'Closing'
   },
   {
@@ -116,7 +116,7 @@ export const studentsRecord = [
     lastName: 'Doe',
     room: 'All RPT Zoom Classroom',
     timestamp: '2/25/2019, 1:33:21 AM',
-    cohort: 'RPT09',
+    cohort: 'RPT14',
     type: 'Opening'
   },
   {
@@ -131,7 +131,7 @@ export const studentsRecord = [
     lastName: 'Builder',
     room: 'All RPT Zoom Classroom',
     timestamp: '2/25/2019, 1:34:21 AM',
-    cohort: 'RPT09',
+    cohort: 'RPT14',
     type: 'Closing'
   },
   {
@@ -146,7 +146,7 @@ export const studentsRecord = [
     lastName: 'Klevin',
     room: 'All RPT Zoom Classroom',
     timestamp: '2/25/2019, 1:35:21 AM',
-    cohort: 'RPT10',
+    cohort: 'RPT13',
     type: 'Opening'
   }
 ];
@@ -158,7 +158,7 @@ export const attendanceSummary = [
     github: 'adams',
     absencePoints: 4,
     attendanceHealth: 66,
-    cohort: 'RPT10'
+    cohort: 'RPT13'
   },
   {
     firstName: 'Bob',
@@ -166,7 +166,7 @@ export const attendanceSummary = [
     github: 'bobs',
     absencePoints: 8,
     attendanceHealth: 30,
-    cohort: 'RPT09'
+    cohort: 'RPT14'
   },
   {
     firstName: 'John',
@@ -174,7 +174,7 @@ export const attendanceSummary = [
     github: 'johns',
     absencePoints: 0,
     attendanceHealth: 90,
-    cohort: 'RPT10'
+    cohort: 'RPT13'
   },
   {
     firstName: 'Jane',
@@ -182,7 +182,7 @@ export const attendanceSummary = [
     github: 'janes',
     absencePoints: 15,
     attendanceHealth: 45,
-    cohort: 'RPT10'
+    cohort: 'RPT13'
   },
   {
     firstName: 'Aron',
@@ -190,6 +190,6 @@ export const attendanceSummary = [
     github: 'arons',
     absencePoints: 11,
     attendanceHealth: 86,
-    cohort: 'RPT09'
+    cohort: 'RPT14'
   }
 ];
