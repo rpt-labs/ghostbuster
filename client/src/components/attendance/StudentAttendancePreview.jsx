@@ -11,7 +11,7 @@ class StudentAttendancePreview extends Component {
     super(props);
     this.state = {
       studentName: '',
-      list: [],
+      attendanceList: [],
       absenceList: [],
       cohort: ''
     };
@@ -26,7 +26,7 @@ class StudentAttendancePreview extends Component {
     const { location } = this.props;
     const { cohort, firstName, lastName } = queryString.parse(location.search);
     const name = `${firstName} ${lastName}`;
-    const list = studentsRecord.filter(e => {
+    const attendanceList = studentsRecord.filter(e => {
       return e.user_name === name;
     });
     const absenceList = studentsAbsenceRecord.filter(e => {
@@ -35,13 +35,13 @@ class StudentAttendancePreview extends Component {
     this.setState({
       studentName: name,
       cohort,
-      list,
+      attendanceList,
       absenceList
     });
   }
 
   render() {
-    const { studentName, list, cohort, absenceList } = this.state;
+    const { studentName, attendanceList, cohort, absenceList } = this.state;
     return (
       <React.Fragment>
         <Header as="h1">{studentName}</Header>
@@ -59,7 +59,7 @@ class StudentAttendancePreview extends Component {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {list.map(e => {
+            {attendanceList.map(e => {
               const dateTime = moment
                 .tz(e.join_time, 'America/Los_Angeles')
                 .format('MM/DD/YYYY h:mm a');

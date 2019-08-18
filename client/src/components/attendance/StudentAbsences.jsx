@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Header } from 'semantic-ui-react';
+import { Table, Header, Input } from 'semantic-ui-react';
 import moment from 'moment-timezone';
 
 class StudentAbsences extends Component {
@@ -44,7 +44,9 @@ class StudentAbsences extends Component {
                   <Table.Cell>{e.type}</Table.Cell>
                   <Table.Cell>{e.isExcused ? 'Yes' : 'No'}</Table.Cell>
                   <Table.Cell>{e.points}</Table.Cell>
-                  <Table.Cell>{e.staffNotes || null}</Table.Cell>
+                  <Table.Cell>
+                    <Input transparent defaultValue={e.staffNotes} />
+                  </Table.Cell>
                 </Table.Row>
               );
             })}
