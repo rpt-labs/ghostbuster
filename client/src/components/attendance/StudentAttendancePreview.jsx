@@ -3,20 +3,22 @@ import PropTypes from 'prop-types';
 import { Table, Header } from 'semantic-ui-react';
 import queryString from 'query-string';
 import moment from 'moment-timezone';
-import { studentsRecord } from '../../../data/demoData';
+import { studentsRecord, studentsAbsenceRecord } from '../../../data/demoData';
+import StudentAbsences from './StudentAbsences';
 
-class StudentAttandancePreview extends Component {
+class StudentAttendancePreview extends Component {
   constructor(props) {
     super(props);
     this.state = {
       studentName: '',
       list: [],
+      absenceList: [],
       cohort: ''
     };
     this.getAttendance = this.getAttendance.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.getAttendance();
   }
 
@@ -27,19 +29,26 @@ class StudentAttandancePreview extends Component {
     const list = studentsRecord.filter(e => {
       return e.user_name === name;
     });
+    const absenceList = studentsAbsenceRecord.filter(e => {
+      return e.user_name === name;
+    });
     this.setState({
       studentName: name,
       cohort,
-      list
+      list,
+      absenceList
     });
   }
 
   render() {
-    const { studentName, list, cohort } = this.state;
+    const { studentName, list, cohort, absenceList } = this.state;
     return (
       <React.Fragment>
         <Header as="h1">{studentName}</Header>
         <Header as="h4">{`Cohort: ${cohort}`}</Header>
+        <Header as="h4" style={{ color: 'green' }}>
+          Attendance Record
+        </Header>
         <Table collapsing celled striped>
           <Table.Header>
             <Table.Row textAlign="center">
@@ -67,13 +76,14 @@ class StudentAttandancePreview extends Component {
             })}
           </Table.Body>
         </Table>
+        <StudentAbsences absenceList={absenceList} />
       </React.Fragment>
     );
   }
 }
 
-StudentAttandancePreview.propTypes = {
+StudentAttendancePreview.propTypes = {
   location: PropTypes.instanceOf(Object).isRequired
 };
 
-export default StudentAttandancePreview;
+export default StudentAttendancePreview;

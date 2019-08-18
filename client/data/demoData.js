@@ -193,3 +193,71 @@ export const attendanceSummary = [
     cohort: 'RPT14'
   }
 ];
+
+export const studentsAbsenceRecord = [
+  {
+    firstName: 'Adam',
+    lastName: 'Klevin',
+    user_name: 'Adam Klevin',
+    cohort: 'RPT13',
+    timestamp: '2/25/2019, 1:35:21 AM',
+    type: 'opening',
+    isAbsent: true,
+    isLate: false,
+    staffNotes: 'None',
+    isExcused: true,
+    points: 2
+  },
+  {
+    firstName: 'Bob',
+    lastName: 'Builder',
+    user_name: 'Bob Builder',
+    cohort: 'RPT14',
+    timestamp: '2/25/2019, 1:35:21 AM',
+    type: 'opening',
+    isAbsent: true,
+    isLate: false,
+    staffNotes: 'None',
+    isExcused: true,
+    points: 1
+  },
+  {
+    firstName: 'John',
+    lastName: 'Smith',
+    user_name: 'John Smith',
+    cohort: 'RPT13',
+    timestamp: '2/25/2019, 1:35:21 AM',
+    type: 'opening',
+    isAbsent: true,
+    isLate: false,
+    staffNotes: 'None',
+    isExcused: true,
+    points: 2
+  },
+  {
+    firstName: 'Jane',
+    lastName: 'Peter',
+    user_name: 'Jane Peter',
+    cohort: 'RPT13',
+    timestamp: '2/25/2019, 1:35:21 AM',
+    type: 'opening',
+    isAbsent: true,
+    isLate: false,
+    staffNotes: 'None',
+    isExcused: true,
+    points: 1
+  },
+  {
+    firstName: 'Aron',
+    lastName: 'Doe',
+    user_name: 'Aron Doe',
+    cohort: 'RPT14',
+    timestamp: '2/25/2019, 1:35:21 AM',
+    type: 'opening',
+    isAbsent: true,
+    isLate: false,
+    staffNotes: 'None',
+    isExcused: true,
+    points: 2
+  }
+];
