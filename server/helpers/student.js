@@ -63,7 +63,7 @@ module.exports = class Student {
     if (commitData) {
       return commitData.map(commit => {
         if (!commit.commit.message.includes('Merge')) {
-          return commit.commit.message.replace(/['"-]+/g, '');
+          return commit.commit.message.replace(/['"]+/g, '');
         }
         return 'Merge commit';
       });
