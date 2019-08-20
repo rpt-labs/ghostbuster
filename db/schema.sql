@@ -86,9 +86,35 @@ CREATE TABLE IF NOT EXISTS student_attendance (
     leave_time date NOT NULL,
     recording boolean,
     pc_name text,
-    firstName text NOT NULL,
-    lastName text NOT NULL,
+    first_name text,
+    last_name text,
     room text NOT NULL,
     created_at timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS student_absences (
+    id SERIAL PRIMARY KEY,
+    enrollment_id integer REFERENCES enrollments,
+    first_name text,
+    last_name text,
+    user_name text NOT NULL,
+    cohort text,
+    type text,
+    is_absent boolean,
+    is_late boolean,
+    data_center text,
+    notes_id integer REFERENCES students_staff_comments,
+    is_excused boolean,
+    points NOT NULL DEFAULT 0,
+    created_at timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS students_staff_comments (
+  id SERIAL PRIMARY KEY,
+  enrollment_id integer REFERENCES enrollments,
+  comment text NOT NULL,
+  staff_name text NOT NULL,
+  comment_type text NOT NULL,
+  created_at timestamptz NOT NULL DEFAULT now()
 );
 
