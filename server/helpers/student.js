@@ -86,7 +86,7 @@ module.exports = class Student {
     // filter by matching the predetermined commit messages, then make unique in case students make more than one of the same milestone commit messages
     let matching = commitData
       .map(message => message.toLowerCase())
-      .filter(message => possibleMessages.includes(message.toLowerCase()))
+      .filter(message => possibleMessages.includes(message))
       .reduce((a, b) => {
         if (!a.includes(b)) {
           a.push(b);
