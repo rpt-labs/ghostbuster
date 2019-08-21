@@ -14,7 +14,10 @@ const CommitList = props => {
   const commitsWithMilestoneCommitMessage = commits.filter(commit =>
     milestoneCommits.includes(commit.trim().toLowerCase())
   );
-  const uniqueMilestoneCommits = [...new Set(commitsWithMilestoneCommitMessage)];
+
+  const uniqueMilestoneCommits = [
+    ...new Set(commitsWithMilestoneCommitMessage.map(message => message.toLowerCase()))
+  ];
 
   const commitList = show ? (
     commits.map((commit, i) =>

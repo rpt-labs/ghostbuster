@@ -84,8 +84,9 @@ module.exports = class Student {
   percentComplete(possibleCommits, commitData) {
     const possibleMessages = possibleCommits.map(x => x.message);
     // filter by matching the predetermined commit messages, then make unique in case students make more than one of the same milestone commit messages
-    const matching = commitData
-      .filter(x => possibleMessages.includes(x.toLowerCase()))
+    let matching = commitData
+      .map(message => message.toLowerCase())
+      .filter(message => possibleMessages.includes(message.toLowerCase()))
       .reduce((a, b) => {
         if (!a.includes(b)) {
           a.push(b);
