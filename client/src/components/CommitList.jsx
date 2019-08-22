@@ -12,21 +12,21 @@ const CommitList = props => {
   const { messages } = sprints.allSprints[sprint];
   const milestoneCommits = messages.map(message => message.message);
   const commitsWithMilestoneCommitMessage = commits.filter(commit =>
-    milestoneCommits.includes(commit.trim().toLowerCase())
+    milestoneCommits.includes(commit.normalizedMessage)
   );
 
   const uniqueMilestoneCommits = [
-    ...new Set(commitsWithMilestoneCommitMessage.map(message => message.toLowerCase()))
+    ...new Set(commitsWithMilestoneCommitMessage.map(message => message.normalizedMessage))
   ];
 
   const commitList = show ? (
     commits.map((commit, i) =>
-      milestoneCommits.includes(commit.toLowerCase()) ? (
+      milestoneCommits.includes(commit.normalizedMessage) ? (
         <List.Item key={i}>
           <StarIconGreen name="star" />
           <List.Content style={{ textAlign: 'left' }}>
             <a target="_blank" rel="noopener noreferrer" href={url}>
-              <strong style={{ color: 'green' }}>{commit}</strong>
+              <strong style={{ color: 'green' }}>{commit.message}</strong>
             </a>
           </List.Content>
         </List.Item>
@@ -35,7 +35,7 @@ const CommitList = props => {
           <StarIconGrey name="star" />
           <List.Content style={{ textAlign: 'left' }}>
             <a target="_blank" rel="noopener noreferrer" href={url} style={{ color: 'grey' }}>
-              {commit}
+              {commit.message}
             </a>
           </List.Content>
         </List.Item>

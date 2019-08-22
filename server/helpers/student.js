@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 const githubQuery = require('./githubQuery');
 
 // so node won't throw an error and crash when a student doesn't have a fork
@@ -62,10 +63,16 @@ module.exports = class Student {
   commitMessages(commitData) {
     if (commitData) {
       return commitData.map(commit => {
-        if (!commit.commit.message.includes('Merge')) {
-          return commit.commit.message.replace(/['"]+/g, '');
+        if (commit.commit && commit.commit.message && !commit.commit.message.includes('Merge')) {
+          const { message } = commit.commit;
+          const normalizedMessage = message
+            .toLowerCase()
+            .trim()
+            .replace(/['"]+/g, '');
+
+          return { message, normalizedMessage };
         }
-        return 'Merge commit';
+        return { message: 'Merge Commit', normalizedMessage: 'merge commit' };
       });
     }
     return null;
@@ -73,8 +80,9 @@ module.exports = class Student {
 
   passBMR(commitData) {
     if (commitData) {
-      const lowerCases = commitData.map(message => message.toLowerCase());
-      return lowerCases.includes('complete bare minimum requirements');
+      return commitData.some(
+        commit => commit.normalizedMessage === 'complete bare minimum requirements'
+      );
     }
     return null;
   }
@@ -84,9 +92,9 @@ module.exports = class Student {
   percentComplete(possibleCommits, commitData) {
     const possibleMessages = possibleCommits.map(x => x.message);
     // filter by matching the predetermined commit messages, then make unique in case students make more than one of the same milestone commit messages
-    let matching = commitData
-      .map(message => message.toLowerCase())
-      .filter(message => possibleMessages.includes(message))
+    const matching = commitData
+      .map(commit => commit.normalizedMessage)
+      .filter(commit => possibleMessages.includes(commit))
       .reduce((a, b) => {
         if (!a.includes(b)) {
           a.push(b);
