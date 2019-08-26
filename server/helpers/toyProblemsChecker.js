@@ -16,7 +16,7 @@ const checkIfPrTitleMatches = prTitle => {
   return allToyProblems.some(substring => prTitle.toLowerCase().includes(substring));
 };
 
-const AllPrsWithMatchingTitles = studentPrList => {
+const AllPrsWithMatchingTitles = async studentPrList => {
   const allMatchedPrs = studentPrList.filter(e => checkIfPrTitleMatches(e.toLowerCase()));
 
   return allMatchedPrs;
@@ -42,6 +42,8 @@ const numberOfUniquePrsWithMatchingTitles = prList => {
 const getPrListForStudent = async (cohort, student) => {
   const studentName = `${student.firstName} ${student.lastName}`;
   const studentGithubHandle = student.github;
+  let matchedPrs = [];
+  let uniqueMatchedPrCount = 0;
   try {
     const response = await githubQuery(`
       https://api.github.com/search/issues?q=is:pr+repo:hackreactor/${cohort}-toy-problems+author:${
@@ -51,23 +53,22 @@ const getPrListForStudent = async (cohort, student) => {
       const pullRequests = response.items.map(item => {
         return item.title;
       });
-      let matchedPrs = AllPrsWithMatchingTitles(pullRequests) || [];
+      matchedPrs = (await AllPrsWithMatchingTitles(pullRequests)) || [];
       // remove duplicates
       matchedPrs = [...new Set(matchedPrs.map(pr => pr.toLowerCase().trim()))];
-      const uniqueMatchedPrCount = numberOfUniquePrsWithMatchingTitles(matchedPrs);
-      return { cohort, studentName, studentGithubHandle, matchedPrs, uniqueMatchedPrCount };
+      uniqueMatchedPrCount = await numberOfUniquePrsWithMatchingTitles(matchedPrs);
     }
   } catch (error) {
     console.log(error);
     return [{ commit: { message: 'no pr!' } }];
   }
-  return [];
+  return { cohort, studentName, studentGithubHandle, matchedPrs, uniqueMatchedPrCount };
 };
 
 const checkToyProblems = async cohort => {
   const studentsList = await getStudentsList(cohort);
   const getAllprs = async () => {
-    return Promise.all(studentsList.map(student => getPrListForStudent(cohort, student)));
+    return Promise.all(studentsList.map(async student => getPrListForStudent(cohort, student)));
   };
   const allPrs = await getAllprs();
   return allPrs;
