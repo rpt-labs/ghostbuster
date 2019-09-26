@@ -5,10 +5,18 @@ CREATE TABLE IF NOT EXISTS cohorts (
   status text
 );
 
-CREATE TABLE IF NOT EXISTS students (
+CREATE TABLE IF NOT EXISTS enrollments (
   id SERIAL PRIMARY KEY,
+  cohort_id integer REFERENCES cohorts ON DELETE CASCADE,
+  student_id integer,
+  status text
+);
+
+CREATE TABLE IF NOT EXISTS students (
+  id integer REFERENCES enrollments,
   first_name text NOT NULL,
   last_name text NOT NULL,
+  zoom_name text,
   github text UNIQUE NOT NULL,
   status text NOT NULL,
   cohort_id integer REFERENCES cohorts ON DELETE CASCADE
@@ -25,7 +33,7 @@ CREATE TABLE IF NOT EXISTS teams (
 CREATE TABLE IF NOT EXISTS team_student (
   id SERIAL PRIMARY KEY,
   team_id integer REFERENCES teams ON DELETE CASCADE,
-  student_id integer REFERENCES students ON DELETE CASCADE
+  enrollment_id integer REFERENCES enrollments ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS sprints (
@@ -41,7 +49,7 @@ CREATE TABLE IF NOT EXISTS messages (
 
 CREATE TABLE IF NOT EXISTS student_sprints (
   id SERIAL PRIMARY KEY,
-  student_id integer REFERENCES students ON DELETE CASCADE,
+  enrollment_id integer REFERENCES enrollments,
   sprint_id integer REFERENCES sprints ON DELETE CASCADE,
   fork boolean NOT NULL,
   bmr boolean NOT NULL,
@@ -65,8 +73,48 @@ CREATE TABLE IF NOT EXISTS team_student_weekly_contributions (
   num_commits integer NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS student_attendance (
+    id SERIAL PRIMARY KEY,
+    enrollment_id integer REFERENCES enrollments,
+    zoom_id text NOT NULL,
+    user_id integer NOT NULL,
+    user_name text NOT NULL,
+    device text,
+    LOCATION text,
+    data_center text,
+    join_time date NOT NULL,
+    leave_time date NOT NULL,
+    recording boolean,
+    pc_name text,
+    first_name text,
+    last_name text,
+    room text NOT NULL,
+    created_at timestamptz NOT NULL DEFAULT now()
+);
 
+CREATE TABLE IF NOT EXISTS student_absences (
+    id SERIAL PRIMARY KEY,
+    enrollment_id integer REFERENCES enrollments,
+    first_name text,
+    last_name text,
+    user_name text NOT NULL,
+    cohort text,
+    type text,
+    is_absent boolean,
+    is_late boolean,
+    data_center text,
+    notes_id integer REFERENCES students_staff_comments,
+    is_excused boolean,
+    points NOT NULL DEFAULT 0,
+    created_at timestamptz NOT NULL DEFAULT now()
+);
 
-
-
+CREATE TABLE IF NOT EXISTS students_staff_comments (
+  id SERIAL PRIMARY KEY,
+  enrollment_id integer REFERENCES enrollments,
+  comment text NOT NULL,
+  staff_name text NOT NULL,
+  comment_type text NOT NULL,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
 

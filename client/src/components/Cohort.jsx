@@ -56,6 +56,10 @@ class Cohort extends React.Component {
           selected: false
         },
         {
+          name: 'a-synchronous-swim',
+          selected: false
+        },
+        {
           name: 'chatterbox-server',
           selected: false
         },
