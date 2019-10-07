@@ -1,53 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Header } from 'semantic-ui-react';
-import queryString from 'query-string';
+import { Table, Header, Input } from 'semantic-ui-react';
 import moment from 'moment-timezone';
-import { studentsRecord, studentsAbsenceRecord } from '../../../data/demoData';
-import StudentAbsences from './StudentAbsences';
 
-class StudentAttendancePreview extends Component {
+class StudentAbsences extends Component {
   constructor(props) {
     super(props);
+    const { absenceList } = this.props;
     this.state = {
-      studentName: '',
-      attendanceList: [],
-      absenceList: [],
-      cohort: ''
-    };
-    this.getAttendance = this.getAttendance.bind(this);
-  }
-
-  componentWillMount() {
-    this.getAttendance();
-  }
-
-  getAttendance() {
-    const { location } = this.props;
-    const { cohort, firstName, lastName } = queryString.parse(location.search);
-    const name = `${firstName} ${lastName}`;
-    const attendanceList = studentsRecord.filter(e => {
-      return e.user_name === name;
-    });
-    const absenceList = studentsAbsenceRecord.filter(e => {
-      return e.user_name === name;
-    });
-    this.setState({
-      studentName: name,
-      cohort,
-      attendanceList,
       absenceList
-    });
+    };
   }
 
   render() {
-    const { studentName, attendanceList, cohort, absenceList } = this.state;
+    const { absenceList } = this.state;
     return (
       <React.Fragment>
-        <Header as="h1">{studentName}</Header>
-        <Header as="h4">{`Cohort: ${cohort}`}</Header>
-        <Header as="h4" style={{ color: 'green' }}>
-          Attendance Record
+        <Header as="h4" style={{ color: 'dodgerblue' }}>
+          Absence Record
         </Header>
         <div
           style={{
@@ -66,16 +36,18 @@ class StudentAttendancePreview extends Component {
             }}
           >
             {/* #TODO: Make the header sticky */}
-            <Table.Header style={{ position: 'sticky', top: 0, zIndex: 2 }}>
+            <Table.Header>
               <Table.Row textAlign="center">
                 <Table.HeaderCell>Date</Table.HeaderCell>
                 <Table.HeaderCell>Time (PST)</Table.HeaderCell>
                 <Table.HeaderCell>Type</Table.HeaderCell>
-                <Table.HeaderCell>Is Late?</Table.HeaderCell>
+                <Table.HeaderCell>Is Excused?</Table.HeaderCell>
+                <Table.HeaderCell>Points</Table.HeaderCell>
+                <Table.HeaderCell>Staff Notes</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {attendanceList.map(e => {
+              {absenceList.map(e => {
                 const dateTime = moment
                   .tz(e.join_time, 'America/Los_Angeles')
                   .format('MM/DD/YYYY h:mm a');
@@ -86,21 +58,24 @@ class StudentAttendancePreview extends Component {
                     <Table.Cell>{date}</Table.Cell>
                     <Table.Cell>{time}</Table.Cell>
                     <Table.Cell>{e.type}</Table.Cell>
-                    <Table.Cell>No</Table.Cell>
+                    <Table.Cell>{e.isExcused ? 'Yes' : 'No'}</Table.Cell>
+                    <Table.Cell>{e.points}</Table.Cell>
+                    <Table.Cell>
+                      <Input transparent defaultValue={e.staffNotes} />
+                    </Table.Cell>
                   </Table.Row>
                 );
               })}
             </Table.Body>
           </Table>
         </div>
-        <StudentAbsences absenceList={absenceList} />
       </React.Fragment>
     );
   }
 }
 
-StudentAttendancePreview.propTypes = {
-  location: PropTypes.instanceOf(Object).isRequired
+StudentAbsences.propTypes = {
+  absenceList: PropTypes.instanceOf(Array).isRequired
 };
 
-export default StudentAttendancePreview;
+export default StudentAbsences;

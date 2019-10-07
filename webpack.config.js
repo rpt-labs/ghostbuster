@@ -19,6 +19,7 @@ module.exports = () => {
       filename: '[name].js',
       publicPath: '/'
     },
+    devtool: 'eval-source-map',
     module: {
       rules: [
         {
