@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Menu, Segment } from 'semantic-ui-react';
 import AddStudent from './AddStudent';
-import EditStudent from './EditStudent';
-import GithubActivity from './GithubActivity';
+import Dashboard from './Dashboard';
 
 const RenderedContent = ({ tabName = 'Add Student', cohorts }) => {
-  if (tabName === 'View and Edit Student') return <EditStudent />;
-  if (tabName === 'Github Activity') return <GithubActivity />;
+  if (tabName === 'Student Dashboard') return <Dashboard cohorts={cohorts} />;
   return <AddStudent cohorts={cohorts} />;
 };
 
@@ -36,13 +34,8 @@ class StudentsView extends Component {
                 onClick={this.handleItemClick}
               />
               <Menu.Item
-                name="View and Edit Student"
-                active={activeItem === 'View and Edit Student'}
-                onClick={this.handleItemClick}
-              />
-              <Menu.Item
-                name="Github Activity"
-                active={activeItem === 'Github Activity'}
+                name="Student Dashboard"
+                active={activeItem === 'Student Dashboard'}
                 onClick={this.handleItemClick}
               />
             </Menu>
