@@ -16,9 +16,8 @@ class CreateTeamModal extends Component {
     super(props);
     this.state = {
       teamName: '',
-      teamType: '',
-      github: '',
-      openConfirmationModal: false
+      teamType: 'Other',
+      github: ''
     };
   }
 
@@ -33,13 +32,11 @@ class CreateTeamModal extends Component {
 
   handleSelectionChange = (e, { value }) => this.setState({ teamType: value });
 
-  handleClose = () => this.setState({ openConfirmationModal: false });
-
   createTeam = () => {
     const { teamName, teamType } = this.state;
     let { github } = this.state;
-    const { selectedCohort, selectedStudents, close } = this.props;
-    github = !github ? `${teamType}_${teamName}` : github;
+    const { selectedCohort, selectedStudents, close, showDetails } = this.props;
+    github = !github ? `${teamType}_${teamName}_${selectedCohort.id}` : github;
     axios
       .post(
         `${GHOSTBUSTER_BASE_URL}/ghostbuster/teams?teamName=${teamName}&teamType=${teamType}&github=${github}&cohortId=${
@@ -49,7 +46,7 @@ class CreateTeamModal extends Component {
       .then(response => {
         if (response.data && response.data.team) {
           const { teamId } = response.data.team;
-          if (teamId) {
+          if (teamId && selectedStudents) {
             selectedStudents.forEach(student => {
               const { id } = student;
               axios
@@ -57,11 +54,13 @@ class CreateTeamModal extends Component {
                 .then(res => {
                   if (res.data && res.status === 200) {
                     close();
-                    this.setState({ openConfirmationModal: true });
+                    showDetails();
                   }
                 });
             });
           }
+          close();
+          showDetails();
         }
       })
       .catch(error => {
@@ -71,7 +70,8 @@ class CreateTeamModal extends Component {
 
   render() {
     const { open, selectedStudents, close } = this.props;
-    const { openConfirmationModal, teamName } = this.state;
+    const { teamName } = this.state;
+    const isDisabled = !teamName.length;
 
     return (
       <div>
@@ -86,6 +86,7 @@ class CreateTeamModal extends Component {
                   placeholder="Team Name"
                   name="teamName"
                   onChange={this.handleInputChange}
+                  required
                 />
                 <Form.Field
                   control={Input}
@@ -114,7 +115,7 @@ class CreateTeamModal extends Component {
           </Modal.Content>
           <Modal.Actions>
             <Button negative onClick={close}>
-              No
+              Cancel
             </Button>
             <Button
               positive
@@ -122,29 +123,8 @@ class CreateTeamModal extends Component {
               labelPosition="right"
               content="Create Team?"
               onClick={this.createTeam}
+              disabled={isDisabled}
             />
-          </Modal.Actions>
-        </Modal>
-        <Modal open={openConfirmationModal} size="mini">
-          <Modal.Header>Success!</Modal.Header>
-          <Modal.Content style={{ fontSize: '18px' }}>
-            Created New Team:
-            <span>
-              <b style={{ color: 'green' }}>{`  ${teamName}`}</b>
-            </span>
-            <List style={{ fontSize: '15px' }}>
-              <List.Header>With Students:</List.Header>
-              {selectedStudents.map(student => (
-                <List.Item key={student.github}>
-                  {`- ${student.firstName} ${student.lastName}`}
-                </List.Item>
-              ))}
-            </List>
-          </Modal.Content>
-          <Modal.Actions>
-            <Button positive onClick={this.handleClose}>
-              OK
-            </Button>
           </Modal.Actions>
         </Modal>
       </div>
@@ -157,6 +137,7 @@ export default CreateTeamModal;
 CreateTeamModal.propTypes = {
   open: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
+  showDetails: PropTypes.func.isRequired,
   selectedStudents: PropTypes.instanceOf(Array).isRequired,
   selectedCohort: PropTypes.instanceOf(Object).isRequired
 };

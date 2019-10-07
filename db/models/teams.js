@@ -76,6 +76,22 @@ module.exports = {
     }
   },
 
+  removeStudentsFromTeam: async teamId => {
+    try {
+      const deleted = await query(`
+        DELETE FROM team_student
+        WHERE team_id=${teamId}
+      `);
+      if (deleted.rowCount) {
+        return { deleted: deleted.rowCount };
+      }
+      return { deleted: 0 };
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  },
+
   updateTeam: async (teamId, newTeamInfo) => {
     // update team
     try {

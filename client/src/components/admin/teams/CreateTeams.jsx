@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Segment } from 'semantic-ui-react';
 import RadioButtonList from '../../shared/RadioButtonList';
 import StudentsList from './StudentsList';
+import TeamsList from './TeamsList';
 
 function CreateTeams(props) {
   const {
@@ -9,7 +11,9 @@ function CreateTeams(props) {
     handleRadioButtonChange,
     showDetails,
     selectedCohortStudents,
-    selectedCohort
+    selectedCohort,
+    showTeamDetails,
+    teamsListForSelectedCohort
   } = props;
 
   const currentStudents = selectedCohortStudents.filter(student => student.status === 'enrolled');
@@ -19,15 +23,34 @@ function CreateTeams(props) {
         cohorts={cohorts}
         handleRadioButtonChange={handleRadioButtonChange}
         showDetails={showDetails}
-        buttonLabel="Show Students List"
+        buttonLabel="Show Students and Teams"
       />
-      <div>
-        {currentStudents.length ? (
-          <StudentsList currentStudents={currentStudents} selectedCohort={selectedCohort} />
-        ) : (
-          <div />
-        )}
-      </div>
+
+      {currentStudents.length ? (
+        <Segment>
+          <StudentsList
+            currentStudents={currentStudents}
+            selectedCohort={selectedCohort}
+            teamsListForSelectedCohort={teamsListForSelectedCohort}
+            showDetails={showDetails}
+          />
+        </Segment>
+      ) : (
+        <div />
+      )}
+      {teamsListForSelectedCohort.length ? (
+        <Segment>
+          <TeamsList
+            style={{ marginLeft: '50px', marginTop: '15px' }}
+            teamsListForSelectedCohort={teamsListForSelectedCohort}
+            selectedCohort={selectedCohort}
+            showTeamDetails={showTeamDetails}
+            currentStudents={currentStudents}
+          />
+        </Segment>
+      ) : (
+        <div />
+      )}
     </React.Fragment>
   );
 }
@@ -37,7 +60,9 @@ CreateTeams.propTypes = {
   handleRadioButtonChange: PropTypes.func.isRequired,
   showDetails: PropTypes.instanceOf(Object).isRequired,
   selectedCohortStudents: PropTypes.instanceOf(Array).isRequired,
-  selectedCohort: PropTypes.instanceOf(Object).isRequired
+  selectedCohort: PropTypes.instanceOf(Object).isRequired,
+  showTeamDetails: PropTypes.func.isRequired,
+  teamsListForSelectedCohort: PropTypes.instanceOf(Array).isRequired
 };
 
 export default CreateTeams;

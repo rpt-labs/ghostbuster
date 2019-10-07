@@ -1,17 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Card, Button, Confirm, Icon } from 'semantic-ui-react';
+import { Card, Button, Confirm, Icon, Header } from 'semantic-ui-react';
 import _ from 'lodash';
 import axios from 'axios';
+import EditTeamModal from './EditTeamModal';
 
 const { GHOSTBUSTER_BASE_URL } = process.env;
 
 class TeamsList extends Component {
   constructor(props) {
     super(props);
+    const { currentStudents } = this.props;
     this.state = {
       selectedTeamId: null,
-      openConfirmationModal: false
+      selectedTeamDetails: {},
+      openConfirmationModal: false,
+      openEditModal: false,
+      showStudentsList: false,
+      currentStudents
     };
   }
 
@@ -33,17 +39,56 @@ class TeamsList extends Component {
   openConfirmationModal = e =>
     this.setState({ openConfirmationModal: true, selectedTeamId: e.target.value });
 
+  openEditModal = e => {
+    const id = parseInt(e.target.value, 10);
+    const { teamsListForSelectedCohort, currentStudents } = this.props;
+    const selectedTeamDetails = teamsListForSelectedCohort.find(team => team.teamId === id);
+    selectedTeamDetails.students.forEach(item => {
+      // eslint-disable-next-line array-callback-return
+      currentStudents.map(student => {
+        if (student.id === item.studentId) {
+          // eslint-disable-next-line no-param-reassign
+          student.isChecked = true;
+        }
+      });
+    });
+    this.setState({ openEditModal: true, selectedTeamId: e.target.value, selectedTeamDetails });
+  };
+
+  toggleDisplay = () => {
+    const { showStudentsList } = this.state;
+    this.setState({ showStudentsList: !showStudentsList });
+  };
+
   closeConfirmationModal = () => this.setState({ openConfirmationModal: false });
 
+  closeEditModal = () => {
+    const { currentStudents } = this.props;
+    this.setState({
+      openEditModal: false,
+      showStudentsList: false,
+      currentStudents: currentStudents.map(student => Object.assign(student, { isChecked: false }))
+    });
+  };
+
   render() {
-    const { teamsListForSelectedCohort } = this.props;
+    const { teamsListForSelectedCohort, selectedCohort, showTeamDetails } = this.props;
     const teamsByTeamType = _.groupBy(teamsListForSelectedCohort, 'teamType');
-    const { openConfirmationModal } = this.state;
+    const {
+      openConfirmationModal,
+      openEditModal,
+      selectedTeamDetails,
+      currentStudents,
+      showStudentsList
+    } = this.state;
 
     return (
       <React.Fragment>
+        <Header as="h2" style={{ textAlign: 'center', marginTop: '15px' }}>
+          {`${selectedCohort.name.toUpperCase()} - Teams`}
+        </Header>
         {Object.keys(teamsByTeamType).map(teamType => (
-          <div key={teamType} style={{ padding: '10px', margin: 'auto', width: '90%' }}>
+          <div key={teamType} style={{ padding: '10px' }}>
             <h1>{`${teamType} teams`}</h1>
             <Card.Group>
               {teamsByTeamType[teamType].map(team => (
@@ -66,8 +111,13 @@ class TeamsList extends Component {
                   </Card.Content>
                   <Card.Content extra>
                     <div>
-                      {/* #TODO: implement edit team feature */}
-                      <Button basic color="blue" disabled value={team.teamId}>
+                      <Button
+                        basic
+                        color="blue"
+                        value={team.teamId}
+                        style={{ float: 'left' }}
+                        onClick={e => this.openEditModal(e)}
+                      >
                         Edit Team
                       </Button>
                       <Button
@@ -75,6 +125,7 @@ class TeamsList extends Component {
                         color="red"
                         onClick={this.openConfirmationModal}
                         value={team.teamId}
+                        style={{ float: 'right' }}
                       >
                         Delete Team
                       </Button>
@@ -91,6 +142,18 @@ class TeamsList extends Component {
               dimmer="blurring"
               size="mini"
             />
+            <EditTeamModal
+              close={this.close}
+              size="tiny"
+              openEditModal={openEditModal}
+              closeEditModal={this.closeEditModal}
+              selectedCohort={selectedCohort}
+              selectedTeamDetails={selectedTeamDetails}
+              currentStudents={currentStudents}
+              showTeamDetails={showTeamDetails}
+              toggleDisplay={this.toggleDisplay}
+              showStudentsList={showStudentsList}
+            />
           </div>
         ))}
       </React.Fragment>
@@ -102,5 +165,7 @@ export default TeamsList;
 
 TeamsList.propTypes = {
   teamsListForSelectedCohort: PropTypes.instanceOf(Array).isRequired,
+  currentStudents: PropTypes.instanceOf(Array).isRequired,
+  selectedCohort: PropTypes.instanceOf(Object).isRequired,
   showTeamDetails: PropTypes.func.isRequired
 };
