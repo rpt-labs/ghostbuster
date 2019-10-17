@@ -17,9 +17,9 @@ const checkIfPrTitleMatches = prTitle => {
 };
 
 const AllPrsWithMatchingTitles = async studentPrList => {
-  const allMatchedPrs = studentPrList.filter(e => checkIfPrTitleMatches(e.toLowerCase()));
+  const allmatchedFileNames = studentPrList.filter(e => checkIfPrTitleMatches(e.toLowerCase()));
 
-  return allMatchedPrs;
+  return allmatchedFileNames;
 };
 
 const numberOfUniquePrsWithMatchingTitles = prList => {
@@ -35,34 +35,48 @@ const numberOfUniquePrsWithMatchingTitles = prList => {
 
   const flattenedMatchedStrings = [];
   allMatchedStrings.forEach(item => flattenedMatchedStrings.push(...item));
-  const uniqueMatchedPrsArray = Array.from(new Set(flattenedMatchedStrings));
-  return uniqueMatchedPrsArray.length;
+  const uniquematchedFileNamesArray = Array.from(new Set(flattenedMatchedStrings));
+  return uniquematchedFileNamesArray.length;
+};
+
+const getFilesChanged = async urls => {
+  return Promise.all(
+    urls.map(async url => {
+      return githubQuery(`${url}/files`).then(response => {
+        const items = [];
+        response.map(item => items.push(item.filename.split('/')[0]));
+        return items;
+      });
+    })
+  );
 };
 
 const getPrListForStudent = async (cohort, student) => {
   const studentName = `${student.firstName} ${student.lastName}`;
   const studentGithubHandle = student.github;
-  let matchedPrs = [];
-  let uniqueMatchedPrCount = 0;
+  let matchedFileNames = [];
+  let matchedFilesCount = 0;
   try {
     const response = await githubQuery(`
       https://api.github.com/search/issues?q=is:pr+repo:hackreactor/${cohort}-toy-problems+author:${
       student.github
-    }`);
+    }&per_page=100`);
     if (response && response.items && response.items.length) {
-      const pullRequests = response.items.map(item => {
-        return item.title;
+      const pullRequestUrls = response.items.map(item => {
+        return item.pull_request.url;
       });
-      matchedPrs = (await AllPrsWithMatchingTitles(pullRequests)) || [];
+      let filesChanged = await getFilesChanged(pullRequestUrls);
+      filesChanged = [].concat(...filesChanged);
+      matchedFileNames = (await AllPrsWithMatchingTitles(filesChanged)) || [];
       // remove duplicates
-      matchedPrs = [...new Set(matchedPrs.map(pr => pr.toLowerCase().trim()))];
-      uniqueMatchedPrCount = await numberOfUniquePrsWithMatchingTitles(matchedPrs);
+      matchedFileNames = [...new Set(matchedFileNames.map(pr => pr.toLowerCase().trim()))];
+      matchedFilesCount = await numberOfUniquePrsWithMatchingTitles(matchedFileNames);
     }
   } catch (error) {
     console.log(error);
     return [{ commit: { message: 'no pr!' } }];
   }
-  return { cohort, studentName, studentGithubHandle, matchedPrs, uniqueMatchedPrCount };
+  return { cohort, studentName, studentGithubHandle, matchedFileNames, matchedFilesCount };
 };
 
 const checkToyProblems = async cohort => {
