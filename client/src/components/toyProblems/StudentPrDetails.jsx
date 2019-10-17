@@ -58,15 +58,15 @@ export default class StudentPrDetails extends Component {
                           style={{ float: 'right', marginRight: '30px' }}
                         >
                           <Icon name="calculator" />
-                          {item.uniqueMatchedPrCount}
+                          {item.matchedFilesCount}
                         </Label>
                       </Card.Header>
                     </a>
                     <Card.Description />
                     {showAllAttemptedToyProblems ? (
                       <div>
-                        {item.matchedPrs && item.matchedPrs.length ? (
-                          item.matchedPrs.map(pr => <div key={pr}>{pr}</div>)
+                        {item.matchedFileNames && item.matchedFileNames.length ? (
+                          item.matchedFileNames.map(pr => <div key={pr}>{pr}</div>)
                         ) : (
                           <div />
                         )}
