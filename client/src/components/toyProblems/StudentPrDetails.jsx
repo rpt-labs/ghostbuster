@@ -26,8 +26,7 @@ export default class StudentPrDetails extends Component {
         {pullRequestsList && pullRequestsList.length ? (
           <div>
             <Header as="h1">
-              Selected Cohort:
-              {selectedCohort.toUpperCase()}
+              {`Selected Cohort: ${selectedCohort.toUpperCase()}`}
               <Button
                 color="grey"
                 style={{ float: 'right', marginRight: '0px' }}
@@ -38,8 +37,8 @@ export default class StudentPrDetails extends Component {
             </Header>
             <Card.Group itemsPerRow={2}>
               {pullRequestsList.map(item => (
-                <Card key={item.studentName}>
-                  <Card.Content>
+                <Card key={item.studentName} style={{ marginBottom: '0px' }}>
+                  <Card.Content style={{ paddingBottom: '0px' }}>
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
