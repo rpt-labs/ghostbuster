@@ -14,12 +14,14 @@ class ToyProblems extends Component {
       cohorts: [],
       pullRequestsList: [],
       showDetails: false,
-      selectedCohort: ''
+      selectedCohort: '',
+      releasedToyProblems: []
     };
     this.handleRadioButtonChange = this.handleRadioButtonChange.bind(this);
     this.showDetails = this.showDetails.bind(this);
     this.getCohortsList = this.getCohortsList.bind(this);
     this.onButtonClick = this.onButtonClick.bind(this);
+    this.checkReleasedToyProblems = this.checkReleasedToyProblems.bind(this);
   }
 
   componentDidMount() {
@@ -62,6 +64,7 @@ class ToyProblems extends Component {
     const { cohorts } = this.state;
     const selectedCohort = cohorts.find(e => e.isChecked === true).name.toLowerCase();
 
+    this.checkReleasedToyProblems(selectedCohort);
     let pullRequestsList = [];
     axios
       .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/toyproblems?cohort=${selectedCohort}`)
@@ -76,8 +79,30 @@ class ToyProblems extends Component {
       });
   }
 
+  checkReleasedToyProblems(selectedCohort) {
+    let releasedToyProblems = [];
+    axios
+      .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/toyproblems/releases?cohort=${selectedCohort}`)
+      .then(response => {
+        if (response && response.data && response.data.toyProblems) {
+          releasedToyProblems = response.data.toyProblems;
+        }
+        this.setState({ releasedToyProblems });
+      })
+      .catch(error => {
+        throw error;
+      });
+  }
+
   render() {
-    const { cohorts, selectedCohort, pullRequestsList, showDetails } = this.state;
+    const {
+      cohorts,
+      selectedCohort,
+      pullRequestsList,
+      showDetails,
+      releasedToyProblems
+    } = this.state;
+
     return (
       <React.Fragment>
         <Grid textAlign="center" style={{ padding: '30px' }}>
@@ -89,7 +114,11 @@ class ToyProblems extends Component {
           />
         </Grid>
         {showDetails && pullRequestsList && pullRequestsList.length ? (
-          <StudentPrDetails pullRequestsList={pullRequestsList} selectedCohort={selectedCohort} />
+          <StudentPrDetails
+            pullRequestsList={pullRequestsList}
+            selectedCohort={selectedCohort}
+            releasedToyProblems={releasedToyProblems}
+          />
         ) : (
           <div style={{ margin: '30px', fontSize: '40px', fontWeight: 'bold' }}>
             Select a cohort to view details
