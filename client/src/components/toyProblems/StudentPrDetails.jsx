@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Label, Card, Icon, Button, Header } from 'semantic-ui-react';
+import ReleasedToyProblems from './ReleasedToyProblems';
 
 export default class StudentPrDetails extends Component {
   constructor(props) {
@@ -17,8 +18,16 @@ export default class StudentPrDetails extends Component {
   }
 
   render() {
-    const { pullRequestsList, selectedCohort } = this.props;
+    const { pullRequestsList, selectedCohort, releasedToyProblems } = this.props;
     const { showAllAttemptedToyProblems } = this.state;
+
+    pullRequestsList.forEach(item =>
+      Object.assign(item, {
+        incompleteProblems: releasedToyProblems.filter(
+          problem => !item.matchedFileNames.includes(problem)
+        )
+      })
+    );
 
     return (
       <div>
@@ -26,8 +35,7 @@ export default class StudentPrDetails extends Component {
         {pullRequestsList && pullRequestsList.length ? (
           <div>
             <Header as="h1">
-              Selected Cohort:
-              {selectedCohort.toUpperCase()}
+              {`Selected Cohort: ${selectedCohort.toUpperCase()}`}
               <Button
                 color="grey"
                 style={{ float: 'right', marginRight: '0px' }}
@@ -36,10 +44,11 @@ export default class StudentPrDetails extends Component {
                 {showAllAttemptedToyProblems ? 'Hide Details' : 'Show Details'}
               </Button>
             </Header>
+            <ReleasedToyProblems releasedToyProblems={releasedToyProblems} />
             <Card.Group itemsPerRow={2}>
               {pullRequestsList.map(item => (
-                <Card key={item.studentName}>
-                  <Card.Content>
+                <Card key={item.studentName} style={{ marginBottom: '0px' }}>
+                  <Card.Content style={{ paddingBottom: '0px' }}>
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
@@ -57,22 +66,27 @@ export default class StudentPrDetails extends Component {
                           color="teal"
                           style={{ float: 'right', marginRight: '30px' }}
                         >
-                          <Icon name="calculator" />
+                          <Icon name="check" />
                           {item.matchedFilesCount}
                         </Label>
                       </Card.Header>
                     </a>
                     <Card.Description />
-                    {showAllAttemptedToyProblems ? (
-                      <div>
-                        {item.matchedFileNames && item.matchedFileNames.length ? (
-                          item.matchedFileNames.map(pr => <div key={pr}>{pr}</div>)
-                        ) : (
-                          <div />
-                        )}
-                      </div>
-                    ) : (
-                      <div />
+                    {showAllAttemptedToyProblems && (
+                      <React.Fragment>
+                        <h1>Attempted:</h1>
+                        <div>
+                          {item.matchedFileNames &&
+                            item.matchedFileNames.length &&
+                            item.matchedFileNames.map(pr => <div key={pr}>{pr}</div>)}
+                        </div>
+                        <h1>Not Attempted:</h1>
+                        <div>
+                          {item.incompleteProblems &&
+                            item.incompleteProblems.length &&
+                            item.incompleteProblems.map(name => <div key={name}>{name}</div>)}
+                        </div>
+                      </React.Fragment>
                     )}
                     <br />
                   </Card.Content>
@@ -92,5 +106,6 @@ export default class StudentPrDetails extends Component {
 
 StudentPrDetails.propTypes = {
   pullRequestsList: PropTypes.instanceOf(Array).isRequired,
+  releasedToyProblems: PropTypes.instanceOf(Array).isRequired,
   selectedCohort: PropTypes.string.isRequired
 };

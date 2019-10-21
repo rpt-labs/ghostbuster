@@ -1,22 +1,27 @@
 import React, { Component } from 'react';
-import { Button } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 import axios from 'axios';
-import StudentPrDetails from './StudentPrDetails';
+import RadioButtonList from '../shared/RadioButtonList';
 import { getAllCohorts } from '../../queries/queries';
+import StudentPrDetails from './StudentPrDetails';
 
 const { GHOSTBUSTER_BASE_URL } = process.env;
 
-export default class ToyProblems extends Component {
-  constructor(props) {
-    super(props);
+class ToyProblems extends Component {
+  constructor() {
+    super();
     this.state = {
-      allCohorts: [],
-      selectedCohort: '',
+      cohorts: [],
       pullRequestsList: [],
-      showDetails: false
+      showDetails: false,
+      selectedCohort: '',
+      releasedToyProblems: []
     };
-    this.checkToyProblems = this.checkToyProblems.bind(this);
+    this.handleRadioButtonChange = this.handleRadioButtonChange.bind(this);
+    this.showDetails = this.showDetails.bind(this);
+    this.getCohortsList = this.getCohortsList.bind(this);
     this.onButtonClick = this.onButtonClick.bind(this);
+    this.checkReleasedToyProblems = this.checkReleasedToyProblems.bind(this);
   }
 
   componentDidMount() {
@@ -30,17 +35,36 @@ export default class ToyProblems extends Component {
 
   getCohortsList() {
     getAllCohorts().then(result => {
-      const cohorts = result.data.data.cohorts
-        .filter(cohort => cohort.status === 'current')
-        .map(cohort => cohort.name.toUpperCase());
+      const cohortsList = result.data.data.cohorts
+        .filter(cohort => cohort.status.toLowerCase() === 'current')
+        .map(e => e.name.toUpperCase());
       this.setState({
-        allCohorts: cohorts
+        cohorts: cohortsList.map(e => ({
+          name: e,
+          isChecked: false
+        }))
       });
     });
   }
 
-  checkToyProblems() {
-    const { selectedCohort } = { ...this.state };
+  handleRadioButtonChange(cohort) {
+    const { cohorts } = this.state;
+    const newCohortList = cohorts.slice();
+    newCohortList.forEach(e => {
+      if (e.name === cohort) {
+        e.isChecked = true;
+      } else {
+        e.isChecked = false;
+      }
+    });
+    this.setState({ cohorts: newCohortList });
+  }
+
+  showDetails() {
+    const { cohorts } = this.state;
+    const selectedCohort = cohorts.find(e => e.isChecked === true).name.toLowerCase();
+
+    this.checkReleasedToyProblems(selectedCohort);
     let pullRequestsList = [];
     axios
       .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/toyproblems?cohort=${selectedCohort}`)
@@ -48,7 +72,22 @@ export default class ToyProblems extends Component {
         if (response && response.data && response.data.toyProblems) {
           pullRequestsList = response.data.toyProblems;
         }
-        this.setState({ pullRequestsList, showDetails: true });
+        this.setState({ pullRequestsList, showDetails: true, selectedCohort });
+      })
+      .catch(error => {
+        throw error;
+      });
+  }
+
+  checkReleasedToyProblems(selectedCohort) {
+    let releasedToyProblems = [];
+    axios
+      .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/toyproblems/releases?cohort=${selectedCohort}`)
+      .then(response => {
+        if (response && response.data && response.data.toyProblems) {
+          releasedToyProblems = response.data.toyProblems;
+        }
+        this.setState({ releasedToyProblems });
       })
       .catch(error => {
         throw error;
@@ -56,26 +95,34 @@ export default class ToyProblems extends Component {
   }
 
   render() {
-    const { allCohorts, selectedCohort, pullRequestsList, showDetails } = this.state;
+    const {
+      cohorts,
+      selectedCohort,
+      pullRequestsList,
+      showDetails,
+      releasedToyProblems
+    } = this.state;
+
     return (
-      <div>
-        <div>
-          {allCohorts.map(cohort => {
-            return (
-              <Button primary key={cohort} onClick={e => this.onButtonClick(e)}>
-                {cohort}
-              </Button>
-            );
-          })}
-        </div>
-        {showDetails && pullRequestsList && pullRequestsList.length ? (
-          <StudentPrDetails pullRequestsList={pullRequestsList} selectedCohort={selectedCohort} />
-        ) : (
-          <div style={{ margin: '30px', fontSize: '40px', fontWeight: 'bold' }}>
-            Select a cohort to view details
-          </div>
+      <React.Fragment>
+        <Grid textAlign="center" style={{ padding: '30px' }}>
+          <RadioButtonList
+            cohorts={cohorts}
+            handleRadioButtonChange={this.handleRadioButtonChange}
+            showDetails={this.showDetails}
+            buttonLabel="Toy Problems Status"
+          />
+        </Grid>
+        {showDetails && pullRequestsList && pullRequestsList.length && (
+          <StudentPrDetails
+            pullRequestsList={pullRequestsList}
+            selectedCohort={selectedCohort}
+            releasedToyProblems={releasedToyProblems}
+          />
         )}
-      </div>
+      </React.Fragment>
     );
   }
 }
+
+export default ToyProblems;

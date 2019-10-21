@@ -88,4 +88,17 @@ const checkToyProblems = async cohort => {
   return allPrs;
 };
 
-module.exports = checkToyProblems;
+const getReleasedToyProblems = async cohort => {
+  const response = await githubQuery(
+    `https://api.github.com/repos/hackreactor/${cohort}-toy-problems/contents/`
+  );
+  let releasedProblems = [];
+  if (response && response.length) {
+    releasedProblems = response
+      .map(res => res.name.toLowerCase())
+      .filter(name => !name.includes('readme'));
+  }
+  return releasedProblems;
+};
+
+module.exports = { checkToyProblems, getReleasedToyProblems };
