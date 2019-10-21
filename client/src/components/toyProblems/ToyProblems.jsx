@@ -113,16 +113,12 @@ class ToyProblems extends Component {
             buttonLabel="Toy Problems Status"
           />
         </Grid>
-        {showDetails && pullRequestsList && pullRequestsList.length ? (
+        {showDetails && pullRequestsList && pullRequestsList.length && (
           <StudentPrDetails
             pullRequestsList={pullRequestsList}
             selectedCohort={selectedCohort}
             releasedToyProblems={releasedToyProblems}
           />
-        ) : (
-          <div style={{ margin: '30px', fontSize: '40px', fontWeight: 'bold' }}>
-            Select a cohort to view details
-          </div>
         )}
       </React.Fragment>
     );

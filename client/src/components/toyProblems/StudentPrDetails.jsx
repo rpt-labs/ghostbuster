@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Label, Card, Icon, Button, Header } from 'semantic-ui-react';
+import ReleasedToyProblems from './ReleasedToyProblems';
 
 export default class StudentPrDetails extends Component {
   constructor(props) {
@@ -43,11 +44,7 @@ export default class StudentPrDetails extends Component {
                 {showAllAttemptedToyProblems ? 'Hide Details' : 'Show Details'}
               </Button>
             </Header>
-            <div>
-              {releasedToyProblems &&
-                releasedToyProblems.length &&
-                releasedToyProblems.map(name => <div key={name}>{name}</div>)}
-            </div>
+            <ReleasedToyProblems releasedToyProblems={releasedToyProblems} />
             <Card.Group itemsPerRow={2}>
               {pullRequestsList.map(item => (
                 <Card key={item.studentName} style={{ marginBottom: '0px' }}>
@@ -69,13 +66,13 @@ export default class StudentPrDetails extends Component {
                           color="teal"
                           style={{ float: 'right', marginRight: '30px' }}
                         >
-                          <Icon name="calculator" />
+                          <Icon name="check" />
                           {item.matchedFilesCount}
                         </Label>
                       </Card.Header>
                     </a>
                     <Card.Description />
-                    {showAllAttemptedToyProblems ? (
+                    {showAllAttemptedToyProblems && (
                       <React.Fragment>
                         <h1>Attempted:</h1>
                         <div>
@@ -90,8 +87,6 @@ export default class StudentPrDetails extends Component {
                             item.incompleteProblems.map(name => <div key={name}>{name}</div>)}
                         </div>
                       </React.Fragment>
-                    ) : (
-                      <div />
                     )}
                     <br />
                   </Card.Content>
