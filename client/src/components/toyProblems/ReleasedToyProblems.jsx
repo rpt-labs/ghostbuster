@@ -7,7 +7,7 @@ function ReleasedToyProblems(props) {
   console.log('releasedToyProblems', releasedToyProblems);
   return (
     <Segment>
-      <Header as="h2">Released toy Problems:</Header>
+      <Header as="h2">Released toy problems:</Header>
       {releasedToyProblems && releasedToyProblems.length && (
         <Grid columns={4}>
           {releasedToyProblems.map(name => (

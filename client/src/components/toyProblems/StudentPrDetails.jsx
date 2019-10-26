@@ -7,7 +7,8 @@ export default class StudentPrDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showAllAttemptedToyProblems: false
+      showAllAttemptedToyProblems: false,
+      showReleasedToyProblems: false
     };
     this.showHideDetails = this.showHideDetails.bind(this);
   }
@@ -17,9 +18,14 @@ export default class StudentPrDetails extends Component {
     this.setState({ showAllAttemptedToyProblems: !showAllAttemptedToyProblems });
   }
 
+  showHideReleasedList() {
+    const { showHideReleasedList } = this.state;
+    this.setState({ showHideReleasedList: !showHideReleasedList });
+  }
+
   render() {
     const { pullRequestsList, selectedCohort, releasedToyProblems } = this.props;
-    const { showAllAttemptedToyProblems } = this.state;
+    const { showAllAttemptedToyProblems, showHideReleasedList } = this.state;
 
     pullRequestsList.forEach(item =>
       Object.assign(item, {
@@ -39,12 +45,21 @@ export default class StudentPrDetails extends Component {
               <Button
                 color="grey"
                 style={{ float: 'right', marginRight: '0px' }}
-                onClick={() => this.showHideDetails()}
+                onClick={() => this.showHideReleasedList()}
               >
-                {showAllAttemptedToyProblems ? 'Hide Details' : 'Show Details'}
+                {showHideReleasedList
+                  ? 'Hide Released Toy Problems List'
+                  : 'Show Released Toy Problems List'}
+              </Button>
+              {showHideReleasedList && (
+                <ReleasedToyProblems releasedToyProblems={releasedToyProblems} />
+              )}
+            </Header>
+            <Header as="h1">
+              <Button color="grey" onClick={() => this.showHideDetails()}>
+                {showAllAttemptedToyProblems ? 'Hide Detailed Report' : 'Show Detailed Report'}
               </Button>
             </Header>
-            <ReleasedToyProblems releasedToyProblems={releasedToyProblems} />
             <Card.Group itemsPerRow={2}>
               {pullRequestsList.map(item => (
                 <Card key={item.studentName} style={{ marginBottom: '0px' }}>
