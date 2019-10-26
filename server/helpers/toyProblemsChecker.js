@@ -90,13 +90,22 @@ const checkToyProblems = async cohort => {
 
 const getReleasedToyProblems = async cohort => {
   const response = await githubQuery(
-    `https://api.github.com/repos/hackreactor/${cohort}-toy-problems/contents/`
+    `https://api.github.com/repos/hackreactor/${cohort}-toy-problems/commits`
   );
+
   let releasedProblems = [];
   if (response && response.length) {
     releasedProblems = response
-      .map(res => res.name.toLowerCase())
-      .filter(name => !name.includes('readme'));
+      .map(res => ({
+        name: res.commit.message,
+        date: res.commit.author.date
+      }))
+      .filter(problem => problem.name.includes('(problem)'))
+      // eslint-disable-next-line no-return-assign
+      .map(problem => ({ name: problem.name.split(' ')[1], date: problem.date }))
+      .sort((a, b) => {
+        return new Date(a.date) - new Date(b.date);
+      });
   }
   return releasedProblems;
 };
