@@ -87,8 +87,17 @@ export default class StudentPrDetails extends Component {
                             releasedToyProblems.length &&
                             releasedToyProblems.map(tp =>
                               !item.matchedFileNames.includes(tp.name) ? (
-                                <div style={{ color: 'red' }} key={tp.name}>
-                                  {tp.name}
+                                <div key={tp.name}>
+                                  <span style={{ color: 'red' }}>{tp.name}</span>
+                                  <span
+                                    style={{
+                                      color: 'grey',
+                                      paddingLeft: '5px',
+                                      fontStyle: 'italic'
+                                    }}
+                                  >
+                                    {` (${tp.date.split('T')[0]})`}
+                                  </span>
                                 </div>
                               ) : (
                                 <div />
@@ -108,8 +117,17 @@ export default class StudentPrDetails extends Component {
                                   {tp.name}
                                 </div>
                               ) : (
-                                <div style={{ color: 'red', fontWeight: 'bold' }} key={tp.name}>
-                                  {tp.name}
+                                <div key={tp.name}>
+                                  <span style={{ color: 'red' }}>{tp.name}</span>
+                                  <span
+                                    style={{
+                                      color: 'grey',
+                                      paddingLeft: '5px',
+                                      fontStyle: 'italic'
+                                    }}
+                                  >
+                                    {` (${tp.date.split('T')[0]})`}
+                                  </span>
                                 </div>
                               )
                             )}
