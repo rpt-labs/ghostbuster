@@ -7,8 +7,7 @@ export default class StudentPrDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showAllAttemptedToyProblems: false,
-      showReleasedToyProblems: false
+      showAllAttemptedToyProblems: false
     };
     this.showHideDetails = this.showHideDetails.bind(this);
   }
@@ -27,6 +26,8 @@ export default class StudentPrDetails extends Component {
     const { pullRequestsList, selectedCohort, releasedToyProblems } = this.props;
     const { showAllAttemptedToyProblems, showHideReleasedList } = this.state;
 
+    const totalReleasedTp = releasedToyProblems.length;
+
     return (
       <div>
         <br />
@@ -39,9 +40,9 @@ export default class StudentPrDetails extends Component {
                 style={{ float: 'right', marginRight: '0px' }}
                 onClick={() => this.showHideReleasedList()}
               >
-                {showHideReleasedList
-                  ? 'Hide Released Toy Problems List'
-                  : 'Show Released Toy Problems List'}
+                {!showHideReleasedList
+                  ? `Released: ${totalReleasedTp} - View List`
+                  : `Released: ${totalReleasedTp} - Hide List`}
               </Button>
               {showHideReleasedList && (
                 <ReleasedToyProblems releasedToyProblems={releasedToyProblems} />
@@ -79,6 +80,23 @@ export default class StudentPrDetails extends Component {
                       </Card.Header>
                     </a>
                     <Card.Description />
+                    {!showAllAttemptedToyProblems && (
+                      <React.Fragment>
+                        <div>
+                          {releasedToyProblems &&
+                            releasedToyProblems.length &&
+                            releasedToyProblems.map(tp =>
+                              !item.matchedFileNames.includes(tp.name) ? (
+                                <div style={{ color: 'red' }} key={tp.name}>
+                                  {tp.name}
+                                </div>
+                              ) : (
+                                <div />
+                              )
+                            )}
+                        </div>
+                      </React.Fragment>
+                    )}
                     {showAllAttemptedToyProblems && (
                       <React.Fragment>
                         <div>
@@ -86,7 +104,7 @@ export default class StudentPrDetails extends Component {
                             releasedToyProblems.length &&
                             releasedToyProblems.map(tp =>
                               item.matchedFileNames.includes(tp.name) ? (
-                                <div style={{ color: 'green' }} key={tp.name}>
+                                <div style={{ color: 'grey' }} key={tp.name}>
                                   {tp.name}
                                 </div>
                               ) : (
@@ -116,6 +134,5 @@ export default class StudentPrDetails extends Component {
 
 StudentPrDetails.propTypes = {
   pullRequestsList: PropTypes.instanceOf(Array).isRequired,
-  releasedToyProblems: PropTypes.instanceOf(Array).isRequired,
   selectedCohort: PropTypes.string.isRequired
 };
