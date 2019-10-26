@@ -102,7 +102,7 @@ const getReleasedToyProblems = async cohort => {
       }))
       .filter(problem => problem.name.includes('(problem)'))
       // eslint-disable-next-line no-return-assign
-      .map(problem => ({ name: problem.name.split(' ')[1].toLowerCase(), date: problem.date }))
+      .map(problem => ({ name: problem.name.split(' ')[1], date: problem.date }))
       .sort((a, b) => {
         return new Date(a.date) - new Date(b.date);
       });

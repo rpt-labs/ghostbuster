@@ -41,8 +41,8 @@ export default class StudentPrDetails extends Component {
                 onClick={() => this.showHideReleasedList()}
               >
                 {!showHideReleasedList
-                  ? `Released: ${totalReleasedTp} - View List`
-                  : `Released: ${totalReleasedTp} - Hide List`}
+                  ? `Released Total: ${totalReleasedTp} - View`
+                  : `Released Total: ${totalReleasedTp} - Hide`}
               </Button>
               {showHideReleasedList && (
                 <ReleasedToyProblems releasedToyProblems={releasedToyProblems} />
@@ -100,7 +100,7 @@ export default class StudentPrDetails extends Component {
                             releasedToyProblems.length &&
                             releasedToyProblems.map(
                               tp =>
-                                !item.matchedFileNames.includes(tp.name) && (
+                                !item.matchedFileNames.includes(tp.name.toLowerCase()) && (
                                   <div key={tp.name}>
                                     <span style={{ color: 'red' }}>{tp.name}</span>
                                     <span
@@ -124,7 +124,7 @@ export default class StudentPrDetails extends Component {
                           {releasedToyProblems &&
                             releasedToyProblems.length &&
                             releasedToyProblems.map(tp =>
-                              item.matchedFileNames.includes(tp.name) ? (
+                              item.matchedFileNames.includes(tp.name.toLowerCase()) ? (
                                 <div style={{ color: 'grey' }} key={tp.name}>
                                   {tp.name}
                                 </div>
