@@ -7,7 +7,8 @@ export default class StudentPrDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showAllAttemptedToyProblems: false
+      showAllAttemptedToyProblems: false,
+      showReleasedToyProblems: false
     };
     this.showHideDetails = this.showHideDetails.bind(this);
   }
@@ -17,17 +18,14 @@ export default class StudentPrDetails extends Component {
     this.setState({ showAllAttemptedToyProblems: !showAllAttemptedToyProblems });
   }
 
+  showHideReleasedList() {
+    const { showHideReleasedList } = this.state;
+    this.setState({ showHideReleasedList: !showHideReleasedList });
+  }
+
   render() {
     const { pullRequestsList, selectedCohort, releasedToyProblems } = this.props;
-    const { showAllAttemptedToyProblems } = this.state;
-
-    pullRequestsList.forEach(item =>
-      Object.assign(item, {
-        incompleteProblems: releasedToyProblems.filter(
-          problem => !item.matchedFileNames.includes(problem)
-        )
-      })
-    );
+    const { showAllAttemptedToyProblems, showHideReleasedList } = this.state;
 
     return (
       <div>
@@ -39,12 +37,21 @@ export default class StudentPrDetails extends Component {
               <Button
                 color="grey"
                 style={{ float: 'right', marginRight: '0px' }}
-                onClick={() => this.showHideDetails()}
+                onClick={() => this.showHideReleasedList()}
               >
-                {showAllAttemptedToyProblems ? 'Hide Details' : 'Show Details'}
+                {showHideReleasedList
+                  ? 'Hide Released Toy Problems List'
+                  : 'Show Released Toy Problems List'}
+              </Button>
+              {showHideReleasedList && (
+                <ReleasedToyProblems releasedToyProblems={releasedToyProblems} />
+              )}
+            </Header>
+            <Header as="h1">
+              <Button color="grey" onClick={() => this.showHideDetails()}>
+                {showAllAttemptedToyProblems ? 'Hide Detailed Report' : 'Show Detailed Report'}
               </Button>
             </Header>
-            <ReleasedToyProblems releasedToyProblems={releasedToyProblems} />
             <Card.Group itemsPerRow={2}>
               {pullRequestsList.map(item => (
                 <Card key={item.studentName} style={{ marginBottom: '0px' }}>
@@ -74,17 +81,20 @@ export default class StudentPrDetails extends Component {
                     <Card.Description />
                     {showAllAttemptedToyProblems && (
                       <React.Fragment>
-                        <h1>Attempted:</h1>
                         <div>
-                          {item.matchedFileNames &&
-                            item.matchedFileNames.length &&
-                            item.matchedFileNames.map(pr => <div key={pr}>{pr}</div>)}
-                        </div>
-                        <h1>Not Attempted:</h1>
-                        <div>
-                          {item.incompleteProblems &&
-                            item.incompleteProblems.length &&
-                            item.incompleteProblems.map(name => <div key={name}>{name}</div>)}
+                          {releasedToyProblems &&
+                            releasedToyProblems.length &&
+                            releasedToyProblems.map(tp =>
+                              item.matchedFileNames.includes(tp.name) ? (
+                                <div style={{ color: 'green' }} key={tp.name}>
+                                  {tp.name}
+                                </div>
+                              ) : (
+                                <div style={{ color: 'red', fontWeight: 'bold' }} key={tp.name}>
+                                  {tp.name}
+                                </div>
+                              )
+                            )}
                         </div>
                       </React.Fragment>
                     )}
