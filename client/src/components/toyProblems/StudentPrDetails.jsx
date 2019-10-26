@@ -34,7 +34,7 @@ export default class StudentPrDetails extends Component {
         {pullRequestsList && pullRequestsList.length ? (
           <div>
             <Header as="h1">
-              {`Selected Cohort: ${selectedCohort.toUpperCase()}`}
+              {`Cohort: ${selectedCohort.toUpperCase()}`}
               <Button
                 color="grey"
                 style={{ float: 'right', marginRight: '0px' }}
@@ -85,23 +85,22 @@ export default class StudentPrDetails extends Component {
                         <div>
                           {releasedToyProblems &&
                             releasedToyProblems.length &&
-                            releasedToyProblems.map(tp =>
-                              !item.matchedFileNames.includes(tp.name) ? (
-                                <div key={tp.name}>
-                                  <span style={{ color: 'red' }}>{tp.name}</span>
-                                  <span
-                                    style={{
-                                      color: 'grey',
-                                      paddingLeft: '5px',
-                                      fontStyle: 'italic'
-                                    }}
-                                  >
-                                    {` (${tp.date.split('T')[0]})`}
-                                  </span>
-                                </div>
-                              ) : (
-                                <div />
-                              )
+                            releasedToyProblems.map(
+                              tp =>
+                                !item.matchedFileNames.includes(tp.name) && (
+                                  <div key={tp.name}>
+                                    <span style={{ color: 'red' }}>{tp.name}</span>
+                                    <span
+                                      style={{
+                                        color: 'grey',
+                                        paddingLeft: '5px',
+                                        fontStyle: 'italic'
+                                      }}
+                                    >
+                                      {` (${tp.date.split('T')[0]})`}
+                                    </span>
+                                  </div>
+                                )
                             )}
                         </div>
                       </React.Fragment>
@@ -152,5 +151,6 @@ export default class StudentPrDetails extends Component {
 
 StudentPrDetails.propTypes = {
   pullRequestsList: PropTypes.instanceOf(Array).isRequired,
+  releasedToyProblems: PropTypes.instanceOf(Array).isRequired,
   selectedCohort: PropTypes.string.isRequired
 };
