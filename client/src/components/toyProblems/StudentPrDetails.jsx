@@ -52,6 +52,19 @@ export default class StudentPrDetails extends Component {
               <Button color="grey" onClick={() => this.showHideDetails()}>
                 {showAllAttemptedToyProblems ? 'Hide Detailed Report' : 'Show Detailed Report'}
               </Button>
+              <span
+                style={{
+                  float: 'right',
+                  marginRight: '0px',
+                  fontSize: '14px',
+                  fontWeight: '5',
+                  color: 'red',
+                  fontStyle: 'italic'
+                }}
+              >
+                <b>* Red: </b>
+                Not attempted
+              </span>
             </Header>
             <Card.Group itemsPerRow={2}>
               {pullRequestsList.map(item => (
