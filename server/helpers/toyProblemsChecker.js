@@ -90,7 +90,7 @@ const checkToyProblems = async cohort => {
 
 const getReleasedToyProblems = async cohort => {
   const response = await githubQuery(
-    `https://api.github.com/repos/hackreactor/${cohort}-toy-problems/commits`
+    `https://api.github.com/repos/hackreactor/${cohort}-toy-problems/commits?per_page=100`
   );
 
   let releasedProblems = [];
@@ -102,11 +102,18 @@ const getReleasedToyProblems = async cohort => {
       }))
       .filter(problem => problem.name.includes('(problem)'))
       // eslint-disable-next-line no-return-assign
-      .map(problem => ({ name: problem.name.split(' ')[1], date: problem.date }))
+      .map(problem => ({ name: problem.name.split(' ')[1].toLowerCase(), date: problem.date }))
       .sort((a, b) => {
         return new Date(a.date) - new Date(b.date);
       });
   }
+  // check and remove if there are duplicate releases
+  releasedProblems = releasedProblems.reduce((accumulator, current) => {
+    const isAlreadyExist = () => accumulator.some(item => item.name === current.name);
+
+    return isAlreadyExist(current) ? accumulator : [...accumulator, current];
+  }, []);
+
   return releasedProblems;
 };
 

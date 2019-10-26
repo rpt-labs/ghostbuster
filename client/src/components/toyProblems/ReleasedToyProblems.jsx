@@ -1,17 +1,16 @@
 import React from 'react';
 import { Segment, Grid, Header } from 'semantic-ui-react';
-import { PaddedGrid } from '../Styles/TeamStyles';
+import PropTypes from 'prop-types';
 
 function ReleasedToyProblems(props) {
   const { releasedToyProblems } = props;
-  console.log('releasedToyProblems', releasedToyProblems);
   return (
     <Segment>
       <Header as="h2">Released toy problems:</Header>
       {releasedToyProblems && releasedToyProblems.length && (
         <Grid columns={4}>
-          {releasedToyProblems.map(name => (
-            <Grid.Column key={name}>{name}</Grid.Column>
+          {releasedToyProblems.map(tp => (
+            <Grid.Column key={tp.name}>{`${tp.name} ${tp.date.split('T')[0]}`}</Grid.Column>
           ))}
         </Grid>
       )}
@@ -20,3 +19,7 @@ function ReleasedToyProblems(props) {
 }
 
 export default ReleasedToyProblems;
+
+ReleasedToyProblems.propTypes = {
+  releasedToyProblems: PropTypes.instanceOf(Array).isRequired
+};

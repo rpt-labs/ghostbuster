@@ -7,7 +7,6 @@ exports.getToyProblemsData = async (req, res) => {
 };
 
 exports.getReleasedToyProblems = async (req, res) => {
-  console.log('here');
   const { cohort } = req.query;
   const releasedTps = await toyProblemsChecker.getReleasedToyProblems(cohort);
   res.json({ toyProblems: releasedTps });

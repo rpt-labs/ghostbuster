@@ -27,14 +27,6 @@ export default class StudentPrDetails extends Component {
     const { pullRequestsList, selectedCohort, releasedToyProblems } = this.props;
     const { showAllAttemptedToyProblems, showHideReleasedList } = this.state;
 
-    pullRequestsList.forEach(item =>
-      Object.assign(item, {
-        incompleteProblems: releasedToyProblems.filter(
-          problem => !item.matchedFileNames.includes(problem)
-        )
-      })
-    );
-
     return (
       <div>
         <br />
@@ -89,17 +81,20 @@ export default class StudentPrDetails extends Component {
                     <Card.Description />
                     {showAllAttemptedToyProblems && (
                       <React.Fragment>
-                        <h1>Attempted:</h1>
                         <div>
-                          {item.matchedFileNames &&
-                            item.matchedFileNames.length &&
-                            item.matchedFileNames.map(pr => <div key={pr}>{pr}</div>)}
-                        </div>
-                        <h1>Not Attempted:</h1>
-                        <div>
-                          {item.incompleteProblems &&
-                            item.incompleteProblems.length &&
-                            item.incompleteProblems.map(name => <div key={name}>{name}</div>)}
+                          {releasedToyProblems &&
+                            releasedToyProblems.length &&
+                            releasedToyProblems.map(tp =>
+                              item.matchedFileNames.includes(tp.name) ? (
+                                <div style={{ color: 'green' }} key={tp.name}>
+                                  {tp.name}
+                                </div>
+                              ) : (
+                                <div style={{ color: 'red', fontWeight: 'bold' }} key={tp.name}>
+                                  {tp.name}
+                                </div>
+                              )
+                            )}
                         </div>
                       </React.Fragment>
                     )}
