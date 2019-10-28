@@ -7,8 +7,7 @@ export default class StudentPrDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showAllAttemptedToyProblems: false,
-      showReleasedToyProblems: false
+      showAllAttemptedToyProblems: false
     };
     this.showHideDetails = this.showHideDetails.bind(this);
   }
@@ -27,21 +26,23 @@ export default class StudentPrDetails extends Component {
     const { pullRequestsList, selectedCohort, releasedToyProblems } = this.props;
     const { showAllAttemptedToyProblems, showHideReleasedList } = this.state;
 
+    const totalReleasedTp = releasedToyProblems.length;
+
     return (
       <div>
         <br />
         {pullRequestsList && pullRequestsList.length ? (
           <div>
             <Header as="h1">
-              {`Selected Cohort: ${selectedCohort.toUpperCase()}`}
+              {`Cohort: ${selectedCohort.toUpperCase()}`}
               <Button
                 color="grey"
                 style={{ float: 'right', marginRight: '0px' }}
                 onClick={() => this.showHideReleasedList()}
               >
-                {showHideReleasedList
-                  ? 'Hide Released Toy Problems List'
-                  : 'Show Released Toy Problems List'}
+                {!showHideReleasedList
+                  ? `Released Total: ${totalReleasedTp} - View`
+                  : `Released Total: ${totalReleasedTp} - Hide`}
               </Button>
               {showHideReleasedList && (
                 <ReleasedToyProblems releasedToyProblems={releasedToyProblems} />
@@ -51,6 +52,19 @@ export default class StudentPrDetails extends Component {
               <Button color="grey" onClick={() => this.showHideDetails()}>
                 {showAllAttemptedToyProblems ? 'Hide Detailed Report' : 'Show Detailed Report'}
               </Button>
+              <span
+                style={{
+                  float: 'right',
+                  marginRight: '0px',
+                  fontSize: '14px',
+                  fontWeight: '5',
+                  color: 'red',
+                  fontStyle: 'italic'
+                }}
+              >
+                <b>* Red: </b>
+                Not attempted
+              </span>
             </Header>
             <Card.Group itemsPerRow={2}>
               {pullRequestsList.map(item => (
@@ -79,19 +93,53 @@ export default class StudentPrDetails extends Component {
                       </Card.Header>
                     </a>
                     <Card.Description />
+                    {!showAllAttemptedToyProblems && (
+                      <React.Fragment>
+                        <div>
+                          {releasedToyProblems &&
+                            releasedToyProblems.length &&
+                            releasedToyProblems.map(
+                              tp =>
+                                !item.matchedFileNames.includes(tp.name.toLowerCase()) && (
+                                  <div key={tp.name}>
+                                    <span style={{ color: 'red' }}>{tp.name}</span>
+                                    <span
+                                      style={{
+                                        color: 'grey',
+                                        paddingLeft: '5px',
+                                        fontStyle: 'italic'
+                                      }}
+                                    >
+                                      {` (${tp.date.split('T')[0]})`}
+                                    </span>
+                                  </div>
+                                )
+                            )}
+                        </div>
+                      </React.Fragment>
+                    )}
                     {showAllAttemptedToyProblems && (
                       <React.Fragment>
                         <div>
                           {releasedToyProblems &&
                             releasedToyProblems.length &&
                             releasedToyProblems.map(tp =>
-                              item.matchedFileNames.includes(tp.name) ? (
-                                <div style={{ color: 'green' }} key={tp.name}>
+                              item.matchedFileNames.includes(tp.name.toLowerCase()) ? (
+                                <div style={{ color: 'grey' }} key={tp.name}>
                                   {tp.name}
                                 </div>
                               ) : (
-                                <div style={{ color: 'red', fontWeight: 'bold' }} key={tp.name}>
-                                  {tp.name}
+                                <div key={tp.name}>
+                                  <span style={{ color: 'red' }}>{tp.name}</span>
+                                  <span
+                                    style={{
+                                      color: 'grey',
+                                      paddingLeft: '5px',
+                                      fontStyle: 'italic'
+                                    }}
+                                  >
+                                    {` (${tp.date.split('T')[0]})`}
+                                  </span>
                                 </div>
                               )
                             )}
