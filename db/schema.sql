@@ -117,3 +117,22 @@ CREATE TABLE IF NOT EXISTS student_absences (
     points integer NOT NULL DEFAULT 0,
     created_at timestamptz NOT NULL DEFAULT now()
 );
+
+CREATE TABLE IF NOT EXISTS toyproblems (
+  id SERIAL PRIMARY KEY,
+  name text NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS cohorts_toyproblems (
+  id SERIAL PRIMARY KEY,
+  release_date date,
+  cohort_id integer REFERENCES cohorts ON DELETE CASCADE,
+  toyproblem_id integer REFERENCE toyproblems ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS toyproblem_completions (
+  id SERIAL PRIMARY KEY,
+  pr_date date NOT NULL,
+  student_id integer REFERENCES students ON DELETE CASCADE,
+  cohorts_toyproblems_id integer REFERENCES cohorts_toyproblems ON DELETE CASCADE
+);
