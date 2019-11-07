@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS enrollments (
 );
 
 CREATE TABLE IF NOT EXISTS students (
-  id integer REFERENCES enrollments,
+  id SERIAL PRIMARY KEY,
+  enrollment_id integer REFERENCES enrollments,
   first_name text NOT NULL,
   last_name text NOT NULL,
   zoom_name text,
