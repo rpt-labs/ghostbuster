@@ -3,14 +3,12 @@ import axios from 'axios';
 
 // components
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { Security, ImplicitCallback } from '@okta/okta-react';
 import { Container } from 'semantic-ui-react';
 import Home from './Home';
 import TopNav from './TopNav';
 import Cohort from './Cohort';
 import TeamList from './TeamList';
 import ToyProblems from './toyProblems/ToyProblems';
-import Login from './Login';
 import Admin from './admin/Admin';
 import Attendance from './attendance/Attendance';
 import StudentAttendancePreview from './attendance/StudentAttendancePreview';
@@ -21,6 +19,7 @@ import StudentAttendancePreview from './attendance/StudentAttendancePreview';
 // queries
 // import { getAllCohorts } from '../queries/queries';
 import { getAllCohortsNoDb } from '../queries/queries';
+
 const { GHOSTBUSTER_BASE_URL } = process.env;
 
 /*
@@ -208,9 +207,6 @@ export default class AlternateApp extends React.Component {
             />
 
             <Route path="/toyproblems" render={() => <ToyProblems />} />
-
-            <Route path="/login" render={() => <Login baseUrl={OKTA_BASE_URL} />} />
-            <Route path="/implicit/callback" component={ImplicitCallback} />
           </Container>
         </div>
       </Router>
