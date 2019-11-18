@@ -68,7 +68,7 @@ module.exports = class Student {
           const normalizedMessage = message
             .toLowerCase()
             .trim()
-            .replace(/['"]+/g, '');
+            .replace(/['"-]+/g, '');
 
           return { message, normalizedMessage };
         }
