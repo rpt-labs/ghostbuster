@@ -21,12 +21,7 @@ import StudentAttendancePreview from './attendance/StudentAttendancePreview';
 // queries
 // import { getAllCohorts } from '../queries/queries';
 import { getAllCohortsNoDb } from '../queries/queries';
-
-const { OKTA_BASE_URL } = process.env;
-const { OKTA_CLIENT_ID } = process.env;
-const { OKTA_URL } = process.env;
 const { GHOSTBUSTER_BASE_URL } = process.env;
-const PKCE = true;
 
 /*
   eslint no-underscore-dangle: ["error", { "allowAfterThis": true }]
@@ -171,60 +166,53 @@ export default class AlternateApp extends React.Component {
 
     return (
       <Router>
-        <Security
-          issuer={OKTA_URL}
-          client_id={OKTA_CLIENT_ID}
-          redirect_uri={`${window.location.origin}/implicit/callback`}
-          onAuthRequired={onAuthRequired}
-          pkce={PKCE}
-        >
-          <div>
-            <TopNav />
 
-            <Container>
-              <Route path="/" exact component={Home} />
-              <Route path="/admin" component={Admin} />
-              <Route exact path="/attendance" component={Attendance} />
-              <Route path="/attendance/preview" component={StudentAttendancePreview} />
-              <Route
-                path="/sprints"
-                render={props => (
-                  <Cohort
-                    {...props}
-                    selected={selectedCohort}
-                    cohorts={sprintCohorts}
-                    selectCohort={this.handleSelectCohort}
-                    repoSelect={this.handleRepoSelect}
-                    loading={loading}
-                    showSegment={showSegment}
-                    commits={currentCommitData}
-                  />
-                )}
-              />
+        <div>
+          <TopNav />
 
-              <Route
-                path="/projects"
-                render={props => (
-                  <TeamList
-                    {...props}
-                    cohorts={teamCohorts}
-                    selectCohort={this.handleSelectCohort}
-                    selectedCohort={selectedCohort}
-                    checkProjects={this.checkProjects}
-                    loading={loading}
-                    showSegment={showSegment}
-                    projects={projectData}
-                  />
-                )}
-              />
+          <Container>
+            <Route path="/" exact component={Home} />
+            <Route path="/admin" component={Admin} />
+            <Route exact path="/attendance" component={Attendance} />
+            <Route path="/attendance/preview" component={StudentAttendancePreview} />
+            <Route
+              path="/sprints"
+              render={props => (
+                <Cohort
+                  {...props}
+                  selected={selectedCohort}
+                  cohorts={sprintCohorts}
+                  selectCohort={this.handleSelectCohort}
+                  repoSelect={this.handleRepoSelect}
+                  loading={loading}
+                  showSegment={showSegment}
+                  commits={currentCommitData}
+                />
+              )}
+            />
 
-              <Route path="/toyproblems" render={() => <ToyProblems />} />
+            <Route
+              path="/projects"
+              render={props => (
+                <TeamList
+                  {...props}
+                  cohorts={teamCohorts}
+                  selectCohort={this.handleSelectCohort}
+                  selectedCohort={selectedCohort}
+                  checkProjects={this.checkProjects}
+                  loading={loading}
+                  showSegment={showSegment}
+                  projects={projectData}
+                />
+              )}
+            />
 
-              <Route path="/login" render={() => <Login baseUrl={OKTA_BASE_URL} />} />
-              <Route path="/implicit/callback" component={ImplicitCallback} />
-            </Container>
-          </div>
-        </Security>
+            <Route path="/toyproblems" render={() => <ToyProblems />} />
+
+            <Route path="/login" render={() => <Login baseUrl={OKTA_BASE_URL} />} />
+            <Route path="/implicit/callback" component={ImplicitCallback} />
+          </Container>
+        </div>
       </Router>
     );
   }
