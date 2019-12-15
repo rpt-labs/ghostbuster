@@ -121,4 +121,13 @@ const checkToyProblems = async cohort => {
   return allPrs;
 };
 
-module.exports = { checkToyProblems, getReleasedToyProblems };
+module.exports = {
+  getStudentsList,
+  checkIfPrTitleMatches,
+  AllPrsWithMatchingTitles,
+  numberOfUniquePrsWithMatchingTitles,
+  getFilesChanged,
+  getPrListForStudent,
+  checkToyProblems,
+  getReleasedToyProblems
+};
