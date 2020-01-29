@@ -11,6 +11,7 @@ const cohorts = require('../../db/models/cohorts');
 const students = require('../../db/models/students');
 const sprints = require('../../db/models/sprints');
 const teams = require('../../db/models/teams');
+const toyProblems = require('../helpers/toyProblemsChecker');
 
 // db
 const { query } = require('../../db/index');
@@ -151,6 +152,14 @@ const CommitMessageType = new GraphQLObjectType({
   })
 });
 
+const ReleasedToyProblemType = new GraphQLObjectType({
+  name: 'ReleasedToyProblem',
+  fields: () => ({
+    name: { type: GraphQLString },
+    date: { type: GraphQLString }
+  })
+});
+
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: {
@@ -220,6 +229,17 @@ const RootQuery = new GraphQLObjectType({
       resolve() {
         return query('SELECT * FROM sprints ORDER BY id ASC')
           .then(result => result.rows)
+          .catch(error => error.detail || error);
+      }
+    },
+    releasedToyProblems: {
+      type: new GraphQLList(ReleasedToyProblemType),
+      args: { cohort: { type: GraphQLString } },
+      resolve(parent, args) {
+        const { cohort } = args;
+        return toyProblems
+          .getReleasedToyProblems(cohort)
+          .then(result => result)
           .catch(error => error.detail || error);
       }
     }
