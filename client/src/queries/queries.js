@@ -11,6 +11,11 @@ const getAllCohorts = () =>
     query: getCohortsQuery
   });
 
+const getAllReleasedToyProblems = cohort =>
+  Api.get(graphqlUrl, {
+    query: `{releasedToyProblems(cohort: "${cohort}"){name date}}`
+  });
+
 const getAllCohortsNoDb = () => Api.get(`${expressUrl}/cohorts`);
 
-export { getAllCohorts, getAllCohortsNoDb };
+export { getAllCohorts, getAllCohortsNoDb, getAllReleasedToyProblems };

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Grid } from 'semantic-ui-react';
 import axios from 'axios';
 import RadioButtonList from '../shared/RadioButtonList';
-import { getAllCohorts } from '../../queries/queries';
+import { getAllCohorts, getAllReleasedToyProblems } from '../../queries/queries';
 import StudentPrDetails from './StudentPrDetails';
 
 const { GHOSTBUSTER_BASE_URL } = process.env;
@@ -21,7 +21,7 @@ class ToyProblems extends Component {
     this.showDetails = this.showDetails.bind(this);
     this.getCohortsList = this.getCohortsList.bind(this);
     this.onButtonClick = this.onButtonClick.bind(this);
-    this.checkReleasedToyProblems = this.checkReleasedToyProblems.bind(this);
+    this.checkReleasedToyProblemsGql = this.checkReleasedToyProblemsGql.bind(this);
   }
 
   componentDidMount() {
@@ -47,6 +47,7 @@ class ToyProblems extends Component {
     });
   }
 
+  // eslint-disable-next-line react/sort-comp
   handleRadioButtonChange(cohort) {
     const { cohorts } = this.state;
     const newCohortList = cohorts.slice();
@@ -64,7 +65,7 @@ class ToyProblems extends Component {
     const { cohorts } = this.state;
     const selectedCohort = cohorts.find(e => e.isChecked === true).name.toLowerCase();
 
-    this.checkReleasedToyProblems(selectedCohort);
+    this.checkReleasedToyProblemsGql(selectedCohort);
     let pullRequestsList = [];
     axios
       .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/toyproblems?cohort=${selectedCohort}`)
@@ -79,20 +80,13 @@ class ToyProblems extends Component {
       });
   }
 
-  checkReleasedToyProblems(selectedCohort) {
-    let releasedToyProblems = [];
-    axios
-      .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/toyproblems/releases?cohort=${selectedCohort}`)
-      .then(response => {
-        if (response && response.data && response.data.toyProblems) {
-          releasedToyProblems = response.data.toyProblems;
-        }
-        this.setState({ releasedToyProblems });
-      })
-      .catch(error => {
-        throw error;
-      });
-  }
+  checkReleasedToyProblemsGql = async selectedCohort => {
+    const response = await getAllReleasedToyProblems(selectedCohort);
+    if (response && response.data && response.data.data) {
+      const { releasedToyProblems } = response.data.data;
+      this.setState({ releasedToyProblems });
+    }
+  };
 
   render() {
     const {
