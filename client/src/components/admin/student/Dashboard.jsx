@@ -12,7 +12,6 @@ function Dashboard({ cohorts }) {
       value: cohort.name
     }));
 
-
   return (
     <div>
       <Form>
@@ -35,4 +34,3 @@ export default Dashboard;
 Dashboard.propTypes = {
   cohorts: PropTypes.instanceOf(Array).isRequired
 };
-

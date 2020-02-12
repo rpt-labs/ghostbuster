@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { withAuth } from '@okta/okta-react';
+import { withAuth } from '@okta/okta-react';
 import { Menu } from 'semantic-ui-react';
 import { TopNavMenu, StyledLink } from './Styles/TopNavStyles';
 
@@ -23,8 +23,7 @@ const TopNav = props => (
 );
 
 TopNav.propTypes = {
-  auth: PropTypes.instanceOf(Object)
+  auth: PropTypes.instanceOf(Object).isRequired
 };
 
-// export default withAuth(TopNav);
-export default TopNav;
+export default withAuth(TopNav);

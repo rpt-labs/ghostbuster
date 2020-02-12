@@ -22,9 +22,9 @@
   "homepage": "https://github.com/rpt-ginko/github-crawler#readme",
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
-    "@okta/jwt-verifier": "0.0.14",
-    "@okta/okta-react": "^1.1.4",
-    "@okta/okta-signin-widget": "^2.15.0",
+    "@okta/jwt-verifier": "^1.0.0",
+    "@okta/okta-react": "^1.4.0",
+    "@okta/okta-signin-widget": "^3.7.1",
     "axios": "^0.18.1",
     "chart.js": "^2.7.3",
     "cors": "^2.8.4",
@@ -67,7 +67,7 @@
     "jest": "^24.9.0",
     "mini-css-extract-plugin": "^0.4.4",
     "prettier": "^1.16.4",
-    "webpack": "^4.20.2",
+    "webpack": "^4.41.6",
     "webpack-cli": "^3.1.2"
   },
   "jest": {
