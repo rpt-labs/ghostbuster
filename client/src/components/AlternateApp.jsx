@@ -1,22 +1,19 @@
-import React from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 
 // components
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { Security, SecureRoute, ImplicitCallback } from '@okta/okta-react';
 import { Container } from 'semantic-ui-react';
+import { Security, SecureRoute, ImplicitCallback } from '@okta/okta-react';
 import Home from './Home';
+import Login from './auth/Login';
 import TopNav from './TopNav';
 import Cohort from './Cohort';
 import TeamList from './TeamList';
 import ToyProblems from './toyProblems/ToyProblems';
-import Login from './Login';
 import Admin from './admin/Admin';
 import Attendance from './attendance/Attendance';
 import StudentAttendancePreview from './attendance/StudentAttendancePreview';
-// routing
-
-// auth
 
 // queries
 // import { getAllCohorts } from '../queries/queries';
@@ -35,7 +32,7 @@ function onAuthRequired({ history }) {
   history.push('/login');
 }
 
-export default class AlternateApp extends React.Component {
+export default class AlternateApp extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -165,15 +162,14 @@ export default class AlternateApp extends React.Component {
       showSegment,
       currentCommitData,
       projectData
-      // display,
     } = this.state;
 
     return (
       <Router>
         <Security
           issuer={OKTA_URL}
-          client_id={OKTA_CLIENT_ID}
-          redirect_uri={`${window.location.origin}/implicit/callback`}
+          clientId={OKTA_CLIENT_ID}
+          redirectUri={`${window.location.origin}/implicit/callback`}
           onAuthRequired={onAuthRequired}
         >
           <div>

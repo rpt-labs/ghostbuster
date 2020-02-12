@@ -1,8 +1,8 @@
 import '@babel/polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import AlternateAppWithoutAuth from './components/AlternateAppWithoutAuth';
+import AlternateApp from './components/AlternateApp';
 
 require('./styles.css');
 
-ReactDOM.render(<AlternateAppWithoutAuth />, document.getElementById('app'));
+ReactDOM.render(<AlternateApp />, document.getElementById('app'));
