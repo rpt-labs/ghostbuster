@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { Grid } from 'semantic-ui-react';
 import axios from 'axios';
 import RadioButtonList from '../shared/RadioButtonList';
-import { getAllCohorts, getAllReleasedToyProblems } from '../../queries/queries';
+import { getAllCohorts, getAllReleasedToyProblems, getAllCohortsNoDb } from '../../queries/queries';
 import StudentPrDetails from './StudentPrDetails';
 
 const { GHOSTBUSTER_BASE_URL } = process.env;
+const useDB = false;
 
 class ToyProblems extends Component {
   constructor() {
@@ -34,7 +35,8 @@ class ToyProblems extends Component {
   }
 
   getCohortsList() {
-    getAllCohorts().then(result => {
+    const cohortsQuery = useDB ? getAllCohorts : getAllCohortsNoDb;
+    cohortsQuery().then(result => {
       const cohortsList = result.data.data.cohorts
         .filter(cohort => cohort.status.toLowerCase() === 'current')
         .map(e => e.name.toUpperCase());

@@ -70,8 +70,12 @@ export default class AlternateApp extends Component {
     cohortsQuery()
       .then(result => {
         const allCohorts = result.data.data.cohorts;
-        const sprintCohorts = allCohorts.filter(cohort => cohort.phase === 'sprint');
-        const teamCohorts = allCohorts.filter(cohort => cohort.phase === 'project');
+        const sprintCohorts = allCohorts.filter(
+          cohort => cohort.phase === 'sprint' && cohort.status === 'current'
+        );
+        const teamCohorts = allCohorts.filter(
+          cohort => cohort.phase === 'project' && cohort.status === 'current'
+        );
         const projectData = {};
         teamCohorts.forEach(cohort => {
           projectData[cohort.cohort_name] = {};
@@ -212,7 +216,10 @@ export default class AlternateApp extends Component {
                 )}
               />
 
-              <SecureRoute path="/toyproblems" render={() => <ToyProblems />} />
+              <SecureRoute
+                path="/toyproblems"
+                render={() => <ToyProblems cohorts={sprintCohorts} />}
+              />
 
               <Route path="/login" render={() => <Login baseUrl={OKTA_BASE_URL} />} />
               <Route path="/implicit/callback" component={ImplicitCallback} />
