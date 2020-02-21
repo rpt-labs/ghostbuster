@@ -1,6 +1,6 @@
 // TODO: refactor to use DB instead of team config files. May need to refactor team helper
 
-const { thesisTeams } = require('../config/teams');
+// const { thesisTeams } = require('../config/teams');
 const Team = require('./team');
 
 const daysAgo = 7;

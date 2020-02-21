@@ -4,13 +4,13 @@ const seeders = require('../../db/models/seeders');
 const { allCohorts } = require('../config/cohorts');
 
 // students
-const { students } = require('../config/students');
+// const { students } = require('../config/students');
 
 // sprints
 const { allSprints } = require('../config/sprints');
 
 // teams
-const { allTeams, teamStudents } = require('../config/teams');
+// const { allTeams, teamStudents } = require('../config/teams');
 
 module.exports = async function seedDatabase(req, res) {
   const { seedType } = req.params;

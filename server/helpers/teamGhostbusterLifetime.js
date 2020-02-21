@@ -1,5 +1,5 @@
 // TODO: refactor to use DB instead of config files.  May need to refactor team helper.
-const { thesisTeams, greenfieldTeams, legacyTeams } = require('../config/teams');
+// const { thesisTeams, greenfieldTeams, legacyTeams } = require('../config/teams');
 const Team = require('./team');
 
 const sortContributionsByStudent = (team, contributionData) => {
