@@ -14,3 +14,11 @@ export const StyledLink = styled(Link)`
   padding: 0px 20px;
   font-size: 18px;
 `;
+
+export const DisabledStyledLink = styled(Link)`
+  color: grey !important;
+  padding: 0px 20px;
+  font-size: 18px;
+  cursor: not-allowed !important;
+  pointer-events: none;
+`;

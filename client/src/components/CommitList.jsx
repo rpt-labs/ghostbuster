@@ -7,9 +7,6 @@ import sprints from '../../../server/config/sprints';
 
 const CommitList = props => {
   const { commits, url, show, handleCommitChange, sprint } = props;
-  const commitsExcludingNoForkMessage = commits.filter(
-    commit => !commit.normalizedMessage.includes('no fork')
-  );
 
   //  TODO: need to update while using DB
   const { messages } = sprints.allSprints[sprint];
@@ -54,9 +51,7 @@ const CommitList = props => {
         <Label as="a" color="teal" onClick={handleCommitChange} size="large">
           <Icon name="github" />
           Total # of Commits:
-          <Label.Detail>
-            {commitsExcludingNoForkMessage.length ? commitsExcludingNoForkMessage.length : 0}
-          </Label.Detail>
+          <Label.Detail>{commits.length ? commits.length : 0}</Label.Detail>
         </Label>
         <Label as="a" color="blue" onClick={handleCommitChange} size="large">
           # of Milestone Commits:
