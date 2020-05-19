@@ -11,7 +11,6 @@ const TopNav = props => (
       <Menu.Item>
         <DisabledStyledLink to="/admin">Admin</DisabledStyledLink>
         <DisabledStyledLink to="/attendance">Attendance</DisabledStyledLink>
-        <DisabledStyledLink to="/projects">Projects</DisabledStyledLink>
         <StyledLink to="/sprints">Sprints</StyledLink>
         <StyledLink to="/toyproblems">Toy Problems</StyledLink>
         <StyledLink to="/login" onClick={() => props.auth.logout('/login')}>
