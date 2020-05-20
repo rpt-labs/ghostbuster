@@ -23,15 +23,6 @@ teamsRouter.delete('/:teamId/students', teamsController.removeAllStudentsFromTea
 // retrieve students for a particular team
 teamsRouter.get('/:teamId/students', teamsController.getTeamStudents);
 
-// check on weekly team engagement for projects
-teamsRouter.get('/projects/:cohort', teamsController.getTeamGithubData);
-
-// check on lifetime contributions for projects
-teamsRouter.get(
-  '/projects/:cohort/:teamType/lifetime',
-  teamsController.getLifetimeContributionData
-);
-
 // get teams by cohort id
 teamsRouter.get('/cohort/:cohortId', teamsController.getTeamsByCohortId);
 

@@ -1,6 +1,6 @@
 // github project checking utils
-const ghostBustWeek = require('../helpers/teamGhostbusterWeek');
-const ghostBustLifetime = require('../helpers/teamGhostbusterLifetime');
+// const ghostBustWeek = require('../helpers/teamGhostbusterWeek');
+// const ghostBustLifetime = require('../helpers/teamGhostbusterLifetime');
 
 // db
 const teams = require('../../db/models/teams');
@@ -86,23 +86,6 @@ exports.getTeamStudents = async (req, res) => {
   } else {
     res.status(200).json({ students });
   }
-};
-
-// check last week's project phase
-
-// TODO: create redis store.  first check redis store to see if that week's data is there
-// only call ghostBust function if it's not in redis, it takes ~40 seconds to run!
-exports.getTeamGithubData = async (req, res) => {
-  const { cohort } = req.params;
-  const report = await ghostBustWeek(cohort);
-  res.send(report);
-};
-
-// check lifetime contribution by cohort.
-exports.getLifetimeContributionData = async (req, res) => {
-  const { cohort, teamType } = req.params;
-  const report = await ghostBustLifetime(teamType, cohort);
-  res.send(report);
 };
 
 exports.getTeamsByCohortId = async (req, res) => {
