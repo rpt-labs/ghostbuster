@@ -1,5 +1,11 @@
 /* eslint-disable class-methods-use-this */
 const githubQuery = require('./githubQuery');
+// @note: Move to a separate file if these constants are used in different places
+const MILESTONE_MAP = {
+  BMR: 'complete bare minimum requirements',
+  ADV: 'complete advanced content',
+  ADV2: 'completed advanced content'
+};
 
 // so node won't throw an error and crash when a student doesn't have a fork
 process.on('uncaughtException', err => {
@@ -79,18 +85,29 @@ module.exports = class Student {
   }
 
   passBMR(commitData) {
-    if (commitData) {
-      return commitData.some(
-        commit => commit.normalizedMessage === 'complete bare minimum requirements'
-      );
+    if (!commitData) {
+      return null;
     }
-    return null;
+    return commitData.some(commit => commit.normalizedMessage === MILESTONE_MAP.BMR);
+  }
+
+  passAdvancedContent(commitData) {
+    if (!commitData) {
+      return null;
+    }
+    return commitData.some(
+      commit =>
+        commit.normalizedMessage === MILESTONE_MAP.ADV ||
+        commit.normalizedMessage === MILESTONE_MAP.ADV2
+    );
   }
 
   // this version allows students to work out of order but does not account for human error of missing one of the milestone commits
 
   percentComplete(possibleCommits, commitData) {
-    const possibleMessages = possibleCommits.map(x => x.message);
+    const possibleMessages = possibleCommits
+      .filter(msg => msg.message !== MILESTONE_MAP.ADV && msg.message !== MILESTONE_MAP.ADV2)
+      .map(x => x.message);
     // filter by matching the predetermined commit messages, then make unique in case students make more than one of the same milestone commit messages
     const matching = commitData
       .map(commit => commit.normalizedMessage)

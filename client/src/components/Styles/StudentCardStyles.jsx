@@ -38,6 +38,10 @@ export const CheckIcon = styled(Icon)`
   color: #85d19c !important;
 `;
 
+export const StarIcon = styled(Icon)`
+  color: #ffd700 !important;
+`;
+
 export const GithubIcon = styled(Icon)`
   color: #403f4c !important;
 `;
