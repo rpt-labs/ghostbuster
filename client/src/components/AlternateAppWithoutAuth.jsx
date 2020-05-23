@@ -7,7 +7,6 @@ import { Container } from 'semantic-ui-react';
 import Home from './Home';
 import TopNav from './TopNav';
 import Cohort from './Cohort';
-import TeamList from './TeamList';
 import ToyProblems from './toyProblems/ToyProblems';
 import Admin from './admin/Admin';
 import Attendance from './attendance/Attendance';
@@ -189,23 +188,6 @@ export default class AlternateApp extends React.Component {
                 />
               )}
             />
-
-            <Route
-              path="/projects"
-              render={props => (
-                <TeamList
-                  {...props}
-                  cohorts={teamCohorts}
-                  selectCohort={this.handleSelectCohort}
-                  selectedCohort={selectedCohort}
-                  checkProjects={this.checkProjects}
-                  loading={loading}
-                  showSegment={showSegment}
-                  projects={projectData}
-                />
-              )}
-            />
-
             <Route path="/toyproblems" render={() => <ToyProblems />} />
           </Container>
         </div>

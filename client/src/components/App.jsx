@@ -6,7 +6,6 @@ import { Container } from 'semantic-ui-react';
 import TabNav from './TabNav';
 import TopNav from './TopNav';
 import Cohort from './Cohort';
-import TeamList from './TeamList';
 
 // queries
 // import { getAllCohorts } from '../queries/queries';
@@ -119,7 +118,9 @@ export default class App extends React.Component {
     const { selectedCohort, projectData } = { ...this.state };
     this.setState({ loading: true, showSegment: true }, () => {
       axios
-        .get(`http://localhost:${port}/ghostbuster/teams/projects/${selectedCohort}/thesis/lifetime`)
+        .get(
+          `http://localhost:${port}/ghostbuster/teams/projects/${selectedCohort}/thesis/lifetime`
+        )
         .then(response => {
           projectData[selectedCohort].lifetimeData = response.data;
         })
@@ -140,53 +141,23 @@ export default class App extends React.Component {
   }
 
   render() {
-    const {
-      sprintCohorts,
-      teamCohorts,
-      selectedCohort,
-      loading,
-      showSegment,
-      currentCommitData,
-      projectData,
-      display
-    } = this.state;
+    const { sprintCohorts, selectedCohort, loading, showSegment, currentCommitData } = this.state;
 
-    let cohorts;
-
-    if (display === 'projects') {
-      cohorts = (
-        <Container>
-          <TabNav
-            selected={selectedCohort}
-            cohorts={teamCohorts}
-            selectCohort={this.handleSelectCohort}
-          />
-          <TeamList
-            selectedCohort={selectedCohort}
-            checkProjects={this.checkProjects}
-            loading={loading}
-            showSegment={showSegment}
-            projects={projectData}
-          />
-        </Container>
-      );
-    } else {
-      cohorts = (
-        <Container>
-          <TabNav
-            selected={selectedCohort}
-            cohorts={sprintCohorts}
-            selectCohort={this.handleSelectCohort}
-          />
-          <Cohort
-            repoSelect={this.handleRepoSelect}
-            loading={loading}
-            showSegment={showSegment}
-            commits={currentCommitData}
-          />
-        </Container>
-      );
-    }
+    const cohorts = (
+      <Container>
+        <TabNav
+          selected={selectedCohort}
+          cohorts={sprintCohorts}
+          selectCohort={this.handleSelectCohort}
+        />
+        <Cohort
+          repoSelect={this.handleRepoSelect}
+          loading={loading}
+          showSegment={showSegment}
+          commits={currentCommitData}
+        />
+      </Container>
+    );
 
     return (
       <div>

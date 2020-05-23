@@ -9,7 +9,6 @@ import Home from './Home';
 import Login from './auth/Login';
 import TopNav from './TopNav';
 import Cohort from './Cohort';
-import TeamList from './TeamList';
 import ToyProblems from './toyProblems/ToyProblems';
 import Admin from './admin/Admin';
 import Attendance from './attendance/Attendance';
@@ -164,8 +163,7 @@ export default class AlternateApp extends Component {
       selectedCohort,
       loading,
       showSegment,
-      currentCommitData,
-      projectData
+      currentCommitData
     } = this.state;
 
     return (
@@ -196,22 +194,6 @@ export default class AlternateApp extends Component {
                     loading={loading}
                     showSegment={showSegment}
                     commits={currentCommitData}
-                  />
-                )}
-              />
-
-              <SecureRoute
-                path="/projects"
-                render={props => (
-                  <TeamList
-                    {...props}
-                    cohorts={teamCohorts}
-                    selectCohort={this.handleSelectCohort}
-                    selectedCohort={selectedCohort}
-                    checkProjects={this.checkProjects}
-                    loading={loading}
-                    showSegment={showSegment}
-                    projects={projectData}
                   />
                 )}
               />
