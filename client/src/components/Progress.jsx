@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { List, Header } from 'semantic-ui-react';
 import {
   CheckIcon,
+  StarIcon,
   CompleteButton,
   DangerButton,
   HourglassIcon,
@@ -43,7 +44,14 @@ const Progress = props => {
   return (
     <React.Fragment>
       <List>
-        <List.Item>{icon}</List.Item>
+        <List.Item>
+          <span>{icon}</span>
+          {student.AdvancedContent && (
+            <span>
+              <StarIcon name="star" size="huge" />
+            </span>
+          )}
+        </List.Item>
         <List.Item>
           <Header as="h3">{student.name}</Header>
         </List.Item>
