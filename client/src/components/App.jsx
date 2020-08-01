@@ -1,23 +1,37 @@
-import React from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 
 // components
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
-import TabNav from './TabNav';
+import { Security, SecureRoute, ImplicitCallback } from '@okta/okta-react';
+import Home from './Home';
+import Login from './auth/Login';
 import TopNav from './TopNav';
 import Cohort from './Cohort';
+import ToyProblems from './toyProblems/ToyProblems';
+import Admin from './admin/Admin';
+import Attendance from './attendance/Attendance';
+import StudentAttendancePreview from './attendance/StudentAttendancePreview';
 
 // queries
 // import { getAllCohorts } from '../queries/queries';
 import { getAllCohortsNoDb } from '../queries/queries';
 
-const port = process.env.PORT || 1234;
+const { OKTA_BASE_URL } = process.env;
+const { OKTA_CLIENT_ID } = process.env;
+const { OKTA_URL } = process.env;
+const { GHOSTBUSTER_BASE_URL } = process.env;
 
 /*
   eslint no-underscore-dangle: ["error", { "allowAfterThis": true }]
 */
 
-export default class App extends React.Component {
+function onAuthRequired({ history }) {
+  history.push('/login');
+}
+
+export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -55,8 +69,12 @@ export default class App extends React.Component {
     cohortsQuery()
       .then(result => {
         const allCohorts = result.data.data.cohorts;
-        const sprintCohorts = allCohorts.filter(cohort => cohort.phase === 'sprint');
-        const teamCohorts = allCohorts.filter(cohort => cohort.phase === 'project');
+        const sprintCohorts = allCohorts.filter(
+          cohort => cohort.phase === 'sprint' && cohort.status === 'current'
+        );
+        const teamCohorts = allCohorts.filter(
+          cohort => cohort.phase === 'project' && cohort.status === 'current'
+        );
         const projectData = {};
         teamCohorts.forEach(cohort => {
           projectData[cohort.cohort_name] = {};
@@ -100,7 +118,7 @@ export default class App extends React.Component {
     const repoString = repos.join('+');
     this.setState({ loading: true, showSegment: true }, () => {
       axios
-        .get(`http://localhost:${port}/ghostbuster/sprints/${repoString}?cohort=${selectedCohort}`)
+        .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/sprints/${repoString}?cohort=${selectedCohort}`)
         .then(response =>
           this.setState({
             currentCommitData: response.data,
@@ -118,9 +136,7 @@ export default class App extends React.Component {
     const { selectedCohort, projectData } = { ...this.state };
     this.setState({ loading: true, showSegment: true }, () => {
       axios
-        .get(
-          `http://localhost:${port}/ghostbuster/teams/projects/${selectedCohort}/thesis/lifetime`
-        )
+        .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/teams/projects/${selectedCohort}/thesis/lifetime`)
         .then(response => {
           projectData[selectedCohort].lifetimeData = response.data;
         })
@@ -128,7 +144,7 @@ export default class App extends React.Component {
           throw error;
         });
       axios
-        .get(`http://localhost:${port}/ghostbuster/teams/projects/${selectedCohort}`)
+        .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/teams/projects/${selectedCohort}`)
         .then(response => {
           projectData[selectedCohort].weekThesisData = response.data.results;
           projectData[selectedCohort].fetched = true;
@@ -141,29 +157,58 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { sprintCohorts, selectedCohort, loading, showSegment, currentCommitData } = this.state;
-
-    const cohorts = (
-      <Container>
-        <TabNav
-          selected={selectedCohort}
-          cohorts={sprintCohorts}
-          selectCohort={this.handleSelectCohort}
-        />
-        <Cohort
-          repoSelect={this.handleRepoSelect}
-          loading={loading}
-          showSegment={showSegment}
-          commits={currentCommitData}
-        />
-      </Container>
-    );
+    const {
+      sprintCohorts,
+      teamCohorts,
+      selectedCohort,
+      loading,
+      showSegment,
+      currentCommitData
+    } = this.state;
 
     return (
-      <div>
-        <TopNav handleSelectDisplay={this.handleSelectDisplay} />
-        {cohorts}
-      </div>
+      <Router>
+        <Security
+          issuer={OKTA_URL}
+          clientId={OKTA_CLIENT_ID}
+          redirectUri={`${window.location.origin}/implicit/callback`}
+          onAuthRequired={onAuthRequired}
+        >
+          <div>
+            <TopNav />
+
+            <Container>
+              <SecureRoute path="/" exact component={Home} />
+              <SecureRoute path="/admin" component={Admin} />
+              <SecureRoute exact path="/attendance" component={Attendance} />
+              <SecureRoute path="/attendance/preview" component={StudentAttendancePreview} />
+              <SecureRoute
+                path="/sprints"
+                render={props => (
+                  <Cohort
+                    {...props}
+                    selected={selectedCohort}
+                    cohorts={sprintCohorts}
+                    selectCohort={this.handleSelectCohort}
+                    repoSelect={this.handleRepoSelect}
+                    loading={loading}
+                    showSegment={showSegment}
+                    commits={currentCommitData}
+                  />
+                )}
+              />
+
+              <SecureRoute
+                path="/toyproblems"
+                render={() => <ToyProblems cohorts={sprintCohorts} />}
+              />
+
+              <Route path="/login" render={() => <Login baseUrl={OKTA_BASE_URL} />} />
+              <Route path="/implicit/callback" component={ImplicitCallback} />
+            </Container>
+          </div>
+        </Security>
+      </Router>
     );
   }
 }
