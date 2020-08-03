@@ -1,26 +1,24 @@
-import React, { Component } from 'react';
+import React from 'react';
 import axios from 'axios';
 
 // components
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
-import { Security, SecureRoute, ImplicitCallback } from '@okta/okta-react';
 import Home from './Home';
-import Login from './auth/Login';
 import TopNav from './TopNav';
 import Cohort from './Cohort';
 import ToyProblems from './toyProblems/ToyProblems';
 import Admin from './admin/Admin';
 import Attendance from './attendance/Attendance';
 import StudentAttendancePreview from './attendance/StudentAttendancePreview';
+// routing
+
+// auth
 
 // queries
 // import { getAllCohorts } from '../queries/queries';
 import { getAllCohortsNoDb } from '../queries/queries';
 
-const { OKTA_BASE_URL } = process.env;
-const { OKTA_CLIENT_ID } = process.env;
-const { OKTA_URL } = process.env;
 const { GHOSTBUSTER_BASE_URL } = process.env;
 
 /*
@@ -31,7 +29,7 @@ function onAuthRequired({ history }) {
   history.push('/login');
 }
 
-export default class AlternateApp extends Component {
+export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -69,12 +67,8 @@ export default class AlternateApp extends Component {
     cohortsQuery()
       .then(result => {
         const allCohorts = result.data.data.cohorts;
-        const sprintCohorts = allCohorts.filter(
-          cohort => cohort.phase === 'sprint' && cohort.status === 'current'
-        );
-        const teamCohorts = allCohorts.filter(
-          cohort => cohort.phase === 'project' && cohort.status === 'current'
-        );
+        const sprintCohorts = allCohorts.filter(cohort => cohort.phase === 'sprint');
+        const teamCohorts = allCohorts.filter(cohort => cohort.phase === 'project');
         const projectData = {};
         teamCohorts.forEach(cohort => {
           projectData[cohort.cohort_name] = {};
@@ -163,51 +157,40 @@ export default class AlternateApp extends Component {
       selectedCohort,
       loading,
       showSegment,
-      currentCommitData
+      currentCommitData,
+      projectData
+      // display,
     } = this.state;
 
     return (
       <Router>
-        <Security
-          issuer={OKTA_URL}
-          clientId={OKTA_CLIENT_ID}
-          redirectUri={`${window.location.origin}/implicit/callback`}
-          onAuthRequired={onAuthRequired}
-        >
-          <div>
-            <TopNav />
 
-            <Container>
-              <SecureRoute path="/" exact component={Home} />
-              <SecureRoute path="/admin" component={Admin} />
-              <SecureRoute exact path="/attendance" component={Attendance} />
-              <SecureRoute path="/attendance/preview" component={StudentAttendancePreview} />
-              <SecureRoute
-                path="/sprints"
-                render={props => (
-                  <Cohort
-                    {...props}
-                    selected={selectedCohort}
-                    cohorts={sprintCohorts}
-                    selectCohort={this.handleSelectCohort}
-                    repoSelect={this.handleRepoSelect}
-                    loading={loading}
-                    showSegment={showSegment}
-                    commits={currentCommitData}
-                  />
-                )}
-              />
+        <div>
+          <TopNav />
 
-              <SecureRoute
-                path="/toyproblems"
-                render={() => <ToyProblems cohorts={sprintCohorts} />}
-              />
-
-              <Route path="/login" render={() => <Login baseUrl={OKTA_BASE_URL} />} />
-              <Route path="/implicit/callback" component={ImplicitCallback} />
-            </Container>
-          </div>
-        </Security>
+          <Container>
+            <Route path="/" exact component={Home} />
+            <Route path="/admin" component={Admin} />
+            <Route exact path="/attendance" component={Attendance} />
+            <Route path="/attendance/preview" component={StudentAttendancePreview} />
+            <Route
+              path="/sprints"
+              render={props => (
+                <Cohort
+                  {...props}
+                  selected={selectedCohort}
+                  cohorts={sprintCohorts}
+                  selectCohort={this.handleSelectCohort}
+                  repoSelect={this.handleRepoSelect}
+                  loading={loading}
+                  showSegment={showSegment}
+                  commits={currentCommitData}
+                />
+              )}
+            />
+            <Route path="/toyproblems" render={() => <ToyProblems />} />
+          </Container>
+        </div>
       </Router>
     );
   }

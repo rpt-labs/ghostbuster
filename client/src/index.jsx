@@ -1,8 +1,8 @@
 import '@babel/polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import AlternateApp from './components/AlternateApp';
+import App from './components/App';
 
 require('./styles.css');
 
-ReactDOM.render(<AlternateApp />, document.getElementById('app'));
+ReactDOM.render(<App />, document.getElementById('app'));
