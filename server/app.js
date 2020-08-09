@@ -1,3 +1,4 @@
+
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const OktaJwtVerifier = require('@okta/jwt-verifier');
@@ -31,6 +32,7 @@ const students = require('./routes/students');
 const teams = require('./routes/teams');
 const sprints = require('./routes/sprints');
 const toyproblems = require('./routes/toyproblems');
+const projects = require('./routes/projects');
 
 // use this as middleware on any routes you need to protect
 // be sure to include the authorization header on the request from client
@@ -93,6 +95,9 @@ app.use('/ghostbuster/teams', teams);
 
 // toyproblems
 app.use('/ghostbuster/toyproblems', toyproblems);
+
+// projects
+app.use('/ghostbuster/projects', projects);
 
 // to seed DB with current student/cohort/team information
 app.get('/ghostbuster/seed/:seedType', asyncMiddleware(seedersController));

@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Grid } from 'semantic-ui-react';
+import axios from 'axios';
 import RadioButtonList from '../shared/RadioButtonList';
 import { getAllCohortsNoDb } from '../../queries/queries';
+
+const { GHOSTBUSTER_BASE_URL } = process.env;
 
 class Projects extends Component {
   constructor() {
@@ -56,7 +59,19 @@ class Projects extends Component {
   }
 
   showDetails() {
-    console.log(this.state.cohorts);
+    const { cohorts } = this.state;
+    const selectedCohort = cohorts.find(e => e.isChecked === true).name.toLowerCase();
+    axios
+      .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/projects?cohort=${selectedCohort}`)
+      .then(response => {
+        if (response && response.data) {
+          console.log('response.......', response)
+        }
+        // this.setState({ pullRequestsList, showDetails: true, selectedCohort });
+      })
+      .catch(error => {
+        throw error;
+      });
   }
 
   render() {
