@@ -23,14 +23,14 @@ class Projects extends Component {
 
   onButtonClick(e) {
     const selectedCohort = e.target.innerHTML.toLowerCase();
-    this.setState({ selectedCohort }, () => this.checkToyProblems());
+    this.setState({ selectedCohort });
   }
 
   getCohortsList() {
     const cohortsQuery = getAllCohortsNoDb;
     cohortsQuery().then(result => {
       const cohortsList = result.data.data.cohorts
-        .filter(cohort => cohort.status.toLowerCase() === 'current')
+        .filter(cohort => cohort.status.toLowerCase() === 'current' && cohort.phase === 'project')
         .map(e => e.name.toUpperCase());
       this.setState({
         cohorts: cohortsList.map(e => ({
@@ -56,7 +56,7 @@ class Projects extends Component {
   }
 
   showDetails() {
-    console.log('hello');
+    console.log(this.state.cohorts);
   }
 
   render() {
@@ -69,7 +69,7 @@ class Projects extends Component {
             cohorts={cohorts}
             handleRadioButtonChange={this.handleRadioButtonChange}
             showDetails={this.showDetails}
-            buttonLabel="Toy Problems Status"
+            buttonLabel="Project Status"
           />
         </Grid>
       </React.Fragment>
