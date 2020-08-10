@@ -22,7 +22,7 @@ export default class StudentsPrList extends Component {
                         <List.Icon name="github" size="large" verticalAlign="middle" />
                         <List.Content>
                           <List.Header as="a" target="_blank" href={url}>
-                            {url}
+                            {url.replace('https://github.com/', '')}
                           </List.Header>
                         </List.Content>
                       </List.Item>

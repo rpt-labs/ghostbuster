@@ -5,7 +5,6 @@ import RadioButtonList from '../shared/RadioButtonList';
 import { getAllCohortsNoDb } from '../../queries/queries';
 import StudentsPrList from './StudentsPrList';
 
-
 const { GHOSTBUSTER_BASE_URL } = process.env;
 
 class Projects extends Component {
@@ -67,10 +66,7 @@ class Projects extends Component {
     axios
       .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/projects?cohort=${selectedCohort}`)
       .then(response => {
-        let studentsList = [];
-        if (response && response.data) {
-          studentsList = response.data.studentsList;
-        }
+        const { studentsList = [] } = response && response.data ? response.data : {};
         this.setState({ studentsList, showDetails: true });
       })
       .catch(error => {
