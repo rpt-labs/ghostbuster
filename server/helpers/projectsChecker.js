@@ -7,9 +7,7 @@ process.on('uncaughtException', err => {
 });
 
 const getStudentsList = cohortName => {
-  // console.log('.....getStudentsList', cohortName)
   const studentsList = allCohorts.filter(x => x.name === cohortName);
-  // console.log('studentsList[0].students', studentsList[0].students)
   return studentsList && studentsList.length ? studentsList[0].students : [];
 };
 

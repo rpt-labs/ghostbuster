@@ -3,6 +3,8 @@ import { Grid } from 'semantic-ui-react';
 import axios from 'axios';
 import RadioButtonList from '../shared/RadioButtonList';
 import { getAllCohortsNoDb } from '../../queries/queries';
+import StudentsPrList from './StudentsPrList';
+
 
 const { GHOSTBUSTER_BASE_URL } = process.env;
 
@@ -13,6 +15,7 @@ class Projects extends Component {
       cohorts: [],
       showDetails: false,
       selectedCohort: '',
+      studentsList: []
     };
     this.handleRadioButtonChange = this.handleRadioButtonChange.bind(this);
     this.showDetails = this.showDetails.bind(this);
@@ -64,10 +67,11 @@ class Projects extends Component {
     axios
       .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/projects?cohort=${selectedCohort}`)
       .then(response => {
+        let studentsList = [];
         if (response && response.data) {
-          console.log('response.......', response)
+          studentsList = response.data.studentsList;
         }
-        // this.setState({ pullRequestsList, showDetails: true, selectedCohort });
+        this.setState({ studentsList, showDetails: true });
       })
       .catch(error => {
         throw error;
@@ -75,8 +79,7 @@ class Projects extends Component {
   }
 
   render() {
-    const { cohorts } = this.state;
-
+    const { cohorts, studentsList, showDetails, selectedCohort } = this.state;
     return (
       <React.Fragment>
         <Grid textAlign="center" style={{ padding: '30px' }}>
@@ -87,6 +90,9 @@ class Projects extends Component {
             buttonLabel="Project Status"
           />
         </Grid>
+        {showDetails && studentsList && studentsList.length && (
+          <StudentsPrList studentsList={studentsList} selectedCohort={selectedCohort} />
+        )}
       </React.Fragment>
     );
   }
