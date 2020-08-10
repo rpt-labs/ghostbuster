@@ -1,11 +1,55 @@
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
+import axios from 'axios';
 import PropTypes from 'prop-types';
-import { Label, Card, Icon, List } from 'semantic-ui-react';
+import { Label, Card, List } from 'semantic-ui-react';
+
+const { GHOSTBUSTER_BASE_URL } = process.env;
 
 export default class StudentsPrList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      commitDetails: this.getRepoList(props.studentsList)
+    };
+    this.getCommits = this.getCommits.bind(this);
+    this.getRepoList = this.getRepoList.bind(this);
+  }
+
+  componentDidMount() {
+    this.getRepoList();
+  }
+
+  getRepoList = async () => {
+    const { studentsList } = this.props;
+    const commitDetails = {};
+    const urls = [];
+    studentsList.forEach(student => {
+      urls.push(...student.fecUrls.split(','));
+    });
+    const repoList = urls.map(url => url.replace('https://github.com/', '').trim());
+    repoList.map(async repo => {
+      const commit = await this.getCommits(repo);
+      commitDetails[repo] = commit;
+      this.setState({ ...this.state, ...commitDetails });
+    });
+  };
+
+  getCommits = repoName => {
+    return axios
+      .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/projects/commits?repoName=${repoName}`)
+      .then(response => {
+        const { commits = [] } = response.data;
+        return commits;
+      })
+      .catch(error => {
+        throw error;
+      });
+  };
+
   render() {
     const { studentsList } = this.props;
+    // console.log('this.state', this.state);
     return (
       <div>
         <Card.Group itemsPerRow={2}>
@@ -41,4 +85,3 @@ export default class StudentsPrList extends Component {
 StudentsPrList.propTypes = {
   studentsList: PropTypes.instanceOf(Array).isRequired
 };
-

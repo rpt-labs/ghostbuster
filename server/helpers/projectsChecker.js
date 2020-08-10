@@ -1,4 +1,4 @@
-// const githubQuery = require('./githubQuery');
+const githubQuery = require('./githubQuery');
 const { allCohorts } = require('../config/cohorts');
 
 // so node won't throw an error and crash when a student doesn't have a fork
@@ -11,6 +11,17 @@ const getStudentsList = cohortName => {
   return studentsList && studentsList.length ? studentsList[0].students : [];
 };
 
+const getCommits = async repoName => {
+  const url = `http://api.github.com/repos/${repoName}/commits`;
+  const response = await githubQuery(url);
+  const commits = response.map(res => ({
+    name: res.commit.message,
+    date: res.commit.author.date
+  }));
+  return commits || [];
+};
+
 module.exports = {
-  getStudentsList
+  getStudentsList,
+  getCommits
 };
