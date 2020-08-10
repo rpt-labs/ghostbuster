@@ -13,6 +13,7 @@ import ToyProblems from './toyProblems/ToyProblems';
 import Admin from './admin/Admin';
 import Attendance from './attendance/Attendance';
 import StudentAttendancePreview from './attendance/StudentAttendancePreview';
+import Projects from './Projects/Projects';
 
 // queries
 // import { getAllCohorts } from '../queries/queries';
@@ -198,6 +199,7 @@ export default class App extends Component {
                 )}
               />
 
+              <SecureRoute path="/projects" render={() => <Projects cohorts={sprintCohorts} />} />
               <SecureRoute
                 path="/toyproblems"
                 render={() => <ToyProblems cohorts={sprintCohorts} />}
