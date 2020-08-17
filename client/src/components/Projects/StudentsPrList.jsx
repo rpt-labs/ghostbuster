@@ -17,8 +17,8 @@ export default class StudentsPrList extends Component {
     this.showHideDetails = this.showHideDetails.bind(this);
   }
 
-  async componentDidMount() {
-    await this.getCommitDetails();
+  componentDidMount() {
+    this.getCommitDetails();
   }
 
   getCommitDetails = () => {
