@@ -11,3 +11,9 @@ exports.getCommits = async (req, res) => {
   const commits = await projectsChecker.getCommits(repoName);
   res.json({ commits });
 };
+
+exports.getRepoListWithCommits = async (req, res) => {
+  const { urls } = req.query;
+  const commits = await projectsChecker.getRepoListWithCommits(urls);
+  res.json({ commits });
+};
