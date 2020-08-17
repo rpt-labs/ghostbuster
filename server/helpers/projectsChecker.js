@@ -21,7 +21,18 @@ const getCommits = async repoName => {
   return commits || [];
 };
 
+const getRepoListWithCommits = async urls => {
+  const repoList = urls.split(',').map(url => url.replace('https://github.com/', '').trim());
+  const commitsMap = {};
+  const promises = repoList.map(async repo => {
+    commitsMap[repo] = await getCommits(repo);
+  });
+  await Promise.all(promises);
+  return commitsMap;
+};
+
 module.exports = {
   getStudentsList,
-  getCommits
+  getCommits,
+  getRepoListWithCommits
 };

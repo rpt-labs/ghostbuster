@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { Label, Card, List } from 'semantic-ui-react';
+import { Label, Card, List, Button } from 'semantic-ui-react';
 
 const { GHOSTBUSTER_BASE_URL } = process.env;
 
@@ -10,48 +10,50 @@ export default class StudentsPrList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      commitDetails: this.getRepoList(props.studentsList)
+      commitDetails: {},
+      showAllCommits: false
     };
-    this.getCommits = this.getCommits.bind(this);
-    this.getRepoList = this.getRepoList.bind(this);
+    this.getCommitDetails = this.getCommitDetails.bind(this);
+    this.showHideDetails = this.showHideDetails.bind(this);
   }
 
-  componentDidMount() {
-    this.getRepoList();
+  async componentDidMount() {
+    await this.getCommitDetails();
   }
 
-  getRepoList = async () => {
+  getCommitDetails = () => {
     const { studentsList } = this.props;
-    const commitDetails = {};
     const urls = [];
     studentsList.forEach(student => {
       urls.push(...student.fecUrls.split(','));
     });
-    const repoList = urls.map(url => url.replace('https://github.com/', '').trim());
-    repoList.map(async repo => {
-      const commit = await this.getCommits(repo);
-      commitDetails[repo] = commit;
-      this.setState({ ...this.state, ...commitDetails });
-    });
-  };
-
-  getCommits = repoName => {
     return axios
-      .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/projects/commits?repoName=${repoName}`)
+      .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/projects/repolist?urls=${urls}`)
       .then(response => {
-        const { commits = [] } = response.data;
-        return commits;
+        this.setState({ commitDetails: response.data.commits });
       })
       .catch(error => {
         throw error;
       });
   };
 
+  showHideDetails() {
+    const { showAllCommits } = this.state;
+    this.setState({ showAllCommits: !showAllCommits });
+  }
+
   render() {
     const { studentsList } = this.props;
-    // console.log('this.state', this.state);
+    const { commitDetails, showAllCommits } = this.state;
     return (
       <div>
+        <Button
+          color="grey"
+          onClick={() => this.showHideDetails()}
+          style={{ marginBottom: '10px' }}
+        >
+          {showAllCommits ? 'Hide Details' : 'Show Details'}
+        </Button>
         <Card.Group itemsPerRow={2}>
           {studentsList.map(item => (
             <Card key={item.github} style={{ marginBottom: '0px' }}>
@@ -68,6 +70,15 @@ export default class StudentsPrList extends Component {
                           <List.Header as="a" target="_blank" href={url}>
                             {url.replace('https://github.com/', '')}
                           </List.Header>
+                          <List.List as="ol">
+                            {showAllCommits &&
+                              commitDetails[url.replace('https://github.com/', '')] &&
+                              commitDetails[url.replace('https://github.com/', '')].map(commit => (
+                                <List.Item as="li" value="*" key={`${commit.name}${commit.date}`}>
+                                  {commit.name}
+                                </List.Item>
+                              ))}
+                          </List.List>
                         </List.Content>
                       </List.Item>
                     ))}
