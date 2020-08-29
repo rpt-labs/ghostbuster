@@ -19,7 +19,7 @@ const RadioButtonList = props => {
       <Header as="h2" style={{ textAlign: 'center', marginTop: '15px' }}>
         Select A Cohort
       </Header>
-      <PaddedGrid columns={3} relaxed style={{ marginLeft: '50px' }}>
+      <PaddedGrid columns={3} relaxed>
         {cohortsList}
       </PaddedGrid>
       <Button

@@ -6,7 +6,7 @@ import { Label, Card, List, Button } from 'semantic-ui-react';
 
 const { GHOSTBUSTER_BASE_URL } = process.env;
 
-export default class StudentsPrList extends Component {
+export default class StudentsCommitsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -93,6 +93,6 @@ export default class StudentsPrList extends Component {
   }
 }
 
-StudentsPrList.propTypes = {
+StudentsCommitsList.propTypes = {
   studentsList: PropTypes.instanceOf(Array).isRequired
 };

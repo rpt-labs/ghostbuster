@@ -3,7 +3,7 @@ import { Grid } from 'semantic-ui-react';
 import axios from 'axios';
 import RadioButtonList from '../shared/RadioButtonList';
 import { getAllCohortsNoDb } from '../../queries/queries';
-import StudentsPrList from './StudentsPrList';
+import StudentsCommitsList from './StudentsCommitsList';
 
 const { GHOSTBUSTER_BASE_URL } = process.env;
 
@@ -19,16 +19,10 @@ class Projects extends Component {
     this.handleRadioButtonChange = this.handleRadioButtonChange.bind(this);
     this.showDetails = this.showDetails.bind(this);
     this.getCohortsList = this.getCohortsList.bind(this);
-    this.onButtonClick = this.onButtonClick.bind(this);
   }
 
   componentDidMount() {
     this.getCohortsList();
-  }
-
-  onButtonClick(e) {
-    const selectedCohort = e.target.innerHTML.toLowerCase();
-    this.setState({ selectedCohort });
   }
 
   getCohortsList() {
@@ -37,8 +31,11 @@ class Projects extends Component {
       const cohortsList = result.data.data.cohorts
         .filter(cohort => cohort.status.toLowerCase() === 'current' && cohort.phase === 'project')
         .map(e => e.name.toUpperCase());
+      const cohortsListWithFecSuffix = cohortsList.map(cohort => `${cohort}-FEC`);
+      const cohortsListWithSdcSuffix = cohortsList.map(cohort => `${cohort}-SDC`);
+      const cohortsListWithPhaseName = [...cohortsListWithFecSuffix, ...cohortsListWithSdcSuffix];
       this.setState({
-        cohorts: cohortsList.map(e => ({
+        cohorts: cohortsListWithPhaseName.map(e => ({
           name: e,
           isChecked: false
         }))
@@ -64,10 +61,10 @@ class Projects extends Component {
     const { cohorts } = this.state;
     const selectedCohort = cohorts.find(e => e.isChecked === true).name.toLowerCase();
     axios
-      .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/projects?cohort=${selectedCohort}`)
+      .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/projects?cohort=${selectedCohort.split('-')[0]}`)
       .then(response => {
         const { studentsList = [] } = response && response.data ? response.data : {};
-        this.setState({ studentsList, showDetails: true });
+        this.setState({ studentsList, showDetails: true, selectedCohort });
       })
       .catch(error => {
         throw error;
@@ -87,7 +84,7 @@ class Projects extends Component {
           />
         </Grid>
         {showDetails && studentsList && studentsList.length && (
-          <StudentsPrList studentsList={studentsList} selectedCohort={selectedCohort} />
+          <StudentsCommitsList studentsList={studentsList} selectedCohort={selectedCohort} />
         )}
       </React.Fragment>
     );
