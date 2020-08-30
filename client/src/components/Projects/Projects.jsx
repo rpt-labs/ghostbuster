@@ -14,7 +14,8 @@ class Projects extends Component {
       cohorts: [],
       showDetails: false,
       selectedCohort: '',
-      studentsList: []
+      studentsList: [],
+      commitDetails: ''
     };
     this.handleRadioButtonChange = this.handleRadioButtonChange.bind(this);
     this.showDetails = this.showDetails.bind(this);
@@ -60,11 +61,26 @@ class Projects extends Component {
   showDetails() {
     const { cohorts } = this.state;
     const selectedCohort = cohorts.find(e => e.isChecked === true).name.toLowerCase();
+    const projectPhase = selectedCohort.split('-')[1] || 'fec';
     axios
       .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/projects?cohort=${selectedCohort.split('-')[0]}`)
       .then(response => {
         const { studentsList = [] } = response && response.data ? response.data : {};
-        this.setState({ studentsList, showDetails: true, selectedCohort });
+        const urls = [];
+        studentsList.forEach(student => urls.push(...student[`${projectPhase}Urls`].split(',')));
+        return axios
+          .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/projects/repolist?urls=${urls}`)
+          .then(res => {
+            this.setState({
+              commitDetails: res.data.commits,
+              studentsList,
+              showDetails: true,
+              selectedCohort
+            });
+          })
+          .catch(error => {
+            throw error;
+          });
       })
       .catch(error => {
         throw error;
@@ -72,7 +88,7 @@ class Projects extends Component {
   }
 
   render() {
-    const { cohorts, studentsList, showDetails, selectedCohort } = this.state;
+    const { cohorts, studentsList, showDetails, selectedCohort, commitDetails } = this.state;
     return (
       <React.Fragment>
         <Grid textAlign="center" style={{ padding: '30px' }}>
@@ -84,7 +100,11 @@ class Projects extends Component {
           />
         </Grid>
         {showDetails && studentsList && studentsList.length && (
-          <StudentsCommitsList studentsList={studentsList} selectedCohort={selectedCohort} />
+          <StudentsCommitsList
+            studentsList={studentsList}
+            selectedCohort={selectedCohort}
+            commitDetails={commitDetails}
+          />
         )}
       </React.Fragment>
     );
