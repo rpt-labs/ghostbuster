@@ -16,7 +16,8 @@ const getCommits = async repoName => {
   const response = await githubQuery(url);
   const commits = response.map(res => ({
     name: res.commit.message,
-    date: res.commit.author.date
+    date: res.commit.author.date,
+    author: res.author && res.author.login
   }));
   return commits || [];
 };
