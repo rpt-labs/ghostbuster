@@ -3,7 +3,7 @@ import { Grid } from 'semantic-ui-react';
 import axios from 'axios';
 import RadioButtonList from '../shared/RadioButtonList';
 import { getAllCohortsNoDb } from '../../queries/queries';
-import StudentsPrList from './StudentsPrList';
+import StudentsCommitsList from './StudentsCommitsList';
 
 const { GHOSTBUSTER_BASE_URL } = process.env;
 
@@ -14,21 +14,16 @@ class Projects extends Component {
       cohorts: [],
       showDetails: false,
       selectedCohort: '',
-      studentsList: []
+      studentsList: [],
+      commitDetails: ''
     };
     this.handleRadioButtonChange = this.handleRadioButtonChange.bind(this);
     this.showDetails = this.showDetails.bind(this);
     this.getCohortsList = this.getCohortsList.bind(this);
-    this.onButtonClick = this.onButtonClick.bind(this);
   }
 
   componentDidMount() {
     this.getCohortsList();
-  }
-
-  onButtonClick(e) {
-    const selectedCohort = e.target.innerHTML.toLowerCase();
-    this.setState({ selectedCohort });
   }
 
   getCohortsList() {
@@ -37,8 +32,11 @@ class Projects extends Component {
       const cohortsList = result.data.data.cohorts
         .filter(cohort => cohort.status.toLowerCase() === 'current' && cohort.phase === 'project')
         .map(e => e.name.toUpperCase());
+      const cohortsListWithFecSuffix = cohortsList.map(cohort => `${cohort}-FEC`);
+      const cohortsListWithSdcSuffix = cohortsList.map(cohort => `${cohort}-SDC`);
+      const cohortsListWithPhaseName = [...cohortsListWithFecSuffix, ...cohortsListWithSdcSuffix];
       this.setState({
-        cohorts: cohortsList.map(e => ({
+        cohorts: cohortsListWithPhaseName.map(e => ({
           name: e,
           isChecked: false
         }))
@@ -63,11 +61,26 @@ class Projects extends Component {
   showDetails() {
     const { cohorts } = this.state;
     const selectedCohort = cohorts.find(e => e.isChecked === true).name.toLowerCase();
+    const projectPhase = selectedCohort.split('-')[1] || 'fec';
     axios
-      .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/projects?cohort=${selectedCohort}`)
+      .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/projects?cohort=${selectedCohort.split('-')[0]}`)
       .then(response => {
         const { studentsList = [] } = response && response.data ? response.data : {};
-        this.setState({ studentsList, showDetails: true });
+        const urls = [];
+        studentsList.forEach(student => urls.push(...student[`${projectPhase}Urls`].split(',')));
+        return axios
+          .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/projects/repolist?urls=${urls}`)
+          .then(res => {
+            this.setState({
+              commitDetails: res.data.commits,
+              studentsList,
+              showDetails: true,
+              selectedCohort
+            });
+          })
+          .catch(error => {
+            throw error;
+          });
       })
       .catch(error => {
         throw error;
@@ -75,7 +88,7 @@ class Projects extends Component {
   }
 
   render() {
-    const { cohorts, studentsList, showDetails, selectedCohort } = this.state;
+    const { cohorts, studentsList, showDetails, selectedCohort, commitDetails } = this.state;
     return (
       <React.Fragment>
         <Grid textAlign="center" style={{ padding: '30px' }}>
@@ -87,7 +100,11 @@ class Projects extends Component {
           />
         </Grid>
         {showDetails && studentsList && studentsList.length && (
-          <StudentsPrList studentsList={studentsList} selectedCohort={selectedCohort} />
+          <StudentsCommitsList
+            studentsList={studentsList}
+            selectedCohort={selectedCohort}
+            commitDetails={commitDetails}
+          />
         )}
       </React.Fragment>
     );
