@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Label, Card, List, Button } from 'semantic-ui-react';
+import CommitsBarChart from './CommitsBarChart';
 
 export default class StudentsCommitsList extends Component {
   constructor(props) {
@@ -45,7 +46,16 @@ export default class StudentsCommitsList extends Component {
                           <List.Header as="a" target="_blank" href={url}>
                             {url.replace('https://github.com/', '')}
                           </List.Header>
+                          {!showAllCommits &&
+                            commitDetails[url.replace('https://github.com/', '')] && (
+                              <CommitsBarChart
+                                commits={commitDetails[url.replace('https://github.com/', '')].sort(
+                                  (a, b) => b.date - a.date
+                                )}
+                              />
+                            )}
                           <List.List as="ol">
+                            {/* {!showAllCommits && <CommitsBarChart />} */}
                             {showAllCommits &&
                               commitDetails[url.replace('https://github.com/', '')] &&
                               commitDetails[url.replace('https://github.com/', '')]
