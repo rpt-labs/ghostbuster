@@ -48,14 +48,16 @@ export default class StudentsCommitsList extends Component {
                           <List.List as="ol">
                             {showAllCommits &&
                               commitDetails[url.replace('https://github.com/', '')] &&
-                              commitDetails[url.replace('https://github.com/', '')].map(
-                                (commit, i) => (
+                              commitDetails[url.replace('https://github.com/', '')]
+                                .sort((a, b) => b.date - a.date)
+                                .map((commit, i) => (
                                   // eslint-disable-next-line react/no-array-index-key
                                   <List.Item as="li" value="*" key={`${i}`}>
                                     {commit.name}
+                                    <> &middot; </>
+                                    <> {commit.date.split('T')[0]} </>
                                   </List.Item>
-                                )
-                              )}
+                                ))}
                           </List.List>
                         </List.Content>
                       </List.Item>

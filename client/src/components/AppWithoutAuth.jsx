@@ -11,6 +11,8 @@ import ToyProblems from './toyProblems/ToyProblems';
 import Admin from './admin/Admin';
 import Attendance from './attendance/Attendance';
 import StudentAttendancePreview from './attendance/StudentAttendancePreview';
+import Projects from './Projects/Projects';
+
 // routing
 
 // auth
@@ -24,10 +26,6 @@ const { GHOSTBUSTER_BASE_URL } = process.env;
 /*
   eslint no-underscore-dangle: ["error", { "allowAfterThis": true }]
 */
-
-function onAuthRequired({ history }) {
-  history.push('/login');
-}
 
 export default class App extends React.Component {
   constructor(props) {
@@ -153,18 +151,15 @@ export default class App extends React.Component {
   render() {
     const {
       sprintCohorts,
-      teamCohorts,
       selectedCohort,
       loading,
       showSegment,
-      currentCommitData,
-      projectData
+      currentCommitData
       // display,
     } = this.state;
 
     return (
       <Router>
-
         <div>
           <TopNav />
 
@@ -188,6 +183,7 @@ export default class App extends React.Component {
                 />
               )}
             />
+            <Route path="/projects" render={() => <Projects cohorts={sprintCohorts} />} />
             <Route path="/toyproblems" render={() => <ToyProblems />} />
           </Container>
         </div>
