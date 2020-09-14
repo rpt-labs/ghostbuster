@@ -45,7 +45,7 @@ export default class StudentsCommitsList extends Component {
                           <List.Header as="a" target="_blank" href={url}>
                             {url.replace('https://github.com/', '')}
                           </List.Header>
-                          <List.Description>
+                          <List.Description style={{ fontWeight: 'bold' }}>
                             Total commits:
                             {commitDetails[url.replace('https://github.com/', '')] &&
                               commitDetails[url.replace('https://github.com/', '')].length}
