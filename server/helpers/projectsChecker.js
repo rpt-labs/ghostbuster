@@ -12,6 +12,7 @@ const getStudentsList = cohortName => {
 };
 
 const getCommits = async repoWithAuthor => {
+  // @note currently fetches last 100 commits for the author
   const url = `http://api.github.com/repos/${repoWithAuthor}&page=1&per_page=100`;
   const response = await githubQuery(url);
   const commits = response.map(res => ({
