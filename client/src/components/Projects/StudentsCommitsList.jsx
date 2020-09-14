@@ -41,11 +41,15 @@ export default class StudentsCommitsList extends Component {
                   <List divided relaxed>
                     {item[`${selectedCohort.split('-')[1]}Urls`].split(',').map(url => (
                       <List.Item key={url}>
-                        <List.Icon name="github" size="large" verticalAlign="middle" />
                         <List.Content>
                           <List.Header as="a" target="_blank" href={url}>
                             {url.replace('https://github.com/', '')}
                           </List.Header>
+                          <List.Description>
+                            Total commits:
+                            {commitDetails[url.replace('https://github.com/', '')] &&
+                              commitDetails[url.replace('https://github.com/', '')].length}
+                          </List.Description>
                           {!showAllCommits &&
                             commitDetails[url.replace('https://github.com/', '')] && (
                               <CommitsBarChart
@@ -55,7 +59,6 @@ export default class StudentsCommitsList extends Component {
                               />
                             )}
                           <List.List as="ol">
-                            {/* {!showAllCommits && <CommitsBarChart />} */}
                             {showAllCommits &&
                               commitDetails[url.replace('https://github.com/', '')] &&
                               commitDetails[url.replace('https://github.com/', '')]

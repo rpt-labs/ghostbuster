@@ -1,5 +1,6 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
+import PropTypes from 'prop-types';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class CommitsBarChart extends React.Component {
@@ -59,3 +60,7 @@ export default class CommitsBarChart extends React.Component {
     );
   }
 }
+
+CommitsBarChart.propTypes = {
+  commits: PropTypes.instanceOf(Object).isRequired
+};
