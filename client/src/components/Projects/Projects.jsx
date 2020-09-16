@@ -67,7 +67,13 @@ class Projects extends Component {
       .then(response => {
         const { studentsList = [] } = response && response.data ? response.data : {};
         const urls = [];
-        studentsList.forEach(student => urls.push(...student[`${projectPhase}Urls`].split(',')));
+        studentsList.forEach(student =>
+          urls.push(
+            ...student[`${projectPhase}Urls`]
+              .split(',')
+              .map(url => `${url}/commits?author=${student.github}`)
+          )
+        );
         return axios
           .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/projects/repolist?urls=${urls}`)
           .then(res => {

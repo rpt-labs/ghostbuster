@@ -1,7 +1,7 @@
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Label, Card, List, Button } from 'semantic-ui-react';
+import { Label, Card, List, Button, Segment, Grid } from 'semantic-ui-react';
 import CommitsBarChart from './CommitsBarChart';
 
 export default class StudentsCommitsList extends Component {
@@ -41,11 +41,15 @@ export default class StudentsCommitsList extends Component {
                   <List divided relaxed>
                     {item[`${selectedCohort.split('-')[1]}Urls`].split(',').map(url => (
                       <List.Item key={url}>
-                        <List.Icon name="github" size="large" verticalAlign="middle" />
                         <List.Content>
                           <List.Header as="a" target="_blank" href={url}>
                             {url.replace('https://github.com/', '')}
                           </List.Header>
+                          <List.Description style={{ fontWeight: 'bold' }}>
+                            Total commits:
+                            {commitDetails[url.replace('https://github.com/', '')] &&
+                              commitDetails[url.replace('https://github.com/', '')].length}
+                          </List.Description>
                           {!showAllCommits &&
                             commitDetails[url.replace('https://github.com/', '')] && (
                               <CommitsBarChart
@@ -55,7 +59,6 @@ export default class StudentsCommitsList extends Component {
                               />
                             )}
                           <List.List as="ol">
-                            {/* {!showAllCommits && <CommitsBarChart />} */}
                             {showAllCommits &&
                               commitDetails[url.replace('https://github.com/', '')] &&
                               commitDetails[url.replace('https://github.com/', '')]
@@ -63,9 +66,12 @@ export default class StudentsCommitsList extends Component {
                                 .map((commit, i) => (
                                   // eslint-disable-next-line react/no-array-index-key
                                   <List.Item as="li" value="*" key={`${i}`}>
-                                    {commit.name}
-                                    <> &middot; </>
-                                    <> {commit.date.split('T')[0]} </>
+                                    <Grid celled>
+                                      <Grid.Column width={12}>{commit.name}</Grid.Column>
+                                      <Grid.Column width={4}>
+                                        {commit.date.split('T')[0]}
+                                      </Grid.Column>
+                                    </Grid>
                                   </List.Item>
                                 ))}
                           </List.List>

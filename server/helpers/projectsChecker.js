@@ -11,8 +11,9 @@ const getStudentsList = cohortName => {
   return studentsList && studentsList.length ? studentsList[0].students : [];
 };
 
-const getCommits = async repoName => {
-  const url = `http://api.github.com/repos/${repoName}/commits`;
+const getCommits = async repoWithAuthor => {
+  // @note currently fetches last 100 commits for the author
+  const url = `http://api.github.com/repos/${repoWithAuthor}&page=1&per_page=100`;
   const response = await githubQuery(url);
   const commits = response.map(res => ({
     name: res.commit.message,
@@ -26,7 +27,7 @@ const getRepoListWithCommits = async urls => {
   const repoList = urls.split(',').map(url => url.replace('https://github.com/', '').trim());
   const commitsMap = {};
   const promises = repoList.map(async repo => {
-    commitsMap[repo] = await getCommits(repo);
+    commitsMap[repo.split('/commits')[0]] = await getCommits(repo);
   });
   await Promise.all(promises);
   return commitsMap;
