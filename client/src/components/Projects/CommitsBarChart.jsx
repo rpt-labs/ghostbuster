@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class CommitsBarChart extends React.Component {
-  render() {
+  getCommitData() {
     const { commits } = this.props;
     const commitsWithCalendarDate = commits.map(commit => ({
       name: commit.name,
@@ -29,34 +29,36 @@ export default class CommitsBarChart extends React.Component {
         }
       ]
     };
+    return commitData;
+  }
+
+  render() {
     return (
-      <div>
-        <Line
-          data={commitData}
-          options={{
-            title: {
-              display: true,
-              text: 'Commits by date',
-              fontSize: 20
-            },
-            legend: {
-              display: true,
-              position: 'right'
-            },
-            scales: {
-              yAxes: [
-                {
-                  ticks: {
-                    beginAtZero: true,
-                    min: 0,
-                    max: 25
-                  }
+      <Line
+        data={this.getCommitData()}
+        options={{
+          title: {
+            display: true,
+            text: 'Commits by date',
+            fontSize: 20
+          },
+          legend: {
+            display: true,
+            position: 'right'
+          },
+          scales: {
+            yAxes: [
+              {
+                ticks: {
+                  beginAtZero: true,
+                  min: 0,
+                  max: 25
                 }
-              ]
-            }
-          }}
-        />
-      </div>
+              }
+            ]
+          }
+        }}
+      />
     );
   }
 }
