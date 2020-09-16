@@ -16,7 +16,8 @@ const getCommits = async repoWithAuthor => {
   const url = `http://api.github.com/repos/${repoWithAuthor}&page=1&per_page=100`;
   const response = await githubQuery(url);
   const commits = response.map(res => ({
-    name: res.commit.message,
+    // exclude commit message body
+    name: res.commit.message.split('\n')[0],
     date: res.commit.author.date,
     author: res.author && res.author.login
   }));

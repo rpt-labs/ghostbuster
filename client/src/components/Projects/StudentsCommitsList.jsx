@@ -54,7 +54,7 @@ export default class StudentsCommitsList extends Component {
                             commitDetails[url.replace('https://github.com/', '')] && (
                               <CommitsBarChart
                                 commits={commitDetails[url.replace('https://github.com/', '')].sort(
-                                  (a, b) => b.date - a.date
+                                  (a, b) => new Date(a.date) - new Date(b.date)
                                 )}
                               />
                             )}
@@ -62,7 +62,7 @@ export default class StudentsCommitsList extends Component {
                             {showAllCommits &&
                               commitDetails[url.replace('https://github.com/', '')] &&
                               commitDetails[url.replace('https://github.com/', '')]
-                                .sort((a, b) => b.date - a.date)
+                                .sort((a, b) => new Date(a.date) - new Date(b.date))
                                 .map((commit, i) => (
                                   // eslint-disable-next-line react/no-array-index-key
                                   <List.Item as="li" value="*" key={`${i}`}>
