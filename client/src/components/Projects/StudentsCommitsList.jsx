@@ -1,7 +1,7 @@
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Label, Card, List, Button, Segment, Grid } from 'semantic-ui-react';
+import { Label, Card, List, Button, Grid } from 'semantic-ui-react';
 import CommitsBarChart from './CommitsBarChart';
 
 export default class StudentsCommitsList extends Component {

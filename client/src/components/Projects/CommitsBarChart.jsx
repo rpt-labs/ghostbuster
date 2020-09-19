@@ -18,7 +18,6 @@ export default class CommitsBarChart extends React.Component {
         : (numberOfCommitsByDate[commit.date] = 1)
     );
     const dates = Object.keys(numberOfCommitsByDate);
-    console.log('numberOfCommitsByDate', dates);
 
     const startDate = new Date(dates[0]);
     const endDate = new Date(dates[dates.length - 1]);
