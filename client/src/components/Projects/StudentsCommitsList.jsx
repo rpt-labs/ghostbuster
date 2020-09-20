@@ -1,8 +1,9 @@
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Label, Card, List, Button, Grid } from 'semantic-ui-react';
+import { Label, Card, List, Button, Grid, Segment } from 'semantic-ui-react';
 import CommitsBarChart from './CommitsBarChart';
+import SelectOptions from './SelectOptions';
 
 export default class StudentsCommitsList extends Component {
   constructor(props) {
@@ -23,13 +24,17 @@ export default class StudentsCommitsList extends Component {
     const { showAllCommits } = this.state;
     return (
       <div>
-        <Button
-          color="grey"
-          onClick={() => this.showHideDetails()}
-          style={{ marginBottom: '10px' }}
-        >
-          {showAllCommits ? 'Hide Details' : 'Show Details'}
-        </Button>
+        <Segment style={{ display: 'flex', flexDirection: 'row' }}>
+          <Button
+            color="grey"
+            onClick={() => this.showHideDetails()}
+            style={{ marginBottom: '10px' }}
+          >
+            {showAllCommits ? 'Hide Details' : 'Show Details'}
+          </Button>
+          <SelectOptions style={{ float: 'right', marginLeft: '60%', marginTop: '10px' }} />
+        </Segment>
+        <br />
         <Card.Group itemsPerRow={2}>
           {studentsList.map(item => (
             <Card key={item.github} style={{ marginBottom: '0px' }}>
