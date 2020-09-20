@@ -1,19 +1,13 @@
 /* eslint-disable import/prefer-default-export */
 const moment = require('moment');
 
-export const getCommitData = commits => {
-  const commitsWithCalendarDate = commits.map(commit => ({
+export const getCommitsWithCalendarDate = commits =>
+  commits.map(commit => ({
     name: commit.name,
     date: commit.date.split('T')[0]
   }));
-  const numberOfCommitsByDate = {};
 
-  // eslint-disable-next-line no-return-assign
-  commitsWithCalendarDate.forEach(commit =>
-    numberOfCommitsByDate[commit.date]
-      ? (numberOfCommitsByDate[commit.date] += 1)
-      : (numberOfCommitsByDate[commit.date] = 1)
-  );
+export const getDates = numberOfCommitsByDate => {
   const dates = Object.keys(numberOfCommitsByDate);
 
   const startDate = new Date(dates[0]);
@@ -24,6 +18,20 @@ export const getCommitData = commits => {
     datesArray.push(startDate.toISOString().split('T')[0]);
     startDate.setDate(startDate.getDate() + 1);
   }
+  return datesArray;
+};
+
+export const getCommitsForDaysInRange = commitsWithCalendarDate => {
+  const numberOfCommitsByDate = {};
+
+  // eslint-disable-next-line no-return-assign
+  commitsWithCalendarDate.forEach(commit =>
+    numberOfCommitsByDate[commit.date]
+      ? (numberOfCommitsByDate[commit.date] += 1)
+      : (numberOfCommitsByDate[commit.date] = 1)
+  );
+  const datesArray = getDates(numberOfCommitsByDate);
+
   const commitsForDaysInRange = {};
   // eslint-disable-next-line no-return-assign
   datesArray.forEach(date =>
@@ -31,9 +39,32 @@ export const getCommitData = commits => {
       ? (commitsForDaysInRange[date] = 0)
       : (commitsForDaysInRange[date] = numberOfCommitsByDate[date])
   );
+  return commitsForDaysInRange;
+};
 
+export const dataSet = {
+  label: 'Commits',
+  backgroundColor: 'rgba(75,192,192,0.2)',
+  borderColor: 'rgba(75,192,192,1)',
+  borderWidth: 2
+};
+
+export const getCommitsByDate = numberOfCommitsByDate => {
+  return {
+    labels: Object.keys(numberOfCommitsByDate),
+    datasets: [
+      {
+        ...dataSet,
+        data: Object.values(numberOfCommitsByDate)
+      }
+    ]
+  };
+};
+
+export const getCommitsByWeek = numberOfCommitsByDate => {
+  const datesArray = getDates(numberOfCommitsByDate);
   const sortedByWeek = datesArray.reduce((res, date) => {
-    const count = commitsForDaysInRange[date];
+    const count = numberOfCommitsByDate[date];
     const startOfWeek = moment(date, 'YYYY-MM-DD')
       .startOf('week')
       .add(1, 'days');
@@ -44,31 +75,28 @@ export const getCommitData = commits => {
     return res;
   }, {});
 
-  const commitData = {
-    labels: Object.keys(commitsForDaysInRange),
-    datasets: [
-      {
-        label: 'Commits',
-        backgroundColor: 'rgba(75,192,192,0.2)',
-        borderColor: 'rgba(75,192,192,1)',
-        borderWidth: 2,
-        data: Object.values(commitsForDaysInRange)
-      }
-    ]
-  };
-
-  const commitDataByWeek = {
+  return {
     labels: Object.keys(sortedByWeek).map(date => new Date(date).toISOString().split('T')[0]),
     datasets: [
       {
-        label: 'Commits',
-        backgroundColor: 'rgba(75,192,192,0.2)',
-        borderColor: 'rgba(75,192,192,1)',
-        borderWidth: 2,
+        ...dataSet,
         data: Object.values(sortedByWeek).map(value => value.count)
       }
     ]
   };
+};
 
-  return { commitData, commitDataByWeek };
+export const getNumberOfCommitsByDate = commits => {
+  const commitsWithCalendarDate = getCommitsWithCalendarDate(commits);
+  return getCommitsForDaysInRange(commitsWithCalendarDate);
+};
+
+export const getCommitDataByDate = commits => {
+  const numberOfCommitsByDate = getNumberOfCommitsByDate(commits);
+  return getCommitsByDate(numberOfCommitsByDate);
+};
+
+export const getCommitDataByWeek = commits => {
+  const numberOfCommitsByDate = getNumberOfCommitsByDate(commits);
+  return getCommitsByWeek(numberOfCommitsByDate);
 };

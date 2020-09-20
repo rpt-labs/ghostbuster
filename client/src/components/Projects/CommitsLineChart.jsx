@@ -2,15 +2,14 @@ import React from 'react';
 import { Line } from 'react-chartjs-2';
 import PropTypes from 'prop-types';
 
-import { getCommitData } from '../../helpers/ProjectsHelpers';
+import { getCommitDataByDate, getCommitDataByWeek } from '../../helpers/ProjectsHelpers';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class CommitsLineChart extends React.Component {
   render() {
     const { commits } = this.props;
-    const { commitData, commitDataByWeek } = getCommitData(commits);
     const displayByWeek = false;
-    const data = displayByWeek ? commitDataByWeek : commitData;
+    const data = displayByWeek ? getCommitDataByWeek(commits) : getCommitDataByDate(commits);
     const max = displayByWeek ? 50 : 20;
     const text = displayByWeek ? 'Commits by week' : 'Commits by date';
     return (
