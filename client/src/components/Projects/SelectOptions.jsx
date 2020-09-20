@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Radio, Segment } from 'semantic-ui-react';
+import { Form, Radio } from 'semantic-ui-react';
 
 export default class SelectOptions extends Component {
   state = {};
