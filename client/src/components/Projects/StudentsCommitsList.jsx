@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Label, Card, List, Button, Grid, Segment } from 'semantic-ui-react';
-import CommitsBarChart from './CommitsBarChart';
+import CommitsLineChart from './CommitsLineChart';
 import SelectOptions from './SelectOptions';
 
 export default class StudentsCommitsList extends Component {
@@ -57,7 +57,7 @@ export default class StudentsCommitsList extends Component {
                           </List.Description>
                           {!showAllCommits &&
                             commitDetails[url.replace('https://github.com/', '')] && (
-                              <CommitsBarChart
+                              <CommitsLineChart
                                 commits={commitDetails[url.replace('https://github.com/', '')].sort(
                                   (a, b) => new Date(a.date) - new Date(b.date)
                                 )}
