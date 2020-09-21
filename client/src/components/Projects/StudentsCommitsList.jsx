@@ -30,7 +30,7 @@ export default class StudentsCommitsList extends Component {
     const { showAllCommits, shouldDisplayByWeek } = this.state;
     return (
       <div>
-        <Segment style={{ display: 'flex', flexDirection: 'row' }}>
+        <Segment basic style={{ display: 'flex', flexDirection: 'row' }}>
           <Button
             color="grey"
             onClick={() => this.showHideDetails()}
@@ -38,11 +38,13 @@ export default class StudentsCommitsList extends Component {
           >
             {showAllCommits ? 'Hide Details' : 'Show Details'}
           </Button>
-          <SelectOptions
-            style={{ float: 'right', marginLeft: '60%', marginTop: '10px' }}
-            handleSelect={() => this.handleSelect()}
-            shouldDisplayByWeek={shouldDisplayByWeek}
-          />
+          {!showAllCommits && (
+            <SelectOptions
+              style={{ float: 'right', marginLeft: '60%', marginTop: '10px' }}
+              handleSelect={() => this.handleSelect()}
+              shouldDisplayByWeek={shouldDisplayByWeek}
+            />
+          )}
         </Segment>
         <br />
         <Card.Group itemsPerRow={2}>
