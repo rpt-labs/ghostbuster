@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 const moment = require('moment');
 
 export const getCommitsWithCalendarDate = commits =>

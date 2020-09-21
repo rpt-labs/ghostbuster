@@ -1,4 +1,3 @@
-/* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Label, Card, List, Button, Grid, Segment } from 'semantic-ui-react';
@@ -9,9 +8,11 @@ export default class StudentsCommitsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showAllCommits: false
+      showAllCommits: false,
+      shouldDisplayByWeek: false
     };
     this.showHideDetails = this.showHideDetails.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
   }
 
   showHideDetails() {
@@ -19,9 +20,14 @@ export default class StudentsCommitsList extends Component {
     this.setState({ showAllCommits: !showAllCommits });
   }
 
+  handleSelect() {
+    const { shouldDisplayByWeek } = this.state;
+    this.setState({ shouldDisplayByWeek: !shouldDisplayByWeek });
+  }
+
   render() {
     const { studentsList, commitDetails, selectedCohort } = this.props;
-    const { showAllCommits } = this.state;
+    const { showAllCommits, shouldDisplayByWeek } = this.state;
     return (
       <div>
         <Segment style={{ display: 'flex', flexDirection: 'row' }}>
@@ -32,7 +38,11 @@ export default class StudentsCommitsList extends Component {
           >
             {showAllCommits ? 'Hide Details' : 'Show Details'}
           </Button>
-          <SelectOptions style={{ float: 'right', marginLeft: '60%', marginTop: '10px' }} />
+          <SelectOptions
+            style={{ float: 'right', marginLeft: '60%', marginTop: '10px' }}
+            handleSelect={() => this.handleSelect()}
+            shouldDisplayByWeek={shouldDisplayByWeek}
+          />
         </Segment>
         <br />
         <Card.Group itemsPerRow={2}>
@@ -61,6 +71,7 @@ export default class StudentsCommitsList extends Component {
                                 commits={commitDetails[url.replace('https://github.com/', '')].sort(
                                   (a, b) => new Date(a.date) - new Date(b.date)
                                 )}
+                                shouldDisplayByWeek={shouldDisplayByWeek}
                               />
                             )}
                           <List.List as="ol">

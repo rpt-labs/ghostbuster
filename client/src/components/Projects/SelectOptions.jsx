@@ -1,32 +1,36 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Form, Radio } from 'semantic-ui-react';
 
 export default class SelectOptions extends Component {
   state = {};
 
-  handleChange = ({ value }) => this.setState({ value });
-
   render() {
-    const { value } = this.state;
+    const { handleSelect, shouldDisplayByWeek } = this.props;
     return (
       <Form style={{ float: 'right', marginLeft: '60%', marginTop: '10px' }}>
         <Form.Group inline>
           <Form.Field
             control={Radio}
             label="By date"
-            value="1"
-            checked={value === '1'}
-            onChange={this.handleChange}
+            value="By date"
+            checked={!shouldDisplayByWeek}
+            onChange={handleSelect}
           />
           <Form.Field
             control={Radio}
             label="By week"
             value="2"
-            checked={value === '2'}
-            onChange={this.handleChange}
+            checked={shouldDisplayByWeek}
+            onChange={handleSelect}
           />
         </Form.Group>
       </Form>
     );
   }
 }
+
+SelectOptions.propTypes = {
+  shouldDisplayByWeek: PropTypes.bool.isRequired,
+  handleSelect: PropTypes.func.isRequired
+};
