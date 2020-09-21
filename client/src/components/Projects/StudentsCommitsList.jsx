@@ -1,16 +1,18 @@
-/* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Label, Card, List, Button, Grid } from 'semantic-ui-react';
-import CommitsBarChart from './CommitsBarChart';
+import { Label, Card, List, Button, Grid, Segment } from 'semantic-ui-react';
+import CommitsLineChart from './CommitsLineChart';
+import SelectOptions from './SelectOptions';
 
 export default class StudentsCommitsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showAllCommits: false
+      showAllCommits: false,
+      shouldDisplayByWeek: false
     };
     this.showHideDetails = this.showHideDetails.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
   }
 
   showHideDetails() {
@@ -18,18 +20,33 @@ export default class StudentsCommitsList extends Component {
     this.setState({ showAllCommits: !showAllCommits });
   }
 
+  handleSelect() {
+    const { shouldDisplayByWeek } = this.state;
+    this.setState({ shouldDisplayByWeek: !shouldDisplayByWeek });
+  }
+
   render() {
     const { studentsList, commitDetails, selectedCohort } = this.props;
-    const { showAllCommits } = this.state;
+    const { showAllCommits, shouldDisplayByWeek } = this.state;
     return (
       <div>
-        <Button
-          color="grey"
-          onClick={() => this.showHideDetails()}
-          style={{ marginBottom: '10px' }}
-        >
-          {showAllCommits ? 'Hide Details' : 'Show Details'}
-        </Button>
+        <Segment basic style={{ display: 'flex', flexDirection: 'row' }}>
+          <Button
+            color="grey"
+            onClick={() => this.showHideDetails()}
+            style={{ marginBottom: '10px' }}
+          >
+            {showAllCommits ? 'Hide Details' : 'Show Details'}
+          </Button>
+          {!showAllCommits && (
+            <SelectOptions
+              style={{ float: 'right', marginLeft: '60%', marginTop: '10px' }}
+              handleSelect={() => this.handleSelect()}
+              shouldDisplayByWeek={shouldDisplayByWeek}
+            />
+          )}
+        </Segment>
+        <br />
         <Card.Group itemsPerRow={2}>
           {studentsList.map(item => (
             <Card key={item.github} style={{ marginBottom: '0px' }}>
@@ -52,10 +69,11 @@ export default class StudentsCommitsList extends Component {
                           </List.Description>
                           {!showAllCommits &&
                             commitDetails[url.replace('https://github.com/', '')] && (
-                              <CommitsBarChart
+                              <CommitsLineChart
                                 commits={commitDetails[url.replace('https://github.com/', '')].sort(
                                   (a, b) => new Date(a.date) - new Date(b.date)
                                 )}
+                                shouldDisplayByWeek={shouldDisplayByWeek}
                               />
                             )}
                           <List.List as="ol">
