@@ -4,23 +4,19 @@ import { Label, Card, Icon, Button, Header } from 'semantic-ui-react';
 import ReleasedToyProblems from './ReleasedToyProblems';
 
 export default class StudentPrDetails extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showAllAttemptedToyProblems: false
-    };
-    this.showHideDetails = this.showHideDetails.bind(this);
-  }
+  state = {
+    showAllAttemptedToyProblems: false
+  };
 
-  showHideDetails() {
+  showHideDetails = () => {
     const { showAllAttemptedToyProblems } = this.state;
     this.setState({ showAllAttemptedToyProblems: !showAllAttemptedToyProblems });
-  }
+  };
 
-  showHideReleasedList() {
+  showHideReleasedList = () => {
     const { showHideReleasedList } = this.state;
     this.setState({ showHideReleasedList: !showHideReleasedList });
-  }
+  };
 
   render() {
     const { pullRequestsList, selectedCohort, releasedToyProblems } = this.props;

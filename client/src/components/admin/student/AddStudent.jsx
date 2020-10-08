@@ -19,18 +19,15 @@ enrollmentStatusList = enrollmentStatusList.map(item => ({ key: item, text: item
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class AddStudent extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      firstName: '',
-      lastName: '',
-      githubHandle: '',
-      zoomName: '',
-      cohort: '',
-      enrollmentStatus: 'Enrolled',
-      showSuccessMessage: false
-    };
-  }
+  state = {
+    firstName: '',
+    lastName: '',
+    githubHandle: '',
+    zoomName: '',
+    cohort: '',
+    enrollmentStatus: 'Enrolled',
+    showSuccessMessage: false
+  };
 
   handleInputChange = event => {
     const { target } = event;

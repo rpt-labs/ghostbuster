@@ -12,14 +12,11 @@ const options = [
 ];
 
 class CreateTeamModal extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      teamName: '',
-      teamType: 'Other',
-      github: ''
-    };
-  }
+  state = {
+    teamName: '',
+    teamType: 'Other',
+    github: ''
+  };
 
   handleInputChange = event => {
     const { target } = event;

@@ -9,32 +9,24 @@ const { GHOSTBUSTER_BASE_URL } = process.env;
 const useDB = false;
 
 class ToyProblems extends Component {
-  constructor() {
-    super();
-    this.state = {
-      cohorts: [],
-      pullRequestsList: [],
-      showDetails: false,
-      selectedCohort: '',
-      releasedToyProblems: []
-    };
-    this.handleRadioButtonChange = this.handleRadioButtonChange.bind(this);
-    this.showDetails = this.showDetails.bind(this);
-    this.getCohortsList = this.getCohortsList.bind(this);
-    this.onButtonClick = this.onButtonClick.bind(this);
-    this.checkReleasedToyProblemsGql = this.checkReleasedToyProblemsGql.bind(this);
-  }
+  state = {
+    cohorts: [],
+    pullRequestsList: [],
+    showDetails: false,
+    selectedCohort: '',
+    releasedToyProblems: []
+  };
 
   componentDidMount() {
     this.getCohortsList();
   }
 
-  onButtonClick(e) {
+  onButtonClick = e => {
     const selectedCohort = e.target.innerHTML.toLowerCase();
     this.setState({ selectedCohort }, () => this.checkToyProblems());
-  }
+  };
 
-  getCohortsList() {
+  getCohortsList = () => {
     const cohortsQuery = useDB ? getAllCohorts : getAllCohortsNoDb;
     cohortsQuery().then(result => {
       const cohortsList = result.data.data.cohorts
@@ -47,10 +39,10 @@ class ToyProblems extends Component {
         }))
       });
     });
-  }
+  };
 
   // eslint-disable-next-line react/sort-comp
-  handleRadioButtonChange(cohort) {
+  handleRadioButtonChange = cohort => {
     const { cohorts } = this.state;
     const newCohortList = cohorts.slice();
     newCohortList.forEach(e => {
@@ -61,9 +53,9 @@ class ToyProblems extends Component {
       }
     });
     this.setState({ cohorts: newCohortList });
-  }
+  };
 
-  showDetails() {
+  showDetails = () => {
     const { cohorts } = this.state;
     const selectedCohort = cohorts.find(e => e.isChecked === true).name.toLowerCase();
 
@@ -80,7 +72,7 @@ class ToyProblems extends Component {
       .catch(error => {
         throw error;
       });
-  }
+  };
 
   checkReleasedToyProblemsGql = async selectedCohort => {
     const response = await getAllReleasedToyProblems(selectedCohort);

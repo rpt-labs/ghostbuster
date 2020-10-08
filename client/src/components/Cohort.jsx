@@ -7,90 +7,84 @@ import CheckboxList from './CheckboxList';
 import TabNav from './TabNav';
 
 class Cohort extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      repos: [
-        {
-          name: 'underbar-review',
-          selected: false
-        },
-        {
-          name: 'recursion-review',
-          selected: false
-        },
-        {
-          name: 'data-structures',
-          selected: false
-        },
-        {
-          name: 'beesbeesbees',
-          selected: false
-        },
-        {
-          name: 'subclass-dance-party',
-          selected: false
-        },
-        {
-          name: 'n-queens',
-          selected: false
-        },
-        {
-          name: 'chatterbox-client',
-          selected: false
-        },
-        {
-          name: '6ees6ees6ees',
-          selected: false
-        },
-        {
-          name: 'react-components',
-          selected: false
-        },
-        {
-          name: 'recast.ly',
-          selected: false
-        },
-        {
-          name: 'recastly-redux',
-          selected: false
-        },
-        {
-          name: 'a-synchronous-swim',
-          selected: false
-        },
-        {
-          name: 'chatterbox-server',
-          selected: false
-        },
-        {
-          name: 'cruddy-todo',
-          selected: false
-        },
-        {
-          name: 'sqool',
-          selected: false
-        },
-        {
-          name: 'databases',
-          selected: false
-        },
-        {
-          name: 'shortly-express',
-          selected: false
-        },
-        {
-          name: 'fullstack-review',
-          selected: false
-        }
-      ]
-    };
-    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
-    this.storeCheckedRepos = this.storeCheckedRepos.bind(this);
-    this.uncheckAll = this.uncheckAll.bind(this);
-  }
+  state = {
+    repos: [
+      {
+        name: 'underbar-review',
+        selected: false
+      },
+      {
+        name: 'recursion-review',
+        selected: false
+      },
+      {
+        name: 'data-structures',
+        selected: false
+      },
+      {
+        name: 'beesbeesbees',
+        selected: false
+      },
+      {
+        name: 'subclass-dance-party',
+        selected: false
+      },
+      {
+        name: 'n-queens',
+        selected: false
+      },
+      {
+        name: 'chatterbox-client',
+        selected: false
+      },
+      {
+        name: '6ees6ees6ees',
+        selected: false
+      },
+      {
+        name: 'react-components',
+        selected: false
+      },
+      {
+        name: 'recast.ly',
+        selected: false
+      },
+      {
+        name: 'recastly-redux',
+        selected: false
+      },
+      {
+        name: 'a-synchronous-swim',
+        selected: false
+      },
+      {
+        name: 'chatterbox-server',
+        selected: false
+      },
+      {
+        name: 'cruddy-todo',
+        selected: false
+      },
+      {
+        name: 'sqool',
+        selected: false
+      },
+      {
+        name: 'databases',
+        selected: false
+      },
+      {
+        name: 'shortly-express',
+        selected: false
+      },
+      {
+        name: 'fullstack-review',
+        selected: false
+      }
+    ]
+  };
 
-  handleCheckboxChange(repo) {
+  handleCheckboxChange = repo => {
     const { repos } = this.state;
     const repoCopy = [].concat(repos);
 
@@ -100,9 +94,9 @@ class Cohort extends React.Component {
       }
     }
     this.setState({ repos: repoCopy });
-  }
+  };
 
-  uncheckAll() {
+  uncheckAll = () => {
     const { repos } = this.state;
     const copy = repos.slice();
 
@@ -112,9 +106,9 @@ class Cohort extends React.Component {
       return repo2;
     });
     this.setState({ repos: copy });
-  }
+  };
 
-  storeCheckedRepos(e) {
+  storeCheckedRepos = e => {
     e.preventDefault();
     const { repos } = this.state;
     const { repoSelect } = this.props;
@@ -128,7 +122,7 @@ class Cohort extends React.Component {
 
     repoSelect(newArgs);
     this.uncheckAll();
-  }
+  };
 
   render() {
     const { loading, commits, showSegment, selected, cohorts, selectCohort } = this.props;

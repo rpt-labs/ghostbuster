@@ -8,25 +8,19 @@ import StudentsCommitsList from './StudentsCommitsList';
 const { GHOSTBUSTER_BASE_URL } = process.env;
 
 class Projects extends Component {
-  constructor() {
-    super();
-    this.state = {
-      cohorts: [],
-      showDetails: false,
-      selectedCohort: '',
-      studentsList: [],
-      commitDetails: ''
-    };
-    this.handleRadioButtonChange = this.handleRadioButtonChange.bind(this);
-    this.showDetails = this.showDetails.bind(this);
-    this.getCohortsList = this.getCohortsList.bind(this);
-  }
+  state = {
+    cohorts: [],
+    showDetails: false,
+    selectedCohort: '',
+    studentsList: [],
+    commitDetails: ''
+  };
 
   componentDidMount() {
     this.getCohortsList();
   }
 
-  getCohortsList() {
+  getCohortsList = () => {
     const cohortsQuery = getAllCohortsNoDb;
     cohortsQuery().then(result => {
       const cohortsList = result.data.data.cohorts
@@ -42,10 +36,10 @@ class Projects extends Component {
         }))
       });
     });
-  }
+  };
 
   // eslint-disable-next-line react/sort-comp
-  handleRadioButtonChange(cohort) {
+  handleRadioButtonChange = cohort => {
     const { cohorts } = this.state;
     const newCohortList = cohorts.slice();
     newCohortList.forEach(e => {
@@ -56,9 +50,9 @@ class Projects extends Component {
       }
     });
     this.setState({ cohorts: newCohortList });
-  }
+  };
 
-  showDetails() {
+  showDetails = () => {
     const { cohorts } = this.state;
     const selectedCohort = cohorts.find(e => e.isChecked === true).name.toLowerCase();
     const projectPhase = selectedCohort.split('-')[1] || 'fec';
@@ -91,7 +85,7 @@ class Projects extends Component {
       .catch(error => {
         throw error;
       });
-  }
+  };
 
   render() {
     const { cohorts, studentsList, showDetails, selectedCohort, commitDetails } = this.state;

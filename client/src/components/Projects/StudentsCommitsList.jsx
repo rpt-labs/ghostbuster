@@ -5,25 +5,20 @@ import CommitsLineChart from './CommitsLineChart';
 import SelectOptions from './SelectOptions';
 
 export default class StudentsCommitsList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showAllCommits: false,
-      shouldDisplayByWeek: false
-    };
-    this.showHideDetails = this.showHideDetails.bind(this);
-    this.handleSelect = this.handleSelect.bind(this);
-  }
+  state = {
+    showAllCommits: false,
+    shouldDisplayByWeek: false
+  };
 
-  showHideDetails() {
+  showHideDetails = () => {
     const { showAllCommits } = this.state;
     this.setState({ showAllCommits: !showAllCommits });
-  }
+  };
 
-  handleSelect() {
+  handleSelect = () => {
     const { shouldDisplayByWeek } = this.state;
     this.setState({ shouldDisplayByWeek: !shouldDisplayByWeek });
-  }
+  };
 
   render() {
     const { studentsList, commitDetails, selectedCohort } = this.props;
