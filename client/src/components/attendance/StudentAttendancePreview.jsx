@@ -7,22 +7,18 @@ import { studentsRecord, studentsAbsenceRecord } from '../../../data/demoData';
 import StudentAbsences from './StudentAbsences';
 
 class StudentAttendancePreview extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      studentName: '',
-      attendanceList: [],
-      absenceList: [],
-      cohort: ''
-    };
-    this.getAttendance = this.getAttendance.bind(this);
-  }
+  state = {
+    studentName: '',
+    attendanceList: [],
+    absenceList: [],
+    cohort: ''
+  };
 
   componentWillMount() {
     this.getAttendance();
   }
 
-  getAttendance() {
+  getAttendance = () => {
     const { location } = this.props;
     const { cohort, firstName, lastName } = queryString.parse(location.search);
     const name = `${firstName} ${lastName}`;
@@ -38,7 +34,7 @@ class StudentAttendancePreview extends Component {
       attendanceList,
       absenceList
     });
-  }
+  };
 
   render() {
     const { studentName, attendanceList, cohort, absenceList } = this.state;

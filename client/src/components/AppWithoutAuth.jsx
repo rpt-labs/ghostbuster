@@ -28,25 +28,17 @@ const { GHOSTBUSTER_BASE_URL } = process.env;
 */
 
 export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      allCohorts: [],
-      sprintCohorts: [],
-      teamCohorts: [],
-      display: '',
-      selectedCohort: '',
-      loading: false,
-      showSegment: true,
-      currentCommitData: {},
-      projectData: {}
-    };
-    this.handleSelectCohort = this.handleSelectCohort.bind(this);
-    this.handleSelectDisplay = this.handleSelectDisplay.bind(this);
-    this.handleRepoSelect = this.handleRepoSelect.bind(this);
-    this.checkSprints = this.checkSprints.bind(this);
-    this.checkProjects = this.checkProjects.bind(this);
-  }
+  state = {
+    allCohorts: [],
+    sprintCohorts: [],
+    teamCohorts: [],
+    display: '',
+    selectedCohort: '',
+    loading: false,
+    showSegment: true,
+    currentCommitData: {},
+    projectData: {}
+  };
 
   componentDidMount() {
     this._isMounted = true;
@@ -59,7 +51,7 @@ export default class App extends React.Component {
 
   // use getAllCohorts if using graphQL & DB
   // use getAllCohortsNoDb if using config files only
-  getCohorts() {
+  getCohorts = () => {
     // const cohortsQuery = getAllCohorts;
     const cohortsQuery = getAllCohortsNoDb;
     cohortsQuery()
@@ -86,26 +78,26 @@ export default class App extends React.Component {
       .catch(error => {
         throw error;
       });
-  }
+  };
 
-  handleSelectDisplay(type) {
+  handleSelectDisplay = type => {
     const { sprintCohorts, teamCohorts } = { ...this.state };
     const selectedCohort =
       type === 'sprints' ? sprintCohorts[0].cohort_name : teamCohorts[0].cohort_name;
     this.setState({ display: type, selectedCohort });
-  }
+  };
 
-  handleSelectCohort(e) {
+  handleSelectCohort = e => {
     this.setState({ selectedCohort: e.target.innerHTML, currentCommitData: {} });
-  }
+  };
 
-  handleRepoSelect(repos) {
+  handleRepoSelect = repos => {
     this.setState({ repos }, () => {
       this.checkSprints();
     });
-  }
+  };
 
-  checkSprints() {
+  checkSprints = () => {
     const { repos, selectedCohort } = { ...this.state };
     const repoString = repos.join('+');
     this.setState({ loading: true, showSegment: true }, () => {
@@ -122,9 +114,9 @@ export default class App extends React.Component {
           throw error;
         });
     });
-  }
+  };
 
-  checkProjects() {
+  checkProjects = () => {
     const { selectedCohort, projectData } = { ...this.state };
     this.setState({ loading: true, showSegment: true }, () => {
       axios
@@ -146,7 +138,7 @@ export default class App extends React.Component {
           throw error;
         });
     });
-  }
+  };
 
   render() {
     const {

@@ -5,18 +5,14 @@ import Progress from './Progress';
 import CommitList from './CommitList';
 
 class StudentCard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showCommits: false
-    };
-    this.handleShowCommitsChange = this.handleShowCommitsChange.bind(this);
-  }
+  state = {
+    showCommits: false
+  };
 
-  handleShowCommitsChange() {
+  handleShowCommitsChange = () => {
     const { showCommits } = this.state;
     this.setState({ showCommits: !showCommits });
-  }
+  };
 
   render() {
     const { student, repoName } = this.props;

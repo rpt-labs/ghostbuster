@@ -22,15 +22,11 @@ RenderedContent.propTypes = {
 };
 
 class TopPanel extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      activeItem: 'Students',
-      cohorts: [],
-      studentsListByCohort: []
-    };
-    this.handleItemClick = this.handleItemClick.bind(this);
-  }
+  state = {
+    activeItem: 'Students',
+    cohorts: [],
+    studentsListByCohort: []
+  };
 
   componentDidMount() {
     this.getCohortsList();
@@ -52,9 +48,9 @@ class TopPanel extends Component {
     });
   }
 
-  handleItemClick(e, { name }) {
+  handleItemClick = (e, { name }) => {
     this.setState({ activeItem: name });
-  }
+  };
 
   render() {
     const { activeItem, cohorts, studentsListByCohort } = this.state;

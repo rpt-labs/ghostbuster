@@ -6,22 +6,16 @@ import { getAllCohorts } from '../../queries/queries';
 import { attendanceSummary } from '../../../data/demoData';
 
 class Attendance extends Component {
-  constructor() {
-    super();
-    this.state = {
-      selectedCohortResult: [],
-      cohorts: []
-    };
-    this.handleRadioButtonChange = this.handleRadioButtonChange.bind(this);
-    this.showDetails = this.showDetails.bind(this);
-    this.getCohortsList = this.getCohortsList.bind(this);
-  }
+  state = {
+    selectedCohortResult: [],
+    cohorts: []
+  };
 
   componentDidMount() {
     this.getCohortsList();
   }
 
-  getCohortsList() {
+  getCohortsList = () => {
     getAllCohorts().then(result => {
       const cohortsList = result.data.data.cohorts
         .filter(cohort => cohort.status.toLowerCase() === 'current')
@@ -33,9 +27,9 @@ class Attendance extends Component {
         }))
       });
     });
-  }
+  };
 
-  handleRadioButtonChange(cohort) {
+  handleRadioButtonChange = cohort => {
     const { cohorts } = this.state;
     const newCohortList = cohorts.slice();
     newCohortList.forEach(e => {
@@ -46,16 +40,16 @@ class Attendance extends Component {
       }
     });
     this.setState({ cohorts: newCohortList });
-  }
+  };
 
-  showDetails() {
+  showDetails = () => {
     const { cohorts } = this.state;
     const selectedCohort = cohorts.filter(e => e.isChecked === true);
     const selectedCohortData = attendanceSummary.filter(e => {
       return e.cohort === selectedCohort[0].name;
     });
     this.setState({ selectedCohortResult: selectedCohortData });
-  }
+  };
 
   render() {
     const { cohorts, selectedCohortResult } = this.state;
