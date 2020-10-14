@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Loader, Segment, Dimmer } from 'semantic-ui-react';
 import axios from 'axios';
 import RadioButtonList from '../shared/RadioButtonList';
 import { getAllCohorts, getAllReleasedToyProblems, getAllCohortsNoDb } from '../../queries/queries';
@@ -14,7 +14,8 @@ class ToyProblems extends Component {
     pullRequestsList: [],
     showDetails: false,
     selectedCohort: '',
-    releasedToyProblems: []
+    releasedToyProblems: [],
+    isLoading: false
   };
 
   componentDidMount() {
@@ -58,7 +59,7 @@ class ToyProblems extends Component {
   showDetails = () => {
     const { cohorts } = this.state;
     const selectedCohort = cohorts.find(e => e.isChecked === true).name.toLowerCase();
-
+    this.setState({ isLoading: true });
     this.checkReleasedToyProblemsGql(selectedCohort);
     let pullRequestsList = [];
     axios
@@ -67,7 +68,7 @@ class ToyProblems extends Component {
         if (response && response.data && response.data.toyProblems) {
           pullRequestsList = response.data.toyProblems;
         }
-        this.setState({ pullRequestsList, showDetails: true, selectedCohort });
+        this.setState({ pullRequestsList, showDetails: true, selectedCohort, isLoading: false });
       })
       .catch(error => {
         throw error;
@@ -88,7 +89,8 @@ class ToyProblems extends Component {
       selectedCohort,
       pullRequestsList,
       showDetails,
-      releasedToyProblems
+      releasedToyProblems,
+      isLoading
     } = this.state;
 
     return (
@@ -101,12 +103,19 @@ class ToyProblems extends Component {
             buttonLabel="Toy Problems Status"
           />
         </Grid>
-        {showDetails && pullRequestsList && pullRequestsList.length && (
+        {!isLoading && showDetails && pullRequestsList && pullRequestsList.length && (
           <StudentPrDetails
             pullRequestsList={pullRequestsList}
             selectedCohort={selectedCohort}
             releasedToyProblems={releasedToyProblems}
           />
+        )}
+        {isLoading && (
+          <Segment placeholder>
+            <Dimmer active inverted>
+              <Loader inverted content="Loading" />
+            </Dimmer>
+          </Segment>
         )}
       </React.Fragment>
     );
