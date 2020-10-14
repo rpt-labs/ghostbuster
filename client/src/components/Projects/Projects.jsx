@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Segment, Dimmer, Loader } from 'semantic-ui-react';
 import axios from 'axios';
 import RadioButtonList from '../shared/RadioButtonList';
 import { getAllCohortsNoDb } from '../../queries/queries';
@@ -13,7 +13,8 @@ class Projects extends Component {
     showDetails: false,
     selectedCohort: '',
     studentsList: [],
-    commitDetails: ''
+    commitDetails: '',
+    isLoading: false
   };
 
   componentDidMount() {
@@ -54,6 +55,7 @@ class Projects extends Component {
 
   showDetails = () => {
     const { cohorts } = this.state;
+    this.setState({ isLoading: true });
     const selectedCohort = cohorts.find(e => e.isChecked === true).name.toLowerCase();
     const projectPhase = selectedCohort.split('-')[1] || 'fec';
     axios
@@ -75,7 +77,8 @@ class Projects extends Component {
               commitDetails: res.data.commits,
               studentsList,
               showDetails: true,
-              selectedCohort
+              selectedCohort,
+              isLoading: false
             });
           })
           .catch(error => {
@@ -88,7 +91,14 @@ class Projects extends Component {
   };
 
   render() {
-    const { cohorts, studentsList, showDetails, selectedCohort, commitDetails } = this.state;
+    const {
+      cohorts,
+      studentsList,
+      showDetails,
+      selectedCohort,
+      commitDetails,
+      isLoading
+    } = this.state;
     return (
       <React.Fragment>
         <Grid textAlign="center" style={{ padding: '30px' }}>
@@ -99,12 +109,19 @@ class Projects extends Component {
             buttonLabel="Project Status"
           />
         </Grid>
-        {showDetails && studentsList && studentsList.length && (
+        {!isLoading && showDetails && studentsList && studentsList.length && (
           <StudentsCommitsList
             studentsList={studentsList}
             selectedCohort={selectedCohort}
             commitDetails={commitDetails}
           />
+        )}
+        {isLoading && (
+          <Segment placeholder>
+            <Dimmer active inverted>
+              <Loader inverted content="Loading" />
+            </Dimmer>
+          </Segment>
         )}
       </React.Fragment>
     );
