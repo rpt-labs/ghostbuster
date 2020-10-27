@@ -8,12 +8,12 @@ import { Security, SecureRoute, ImplicitCallback } from '@okta/okta-react';
 import Home from './Home';
 import Login from './auth/Login';
 import TopNav from './TopNav';
-import Cohort from './Cohort';
+import Cohort from './sprints/Cohort';
 import ToyProblems from './toyProblems/ToyProblems';
 import Admin from './admin/Admin';
 import Attendance from './attendance/Attendance';
 import StudentAttendancePreview from './attendance/StudentAttendancePreview';
-import Projects from './Projects/Projects';
+import Projects from './projects/Projects';
 
 // queries
 // import { getAllCohorts } from '../queries/queries';

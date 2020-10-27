@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card } from 'semantic-ui-react';
-import { StyledHeader } from './Styles/TeamStyles';
+import { StyledHeader } from '../Styles/TeamStyles';
 import StudentCard from './StudentCard';
 import MilestoneCommitMessages from './MilestoneCommitMessages';
 

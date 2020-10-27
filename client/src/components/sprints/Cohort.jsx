@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Dimmer, Loader, Segment } from 'semantic-ui-react';
-import { TeamSegment } from './Styles/TeamStyles';
+import { TeamSegment } from '../Styles/TeamStyles';
 import Repo from './Repo';
 import CheckboxList from './CheckboxList';
-import TabNav from './TabNav';
+import TabNav from '../TabNav';
 
 class Cohort extends React.Component {
   state = {

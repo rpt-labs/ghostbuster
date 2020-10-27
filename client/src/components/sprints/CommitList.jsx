@@ -2,8 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { List, Label, Icon } from 'semantic-ui-react';
-import { StarIconGreen, StarIconGrey } from './Styles/StudentCardStyles';
-import sprints from '../../../server/config/sprints';
+import { StarIconGreen, StarIconGrey } from '../Styles/StudentCardStyles';
+import sprints from '../../../../server/config/sprints';
 
 const CommitList = props => {
   const { commits, url, show, handleCommitChange, sprint } = props;
