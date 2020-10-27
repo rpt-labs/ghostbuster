@@ -13,7 +13,7 @@ import ToyProblems from './toyProblems/ToyProblems';
 import Admin from './admin/Admin';
 import Attendance from './attendance/Attendance';
 import StudentAttendancePreview from './attendance/StudentAttendancePreview';
-import Projects from './projects/Projects';
+import Projects from './Projects/Projects';
 
 // queries
 // import { getAllCohorts } from '../queries/queries';
