@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Image, Header } from 'semantic-ui-react';
-import { ButtonSegment, ButtonPrimary } from './Styles/GhostBusterButtonStyles';
+import { ButtonSegment, ButtonPrimary } from '../Styles/GhostBusterButtonStyles';
 
 const GhostbusterButton = props => {
   const { clickHandler } = props;

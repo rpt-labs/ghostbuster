@@ -9,7 +9,7 @@ import {
   HourglassIcon,
   ProgressImage,
   ProgressButton
-} from './Styles/StudentCardStyles';
+} from '../Styles/StudentCardStyles';
 
 const Progress = props => {
   const { student } = props;
