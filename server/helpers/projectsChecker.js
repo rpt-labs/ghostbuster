@@ -12,10 +12,16 @@ const getStudentsList = cohortName => {
 };
 
 const getCommits = async repoWithAuthor => {
-  // @note currently fetches last 100 commits for the author
-  const url = `http://api.github.com/repos/${repoWithAuthor}&page=1&per_page=100`;
-  const response = await githubQuery(url);
-  const commits = response.map(res => ({
+  // @note: return up to 500 commits
+  const maxPage = 5;
+  let responses = [];
+  for (let page = 1; page <= maxPage; page += 1) {
+    const url = `http://api.github.com/repos/${repoWithAuthor}&page=${page}&per_page=100`;
+    const response = await githubQuery(url);
+    if (!response.length) break;
+    responses = [...responses, ...response];
+  }
+  const commits = responses.map(res => ({
     // exclude commit message body
     name: res.commit.message.split('\n')[0],
     date: res.commit.author.date,
