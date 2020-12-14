@@ -11,6 +11,16 @@ const getStudentsList = cohortName => {
   return studentsList && studentsList.length ? studentsList[0].students : [];
 };
 
+const getReleasedFolderNames = async cohort => {
+  const response = await githubQuery(
+    `https://api.github.com/repos/hackreactor/${cohort}-toy-problems/git/trees/master?recursive=1`
+  );
+  if (!response.tree || !response.tree.length) {
+    return [];
+  }
+  return response.tree.filter(res => res.path.includes('/')).map(res => res.path.split('/')[0]);
+};
+
 const getReleasedToyProblems = async cohort => {
   const response = await githubQuery(
     `https://api.github.com/repos/hackreactor/${cohort}-toy-problems/commits?per_page=100`
@@ -23,9 +33,17 @@ const getReleasedToyProblems = async cohort => {
         name: res.commit.message,
         date: res.commit.author.date
       }))
-      .filter(problem => problem.name.includes('(problem)'))
+      .filter(
+        problem =>
+          problem.name.includes('(problem)') &&
+          problem.name.split(' ')[1] &&
+          problem.name.split(' ')[1].length
+      )
       // eslint-disable-next-line no-return-assign
-      .map(problem => ({ name: problem.name.split(' ')[1], date: problem.date }))
+      .map(problem => ({
+        name: problem.name.split(' ')[1],
+        date: problem.date
+      }))
       .sort((a, b) => {
         return new Date(a.date) - new Date(b.date);
       });
@@ -36,25 +54,34 @@ const getReleasedToyProblems = async cohort => {
 
     return isAlreadyExist(current) ? accumulator : [...accumulator, current];
   }, []);
-  return releasedProblems;
+  const releasedProblemNames = releasedProblems.map(problem => problem.name);
+  const releasedFolderNames = await getReleasedFolderNames(cohort);
+
+  const additionalReleases = releasedFolderNames.filter(
+    item => !releasedProblemNames.includes(item)
+  );
+  additionalReleases.forEach(release => {
+    releasedProblems.push({
+      name: release,
+      date: '-'
+    });
+  });
+  return releasedProblems.filter(problem => !!problem.name);
 };
 
-const checkIfPrTitleMatches = async (prTitle, cohort) => {
-  const allProblems = await getReleasedToyProblems(cohort);
+const checkIfPrTitleMatches = async (prTitle, allProblems) => {
   const allReleasedProblemsList = allProblems.map(item => item.name.toLowerCase());
   return allReleasedProblemsList.some(substring => prTitle.toLowerCase().includes(substring));
 };
 
-const AllPrsWithMatchingTitles = async (studentPrList, cohort) => {
-  const allmatchedFileNames = studentPrList.filter(e =>
-    checkIfPrTitleMatches(e.toLowerCase(), cohort)
+const AllPrsWithMatchingTitles = async (allProblems, studentPrList, cohort) => {
+  const allMatchedFileNames = studentPrList.filter(e =>
+    checkIfPrTitleMatches(e.toLowerCase(), allProblems, cohort)
   );
-
-  return allmatchedFileNames;
+  return allMatchedFileNames;
 };
 
-const numberOfUniquePrsWithMatchingTitles = async (prList, cohort) => {
-  const allProblems = await getReleasedToyProblems(cohort);
+const numberOfUniquePrsWithMatchingTitles = async (allProblems, prList) => {
   const allReleasedProblemsList = allProblems.map(item => item.name.toLowerCase());
   const allMatchedStrings = prList.map(pr => {
     const prArray = pr
@@ -68,8 +95,8 @@ const numberOfUniquePrsWithMatchingTitles = async (prList, cohort) => {
 
   const flattenedMatchedStrings = [];
   allMatchedStrings.forEach(item => flattenedMatchedStrings.push(...item));
-  const uniquematchedFileNamesArray = Array.from(new Set(flattenedMatchedStrings));
-  return uniquematchedFileNamesArray.length;
+  const uniqueMatchedFileNamesArray = Array.from(new Set(flattenedMatchedStrings));
+  return uniqueMatchedFileNamesArray.length;
 };
 
 const getFilesChanged = async urls => {
@@ -84,7 +111,7 @@ const getFilesChanged = async urls => {
   );
 };
 
-const getPrListForStudent = async (cohort, student) => {
+const getPrListForStudent = async (allProblems, cohort, student) => {
   const studentName = `${student.firstName} ${student.lastName}`;
   const studentGithubHandle = student.github;
   let matchedFileNames = [];
@@ -100,10 +127,14 @@ const getPrListForStudent = async (cohort, student) => {
       });
       let filesChanged = await getFilesChanged(pullRequestUrls);
       filesChanged = [].concat(...filesChanged);
-      matchedFileNames = (await AllPrsWithMatchingTitles(filesChanged, cohort)) || [];
+      matchedFileNames = (await AllPrsWithMatchingTitles(allProblems, filesChanged, cohort)) || [];
       // remove duplicates
       matchedFileNames = [...new Set(matchedFileNames.map(pr => pr.toLowerCase().trim()))];
-      matchedFilesCount = await numberOfUniquePrsWithMatchingTitles(matchedFileNames, cohort);
+      matchedFilesCount = await numberOfUniquePrsWithMatchingTitles(
+        allProblems,
+        matchedFileNames,
+        cohort
+      );
     }
   } catch (error) {
     console.log(error);
@@ -113,9 +144,12 @@ const getPrListForStudent = async (cohort, student) => {
 };
 
 const checkToyProblems = async cohort => {
+  const allProblems = await getReleasedToyProblems(cohort);
   const studentsList = await getStudentsList(cohort);
   const getAllprs = async () => {
-    return Promise.all(studentsList.map(async student => getPrListForStudent(cohort, student)));
+    return Promise.all(
+      studentsList.map(async student => getPrListForStudent(allProblems, cohort, student))
+    );
   };
   const allPrs = await getAllprs();
   return allPrs;
