@@ -121,8 +121,7 @@ module.exports = class Student {
         }
         return a;
       }, []);
-    console.log(matching);
-    console.log(possibleMessages);
+
     const percent = Math.floor((matching.length / possibleMessages.length) * 100);
     return percent;
   }
