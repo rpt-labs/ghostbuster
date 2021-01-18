@@ -35,5 +35,6 @@ const getSimilarityPercentage = (str1, str2) => {
 };
 
 module.exports = {
+  editDistance,
   getSimilarityPercentage
 };
