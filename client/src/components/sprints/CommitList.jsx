@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { List, Label, Icon } from 'semantic-ui-react';
 import { StarIconGreen, StarIconGrey } from '../Styles/StudentCardStyles';
 import sprints from '../../../../server/config/sprints';
+import utils from '../../../../common/utils';
 
 const CommitList = props => {
   const { commits, url, show, handleCommitChange, sprint } = props;
@@ -11,8 +12,12 @@ const CommitList = props => {
   //  TODO: need to update while using DB
   const { messages } = sprints.allSprints[sprint];
   const milestoneCommits = messages.map(message => message.message);
-  const commitsWithMilestoneCommitMessage = commits.filter(commit =>
-    milestoneCommits.includes(commit.normalizedMessage)
+  const commitsWithMilestoneCommitMessage = commits.filter(
+    commit =>
+      milestoneCommits.includes(commit.normalizedMessage) ||
+      milestoneCommits.some(
+        message => utils.getSimilarityPercentage(message, commit.normalizedMessage) >= 0.87
+      )
   );
 
   const uniqueMilestoneCommits = [
@@ -21,7 +26,10 @@ const CommitList = props => {
 
   const commitList = show ? (
     commits.map((commit, i) =>
-      milestoneCommits.includes(commit.normalizedMessage) ? (
+      milestoneCommits.includes(commit.normalizedMessage) ||
+      milestoneCommits.some(
+        message => utils.getSimilarityPercentage(message, commit.normalizedMessage) >= 0.87
+      ) ? (
         <List.Item key={i}>
           <StarIconGreen name="star" />
           <List.Content style={{ textAlign: 'left' }}>

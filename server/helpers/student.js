@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this */
 const githubQuery = require('./githubQuery');
+const utils = require('../../common/utils');
 // @note: Move to a separate file if these constants are used in different places
 const MILESTONE_MAP = {
   BMR: 'complete bare minimum requirements',
@@ -106,13 +107,21 @@ module.exports = class Student {
     // filter by matching the predetermined commit messages, then make unique in case students make more than one of the same milestone commit messages
     const matching = commitData
       .map(commit => commit.normalizedMessage)
-      .filter(commit => possibleMessages.includes(commit))
+      .filter(
+        commit =>
+          possibleMessages.includes(commit) ||
+          possibleMessages.some(message => utils.getSimilarityPercentage(message, commit) >= 0.87)
+      )
       .reduce((a, b) => {
-        if (!a.includes(b)) {
+        if (
+          !a.includes(b) &&
+          !a.some(message => utils.getSimilarityPercentage(message, b) >= 0.87)
+        ) {
           a.push(b);
         }
         return a;
       }, []);
+
     const percent = Math.floor((matching.length / possibleMessages.length) * 100);
     return percent;
   }
