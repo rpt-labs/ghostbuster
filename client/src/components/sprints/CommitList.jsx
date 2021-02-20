@@ -8,6 +8,7 @@ import utils from '../../../../common/utils';
 
 const CommitList = props => {
   const { commits, url, show, handleCommitChange, sprint } = props;
+  const isNoFork = commits.length === 1 && commits[0].message === 'no fork';
 
   //  TODO: need to update while using DB
   const { messages } = sprints.allSprints[sprint];
@@ -52,14 +53,19 @@ const CommitList = props => {
   ) : (
     <List />
   );
+  const noForkMessage = (
+    <Label basic color="red" size="huge">
+      No Fork
+    </Label>
+  );
 
-  return (
-    <React.Fragment>
+  const commitDetails = (
+    <>
       <Label.Group>
         <Label as="a" color="teal" onClick={handleCommitChange} size="large">
           <Icon name="github" />
           Total # of Commits:
-          <Label.Detail>{commits.length ? commits.length : 0}</Label.Detail>
+          <Label.Detail>{commits.length && !isNoFork ? commits.length : 0}</Label.Detail>
         </Label>
         <Label as="a" color="blue" onClick={handleCommitChange} size="large">
           # of Milestone Commits:
@@ -71,7 +77,14 @@ const CommitList = props => {
       <List divided relaxed>
         {commitList}
       </List>
-    </React.Fragment>
+    </>
+  );
+
+  return (
+    <>
+      {isNoFork && noForkMessage}
+      {!isNoFork && commitDetails}
+    </>
   );
 };
 
