@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
 import Home from './Home';
 import TopNav from './TopNav';
-import Cohort from './Cohort';
+import Cohort from './sprints/Cohort';
 import ToyProblems from './toyProblems/ToyProblems';
 import Admin from './admin/Admin';
 import Attendance from './attendance/Attendance';
