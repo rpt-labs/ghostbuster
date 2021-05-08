@@ -43,3 +43,15 @@ This tool currently relies on students properly using the milestone commits for 
 * I'm not sure if it's worth the effort to have this tool dynamically pull student data from google sheets, but if at some point it feels worth it, that could be a next step
 * This tool does not analyze code quality for project phase - merely counts the number of commits and number of code changes.
 * This tool does not analyze code quality for sprints - merely checks progress by milestone commit messages.
+
+# Running ghostbuster locally without okta auth
+
+* Clone the ghostbuster repo.
+* Run npm install in the root directory.
+* In root directory create a .env file (contact the maintainer for the configuration parameters)
+* Copy sprints.js and cohorts.js in /server/config folder. [do not push up this data to github] (contact the maintainer)
+* In ```index.jsx``` comment line 4 and uncomment line 5
+* Run npm ```run build``` and ```npm run dev``` in 2 separate terminal windows.
+* Launch the app on http://localhost:1234/
+   - Sprints: http://localhost:1234/sprints
+   - Toy problems: http://localhost:1234/toyproblems
