@@ -6,17 +6,29 @@ import CommitList from './CommitList';
 
 class StudentCard extends React.Component {
   state = {
-    showCommits: false
+    showCommits: false,
+    showMilestoneCommits: false
   };
 
   handleShowCommitsChange = () => {
     const { showCommits } = this.state;
-    this.setState({ showCommits: !showCommits });
+    this.setState({
+      showCommits: !showCommits,
+      showMilestoneCommits: false
+    });
+  };
+
+  handleShowMilestoneCommitsChange = () => {
+    const { showMilestoneCommits } = this.state;
+    this.setState({
+      showMilestoneCommits: !showMilestoneCommits,
+      showCommits: false
+    });
   };
 
   render() {
     const { student, repoName } = this.props;
-    const { showCommits } = this.state;
+    const { showCommits, showMilestoneCommits } = this.state;
     const githubUrl = `http://www.github.com/${student.github}/${student.cohort}-${repoName}`;
 
     return (
@@ -30,6 +42,8 @@ class StudentCard extends React.Component {
               <CommitList
                 handleCommitChange={this.handleShowCommitsChange}
                 show={showCommits}
+                showMilestoneCommits={showMilestoneCommits}
+                handleMilestoneCommitsChange={this.handleShowMilestoneCommitsChange}
                 url={githubUrl}
                 commits={student.commitMessages}
                 sprint={repoName}
