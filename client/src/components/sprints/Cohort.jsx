@@ -80,6 +80,14 @@ class Cohort extends React.Component {
       {
         name: 'fullstack-review',
         selected: false
+      },
+      {
+        name: 'mini-apps-1',
+        selected: false
+      },
+      {
+        name: 'mini-apps-2',
+        selected: false
       }
     ]
   };
