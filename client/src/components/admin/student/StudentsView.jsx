@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Menu, Segment } from 'semantic-ui-react';
 import AddStudent from './AddStudent';
@@ -24,7 +24,7 @@ class StudentsView extends Component {
     const { cohorts } = this.props;
 
     return (
-      <React.Fragment>
+      <>
         <Grid>
           <Grid.Column width={4}>
             <Menu fluid vertical tabular>
@@ -46,7 +46,7 @@ class StudentsView extends Component {
             </Segment>
           </Grid.Column>
         </Grid>
-      </React.Fragment>
+      </>
     );
   }
 }

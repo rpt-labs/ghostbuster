@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Label, Card, Icon, Button, Header } from 'semantic-ui-react';
 import ReleasedToyProblems from './ReleasedToyProblems';
@@ -90,7 +90,7 @@ export default class StudentPrDetails extends Component {
                     </a>
                     <Card.Description />
                     {!showAllAttemptedToyProblems && (
-                      <React.Fragment>
+                      <>
                         <div>
                           {releasedToyProblems &&
                             releasedToyProblems.length &&
@@ -112,10 +112,10 @@ export default class StudentPrDetails extends Component {
                                 )
                             )}
                         </div>
-                      </React.Fragment>
+                      </>
                     )}
                     {showAllAttemptedToyProblems && (
-                      <React.Fragment>
+                      <>
                         <div>
                           {releasedToyProblems &&
                             releasedToyProblems.length &&
@@ -140,7 +140,7 @@ export default class StudentPrDetails extends Component {
                               )
                             )}
                         </div>
-                      </React.Fragment>
+                      </>
                     )}
                     <br />
                   </Card.Content>

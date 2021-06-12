@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import axios from 'axios';
 
 // components
@@ -27,7 +27,7 @@ const { GHOSTBUSTER_BASE_URL } = process.env;
   eslint no-underscore-dangle: ["error", { "allowAfterThis": true }]
 */
 
-export default class App extends React.Component {
+export default class App extends Component {
   state = {
     allCohorts: [],
     sprintCohorts: [],

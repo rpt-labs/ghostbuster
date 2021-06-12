@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { Segment } from 'semantic-ui-react';
 import RadioButtonList from '../../shared/RadioButtonList';
@@ -18,7 +17,7 @@ function CreateTeams(props) {
 
   const currentStudents = selectedCohortStudents.filter(student => student.status === 'enrolled');
   return (
-    <React.Fragment>
+    <>
       <RadioButtonList
         cohorts={cohorts}
         handleRadioButtonChange={handleRadioButtonChange}
@@ -51,7 +50,7 @@ function CreateTeams(props) {
       ) : (
         <div />
       )}
-    </React.Fragment>
+    </>
   );
 }
 

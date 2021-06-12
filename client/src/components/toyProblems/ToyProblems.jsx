@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { Grid, Loader, Segment, Dimmer } from 'semantic-ui-react';
 import axios from 'axios';
 import RadioButtonList from '../shared/RadioButtonList';
@@ -94,7 +94,7 @@ class ToyProblems extends Component {
     } = this.state;
 
     return (
-      <React.Fragment>
+      <>
         <Grid textAlign="center" style={{ padding: '30px' }}>
           <RadioButtonList
             cohorts={cohorts}
@@ -117,7 +117,7 @@ class ToyProblems extends Component {
             </Dimmer>
           </Segment>
         )}
-      </React.Fragment>
+      </>
     );
   }
 }

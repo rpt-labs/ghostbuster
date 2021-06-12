@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Label, Card, List, Button, Grid, Segment } from 'semantic-ui-react';
 import CommitsLineChart from './CommitsLineChart';

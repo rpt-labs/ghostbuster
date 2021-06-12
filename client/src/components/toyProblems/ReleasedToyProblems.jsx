@@ -1,4 +1,3 @@
-import React from 'react';
 import { Segment, Grid, Header } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 

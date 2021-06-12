@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { Grid } from 'semantic-ui-react';
 import RadioButtonList from '../shared/RadioButtonList';
 import CohortAttendanceSummary from './CohortAttendanceSummary';
@@ -55,7 +55,7 @@ class Attendance extends Component {
     const { cohorts, selectedCohortResult } = this.state;
 
     return (
-      <React.Fragment>
+      <>
         <Grid textAlign="center" style={{ padding: '30px' }}>
           <RadioButtonList
             cohorts={cohorts}
@@ -71,7 +71,7 @@ class Attendance extends Component {
             ''
           )}
         </Grid>
-      </React.Fragment>
+      </>
     );
   }
 }

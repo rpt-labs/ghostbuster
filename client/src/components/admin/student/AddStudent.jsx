@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { Button, Form, Header, Input, Message } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -82,7 +82,7 @@ export default class AddStudent extends Component {
       showSuccessMessage
     } = this.state;
     return (
-      <React.Fragment>
+      <>
         <Header as="h1" textAlign="center">
           Add Student
           {showSuccessMessage ? (
@@ -155,7 +155,7 @@ export default class AddStudent extends Component {
             Submit
           </Button>
         </Form>
-      </React.Fragment>
+      </>
     );
   }
 }

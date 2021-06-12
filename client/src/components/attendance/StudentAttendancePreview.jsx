@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Table, Header } from 'semantic-ui-react';
 import queryString from 'query-string';
@@ -39,7 +39,7 @@ class StudentAttendancePreview extends Component {
   render() {
     const { studentName, attendanceList, cohort, absenceList } = this.state;
     return (
-      <React.Fragment>
+      <>
         <Header as="h1">{studentName}</Header>
         <Header as="h4">{`Cohort: ${cohort}`}</Header>
         <Header as="h4" style={{ color: 'green' }}>
@@ -90,7 +90,7 @@ class StudentAttendancePreview extends Component {
           </Table>
         </div>
         <StudentAbsences absenceList={absenceList} />
-      </React.Fragment>
+      </>
     );
   }
 }

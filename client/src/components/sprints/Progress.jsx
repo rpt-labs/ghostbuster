@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { List, Header } from 'semantic-ui-react';
 import {
@@ -42,7 +41,7 @@ const Progress = props => {
   }
 
   return (
-    <React.Fragment>
+    <>
       <List>
         <List.Item>
           <span>{icon}</span>
@@ -57,7 +56,7 @@ const Progress = props => {
         </List.Item>
         <List.Item>{percentageButton}</List.Item>
       </List>
-    </React.Fragment>
+    </>
   );
 };
 

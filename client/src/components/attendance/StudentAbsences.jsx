@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Table, Header, Input } from 'semantic-ui-react';
 import moment from 'moment-timezone';
@@ -15,7 +15,7 @@ class StudentAbsences extends Component {
   render() {
     const { absenceList } = this.state;
     return (
-      <React.Fragment>
+      <>
         <Header as="h4" style={{ color: 'dodgerblue' }}>
           Absence Record
         </Header>
@@ -69,7 +69,7 @@ class StudentAbsences extends Component {
             </Table.Body>
           </Table>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }
