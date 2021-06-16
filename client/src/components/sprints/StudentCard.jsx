@@ -1,10 +1,10 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Card } from 'semantic-ui-react';
 import Progress from './Progress';
 import CommitList from './CommitList';
 
-class StudentCard extends React.Component {
+class StudentCard extends Component {
   state = {
     showCommits: false,
     showMilestoneCommits: false

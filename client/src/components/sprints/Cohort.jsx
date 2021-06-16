@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Dimmer, Loader, Segment } from 'semantic-ui-react';
 import { TeamSegment } from '../Styles/TeamStyles';
@@ -6,7 +6,7 @@ import Repo from './Repo';
 import CheckboxList from './CheckboxList';
 import TabNav from '../TabNav';
 
-class Cohort extends React.Component {
+class Cohort extends Component {
   state = {
     repos: [
       {
@@ -153,7 +153,7 @@ class Cohort extends React.Component {
     );
 
     return (
-      <React.Fragment>
+      <Fragment>
         <TabNav selected={selected} cohorts={cohorts} selectCohort={selectCohort} />
         <CheckboxList
           repos={repos}
@@ -161,7 +161,7 @@ class Cohort extends React.Component {
           storeCheckedRepos={this.storeCheckedRepos}
         />
         {viewDetails}
-      </React.Fragment>
+      </Fragment>
     );
   }
 }

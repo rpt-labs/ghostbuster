@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Card, Button, Confirm, Icon, Header } from 'semantic-ui-react';
 import _ from 'lodash';
@@ -83,7 +83,7 @@ class TeamsList extends Component {
     } = this.state;
 
     return (
-      <React.Fragment>
+      <>
         <Header as="h2" style={{ textAlign: 'center', marginTop: '15px' }}>
           {`${selectedCohort.name.toUpperCase()} - Teams`}
         </Header>
@@ -156,7 +156,7 @@ class TeamsList extends Component {
             />
           </div>
         ))}
-      </React.Fragment>
+      </>
     );
   }
 }

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { Checkbox, Button, Grid, Header } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import CreateTeamModal from './CreateTeamModal';
@@ -65,7 +65,7 @@ class StudentsList extends Component {
     const { studentsList, size, open, selectedStudents } = this.state;
     const { selectedCohort, showDetails } = this.props;
     return (
-      <React.Fragment>
+      <>
         <Header as="h2" style={{ textAlign: 'center', marginTop: '15px' }}>
           {`${selectedCohort.name.toUpperCase()} - Enrolled Students`}
         </Header>
@@ -93,7 +93,7 @@ class StudentsList extends Component {
           selectedCohort={selectedCohort}
           showDetails={showDetails}
         />
-      </React.Fragment>
+      </>
     );
   }
 }

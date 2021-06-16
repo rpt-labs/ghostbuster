@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { Card } from 'semantic-ui-react';
 import { StyledHeader } from '../Styles/TeamStyles';
@@ -12,11 +11,11 @@ const Repo = props => {
   ));
 
   return (
-    <React.Fragment>
+    <>
       <StyledHeader as="h1">{name}</StyledHeader>
       <MilestoneCommitMessages sprint={name} />
       <Card.Group itemsPerRow={2}>{studentList}</Card.Group>
-    </React.Fragment>
+    </>
   );
 };
 

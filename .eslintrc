@@ -9,6 +9,8 @@
   },
   "rules": {
     "react/prop-types": [2],
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "max-len": 0,
     "jsx-a11y/label-has-for": [ "error", {
       "required": {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { Segment } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -83,7 +83,7 @@ class TeamsView extends Component {
     const activeCohorts = cohorts.filter(cohort => cohort.status.toLowerCase() === 'current');
 
     return (
-      <React.Fragment>
+      <>
         <Segment>
           <CreateTeams
             cohorts={activeCohorts}
@@ -95,7 +95,7 @@ class TeamsView extends Component {
             teamsListForSelectedCohort={teamsListForSelectedCohort}
           />
         </Segment>
-      </React.Fragment>
+      </>
     );
   }
 }

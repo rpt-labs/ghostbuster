@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import OktaSignIn from '@okta/okta-signin-widget';
 import PropTypes from 'prop-types';
 

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { Button, Modal, List, Input, Form, Select } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
