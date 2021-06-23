@@ -61,25 +61,27 @@ const CommitList = props => {
     <List />
   );
 
-  const filteredMilestoneCommits = [
+  const filteredMilestoneCommitMessages = [
     ...new Set(
-      commits.filter(
-        commit =>
-          milestoneCommits.includes(commit.normalizedMessage) ||
-          milestoneCommits.some(
-            message => utils.getSimilarityPercentage(message, commit.normalizedMessage) >= 0.87
-          )
-      )
+      commits
+        .filter(
+          commit =>
+            milestoneCommits.includes(commit.normalizedMessage) ||
+            milestoneCommits.some(
+              message => utils.getSimilarityPercentage(message, commit.normalizedMessage) >= 0.87
+            )
+        )
+        .map(item => item.message)
     )
   ];
 
   const milestoneCommitsList = showMilestoneCommits ? (
-    filteredMilestoneCommits.map((commit, i) => (
+    filteredMilestoneCommitMessages.map((message, i) => (
       <List.Item key={i}>
         <StarIconGreen name="star" />
         <List.Content style={{ textAlign: 'left' }}>
           <a target="_blank" rel="noopener noreferrer" href={url}>
-            <strong style={{ color: 'green' }}>{commit.message}</strong>
+            <strong style={{ color: 'green' }}>{message}</strong>
           </a>
         </List.Content>
       </List.Item>
