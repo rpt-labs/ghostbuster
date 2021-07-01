@@ -100,7 +100,7 @@ export default class StudentsCommitsList extends Component {
 
                           {showAllCommits &&
                             commitDetails[url.replace('https://github.com/', '')].length > 10 && (
-                              <Header size="tiny">
+                              <Header size="tiny" as="a" target="_blank" href={url}>
                                 {`${commitDetails[url.replace('https://github.com/', '')].length - 10} more`}
                               </Header>
                             )}
