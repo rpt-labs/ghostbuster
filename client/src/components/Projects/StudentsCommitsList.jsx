@@ -51,7 +51,7 @@ export default class StudentsCommitsList extends Component {
                 </Card.Header>
                 <Card.Description>
                   <List divided relaxed>
-                    {item[`${selectedCohort.split('-')[1]}Urls`].split(',').map(url => (
+                    {item[`${selectedCohort.split('-').pop()}Urls`].split(',').map(url => (
                       <List.Item key={url}>
                         <List.Content>
                           <List.Header as="a" target="_blank" href={url}>

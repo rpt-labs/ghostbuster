@@ -9,12 +9,12 @@ const CommitsLineChart = props => {
   const lineChartConfig = {
     byDate: {
       data: getCommitDataByDate(commits),
-      max: 20,
+      max: 30,
       text: 'Commits by date'
     },
     byWeek: {
       data: getCommitDataByWeek(commits),
-      max: 50,
+      max: 80,
       text: 'Commits by week'
     }
   };
