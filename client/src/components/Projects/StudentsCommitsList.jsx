@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Label, Card, List, Button, Grid, Segment } from 'semantic-ui-react';
+import { Label, Card, List, Button, Header, Segment, Divider } from 'semantic-ui-react';
 import CommitsLineChart from './CommitsLineChart';
 import SelectOptions from './SelectOptions';
 
@@ -57,7 +57,7 @@ export default class StudentsCommitsList extends Component {
                           <List.Header as="a" target="_blank" href={url}>
                             {url.replace('https://github.com/', '')}
                           </List.Header>
-                          <List.Description style={{ fontWeight: 'bold' }}>
+                          <List.Description style={{ fontWeight: 'bold', marginTop: '12px' }}>
                             Total commits:
                             {commitDetails[url.replace('https://github.com/', '')] &&
                               commitDetails[url.replace('https://github.com/', '')].length}
@@ -71,23 +71,39 @@ export default class StudentsCommitsList extends Component {
                                 shouldDisplayByWeek={shouldDisplayByWeek}
                               />
                             )}
-                          <List.List as="ol">
+                          <Divider section />
+                          {showAllCommits &&
+                            commitDetails[url.replace('https://github.com/', '')] &&
+                            commitDetails[url.replace('https://github.com/', '')].length && (
+                              <List.Description
+                                style={{
+                                  fontWeight: 'bold',
+                                  color: 'grey'
+                                }}
+                              >
+                                Latest commits:
+                              </List.Description>
+                            )}
+                          <List divided relaxed>
                             {showAllCommits &&
                               commitDetails[url.replace('https://github.com/', '')] &&
                               commitDetails[url.replace('https://github.com/', '')]
-                                .sort((a, b) => new Date(a.date) - new Date(b.date))
-                                .map((commit, i) => (
-                                  // eslint-disable-next-line react/no-array-index-key
-                                  <List.Item as="li" value="*" key={`${i}`}>
-                                    <Grid celled>
-                                      <Grid.Column width={12}>{commit.name}</Grid.Column>
-                                      <Grid.Column width={4}>
-                                        {commit.date.split('T')[0]}
-                                      </Grid.Column>
-                                    </Grid>
+                                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                                .slice(0, 10)
+                                .map(commit => (
+                                  <List.Item key={commit.date}>
+                                    <List.Content style={{ textAlign: 'left' }}>
+                                      {`${commit.date.split('T')[0]} - ${commit.name}`}                                  </List.Content>
                                   </List.Item>
                                 ))}
-                          </List.List>
+                          </List>
+
+                          {showAllCommits &&
+                            commitDetails[url.replace('https://github.com/', '')].length > 10 && (
+                              <Header size="tiny">
+                                {`${commitDetails[url.replace('https://github.com/', '')].length - 10} more`}
+                              </Header>
+                            )}
                         </List.Content>
                       </List.Item>
                     ))}
