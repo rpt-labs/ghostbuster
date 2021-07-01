@@ -57,9 +57,14 @@ class Projects extends Component {
     const { cohorts } = this.state;
     this.setState({ isLoading: true });
     const selectedCohort = cohorts.find(e => e.isChecked === true).name.toLowerCase();
-    const projectPhase = selectedCohort.split('-')[1] || 'fec';
+    const projectPhase = selectedCohort.split('-').pop() || 'fec';
     axios
-      .get(`${GHOSTBUSTER_BASE_URL}/ghostbuster/projects?cohort=${selectedCohort.split('-')[0]}`)
+      .get(
+        `${GHOSTBUSTER_BASE_URL}/ghostbuster/projects?cohort=${selectedCohort.replace(
+          `-${projectPhase}`,
+          ''
+        )}`
+      )
       .then(response => {
         const { studentsList = [] } = response && response.data ? response.data : {};
         const urls = [];
