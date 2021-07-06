@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
-import { Label, Card, List, Header, Divider } from 'semantic-ui-react';
+import { Label, Card, List, Divider } from 'semantic-ui-react';
 import CommitsLineChart from './CommitsLineChart';
+import StudentCommitDetailsView from './StudentCommitDetailsView';
 
 const StudentDetailCard = ({
   studentInfo,
@@ -36,39 +37,9 @@ const StudentDetailCard = ({
                   />
                 )}
                 <Divider section />
-                {showAllCommits &&
-                  commitDetails[url.replace('https://github.com/', '')] &&
-                  commitDetails[url.replace('https://github.com/', '')].length && (
-                    <List.Description
-                      style={{
-                        fontWeight: 'bold',
-                        color: 'grey'
-                      }}
-                    >
-                      Latest commits:
-                    </List.Description>
-                  )}
-                <List divided relaxed>
-                  {showAllCommits &&
-                    commitDetails[url.replace('https://github.com/', '')] &&
-                    commitDetails[url.replace('https://github.com/', '')]
-                      .sort((a, b) => new Date(b.date) - new Date(a.date))
-                      .slice(0, 10)
-                      .map(commit => (
-                        <List.Item key={commit.date}>
-                          <List.Content style={{ textAlign: 'left' }}>
-                            {`${commit.date.split('T')[0]} - ${commit.name}`}
-                          </List.Content>
-                        </List.Item>
-                      ))}
-                </List>
-
-                {showAllCommits &&
-                  commitDetails[url.replace('https://github.com/', '')].length > 10 && (
-                    <Header size="tiny" as="a" target="_blank" href={url}>
-                      {`${commitDetails[url.replace('https://github.com/', '')].length - 10} more`}
-                    </Header>
-                  )}
+                {showAllCommits && (
+                  <StudentCommitDetailsView commitDetails={commitDetails} url={url} />
+                )}
               </List.Content>
             </List.Item>
           ))}
