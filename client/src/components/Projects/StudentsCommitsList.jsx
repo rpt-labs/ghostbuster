@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Card, Button, Segment } from 'semantic-ui-react';
 import SelectOptions from './SelectOptions';
 import StudentDetailCard from './StudentDetailCard';
+import TeamDetails from './TeamDetails';
 
 export default class StudentsCommitsList extends Component {
   state = {
@@ -42,18 +43,13 @@ export default class StudentsCommitsList extends Component {
           )}
         </Segment>
         <br />
-        <Card.Group itemsPerRow={2}>
-          {studentsList.map(studentInfo => (
-            <StudentDetailCard
-              studentInfo={studentInfo}
-              showAllCommits={showAllCommits}
-              commitDetails={commitDetails}
-              selectedCohort={selectedCohort}
-              shouldDisplayByWeek={shouldDisplayByWeek}
-              key={studentInfo.github}
-            />
-          ))}
-        </Card.Group>
+        <TeamDetails
+          studentsList={studentsList}
+          showAllCommits={showAllCommits}
+          commitDetails={commitDetails}
+          selectedCohort={selectedCohort}
+          shouldDisplayByWeek={shouldDisplayByWeek}
+        />
       </div>
     );
   }

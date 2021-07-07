@@ -24,21 +24,37 @@ const StudentDetailCard = ({
                   {url.replace('https://github.com/', '')}
                 </List.Header>
                 <List.Description style={{ fontWeight: 'bold', marginTop: '12px' }}>
+                  <div style={{ paddingBottom: '4px' }}>{`Team name: ${studentInfo.fecTeam}`}</div>
                   Total commits:
-                  {commitDetails[url.replace('https://github.com/', '')] &&
-                    commitDetails[url.replace('https://github.com/', '')].length}
+                  {commitDetails[
+                    `${url.replace('https://github.com/', '')}/commits?author=${studentInfo.github}`
+                  ] &&
+                    commitDetails[
+                      `${url.replace('https://github.com/', '')}/commits?author=${
+                        studentInfo.github
+                      }`
+                    ].length}
                 </List.Description>
-                {!showAllCommits && commitDetails[url.replace('https://github.com/', '')] && (
-                  <CommitsLineChart
-                    commits={commitDetails[url.replace('https://github.com/', '')].sort(
-                      (a, b) => new Date(a.date) - new Date(b.date)
-                    )}
-                    shouldDisplayByWeek={shouldDisplayByWeek}
-                  />
-                )}
+                {!showAllCommits &&
+                  commitDetails[
+                    `${url.replace('https://github.com/', '')}/commits?author=${studentInfo.github}`
+                  ] && (
+                    <CommitsLineChart
+                      commits={commitDetails[
+                        `${url.replace('https://github.com/', '')}/commits?author=${
+                          studentInfo.github
+                        }`
+                      ].sort((a, b) => new Date(a.date) - new Date(b.date))}
+                      shouldDisplayByWeek={shouldDisplayByWeek}
+                    />
+                  )}
                 <Divider section />
                 {showAllCommits && (
-                  <StudentCommitDetailsView commitDetails={commitDetails} url={url} />
+                  <StudentCommitDetailsView
+                    commitDetails={commitDetails}
+                    url={url}
+                    studentInfo={studentInfo}
+                  />
                 )}
               </List.Content>
             </List.Item>
