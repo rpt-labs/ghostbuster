@@ -1,4 +1,4 @@
-import { Card } from 'semantic-ui-react';
+import { Card, Segment, Header } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import StudentDetailCard from './StudentDetailCard';
@@ -14,18 +14,21 @@ const TeamDetails = ({
   return (
     <>
       {Object.keys(groupedList).map(group => (
-        <Card.Group itemsPerRow={2} key={group}>
-          {groupedList[group].map(studentInfo => (
-            <StudentDetailCard
-              studentInfo={studentInfo}
-              showAllCommits={showAllCommits}
-              commitDetails={commitDetails}
-              selectedCohort={selectedCohort}
-              shouldDisplayByWeek={shouldDisplayByWeek}
-              key={studentInfo.github}
-            />
-          ))}
-        </Card.Group>
+        <Segment padded>
+          <Header as="h1">{`Team: ${group}`}</Header>
+          <Card.Group itemsPerRow={2} key={group}>
+            {groupedList[group].map(studentInfo => (
+              <StudentDetailCard
+                studentInfo={studentInfo}
+                showAllCommits={showAllCommits}
+                commitDetails={commitDetails}
+                selectedCohort={selectedCohort}
+                shouldDisplayByWeek={shouldDisplayByWeek}
+                key={studentInfo.github}
+              />
+            ))}
+          </Card.Group>
+        </Segment>
       ))}
     </>
   );

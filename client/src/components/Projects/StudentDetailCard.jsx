@@ -24,7 +24,6 @@ const StudentDetailCard = ({
                   {url.replace('https://github.com/', '')}
                 </List.Header>
                 <List.Description style={{ fontWeight: 'bold', marginTop: '12px' }}>
-                  <div style={{ paddingBottom: '4px' }}>{`Team name: ${studentInfo.fecTeam}`}</div>
                   Total commits:
                   {commitDetails[
                     `${url.replace('https://github.com/', '')}/commits?author=${studentInfo.github}`
