@@ -13,14 +13,13 @@ const options = {
   }
 };
 
-const TeamCommitsBarChart = ({ students, commitDetails, selectedCohort, shouldDisplayByWeek }) => {
+const TeamCommitsBarChart = ({ students }) => {
   const BarChartData = {
     labels: students.map(student => student.firstName),
     datasets: [
       {
         label: 'Total # of Commits',
-        // @note: remove hardcoded values
-        data: [12, 19, 3, 5],
+        data: students.map(student => student.commitCount),
         backgroundColor: [
           'rgba(54, 162, 235, 0.2)',
           'rgba(255, 206, 86, 0.2)',
@@ -35,7 +34,8 @@ const TeamCommitsBarChart = ({ students, commitDetails, selectedCohort, shouldDi
           'rgba(153, 102, 255, 1)',
           'rgba(255, 159, 64, 1)'
         ],
-        borderWidth: 1
+        borderWidth: 1,
+        barThickness: 24
       }
     ]
   };
@@ -48,3 +48,7 @@ const TeamCommitsBarChart = ({ students, commitDetails, selectedCohort, shouldDi
 };
 
 export default TeamCommitsBarChart;
+
+TeamCommitsBarChart.propTypes = {
+  students: PropTypes.instanceOf(Array).isRequired
+};

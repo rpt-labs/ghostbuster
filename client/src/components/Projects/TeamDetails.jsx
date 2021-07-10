@@ -11,7 +11,17 @@ const TeamDetails = ({
   selectedCohort,
   shouldDisplayByWeek
 }) => {
-  const groupedList = _.groupBy(studentsList, 'fecTeam');
+  const groupedList = _.groupBy(
+    studentsList.map(student => ({
+      ...student,
+      commitCount:
+        commitDetails[
+          `${student.fecUrls.replace('https://github.com/', '')}/commits?author=${student.github}`
+        ].length
+    })),
+    'fecTeam'
+  );
+
   return (
     <>
       {Object.keys(groupedList).map(group => (
@@ -19,12 +29,7 @@ const TeamDetails = ({
           <Header as="h1">{`Team: ${group}`}</Header>
           {!showAllCommits && (
             <div style={{ width: '70%', margin: '0 auto', marginBottom: '24px' }}>
-              <TeamCommitsBarChart
-                students={groupedList[group]}
-                commitDetails={commitDetails}
-                selectedCohort={selectedCohort}
-                shouldDisplayByWeek={shouldDisplayByWeek}
-              />
+              <TeamCommitsBarChart students={groupedList[group]} />
             </div>
           )}
           <Card.Group itemsPerRow={2} key={group}>
