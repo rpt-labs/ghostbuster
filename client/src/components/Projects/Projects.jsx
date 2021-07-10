@@ -14,7 +14,8 @@ class Projects extends Component {
     selectedCohort: '',
     studentsList: [],
     commitDetails: '',
-    isLoading: false
+    isLoading: false,
+    projectPhase: ''
   };
 
   componentDidMount() {
@@ -83,7 +84,8 @@ class Projects extends Component {
               studentsList,
               showDetails: true,
               selectedCohort,
-              isLoading: false
+              isLoading: false,
+              projectPhase
             });
           })
           .catch(error => {
@@ -102,7 +104,8 @@ class Projects extends Component {
       showDetails,
       selectedCohort,
       commitDetails,
-      isLoading
+      isLoading,
+      projectPhase
     } = this.state;
     return (
       <>
@@ -119,6 +122,7 @@ class Projects extends Component {
             studentsList={studentsList}
             selectedCohort={selectedCohort}
             commitDetails={commitDetails}
+            projectPhase={projectPhase}
           />
         )}
         {isLoading && (

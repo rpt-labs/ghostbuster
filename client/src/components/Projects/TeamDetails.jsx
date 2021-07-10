@@ -9,22 +9,30 @@ const TeamDetails = ({
   showAllCommits,
   commitDetails,
   selectedCohort,
-  shouldDisplayByWeek
+  shouldDisplayByWeek,
+  projectPhase
 }) => {
-  const groupedList = _.groupBy(studentsList, 'fecTeam');
+  const groupedList = _.groupBy(
+    studentsList.map(student => ({
+      ...student,
+      commitCount:
+        commitDetails[
+          `${student[`${projectPhase}Urls`].replace('https://github.com/', '')}/commits?author=${
+            student.github
+          }`
+        ].length
+    })),
+    `${projectPhase}Team`
+  );
+
   return (
     <>
       {Object.keys(groupedList).map(group => (
-        <Segment padded>
+        <Segment padded key={`${group}`}>
           <Header as="h1">{`Team: ${group}`}</Header>
           {!showAllCommits && (
             <div style={{ width: '70%', margin: '0 auto', marginBottom: '24px' }}>
-              <TeamCommitsBarChart
-                students={groupedList[group]}
-                commitDetails={commitDetails}
-                selectedCohort={selectedCohort}
-                shouldDisplayByWeek={shouldDisplayByWeek}
-              />
+              <TeamCommitsBarChart students={groupedList[group]} />
             </div>
           )}
           <Card.Group itemsPerRow={2} key={group}>
@@ -52,5 +60,6 @@ TeamDetails.propTypes = {
   showAllCommits: PropTypes.bool.isRequired,
   selectedCohort: PropTypes.string.isRequired,
   commitDetails: PropTypes.instanceOf(Object).isRequired,
-  shouldDisplayByWeek: PropTypes.bool.isRequired
+  shouldDisplayByWeek: PropTypes.bool.isRequired,
+  projectPhase: PropTypes.string.isRequired
 };
