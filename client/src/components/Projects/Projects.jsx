@@ -69,7 +69,10 @@ class Projects extends Component {
       .then(response => {
         const { studentsList = [] } = response && response.data ? response.data : {};
         const filteredStudentsList = studentsList.filter(
-          student => !!student[`${projectPhase}Team`].length
+          student =>
+            student.status &&
+            student.status.toLowerCase() === 'enrolled' &&
+            !!student[`${projectPhase}Team`].length
         );
         const urls = [];
         studentsList.forEach(student =>
