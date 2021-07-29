@@ -1,8 +1,7 @@
 import { Segment, Grid, Header } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
-function ReleasedToyProblems(props) {
-  const { releasedToyProblems } = props;
+function ReleasedToyProblems({ releasedToyProblems }) {
   return (
     <Segment>
       <Header as="h2">Released toy problems:</Header>

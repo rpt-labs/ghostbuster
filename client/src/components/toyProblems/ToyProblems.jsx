@@ -7,6 +7,7 @@ import StudentPrDetails from './StudentPrDetails';
 
 const { GHOSTBUSTER_BASE_URL } = process.env;
 const useDB = false;
+const useApi = false;
 
 class ToyProblems extends Component {
   state = {
@@ -19,7 +20,11 @@ class ToyProblems extends Component {
   };
 
   componentDidMount() {
-    this.getCohortsList();
+    if (useApi) {
+      this.getCohortsListFromApi();
+    } else {
+      this.getCohortsList();
+    }
   }
 
   onButtonClick = e => {
@@ -39,6 +44,19 @@ class ToyProblems extends Component {
           isChecked: false
         }))
       });
+    });
+  };
+
+  getCohortsListFromApi = () => {
+    axios.get(`${GHOSTBUSTER_BASE_URL}/api/cohorts/current`).then(response => {
+      if (response) {
+        const cohorts = response.data.map(cohort => ({
+          name: cohort.cohort_id,
+          isChecked: false
+        }));
+
+        this.setState({ cohorts });
+      }
     });
   };
 

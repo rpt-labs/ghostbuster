@@ -4,8 +4,7 @@ import { StyledHeader } from '../Styles/TeamStyles';
 import StudentCard from './StudentCard';
 import MilestoneCommitMessages from './MilestoneCommitMessages';
 
-const Repo = props => {
-  const { name, students } = props;
+const Repo = ({ name, students }) => {
   const studentList = students.map(student => (
     <StudentCard key={student.name} repoName={name} student={student} />
   ));

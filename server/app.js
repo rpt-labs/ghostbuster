@@ -1,4 +1,3 @@
-
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const OktaJwtVerifier = require('@okta/jwt-verifier');
@@ -7,6 +6,7 @@ const path = require('path');
 
 const app = express();
 const asyncMiddleware = require('./helpers/asyncMiddleware');
+const cohortsHelper = require('./helpers/cohorts');
 
 const port = process.env.PORT || 1234;
 const { OKTA_URL, OKTA_CLIENT_ID } = process.env;
@@ -101,6 +101,11 @@ app.use('/ghostbuster/projects', projects);
 
 // to seed DB with current student/cohort/team information
 app.get('/ghostbuster/seed/:seedType', asyncMiddleware(seedersController));
+
+app.get('/api/cohorts/current', async (req, res) => {
+  const data = await cohortsHelper.getCurrentCohorts();
+  res.send(data.data);
+});
 
 // wildcard
 app.get('/*', (req, res) => {
