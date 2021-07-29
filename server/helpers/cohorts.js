@@ -2,7 +2,7 @@ const axios = require('axios');
 require('dotenv').config();
 
 const host = process.env.API_BASE_URL || 'http://localhost';
-const port = 9001;
+const port = process.env.API_PORT || 9001;
 
 module.exports = {
   getCurrentCohorts: () => {
