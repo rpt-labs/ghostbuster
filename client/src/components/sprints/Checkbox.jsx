@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
 import { Radio } from 'semantic-ui-react';
 
-const Checkbox = props => {
-  const { repo, handleCheckboxChange } = props;
+const Checkbox = ({ repo, handleCheckboxChange }) => {
   return (
     <div>
       <Radio
