@@ -1,95 +1,31 @@
 import { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Dimmer, Loader, Segment } from 'semantic-ui-react';
+import axios from 'axios';
 import { TeamSegment } from '../Styles/TeamStyles';
 import Repo from './Repo';
 import CheckboxList from './CheckboxList';
 import TabNav from '../TabNav';
+import sprints from '../../../../server/config/sprints';
+
+const { GHOSTBUSTER_BASE_URL } = process.env;
+const useApi = true;
+
+const { allSprints } = sprints;
+const repositoryList = Object.keys(allSprints).map(sprint => ({ name: sprint, selected: false }));
+
+const getRepoListFromApi = () => {
+  axios.get(`${GHOSTBUSTER_BASE_URL}/api/sprints`).then(response => {
+    if (response) {
+      const repos = Object.keys(allSprints).map(sprint => ({ name: sprint, selected: false }));
+      this.setState({ repos });
+    }
+  });
+};
 
 class Cohort extends Component {
   state = {
-    repos: [
-      {
-        name: 'underbar-review',
-        selected: false
-      },
-      {
-        name: 'recursion-review',
-        selected: false
-      },
-      {
-        name: 'data-structures',
-        selected: false
-      },
-      {
-        name: 'beesbeesbees',
-        selected: false
-      },
-      {
-        name: 'subclass-dance-party',
-        selected: false
-      },
-      {
-        name: 'n-queens',
-        selected: false
-      },
-      {
-        name: 'chatterbox-client',
-        selected: false
-      },
-      {
-        name: '6ees6ees6ees',
-        selected: false
-      },
-      {
-        name: 'react-components',
-        selected: false
-      },
-      {
-        name: 'recast.ly',
-        selected: false
-      },
-      {
-        name: 'recastly-redux',
-        selected: false
-      },
-      {
-        name: 'a-synchronous-swim',
-        selected: false
-      },
-      {
-        name: 'chatterbox-server',
-        selected: false
-      },
-      {
-        name: 'cruddy-todo',
-        selected: false
-      },
-      {
-        name: 'sqool',
-        selected: false
-      },
-      {
-        name: 'databases',
-        selected: false
-      },
-      {
-        name: 'shortly-express',
-        selected: false
-      },
-      {
-        name: 'fullstack-review',
-        selected: false
-      },
-      {
-        name: 'mini-apps-1',
-        selected: false
-      },
-      {
-        name: 'mini-apps-2',
-        selected: false
-      }
-    ]
+    repos: useApi ? getRepoListFromApi() : repositoryList
   };
 
   handleCheckboxChange = repo => {
