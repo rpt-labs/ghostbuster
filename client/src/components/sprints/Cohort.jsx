@@ -9,23 +9,33 @@ import TabNav from '../TabNav';
 import sprints from '../../../../server/config/sprints';
 
 const { GHOSTBUSTER_BASE_URL } = process.env;
-const useApi = true;
-
-const { allSprints } = sprints;
-const repositoryList = Object.keys(allSprints).map(sprint => ({ name: sprint, selected: false }));
-
-const getRepoListFromApi = () => {
-  axios.get(`${GHOSTBUSTER_BASE_URL}/api/sprints`).then(response => {
-    if (response) {
-      const repos = Object.keys(allSprints).map(sprint => ({ name: sprint, selected: false }));
-      this.setState({ repos });
-    }
-  });
-};
+const useApi = false;
 
 class Cohort extends Component {
   state = {
-    repos: useApi ? getRepoListFromApi() : repositoryList
+    repos: []
+  };
+
+  componentDidMount() {
+    this.getRepoList();
+  }
+
+  getRepoList = () => {
+    let { allSprints } = sprints;
+    if (useApi) {
+      axios.get(`${GHOSTBUSTER_BASE_URL}/api/sprints`).then(response => {
+        if (response && response.data) {
+          allSprints = response.data;
+        }
+      });
+    }
+    const repositoryList = Object.keys(allSprints).length
+      ? Object.keys(allSprints).map(sprint => ({
+          name: sprint,
+          selected: false
+        }))
+      : [];
+    this.setState({ repos: repositoryList });
   };
 
   handleCheckboxChange = repo => {
