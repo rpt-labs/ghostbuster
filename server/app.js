@@ -6,7 +6,7 @@ const path = require('path');
 
 const app = express();
 const asyncMiddleware = require('./helpers/asyncMiddleware');
-const cohortsHelper = require('./helpers/cohorts');
+const apiHelper = require('./helpers/api');
 
 const port = process.env.PORT || 1234;
 const { OKTA_URL, OKTA_CLIENT_ID } = process.env;
@@ -103,7 +103,12 @@ app.use('/ghostbuster/projects', projects);
 app.get('/ghostbuster/seed/:seedType', asyncMiddleware(seedersController));
 
 app.get('/api/cohorts/current', async (req, res) => {
-  const data = await cohortsHelper.getCurrentCohorts();
+  const data = await apiHelper.getCurrentCohorts();
+  res.send(data.data);
+});
+
+app.get('/api/sprints', async (req, res) => {
+  const data = await apiHelper.getSprints();
   res.send(data.data);
 });
 
