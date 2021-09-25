@@ -1,6 +1,5 @@
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
-const OktaJwtVerifier = require('@okta/jwt-verifier');
 const cors = require('cors');
 const path = require('path');
 
@@ -9,16 +8,6 @@ const asyncMiddleware = require('./helpers/asyncMiddleware');
 const apiHelper = require('./helpers/api');
 
 const port = process.env.PORT || 1234;
-const { OKTA_URL, OKTA_CLIENT_ID } = process.env;
-
-// okta authentication
-const oktaJwtVerifier = new OktaJwtVerifier({
-  issuer: OKTA_URL,
-  clientId: OKTA_CLIENT_ID,
-  assertClaims: {
-    aud: 'api://default'
-  }
-});
 
 // graphql
 const schema = require('./schema/schema');
@@ -33,30 +22,6 @@ const teams = require('./routes/teams');
 const sprints = require('./routes/sprints');
 const toyproblems = require('./routes/toyproblems');
 const projects = require('./routes/projects');
-
-// use this as middleware on any routes you need to protect
-// be sure to include the authorization header on the request from client
-function authenticationRequired(req, res, next) {
-  const authHeader = req.headers.authorization || '';
-  const match = authHeader.match(/Bearer (.+)/);
-
-  if (!match) {
-    res.status(401);
-    return next('Unauthorized');
-  }
-
-  const accessToken = match[1];
-
-  return oktaJwtVerifier
-    .verifyAccessToken(accessToken)
-    .then(jwt => {
-      req.jwt = jwt;
-      next();
-    })
-    .catch(err => {
-      res.status(401).send(err.message);
-    });
-}
 
 function logger(req, res, next) {
   console.log('url', req.url, 'path', req.path, 'method: ', req.method, 'query: ', req.query);
