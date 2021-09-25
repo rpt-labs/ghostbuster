@@ -13,10 +13,6 @@ import Attendance from './attendance/Attendance';
 import StudentAttendancePreview from './attendance/StudentAttendancePreview';
 import Projects from './Projects/Projects';
 
-// routing
-
-// auth
-
 // queries
 // import { getAllCohorts } from '../queries/queries';
 import { getAllCohortsNoDb } from '../queries/queries';
