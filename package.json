@@ -22,7 +22,7 @@
   "homepage": "https://github.com/rpt-ginko/github-crawler#readme",
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "chart.js": "^2.9.4",
     "cors": "^2.8.4",
     "dotenv": "^6.1.0",
