@@ -22,9 +22,6 @@
   "homepage": "https://github.com/rpt-ginko/github-crawler#readme",
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
-    "@okta/jwt-verifier": "^1.0.0",
-    "@okta/okta-react": "^1.4.0",
-    "@okta/okta-signin-widget": "^4.1.3",
     "axios": "^0.21.1",
     "chart.js": "^2.9.4",
     "cors": "^2.8.4",

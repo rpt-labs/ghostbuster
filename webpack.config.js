@@ -59,9 +59,6 @@ module.exports = () => {
     },
     plugins: [
       new webpack.DefinePlugin({
-        'process.env.OKTA_URL': JSON.stringify(env.OKTA_URL),
-        'process.env.OKTA_CLIENT_ID': JSON.stringify(env.OKTA_CLIENT_ID),
-        'process.env.OKTA_BASE_URL': JSON.stringify(env.OKTA_BASE_URL),
         'process.env.GHOSTBUSTER_BASE_URL': JSON.stringify(env.GHOSTBUSTER_BASE_URL)
       }),
       new HtmlWebpackPlugin({
