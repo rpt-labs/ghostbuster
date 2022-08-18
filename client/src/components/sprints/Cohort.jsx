@@ -20,14 +20,16 @@ class Cohort extends Component {
     this.getRepoList();
   }
 
-  getRepoList = () => {
-    let { allSprints } = sprints;
+  getRepoList = async () => {
+    let allSprints = [];
     if (useApi) {
-      axios.get(`${GHOSTBUSTER_BASE_URL}/api/sprints`).then(response => {
+      await axios.get(`${GHOSTBUSTER_BASE_URL}/api/sprints`).then(response => {
         if (response && response.data) {
           allSprints = response.data;
         }
       });
+    } else {
+      ({ allSprints } = sprints);
     }
     const repositoryList = Object.keys(allSprints).length
       ? Object.keys(allSprints).map(sprint => ({
