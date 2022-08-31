@@ -31,7 +31,7 @@
     "graphql": "^14.0.2",
     "lodash": "^4.17.21",
     "moment": "^2.22.2",
-    "moment-timezone": "^0.5.23",
+    "moment-timezone": "^0.5.35",
     "pg": "^7.6.0",
     "prop-types": "^15.6.2",
     "query-string": "^6.2.0",
