@@ -8,6 +8,19 @@ const StudentPrDetails = ({ pullRequestsList, selectedCohort, releasedToyProblem
   const [showHideReleasedTpList, setShowHideReleasedTpList] = useState(false);
 
   const totalReleasedTp = releasedToyProblems.length;
+  const sortedPullRequestsList = pullRequestsList.sort(
+    (a, b) => a.matchedFilesCount - b.matchedFilesCount
+  );
+
+  const getClassName = item => {
+    if (item.matchedFilesCount < totalReleasedTp - 2) {
+      return 'negative';
+    }
+    if (item.matchedFilesCount === totalReleasedTp) {
+      return 'positive';
+    }
+    return '';
+  };
 
   return (
     <div>
@@ -29,6 +42,36 @@ const StudentPrDetails = ({ pullRequestsList, selectedCohort, releasedToyProblem
               <ReleasedToyProblems releasedToyProblems={releasedToyProblems} />
             )}
           </Header>
+          <table className="ui celled very compact table">
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th># Attempted</th>
+                <th># Not attempted</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sortedPullRequestsList.map(item => (
+                <tr key={item.studentName} className={getClassName(item)}>
+                  <td data-label="Name">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`https://github.com/hackreactor/${
+                        item.cohort
+                      }-toy-problems/pulls?q=is:pr+author:${item.studentGithubHandle}`}
+                    >
+                      {item.studentName}
+                    </a>
+                  </td>
+                  <td data-label="Attempted">{item.matchedFilesCount}</td>
+                  <td data-label="Not attempted">
+                    {releasedToyProblems.length - item.matchedFilesCount}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
           <Header as="h1">
             <Button
               color="grey"
@@ -51,7 +94,7 @@ const StudentPrDetails = ({ pullRequestsList, selectedCohort, releasedToyProblem
             </span>
           </Header>
           <Card.Group itemsPerRow={2}>
-            {pullRequestsList.map(item => (
+            {sortedPullRequestsList.map(item => (
               <Card key={item.studentName} style={{ marginBottom: '0px' }}>
                 <Card.Content style={{ paddingBottom: '0px' }}>
                   <a
